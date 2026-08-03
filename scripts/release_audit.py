@@ -33,6 +33,7 @@ REQUIRED_FILES = (
     "docs/research-citation-audit.md",
     "docs/equation-and-pdf-audit.md",
     "docs/release-readiness.md",
+    "docs/javascripts/default-theme.js",
     "docs/api/public-api.md",
     "docs/api/families.md",
     "docs/assets/papers/silva-networks-arxiv-2607.28989.pdf",

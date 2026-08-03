@@ -74,6 +74,7 @@ markdown_extensions:
       alternate_style: true
 
 extra_javascript:
+  - javascripts/default-theme.js
   - javascripts/page-dates.js
   - javascripts/mathjax.js
   - javascripts/vendor/mathjax/tex-mml-chtml.js
