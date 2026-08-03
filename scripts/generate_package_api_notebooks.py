@@ -115,6 +115,7 @@ If this notebook or package is used, cite the software repository:
 ```text
 Dr. Jose Luis Silva. SILVA Networks. Version 1.0.0. MIT License.
 https://github.com/jseluis/silva-networks
+https://doi.org/10.5281/zenodo.21770099
 ```
 
 When the work is connected to the SILVA Networks paper, cite the paper as well:

@@ -110,6 +110,8 @@ pytest
 mkdocs build --strict
 ```
 
-If PyPI does not accept the package name `silva-networks`, the release process
-should stop and the package name should be resolved explicitly before
-publishing.
+The public package is available at
+[https://pypi.org/project/silva-networks/](https://pypi.org/project/silva-networks/)
+and requires Python 3.10 or newer. A Python 3.9 environment will report no
+matching distribution because the published metadata declares
+`Requires-Python >=3.10`.

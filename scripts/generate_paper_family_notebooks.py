@@ -292,7 +292,9 @@ def architecture_notebook() -> dict:
                 random-seed policy, and pretrained components.
 
                 Cite the SILVA package and the source paper whose architecture or
-                experimental protocol you instantiate.
+                experimental protocol you instantiate:
+                https://github.com/jseluis/silva-networks
+                https://doi.org/10.5281/zenodo.21770099
                 """,
                 prefix=prefix,
             ),
@@ -428,7 +430,10 @@ def raft_notebook() -> dict:
 
                 Cite RAFT for all-pairs correlation and recurrent refinement,
                 DEQ-Flow for the equilibrium optical-flow formulation and sparse
-                correction/reuse strategy, and SILVA for this generalized package API.
+                correction/reuse strategy, and SILVA Networks for this generalized
+                package API:
+                https://github.com/jseluis/silva-networks
+                https://doi.org/10.5281/zenodo.21770099
                 """,
                 prefix=prefix,
             ),

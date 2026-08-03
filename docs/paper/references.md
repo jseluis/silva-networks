@@ -9,7 +9,13 @@ used in connection with the SILVA methodology.
 ```text
 Dr. Jose Luis Silva. SILVA Networks. Version 1.0.0. MIT License.
 https://github.com/jseluis/silva-networks
+https://doi.org/10.5281/zenodo.21770099
 ```
+
+Version 1.0.0 is archived at Zenodo:
+[10.5281/zenodo.21770099](https://doi.org/10.5281/zenodo.21770099).
+The all-versions concept DOI is
+[10.5281/zenodo.21770098](https://doi.org/10.5281/zenodo.21770098).
 
 ## SILVA Paper Citation
 
@@ -62,6 +68,7 @@ optimization-layer papers.
   year    = {2026},
   version = {1.0.0},
   license = {MIT},
+  doi     = {10.5281/zenodo.21770099},
   url     = {https://github.com/jseluis/silva-networks}
 }
 ```

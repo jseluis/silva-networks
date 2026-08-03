@@ -88,6 +88,9 @@ Homepage = "https://jsluis.com"
 Documentation = "https://jseluis.github.io/silva-networks"
 Repository = "https://github.com/jseluis/silva-networks"
 Issues = "https://github.com/jseluis/silva-networks/issues"
+PyPI = "https://pypi.org/project/silva-networks/"
+Archive = "https://doi.org/10.5281/zenodo.21770099"
+Article = "https://doi.org/10.48550/arXiv.2607.28989"
 
 [project.scripts]
 silva-download-datasets = "silva_networks.dataset_cli:main"

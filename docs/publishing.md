@@ -65,6 +65,9 @@ The package name is:
 silva-networks
 ```
 
+Published package:
+[https://pypi.org/project/silva-networks/](https://pypi.org/project/silva-networks/)
+
 The import name is:
 
 ```python
@@ -77,7 +80,7 @@ API token is stored in GitHub. PyPI's trusted-publisher flow exchanges a
 GitHub Actions identity token for a short-lived publishing credential during
 the release job.
 
-Before creating the first GitHub Release:
+The v1.0.0 release used this PyPI trusted-publisher configuration:
 
 1. Open PyPI and sign in.
 2. Open **Account settings**.
@@ -100,10 +103,9 @@ Then configure the matching GitHub environment:
 4. Create an environment named `pypi`.
 5. Add a required reviewer for the environment.
 
-The environment gate keeps package upload as an explicit release action. After
-the publisher and environment exist, create the GitHub Release from tag
-`v1.0.0`. The workflow builds the source distribution and wheel, runs
-`twine check`, and publishes the package to PyPI.
+The environment gate keeps package upload as an explicit release action. The
+release workflow builds the source distribution and wheel, runs `twine check`,
+and publishes the package to PyPI after deployment approval.
 
 After the workflow succeeds:
 
@@ -114,10 +116,9 @@ python -c "import silva_networks; print(silva_networks.__version__)"
 
 ## Zenodo
 
-Zenodo archiving should be connected before the first GitHub Release is
-created. The repository includes `.zenodo.json`, which gives Zenodo software
-metadata, the MIT license, keywords, repository relation, and the arXiv article
-relation.
+Zenodo archiving should be connected before each public GitHub Release. The
+repository includes `.zenodo.json`, which gives Zenodo software metadata, the
+MIT license, keywords, repository relation, and the arXiv article relation.
 
 To enable the archive:
 
@@ -126,9 +127,13 @@ To enable the archive:
 3. Enable archiving for `jseluis/silva-networks`.
 4. Create the GitHub Release from tag `v1.0.0`.
 
-Zenodo will archive the GitHub release and mint a DOI. After Zenodo finishes,
-update the repository with the DOI badge, the Zenodo DOI in `CITATION.cff`,
-and the DOI link in the documentation.
+Zenodo archived v1.0.0 as:
+
+```text
+Version DOI: 10.5281/zenodo.21770099
+Concept DOI: 10.5281/zenodo.21770098
+Record: https://zenodo.org/records/21770099
+```
 
 Official setup references:
 

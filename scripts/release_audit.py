@@ -149,6 +149,8 @@ def _check_arxiv_and_bibtex(root: Path, errors: list[str]) -> None:
             "silva-experiment",
             "silva-download-datasets",
             "configs/*.json",
+            "https://pypi.org/project/silva-networks/",
+            "10.5281/zenodo.21770099",
         ),
         ".zenodo.json": (
             "Silva, Jose Luis",
@@ -170,6 +172,7 @@ def _check_arxiv_and_bibtex(root: Path, errors: list[str]) -> None:
             "Workflow filename",
             "release.yml",
             ".zenodo.json",
+            "10.5281/zenodo.21770099",
         ),
         "docs/paper/references.md": (ARXIV_ID, "docs/assets/bib/silva-networks.bib"),
         "docs/assets/bib/silva-networks.bib": (

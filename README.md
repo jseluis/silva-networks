@@ -8,6 +8,18 @@
 
 # SILVA Networks
 
+<p align="center">
+  <a href="https://pypi.org/project/silva-networks/">
+    <img alt="PyPI" src="https://img.shields.io/pypi/v/silva-networks.svg">
+  </a>
+  <a href="https://doi.org/10.5281/zenodo.21770099">
+    <img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.21770099.svg">
+  </a>
+  <a href="https://github.com/jseluis/silva-networks/blob/main/LICENSE">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg">
+  </a>
+</p>
+
 PyTorch layers, solvers, tutorials, and documentation for SILVA networks and
 deep equilibrium models.
 
@@ -23,8 +35,9 @@ designed for two audiences:
   stimulus/local/global equilibrium layers.
 
 The code is released under the MIT License. If you use this package, cite the
-GitHub repository at `https://github.com/jseluis/silva-networks`. If the work is
-used in connection with the SILVA Networks paper, cite the paper as well.
+software DOI `10.5281/zenodo.21770099` or the GitHub repository at
+`https://github.com/jseluis/silva-networks`. If the work is used in connection
+with the SILVA Networks paper, cite the paper as well.
 
 ## Install
 
@@ -49,10 +62,11 @@ python -m pip install -r requirements-optimization.txt
 python -m pip install -r requirements-all.txt
 ```
 
-For package users after release:
+For package users:
 
 ```bash
-pip install silva-networks
+python -m pip install silva-networks
+python -c "import silva_networks; print(silva_networks.__version__)"
 ```
 
 ## CLI Smoke Test
@@ -470,6 +484,7 @@ Use the repository citation metadata in `CITATION.cff`, or cite:
 ```text
 Dr. Jose Luis Silva. SILVA Networks. Version 1.0.0. MIT License.
 https://github.com/jseluis/silva-networks
+https://doi.org/10.5281/zenodo.21770099
 ```
 
 When the work uses or discusses the SILVA methodology, cite the paper as well:
@@ -483,6 +498,18 @@ When the work uses or discusses the SILVA methodology, cite the paper as well:
       archivePrefix={arXiv},
       primaryClass={cs.LG},
       url={https://arxiv.org/abs/2607.28989},
+}
+```
+
+```bibtex
+@software{silva2026silvanetworkssoftware,
+  title   = {SILVA Networks},
+  author  = {Silva, Jose Luis},
+  year    = {2026},
+  version = {1.0.0},
+  license = {MIT},
+  doi     = {10.5281/zenodo.21770099},
+  url     = {https://github.com/jseluis/silva-networks}
 }
 ```
 

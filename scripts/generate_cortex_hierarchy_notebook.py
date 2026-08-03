@@ -380,6 +380,12 @@ The same grammar covers the article configurations and extensions:
 | different solvers | Picard, Anderson, or Broyden per point |
 | local/global/self ablations | pass modules, omit modules, or use zero modules |
 | user datasets | adapt to tensors, then call the same PyTorch modules |
+
+## Citation
+
+Dr. Jose Luis Silva. SILVA Networks. Version 1.0.0. MIT License.
+https://github.com/jseluis/silva-networks
+https://doi.org/10.5281/zenodo.21770099
 """
         ),
     ]

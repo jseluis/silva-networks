@@ -10,7 +10,8 @@ broken package builds before a public release.
 | --- | --- |
 | Package version | `1.0.0` |
 | Citation metadata | `CITATION.cff`, README, references page, and BibTeX file updated |
-| Zenodo metadata | `.zenodo.json` added for GitHub release archiving |
+| Zenodo archive | v1.0.0 DOI: [`10.5281/zenodo.21770099`](https://doi.org/10.5281/zenodo.21770099) |
+| PyPI package | [`silva-networks==1.0.0`](https://pypi.org/project/silva-networks/) |
 | PyPI workflow | `.github/workflows/release.yml` builds and publishes through PyPI Trusted Publishing |
 | Article citation | arXiv:2607.28989, submitted July 31, 2026 |
 | Article PDF | `docs/assets/papers/silva-networks-arxiv-2607.28989.pdf` |
@@ -38,8 +39,8 @@ broken package builds before a public release.
 | Notebook smoke | `python scripts/run_notebook_smoke.py --timeout 180` | yes for selected quick notebooks |
 | Package build | `python -m build` | yes |
 | Distribution metadata | `twine check dist/*` | yes |
-| PyPI trusted publisher | PyPI pending publisher for `jseluis/silva-networks`, workflow `release.yml`, environment `pypi` | yes before GitHub Release |
-| Zenodo archiving | Zenodo GitHub integration enabled for `jseluis/silva-networks` | yes before GitHub Release |
+| PyPI trusted publisher | PyPI publisher for `jseluis/silva-networks`, workflow `release.yml`, environment `pypi` | yes |
+| Zenodo archiving | Zenodo GitHub integration enabled for `jseluis/silva-networks`; v1.0.0 archived | yes |
 
 For local offline validation, `python -m build --no-isolation` is acceptable
 when the active virtualenv already contains the build requirements.
@@ -54,7 +55,7 @@ tooling such as command-line PDF utilities.
 | Area | Check |
 | --- | --- |
 | Citation | arXiv ID in README, CFF, references page, and BibTeX |
-| Release metadata | `.zenodo.json`, PyPI workflow, and publishing instructions present |
+| Release metadata | `.zenodo.json`, PyPI workflow, Zenodo DOI, PyPI URL, and publishing instructions present |
 | BibTeX | `silva2026silvanetworksstructuredimplicit` and software entries present |
 | Docs | required learning, API, experiment, and audit pages exist |
 | Navigation | new release/audit/derivation pages are wired into `mkdocs.yml` |

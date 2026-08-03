@@ -7,6 +7,7 @@ authors:
 version: "1.0.0"
 date-released: "2026-08-03"
 license: "MIT"
+doi: "10.5281/zenodo.21770099"
 url: "https://jsluis.com"
 repository-code: "https://github.com/jseluis/silva-networks"
 preferred-citation:
@@ -17,6 +18,7 @@ preferred-citation:
       given-names: "Jose Luis"
   version: "1.0.0"
   date-released: "2026-08-03"
+  doi: "10.5281/zenodo.21770099"
   url: "https://github.com/jseluis/silva-networks"
 references:
   - type: article
