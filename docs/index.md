@@ -1,0 +1,393 @@
+---
+hide:
+  - title
+---
+
+<style>
+.md-content__inner > h1:first-child {
+  display: none;
+}
+</style>
+
+<section class="silva-hero" markdown>
+<div markdown>
+<div class="silva-hero__title" role="heading" aria-level="1">SILVA Networks</div>
+
+Structured PyTorch equilibrium layers for stimulus, local interaction, global
+context, solver dynamics, diagnostics, and readout heads.
+
+<div class="silva-metrics" markdown>
+<div class="silva-metric" markdown>
+<strong>Solvers</strong>
+<span>Picard, Anderson, Broyden, GMRES diagnostics</span>
+</div>
+<div class="silva-metric" markdown>
+<strong>Case Atlas</strong>
+<span>Graph, vision, molecules, datasets, custom operators</span>
+</div>
+<div class="silva-metric" markdown>
+<strong>Derivations</strong>
+<span>Equations, Jacobians, residuals, stability evidence</span>
+</div>
+</div>
+</div>
+<div class="silva-hero__mark" markdown>
+![SILVA Networks icon](assets/images/silva-networks-icon.svg)
+</div>
+</section>
+
+<div class="silva-action-grid" markdown>
+<a class="silva-action" href="installation/" markdown>
+<strong>Install</strong>
+<span>Package, extras, editable mode</span>
+</a>
+<a class="silva-action" href="run-everything/" markdown>
+<strong>Run everything</strong>
+<span>Examples, notebooks, data, tests, docs</span>
+</a>
+<a class="silva-action" href="cli/" markdown>
+<strong>Use the CLI</strong>
+<span>Smoke test, configs, data, outputs</span>
+</a>
+<a class="silva-action" href="learn/case-atlas/" markdown>
+<strong>Choose a case</strong>
+<span>Graph, vision, molecule, custom</span>
+</a>
+<a class="silva-action" href="learn/derivation-workbook/" markdown>
+<strong>Derive step by step</strong>
+<span>From scalar fixed point to SILVA field</span>
+</a>
+<a class="silva-action" href="learn/method-adaptation-atlas/" markdown>
+<strong>Adapt papers</strong>
+<span>Sources, equations, citations, scope</span>
+</a>
+<a class="silva-action" href="equation-and-pdf-audit/" markdown>
+<strong>Audit equations</strong>
+<span>Companion assets, code map, citation state</span>
+</a>
+<a class="silva-action" href="learn/selecting-model-families/" markdown>
+<strong>Select a family</strong>
+<span>SILVA, DEQ, MDEQ, flow, optimization</span>
+</a>
+<a class="silva-action" href="experiments/benchmark-cards/" markdown>
+<strong>Read benchmarks</strong>
+<span>Public smoke metrics and cards</span>
+</a>
+<a class="silva-action" href="results/" markdown>
+<strong>Check results</strong>
+<span>Measured public smokes and residuals</span>
+</a>
+<a class="silva-action" href="api/reference/" markdown>
+<strong>Find the API</strong>
+<span>Solvers, layers, diagnostics</span>
+</a>
+</div>
+
+## Extended Deep Equilibrium Layers
+
+Deep Equilibrium Models solve for a representation \(z^\star\) that is already
+at rest under a learned transition. SILVA keeps that implicit-layer contract and
+makes the transition inspectable: data enters through a stimulus branch, while
+local, global, and optional self-interaction branches describe how the state
+organizes before readout.
+
+<div class="silva-equation-band silva-home-equation" markdown>
+$$
+\begin{aligned}
+z^\star &= f_\theta(z^\star, x),\\
+f_\theta(z,x)
+&=
+\Phi\!\left(
+S_\theta(x)+H_\theta(\chi(z))\right.\\
+&\qquad\left.
++L_\theta(\chi(z),E)+G_\theta(\chi(z),b)
+\right).
+\end{aligned}
+$$
+</div>
+
+<div class="silva-equation-legend" markdown>
+<span><strong>\(S_\theta\)</strong> injects input stimulus.</span>
+<span><strong>\(H_\theta\)</strong> adds optional learned self-interaction.</span>
+<span><strong>\(L_\theta\)</strong> exchanges local information through graphs, grids, kNN, or custom neighborhoods.</span>
+<span><strong>\(G_\theta\)</strong> supplies global context such as mean fields or attention.</span>
+</div>
+
+<figure class="silva-method-figure" markdown>
+![Cinematic visualization of SILVA structured interactions converging to an attractor](assets/images/silva-method-cinematic.png)
+<figcaption markdown>
+SILVA exposes the stimulus, self, local, and global branches as explicit
+operators, then solves their combined field until the residual approaches an
+equilibrium state for readout.
+</figcaption>
+</figure>
+
+The package is meant to be read, imported, extended, and tested. It contains
+reference SILVA presets, generic custom layers, fixed-point solvers,
+Jacobian diagnostics, Lyapunov-style diagnostics, dataset adapters, examples,
+notebooks, and a companion book roadmap.
+
+Author: [Dr. Jose Luis Silva](https://jsluis.com). Source:
+[github.com/jseluis/silva-networks](https://github.com/jseluis/silva-networks).
+The package is released under the MIT License.
+
+## How to Cite
+
+If you use the package, cite the software repository. If the work uses or
+discusses the SILVA methodology, cite the arXiv article as well.
+
+<div class="silva-citation-grid" markdown>
+<div class="silva-citation-card" markdown>
+<strong>Article</strong>
+
+Jose Luis Lima de Jesus Silva. *SILVA Networks as Structured Implicit Layers and
+Vector Attractors via Dynamic Interaction Fields*. arXiv:2607.28989, 2026.
+Primary category: cs.LG. DOI:
+[10.48550/arXiv.2607.28989](https://doi.org/10.48550/arXiv.2607.28989).
+
+[arXiv](https://arxiv.org/abs/2607.28989) |
+[Local PDF](assets/papers/silva-networks-arxiv-2607.28989.pdf) |
+[arXiv PDF](https://arxiv.org/pdf/2607.28989) |
+[BibTeX](https://arxiv.org/bibtex/2607.28989)
+</div>
+<div class="silva-citation-card" markdown>
+<strong>Software</strong>
+
+Dr. Jose Luis Silva. *SILVA Networks*. Version 1.0.0. MIT License.
+
+[Repository](https://github.com/jseluis/silva-networks) |
+[Citation Metadata](https://github.com/jseluis/silva-networks/blob/main/CITATION.cff)
+</div>
+</div>
+
+```bibtex
+@misc{silva2026silvanetworksstructuredimplicit,
+      title={SILVA Networks as Structured Implicit Layers and Vector Attractors via Dynamic Interaction Fields},
+      author={Jose Luis Lima de Jesus Silva},
+      year={2026},
+      eprint={2607.28989},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2607.28989},
+}
+```
+
+The package BibTeX and the broader method-reference list are available in
+[Paper and References](paper/references.md).
+
+<div class="silva-grid" markdown>
+<div class="silva-card" markdown>
+### Run Everything
+
+[Run Everything](run-everything.md) gives the command path for install,
+examples, notebooks, data adapters, tests, local docs, and validation checks.
+</div>
+<div class="silva-card" markdown>
+### Derive Step by Step
+
+[Derivation Workbook](learn/derivation-workbook.md) walks from scalar fixed
+points to graph attention, global context, data adapters, and diagnostics.
+</div>
+<div class="silva-card" markdown>
+### Learn the Math
+
+[Mathematical Foundations](learn/mathematical-foundations.md) derives the
+fixed-point equation, damping, contraction checks, implicit adjoints, solver
+updates, graph terms, and complexity.
+</div>
+<div class="silva-card" markdown>
+### Bridge DEQ Tutorials
+
+[Implicit Layers Bridge](learn/implicit-bridge.md) adapts fixed-point, implicit
+autodiff, neural ODE, DEQ, differentiable optimization, MDEQ, and Jacobian
+regularization tutorials to the package API. The
+[Method Adaptation Atlas](learn/method-adaptation-atlas.md) gives the
+source-by-source equation and citation map.
+</div>
+<div class="silva-card" markdown>
+### Audit The Release
+
+[Equation and PDF Audit](equation-and-pdf-audit.md) and
+[Release Readiness](release-readiness.md) record article citation status,
+BibTeX coverage, companion-material availability, implementation coverage,
+notebook smoke checks, and packaging commands.
+</div>
+<div class="silva-card" markdown>
+### Inspect Benchmarks
+
+[Benchmark Cards](experiments/benchmark-cards.md) summarize checked smoke
+metrics from the public experiment JSON outputs without turning them into
+leaderboard claims.
+</div>
+<div class="silva-card" markdown>
+### Pick a Case
+
+[Case Atlas](learn/case-atlas.md) maps every implemented SILVA family and the
+book extension cases to equations, package classes, tensors, and diagnostics.
+</div>
+<div class="silva-card" markdown>
+### Select a Model Family
+
+[Selecting Model Families](learn/selecting-model-families.md) shows how one
+selector builds full SILVA layers, DEQ reductions, MDEQ blocks, optical flow,
+and optimization layers.
+</div>
+<div class="silva-card" markdown>
+### Use the API
+
+[API Reference](api/reference.md) links the public classes, solvers, datasets,
+diagnostics, and educational NumPy helpers in one place.
+</div>
+</div>
+
+## First Path
+
+<div class="silva-step-grid" markdown>
+<a class="silva-step" data-step="1" href="installation/" markdown>
+<strong>Install</strong>
+<span>Local editable install, package install, and optional extras.</span>
+</a>
+<a class="silva-step" data-step="2" href="run-everything/" markdown>
+<strong>Run the platform</strong>
+<span>Execute examples, notebooks, tests, docs, and available data paths.</span>
+</a>
+<a class="silva-step" data-step="3" href="learn/derivation-workbook/" markdown>
+<strong>Derive the core</strong>
+<span>Follow scalar, vector, graph, global, data, and diagnostic derivations.</span>
+</a>
+<a class="silva-step" data-step="4" href="learn/case-atlas/" markdown>
+<strong>Select the case</strong>
+<span>Choose graph, vision, molecular, dataset, or custom operators.</span>
+</a>
+<a class="silva-step" data-step="5" href="get-started/introduction-by-example/" markdown>
+<strong>Build the first model</strong>
+<span>Create and train a SILVA graph model from tensors.</span>
+</a>
+<a class="silva-step" data-step="6" href="get-started/data-and-batching/" markdown>
+<strong>Check tensor contracts</strong>
+<span>Adapt data into `x`, `edge_index`, `edge_attr`, `batch`, and `y`.</span>
+</a>
+<a class="silva-step" data-step="7" href="learn/implementation-derivations/" markdown>
+<strong>Trace equations to code</strong>
+<span>Connect \(S,L,G,H\), solvers, residuals, Jacobians, and diagnostics.</span>
+</a>
+<a class="silva-step" data-step="8" href="learn/mathematical-foundations/" markdown>
+<strong>Study the derivations</strong>
+<span>Derive damping, adjoints, stability checks, and complexity.</span>
+</a>
+<a class="silva-step" data-step="9" href="package-notebooks/08_equation_to_code_walkthrough/" markdown>
+<strong>Run equation to code</strong>
+<span>Execute the derivation path in notebook form.</span>
+</a>
+<a class="silva-step" data-step="10" href="package-notebooks/01_package_quickstart/" markdown>
+<strong>Run the notebook track</strong>
+<span>Exercise the package API in executable cells.</span>
+</a>
+<a class="silva-step" data-step="11" href="implicit-bridge-notebooks/01_introduction_fixed_points/" markdown>
+<strong>Run the bridge track</strong>
+<span>Reproduce implicit-layer and DEQ ideas through `silva_networks`, then open the method atlas.</span>
+</a>
+<a class="silva-step" data-step="12" href="cheatsheets/silva-api/" markdown>
+<strong>Keep the API map open</strong>
+<span>Find classes, arguments, and diagnostics quickly.</span>
+</a>
+</div>
+
+## Install
+
+```bash
+python -m pip install silva-networks
+```
+
+For development:
+
+```bash
+python -m pip install -e ".[dev,docs,examples]"
+```
+
+## Quick Example
+
+```python
+import torch
+from silva_networks import SILVAGraphNetwork, SolverConfig
+
+x = torch.randn(8, 5)
+edge_index = torch.tensor(
+    [[0, 1, 2, 3, 4, 5, 6, 7],
+     [1, 2, 3, 4, 5, 6, 7, 0]],
+    dtype=torch.long,
+)
+
+model = SILVAGraphNetwork(
+    in_dim=5,
+    hidden_dims=[32, 16],
+    out_dim=3,
+    task="node",
+    local=["graph", "topk"],
+    global_term=["mean", "simple"],
+    config=[
+        SolverConfig(solver="picard", max_iter=12, alpha=0.5),
+        SolverConfig(solver="anderson", max_iter=12, alpha=0.35, history=4),
+    ],
+)
+
+logits = model(x, edge_index=edge_index)
+```
+
+## Package Areas
+
+| Area | What it contains |
+| --- | --- |
+| [Solvers](api/solvers.md) | Picard, Anderson, Broyden, GMRES, implicit adjoint helper |
+| [Layers](api/layers.md) | stimulus, local, global, self, graph, image, DEQ wrappers |
+| [Architectures](api/architectures.md) | stacks, graph networks, image classifiers, readouts |
+| [Implicit Bridge](api/implicit.md) | tutorial DEQ, ODE, optimization, MDEQ, Jacobian-regularization modules |
+| [DEQ Engine](api/deq-engine.md) | TorchDEQ-style single-state and multi-state engine helpers |
+| [Optical Flow](api/flow.md) | RAFT/DEQ-Flow-style package-native optical-flow utilities |
+| [Optimization](api/optimization.md) | projected constrained QP layers and optional CVXPYlayers bridge |
+| [SILVA Presets](api/presets.md) | graph/node, vector vision, convolutional vision, molecular presets |
+| [Datasets](api/datasets.md) | public loaders, adapters, `GraphTensorBatch`, validation |
+| [Jacobians](api/jacobians.md) | full Jacobian, VJP, JVP, spectral-radius estimates |
+| [Diagnostics](api/diagnostics.md) | residual curves, Lyapunov-style energy traces, damped stability |
+| [Coverage Registry](api/coverage.md) | implementation families mapped to docs, notebooks, examples, and tests |
+| [Educational NumPy](api/educational.md) | visible scalar/matrix derivations before PyTorch |
+
+## Interactive Material
+
+| Notebook | Focus |
+| --- | --- |
+| [Package Quickstart](package-notebooks/01_package_quickstart.ipynb) | imports, model construction, forward pass, gradients |
+| [Solvers and Jacobians](package-notebooks/02_solvers_and_jacobians.ipynb) | residuals, solver comparison, full Jacobian, VJP/JVP |
+| [Datasets to SILVA](package-notebooks/03_datasets_to_silva.ipynb) | dataset download, preprocessing, kNN graph construction |
+| [Public Experiments](package-notebooks/04_public_experiments.ipynb) | config-driven checks and metrics |
+| [Custom Operator](package-notebooks/05_custom_operator_experiment.ipynb) | extending local/global branches |
+| [SILVA Operator Options](package-notebooks/06_silva_operator_options.ipynb) | Figure 1 operators, ablations, molecules, diagnostics |
+| [Research Citation Audit](package-notebooks/07_research_citation_audit.ipynb) | solver/operator choices mapped to citation checklists |
+| [Equation-to-Code Walkthrough](package-notebooks/08_equation_to_code_walkthrough.ipynb) | scalar fixed points, graph tensors, SILVA model, diagnostics |
+| [Family Selector and Projected QP](package-notebooks/09_family_selector_and_projected_qp.ipynb) | SILVA-style family names, projected constraints, flow alias, gradients |
+| [Training Helpers Smoke](package-notebooks/10_training_helpers_smoke.ipynb) | supervised fit/evaluate, checkpoint, resume, device movement |
+| [Fixed Points as Layers](implicit-bridge-notebooks/01_introduction_fixed_points.ipynb) | implicit-layer introduction through package solvers |
+| [DEQ and SILVA](implicit-bridge-notebooks/04_deq_and_silva.ipynb) | DEQ baseline and configurable SILVA graph model in one API |
+| [SILVA DEQ Engine](implicit-bridge-notebooks/07_silva_deq_engine_torchdeq_bridge.ipynb) | single-state, multi-state, and variational-dropout fixed-point systems |
+| [SILVA Optical Flow](implicit-bridge-notebooks/08_silva_optical_flow_deq_raft_bridge.ipynb) | RAFT-style correlation and DEQ-Flow-style flow equilibrium |
+| [Method Adaptation Atlas](implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb) | source-to-SILVA derivations, scope notes, and smoke checks |
+
+## Learning Assets
+
+- [Book and solutions manual](book.md) <span class="silva-coming-soon" title="The companion book and solutions manual are planned public learning assets.">Planned</span>
+- [Run everything](run-everything.md)
+- [Derivation workbook](learn/derivation-workbook.md)
+- [Solved notebooks](notebooks.md)
+- [Implicit layers bridge](learn/implicit-bridge.md)
+- [Documentation log](documentation-log.md)
+- [Research citation audit](research-citation-audit.md)
+- [Runnable examples](examples/index.md)
+- [Public experiments](experiments/index.md)
+- [Dataset preprocessing](learn/datasets-and-preprocessing.md)
+- [Case atlas](learn/case-atlas.md)
+- [Mathematical foundations](learn/mathematical-foundations.md)
+- [API reference](api/reference.md)
+
+!!! note "Public release policy"
+    The repository links to external papers and upstream repositories instead of
+    vendoring third-party PDFs or source trees.

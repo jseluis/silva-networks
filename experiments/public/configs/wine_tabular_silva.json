@@ -1,0 +1,25 @@
+{
+  "name": "wine_tabular_silva",
+  "kind": "tabular_node_classification",
+  "dataset": "wine",
+  "data_root": "data",
+  "download": true,
+  "normalize": true,
+  "renormalize_subset": true,
+  "seed": 43,
+  "device": "auto",
+  "max_samples": 178,
+  "hidden_dims": [20, 20],
+  "local": "topk",
+  "global_term": "mean",
+  "head_hidden_dims": [16],
+  "k": 8,
+  "solver": {
+    "solver": "picard",
+    "max_iter": 8,
+    "tol": 1e-5,
+    "alpha": 0.5
+  },
+  "steps": 6,
+  "lr": 0.01
+}

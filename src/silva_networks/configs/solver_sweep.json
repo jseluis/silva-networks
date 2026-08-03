@@ -1,0 +1,32 @@
+{
+  "name": "solver_sweep",
+  "kind": "solver_sweep",
+  "seed": 11,
+  "device": "auto",
+  "dim": 6,
+  "scale": 0.2,
+  "jacobian_samples": 4,
+  "power_iters": 8,
+  "solvers": [
+    {
+      "solver": "picard",
+      "max_iter": 40,
+      "tol": 1e-5,
+      "alpha": 0.7
+    },
+    {
+      "solver": "anderson",
+      "max_iter": 40,
+      "tol": 1e-5,
+      "alpha": 0.7,
+      "history": 4,
+      "ridge": 1e-4
+    },
+    {
+      "solver": "broyden",
+      "max_iter": 20,
+      "tol": 1e-5,
+      "alpha": 0.6
+    }
+  ]
+}

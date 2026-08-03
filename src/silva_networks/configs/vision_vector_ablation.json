@@ -1,0 +1,22 @@
+{
+  "name": "vision_vector_ablation",
+  "kind": "vision_vector_ablation",
+  "seed": 12,
+  "device": "auto",
+  "samples": 16,
+  "in_dim": 64,
+  "hidden_dim": 12,
+  "num_heads": 3,
+  "k_neighbors": 4,
+  "alphas": [0.25],
+  "max_iter": 4,
+  "steps": 3,
+  "lr": 0.01,
+  "cases": [
+    {"name": "full", "attention_mode": "simple", "graph_mode": "GAT"},
+    {"name": "no_global", "attention_mode": "none", "graph_mode": "GAT"},
+    {"name": "no_local", "attention_mode": "simple", "graph_mode": "none"},
+    {"name": "none", "attention_mode": "none", "graph_mode": "none"},
+    {"name": "static_global", "attention_mode": "static", "graph_mode": "GNN"}
+  ]
+}

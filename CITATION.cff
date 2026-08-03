@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use SILVA Networks, cite this software repository. When the work uses or discusses the SILVA methodology, cite the SILVA Networks paper as well."
+title: "SILVA Networks"
+authors:
+  - family-names: "Silva"
+    given-names: "Jose Luis"
+version: "1.0.0"
+date-released: "2026-08-02"
+license: "MIT"
+url: "https://jsluis.com"
+repository-code: "https://github.com/jseluis/silva-networks"
+preferred-citation:
+  type: software
+  title: "SILVA Networks"
+  authors:
+    - family-names: "Silva"
+      given-names: "Jose Luis"
+  version: "1.0.0"
+  date-released: "2026-08-02"
+  url: "https://github.com/jseluis/silva-networks"
+references:
+  - type: article
+    title: "SILVA Networks as Structured Implicit Layers and Vector Attractors via Dynamic Interaction Fields"
+    authors:
+      - family-names: "Silva"
+        given-names: "Jose Luis Lima de Jesus"
+    year: 2026
+    doi: "10.48550/arXiv.2607.28989"
+    url: "https://arxiv.org/abs/2607.28989"
+    notes: "arXiv:2607.28989v1 [cs.LG]; submitted 2026-07-31; 46 pages, 10 figures."

@@ -1,0 +1,27 @@
+{
+  "name": "graph_operator_options",
+  "kind": "graph_operator_options",
+  "seed": 11,
+  "device": "auto",
+  "graphs": 3,
+  "nodes_per_graph": 6,
+  "in_dim": 5,
+  "hidden_dim": 12,
+  "classes": 2,
+  "task": "node",
+  "num_heads": 3,
+  "k_neighbors": 4,
+  "stack_alphas": [0.5, 0.2],
+  "max_iter": 4,
+  "steps": 3,
+  "lr": 0.01,
+  "cases": [
+    {"name": "full", "attention_mode": "simple", "graph_mode": "GAT"},
+    {"name": "no_global", "attention_mode": "none", "graph_mode": "GAT"},
+    {"name": "no_local", "attention_mode": "simple", "graph_mode": "none"},
+    {"name": "none", "attention_mode": "none", "graph_mode": "none"},
+    {"name": "static_global", "attention_mode": "static", "graph_mode": "GAT"},
+    {"name": "topk_global", "attention_mode": "topk", "graph_mode": "GAT"},
+    {"name": "local_depth_2", "attention_mode": "simple", "graph_mode": "GAT", "local_depth": 2}
+  ]
+}

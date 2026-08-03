@@ -1,0 +1,26 @@
+{
+  "name": "custom_operator_experiment",
+  "kind": "custom_operator_experiment",
+  "device": "cpu",
+  "losses": [
+    0.7029255032539368,
+    0.6758437156677246,
+    0.6581454277038574,
+    0.6272813081741333
+  ],
+  "accuracy": 0.75,
+  "output_shape": [
+    4,
+    2
+  ],
+  "state_shape": [
+    28,
+    10
+  ],
+  "solver_residuals": [
+    3.350896120071411,
+    3.6640706062316895,
+    2.8921544551849365
+  ],
+  "scope": "extensions"
+}

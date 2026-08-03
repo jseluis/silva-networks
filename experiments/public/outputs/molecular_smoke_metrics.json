@@ -1,0 +1,22 @@
+{
+  "name": "molecular_smoke",
+  "kind": "molecular_smoke",
+  "device": "cpu",
+  "losses": [
+    0.11098049581050873,
+    0.09955042600631714,
+    0.06444306671619415
+  ],
+  "mae": 0.06444306671619415,
+  "output_shape": [
+    2
+  ],
+  "state_shape": [
+    10,
+    12
+  ],
+  "solver_residuals": [
+    4.994502067565918,
+    7.113663673400879
+  ]
+}

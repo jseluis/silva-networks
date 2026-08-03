@@ -1,0 +1,16 @@
+{
+  "name": "vision_channels_smoke",
+  "kind": "vision_smoke",
+  "device": "cpu",
+  "losses": [
+    0.6955609321594238,
+    0.7016971707344055,
+    0.6966261267662048,
+    0.6938846707344055
+  ],
+  "accuracy": 0.5,
+  "output_shape": [
+    12,
+    2
+  ]
+}

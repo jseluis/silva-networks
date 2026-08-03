@@ -1,0 +1,28 @@
+{
+  "name": "torchvision_dataset_suite",
+  "kind": "torchvision_dataset_suite",
+  "data_root": "data",
+  "download": true,
+  "train": true,
+  "max_samples": 12,
+  "preset": "vector",
+  "hidden_dim": 12,
+  "attention_mode": "simple",
+  "graph_mode": "GAT",
+  "k_neighbors": 4,
+  "num_heads": 2,
+  "alphas": [0.25],
+  "max_iter": 2,
+  "steps": 1,
+  "lr": 0.005,
+  "datasets": [
+    {"dataset": "MNIST", "classes": 10, "image_size": 28},
+    {"dataset": "FashionMNIST", "classes": 10, "image_size": 28},
+    {"dataset": "KMNIST", "classes": 10, "image_size": 28},
+    {"dataset": "EMNIST", "split": "balanced", "classes": 47, "image_size": 28},
+    {"dataset": "CIFAR10", "classes": 10, "image_size": 32},
+    {"dataset": "CIFAR100", "classes": 100, "image_size": 32},
+    {"dataset": "SVHN", "classes": 10, "image_size": 32}
+  ],
+  "device": "auto"
+}

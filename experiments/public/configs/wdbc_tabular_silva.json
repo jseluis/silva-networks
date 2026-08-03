@@ -1,0 +1,26 @@
+{
+  "name": "wdbc_tabular_silva",
+  "kind": "tabular_node_classification",
+  "dataset": "wdbc",
+  "data_root": "data",
+  "download": true,
+  "normalize": true,
+  "renormalize_subset": true,
+  "seed": 41,
+  "device": "auto",
+  "max_samples": 250,
+  "hidden_dims": [24, 24],
+  "local": "topk",
+  "global_term": "mean",
+  "head_hidden_dims": [16],
+  "k": 10,
+  "solver": {
+    "solver": "anderson",
+    "max_iter": 8,
+    "tol": 1e-5,
+    "alpha": 0.5,
+    "history": 4
+  },
+  "steps": 6,
+  "lr": 0.01
+}

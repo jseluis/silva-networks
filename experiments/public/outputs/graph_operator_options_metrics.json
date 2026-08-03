@@ -1,0 +1,175 @@
+{
+  "name": "graph_operator_options",
+  "kind": "graph_operator_options",
+  "device": "cpu",
+  "results": [
+    {
+      "losses": [
+        0.7092052698135376,
+        0.65227872133255,
+        0.6187593936920166
+      ],
+      "accuracy": 0.7777777910232544,
+      "output_shape": [
+        18,
+        2
+      ],
+      "state_shape": [
+        18,
+        12
+      ],
+      "solver_residuals": [
+        5.620344638824463,
+        8.973917961120605
+      ],
+      "case": "full",
+      "attention_mode": "simple",
+      "graph_mode": "GAT",
+      "local_depth": 1
+    },
+    {
+      "losses": [
+        0.7193472981452942,
+        0.6484052538871765,
+        0.6031888723373413
+      ],
+      "accuracy": 0.8333333134651184,
+      "output_shape": [
+        18,
+        2
+      ],
+      "state_shape": [
+        18,
+        12
+      ],
+      "solver_residuals": [
+        5.019899845123291,
+        8.291862487792969
+      ],
+      "case": "no_global",
+      "attention_mode": "none",
+      "graph_mode": "GAT",
+      "local_depth": 1
+    },
+    {
+      "losses": [
+        0.7447041273117065,
+        0.6676670908927917,
+        0.6236976385116577
+      ],
+      "accuracy": 0.6666666865348816,
+      "output_shape": [
+        18,
+        2
+      ],
+      "state_shape": [
+        18,
+        12
+      ],
+      "solver_residuals": [
+        1.9759724140167236,
+        7.805670261383057
+      ],
+      "case": "no_local",
+      "attention_mode": "simple",
+      "graph_mode": "none",
+      "local_depth": 1
+    },
+    {
+      "losses": [
+        0.7372215390205383,
+        0.6709628105163574,
+        0.6293694972991943
+      ],
+      "accuracy": 0.6666666865348816,
+      "output_shape": [
+        18,
+        2
+      ],
+      "state_shape": [
+        18,
+        12
+      ],
+      "solver_residuals": [
+        1.8389843702316284,
+        7.564553737640381
+      ],
+      "case": "none",
+      "attention_mode": "none",
+      "graph_mode": "none",
+      "local_depth": 1
+    },
+    {
+      "losses": [
+        0.7501416206359863,
+        0.6922683715820312,
+        0.649969756603241
+      ],
+      "accuracy": 0.6666666865348816,
+      "output_shape": [
+        18,
+        2
+      ],
+      "state_shape": [
+        18,
+        12
+      ],
+      "solver_residuals": [
+        4.234434127807617,
+        8.972994804382324
+      ],
+      "case": "static_global",
+      "attention_mode": "static",
+      "graph_mode": "GAT",
+      "local_depth": 1
+    },
+    {
+      "losses": [
+        0.7861455082893372,
+        0.7164850831031799,
+        0.6819940805435181
+      ],
+      "accuracy": 0.5,
+      "output_shape": [
+        18,
+        2
+      ],
+      "state_shape": [
+        18,
+        12
+      ],
+      "solver_residuals": [
+        5.811334133148193,
+        8.808440208435059
+      ],
+      "case": "topk_global",
+      "attention_mode": "topk",
+      "graph_mode": "GAT",
+      "local_depth": 1
+    },
+    {
+      "losses": [
+        0.6793965697288513,
+        0.6274612545967102,
+        0.5740506649017334
+      ],
+      "accuracy": 0.7777777910232544,
+      "output_shape": [
+        18,
+        2
+      ],
+      "state_shape": [
+        18,
+        12
+      ],
+      "solver_residuals": [
+        7.519545555114746,
+        8.423386573791504
+      ],
+      "case": "local_depth_2",
+      "attention_mode": "simple",
+      "graph_mode": "GAT",
+      "local_depth": 2
+    }
+  ]
+}

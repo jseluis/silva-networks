@@ -1,0 +1,38 @@
+{
+  "name": "custom_operator_experiment",
+  "kind": "custom_operator_experiment",
+  "seed": 29,
+  "device": "auto",
+  "graphs": 4,
+  "nodes_per_graph": 7,
+  "in_dim": 6,
+  "hidden_dims": [14, 14, 10],
+  "classes": 2,
+  "pooling": "mean",
+  "global_term": "mean",
+  "head_hidden_dims": [12],
+  "k": 3,
+  "solver": [
+    {
+      "solver": "picard",
+      "max_iter": 6,
+      "tol": 1e-5,
+      "alpha": 0.5
+    },
+    {
+      "solver": "anderson",
+      "max_iter": 6,
+      "tol": 1e-5,
+      "alpha": 0.5,
+      "history": 3
+    },
+    {
+      "solver": "broyden",
+      "max_iter": 5,
+      "tol": 1e-5,
+      "alpha": 0.4
+    }
+  ],
+  "steps": 4,
+  "lr": 0.01
+}

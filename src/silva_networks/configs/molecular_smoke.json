@@ -1,0 +1,18 @@
+{
+  "name": "molecular_smoke",
+  "kind": "molecular_smoke",
+  "seed": 13,
+  "device": "auto",
+  "graphs": 2,
+  "nodes_per_graph": 5,
+  "hidden_dim": 12,
+  "num_atom_types": 21,
+  "num_bond_types": 4,
+  "num_heads": 3,
+  "alphas": [0.5, 0.2],
+  "max_iter": 3,
+  "dropout": 0.0,
+  "spectral_norm": false,
+  "steps": 3,
+  "lr": 0.01
+}

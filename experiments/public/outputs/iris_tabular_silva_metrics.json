@@ -1,0 +1,25 @@
+{
+  "name": "iris_tabular_silva",
+  "kind": "tabular_node_classification",
+  "dataset": "iris",
+  "source": "UCI Machine Learning Repository",
+  "device": "cpu",
+  "samples": 150,
+  "features": 4,
+  "classes": 3,
+  "losses": [
+    1.0775455236434937,
+    1.009679913520813,
+    0.9455453753471375,
+    0.8853834271430969,
+    0.8281688690185547,
+    0.7727774977684021,
+    0.719245433807373,
+    0.668263852596283
+  ],
+  "accuracy": 0.8333333134651184,
+  "solver_residuals": [
+    1.818161129951477,
+    0.12649045884609222
+  ]
+}

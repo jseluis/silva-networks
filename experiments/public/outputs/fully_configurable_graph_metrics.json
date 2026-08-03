@@ -1,0 +1,25 @@
+{
+  "name": "fully_configurable_graph",
+  "kind": "graph_classification",
+  "device": "cpu",
+  "losses": [
+    0.6698932647705078,
+    0.6331942677497864,
+    0.5989015698432922,
+    0.5756886005401611
+  ],
+  "accuracy": 0.6666666865348816,
+  "output_shape": [
+    3,
+    2
+  ],
+  "state_shape": [
+    18,
+    10
+  ],
+  "solver_residuals": [
+    2.802048921585083,
+    2.8971588611602783,
+    4.645898342132568
+  ]
+}

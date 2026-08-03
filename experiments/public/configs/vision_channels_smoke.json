@@ -1,0 +1,18 @@
+{
+  "name": "vision_channels_smoke",
+  "kind": "vision_smoke",
+  "seed": 23,
+  "device": "auto",
+  "samples": 12,
+  "size": 8,
+  "hidden_channels": [4, 4],
+  "head_hidden_dims": [8],
+  "solver": {
+    "solver": "picard",
+    "max_iter": 5,
+    "tol": 1e-5,
+    "alpha": 0.5
+  },
+  "steps": 4,
+  "lr": 0.01
+}

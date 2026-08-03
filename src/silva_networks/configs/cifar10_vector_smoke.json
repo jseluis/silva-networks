@@ -1,0 +1,21 @@
+{
+  "name": "cifar10_vector_smoke",
+  "kind": "torchvision_image_classification",
+  "dataset": "CIFAR10",
+  "data_root": "data",
+  "download": true,
+  "train": true,
+  "max_samples": 24,
+  "preset": "vector",
+  "hidden_dim": 16,
+  "classes": 10,
+  "attention_mode": "simple",
+  "graph_mode": "GAT",
+  "k_neighbors": 4,
+  "num_heads": 2,
+  "alphas": [0.25],
+  "max_iter": 2,
+  "steps": 1,
+  "lr": 0.005,
+  "device": "auto"
+}

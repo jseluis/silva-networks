@@ -1,0 +1,25 @@
+{
+  "name": "graph_silva_smoke",
+  "kind": "graph_classification",
+  "seed": 17,
+  "device": "auto",
+  "graphs": 4,
+  "nodes_per_graph": 6,
+  "in_dim": 5,
+  "hidden_dims": [12, 12],
+  "classes": 2,
+  "task": "graph",
+  "pooling": "mean",
+  "local": "graph",
+  "global_term": "mean",
+  "head_hidden_dims": [12],
+  "solver": {
+    "solver": "anderson",
+    "max_iter": 8,
+    "tol": 1e-5,
+    "alpha": 0.5,
+    "history": 3
+  },
+  "steps": 5,
+  "lr": 0.01
+}

@@ -1,0 +1,77 @@
+{
+  "name": "vision_vector_ablation",
+  "kind": "vision_vector_ablation",
+  "device": "cpu",
+  "results": [
+    {
+      "case": "full",
+      "attention_mode": "simple",
+      "graph_mode": "GAT",
+      "losses": [
+        0.6773393750190735,
+        0.5614731311798096,
+        0.4681043028831482
+      ],
+      "accuracy": 0.9375,
+      "solver_residuals": [
+        5.144894599914551
+      ]
+    },
+    {
+      "case": "no_global",
+      "attention_mode": "none",
+      "graph_mode": "GAT",
+      "losses": [
+        0.7625497579574585,
+        0.6703206896781921,
+        0.5897262692451477
+      ],
+      "accuracy": 0.8125,
+      "solver_residuals": [
+        3.41753888130188
+      ]
+    },
+    {
+      "case": "no_local",
+      "attention_mode": "simple",
+      "graph_mode": "none",
+      "losses": [
+        0.7490410208702087,
+        0.6554093360900879,
+        0.5675495862960815
+      ],
+      "accuracy": 0.9375,
+      "solver_residuals": [
+        4.27497673034668
+      ]
+    },
+    {
+      "case": "none",
+      "attention_mode": "none",
+      "graph_mode": "none",
+      "losses": [
+        0.6954585313796997,
+        0.6125184893608093,
+        0.5400628447532654
+      ],
+      "accuracy": 0.9375,
+      "solver_residuals": [
+        3.728198528289795
+      ]
+    },
+    {
+      "case": "static_global",
+      "attention_mode": "static",
+      "graph_mode": "GNN",
+      "losses": [
+        0.7157337069511414,
+        0.6254902482032776,
+        0.5381357669830322
+      ],
+      "accuracy": 0.875,
+      "solver_residuals": [
+        4.531083106994629
+      ]
+    }
+  ]
+}

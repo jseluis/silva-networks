@@ -1,0 +1,26 @@
+{
+  "name": "iris_tabular_silva",
+  "kind": "tabular_node_classification",
+  "dataset": "iris",
+  "data_root": "data",
+  "download": true,
+  "normalize": true,
+  "renormalize_subset": true,
+  "seed": 31,
+  "device": "auto",
+  "max_samples": 150,
+  "hidden_dims": [16, 16],
+  "local": "topk",
+  "global_term": "mean",
+  "head_hidden_dims": [16],
+  "k": 8,
+  "solver": {
+    "solver": "anderson",
+    "max_iter": 10,
+    "tol": 1e-5,
+    "alpha": 0.5,
+    "history": 4
+  },
+  "steps": 8,
+  "lr": 0.01
+}

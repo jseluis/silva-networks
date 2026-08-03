@@ -1,0 +1,46 @@
+{
+  "name": "fully_configurable_graph",
+  "kind": "graph_classification",
+  "seed": 53,
+  "device": "auto",
+  "graphs": 3,
+  "nodes_per_graph": 6,
+  "in_dim": 5,
+  "hidden_dims": [14, 12, 10],
+  "classes": 2,
+  "task": "graph",
+  "pooling": "mean",
+  "local": ["graph", "topk", "gat"],
+  "local_kwargs": [null, {"k": 3}, {"heads": 2}],
+  "global_term": ["mean", "simple", "topk_attention"],
+  "global_kwargs": [null, null, {"k": 4}],
+  "self_term": ["none", "linear", "identity"],
+  "self_kwargs": [null, {"bias": false}, null],
+  "normalize_layers": true,
+  "head_hidden_dims": [12],
+  "dropout": 0.0,
+  "solver": [
+    {
+      "solver": "picard",
+      "max_iter": 6,
+      "tol": 1e-5,
+      "alpha": 0.5
+    },
+    {
+      "solver": "anderson",
+      "max_iter": 6,
+      "tol": 1e-5,
+      "alpha": 0.4,
+      "history": 3,
+      "ridge": 1e-4
+    },
+    {
+      "solver": "broyden",
+      "max_iter": 4,
+      "tol": 1e-5,
+      "alpha": 0.3
+    }
+  ],
+  "steps": 4,
+  "lr": 0.01
+}

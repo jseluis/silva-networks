@@ -1,0 +1,666 @@
+:root {
+  --silva-ink: #020617;
+  --silva-ink-2: #071e3a;
+  --silva-blue: #2563eb;
+  --silva-azure: #38bdf8;
+  --silva-ice: #dbeafe;
+  --silva-amber: #f6c95b;
+  --silva-paper: #f6f9ff;
+  --silva-line: rgba(15, 23, 42, 0.12);
+  --md-primary-fg-color: #020617;
+  --md-accent-fg-color: #2563eb;
+}
+
+[data-md-color-scheme="slate"] {
+  --silva-paper: #07111f;
+  --silva-line: rgba(226, 232, 240, 0.14);
+  --md-primary-fg-color: #020617;
+  --md-accent-fg-color: #60a5fa;
+}
+
+.md-header,
+.md-tabs {
+  background: var(--silva-ink);
+}
+
+.md-header {
+  box-shadow: 0 14px 32px rgba(7, 18, 15, 0.22);
+}
+
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  height: 1.75rem;
+  width: 1.75rem;
+}
+
+.md-search__form {
+  border: 1px solid rgba(219, 234, 254, 0.08);
+  background-color: rgba(2, 6, 23, 0.72);
+}
+
+.md-search__form:hover {
+  background-color: rgba(15, 23, 42, 0.9);
+}
+
+.md-typeset h1,
+.md-typeset h2 {
+  letter-spacing: 0;
+}
+
+.md-typeset a {
+  text-underline-offset: 0.14em;
+}
+
+.md-typeset .silva-coming-soon {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.45rem;
+  margin-left: 0.25rem;
+  padding: 0.08rem 0.48rem;
+  border: 1px solid rgba(96, 165, 250, 0.45);
+  border-radius: 999px;
+  color: #bfdbfe;
+  background: rgba(37, 99, 235, 0.18);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.2;
+  vertical-align: middle;
+  cursor: help;
+}
+
+[data-md-color-scheme="default"] .md-typeset .silva-coming-soon {
+  color: #1d4ed8;
+  background: rgba(219, 234, 254, 0.86);
+}
+
+.md-typeset .silva-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(8rem, 12rem);
+  gap: clamp(1.1rem, 3vw, 2.2rem);
+  align-items: center;
+  margin: -0.8rem 0 2.2rem;
+  padding: clamp(1.45rem, 3.8vw, 2.7rem) clamp(1.15rem, 4vw, 3.1rem);
+  overflow: hidden;
+  color: #f8fafc;
+  background:
+    linear-gradient(118deg, rgba(147, 197, 253, 0.12), transparent 42%, rgba(56, 189, 248, 0.1)),
+    linear-gradient(135deg, #020617 0%, #071e3a 50%, #075985 100%);
+  border-top: 1px solid rgba(147, 197, 253, 0.18);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.24);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.md-typeset .silva-hero::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background-image:
+    linear-gradient(rgba(191, 219, 254, 0.085) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(191, 219, 254, 0.085) 1px, transparent 1px);
+  background-size: 52px 52px;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.md-typeset .silva-hero::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  content: "";
+  background: linear-gradient(90deg, var(--silva-blue), var(--silva-azure), var(--silva-ice));
+}
+
+.md-typeset .silva-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.md-typeset .silva-hero h1,
+.md-typeset .silva-hero__title {
+  display: block;
+  margin: 0 0 0.65rem;
+  font-size: clamp(2rem, 4.2vw, 3.7rem);
+  line-height: 0.98;
+  font-weight: 500;
+  color: #ffffff;
+  text-shadow: 0 12px 34px rgba(2, 6, 23, 0.35);
+}
+
+.md-typeset .silva-hero h1 .headerlink {
+  display: none;
+}
+
+.md-typeset .silva-hero > div > p {
+  max-width: 41rem;
+  color: rgba(248, 250, 252, 0.78);
+  font-size: 0.96rem;
+  line-height: 1.65;
+}
+
+.md-typeset .silva-hero__mark {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.md-typeset .silva-hero__mark img {
+  width: min(9rem, 46vw);
+  opacity: 0.96;
+  filter: drop-shadow(0 18px 30px rgba(14, 116, 144, 0.3));
+}
+
+.md-typeset .silva-action-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  width: 100%;
+  margin: -0.9rem 0 1.6rem;
+}
+
+.md-typeset .silva-action-grid > p,
+.md-typeset .silva-step-grid > p {
+  display: contents;
+  margin: 0;
+}
+
+.md-typeset .silva-action,
+.md-typeset .silva-step {
+  color: var(--md-default-fg-color);
+  text-decoration: none;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(37, 99, 235, 0.08), rgba(56, 189, 248, 0.035)),
+    var(--md-default-bg-color);
+  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.055);
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.md-typeset .silva-action {
+  display: block;
+  padding: 0.65rem 0.75rem;
+}
+
+.md-typeset .silva-action:hover,
+.md-typeset .silva-step:hover {
+  color: var(--md-default-fg-color);
+  border-color: rgba(37, 99, 235, 0.34);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.1);
+  transform: translateY(-1px);
+}
+
+.md-typeset .silva-action strong {
+  display: block;
+  margin-bottom: 0.14rem;
+  color: var(--md-accent-fg-color);
+  font-size: 0.78rem;
+}
+
+.md-typeset .silva-action span {
+  display: block;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
+
+.md-typeset .silva-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(7.8rem, 1fr));
+  gap: clamp(0.75rem, 2vw, 1.4rem);
+  max-width: 43rem;
+  margin-top: 1.2rem;
+  padding-top: 0.95rem;
+  border-top: 1px solid rgba(219, 234, 254, 0.18);
+}
+
+.md-typeset .silva-metric {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.md-typeset .silva-metric p {
+  max-width: none;
+  margin: 0;
+  color: inherit;
+  font-size: inherit;
+  line-height: 1.35;
+}
+
+.md-typeset .silva-metric strong {
+  display: block;
+  color: var(--silva-ice);
+  font-size: 0.78rem;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.md-typeset .silva-metric span {
+  color: rgba(248, 250, 252, 0.72);
+  font-size: 0.66rem;
+  line-height: 1.4;
+}
+
+.md-typeset .silva-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 1.2rem 0 1.8rem;
+}
+
+.md-typeset .silva-citation-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+  gap: 0.8rem;
+  margin: 0.9rem 0 1rem;
+}
+
+.md-typeset .silva-citation-card {
+  padding: 0.9rem;
+  border: 1px solid var(--silva-line);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(37, 99, 235, 0.07), rgba(56, 189, 248, 0.025)),
+    var(--md-default-bg-color);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.055);
+}
+
+.md-typeset .silva-citation-card strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--md-accent-fg-color);
+  font-size: 0.78rem;
+}
+
+.md-typeset .silva-citation-card p {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.md-typeset .silva-card {
+  padding: 0.9rem;
+  border: 1px solid var(--silva-line);
+  border-radius: 8px;
+  background: var(--md-default-bg-color);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.06);
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.md-typeset .silva-card:hover {
+  border-color: rgba(37, 99, 235, 0.28);
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.1);
+  transform: translateY(-1px);
+}
+
+.md-typeset .silva-card h3 {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+}
+
+.md-typeset .silva-card p {
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+.md-typeset .silva-equation-band {
+  padding: 0.75rem 0.9rem;
+  border-left: 4px solid var(--silva-blue);
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0.12), rgba(56, 189, 248, 0.08));
+}
+
+.md-typeset .silva-home-equation {
+  margin: 0 0 1rem;
+  text-align: center;
+}
+
+.md-typeset .silva-home-equation .arithmatex {
+  font-size: 0.88rem;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.md-typeset .silva-home-equation mjx-container[jax="CHTML"][display="true"] {
+  margin: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.md-typeset .silva-equation-legend {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: -0.35rem 0 1.2rem;
+}
+
+.md-typeset .silva-equation-legend > p {
+  display: contents;
+  margin: 0;
+}
+
+.md-typeset .silva-equation-legend span {
+  display: block;
+  padding: 0.55rem 0.65rem;
+  border-top: 2px solid rgba(37, 99, 235, 0.45);
+  color: var(--md-default-fg-color--light);
+  background: rgba(37, 99, 235, 0.035);
+  font-size: 0.72rem;
+  line-height: 1.38;
+}
+
+.md-typeset .silva-equation-legend strong {
+  display: block;
+  margin-bottom: 0.08rem;
+  color: var(--md-accent-fg-color);
+}
+
+.md-typeset .silva-method-figure {
+  margin: 1rem 0 1.5rem;
+}
+
+.md-typeset .silva-method-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(96, 165, 250, 0.24);
+  border-radius: 8px;
+  background: #020617;
+  box-shadow: 0 18px 42px rgba(2, 6, 23, 0.16);
+}
+
+.md-typeset .silva-method-figure figcaption {
+  max-width: 56rem;
+  margin: 0.55rem 0 0;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.md-typeset .silva-step-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  width: 100%;
+  margin: 0.85rem 0 1.8rem;
+}
+
+.md-typeset .silva-step {
+  position: relative;
+  display: block;
+  min-height: 7.6rem;
+  padding: 0.85rem 0.85rem 0.85rem 2.65rem;
+}
+
+.md-typeset .silva-step::before {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  display: grid;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #ffffff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1;
+  content: attr(data-step);
+  place-items: center;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--silva-blue), var(--silva-azure));
+}
+
+.md-typeset .silva-step strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--md-default-fg-color);
+  font-size: 0.83rem;
+  line-height: 1.25;
+}
+
+.md-typeset .silva-step span {
+  display: block;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.68rem;
+  line-height: 1.38;
+}
+
+.md-typeset .silva-page-date {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+  margin: -0.2rem 0 1rem;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.68rem;
+}
+
+.md-typeset .silva-page-date__label {
+  color: var(--md-accent-fg-color);
+  font-weight: 700;
+}
+
+.md-typeset .silva-page-date__note {
+  color: var(--md-default-fg-color--lighter);
+}
+
+.md-typeset .silva-doclog {
+  display: grid;
+  grid-template-columns: minmax(0, 0.32fr) minmax(0, 1fr);
+  gap: 0.9rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.md-typeset .silva-doclog__date,
+.md-typeset .silva-doclog__body {
+  padding: 0.85rem;
+  border: 1px solid var(--silva-line);
+  border-radius: 8px;
+  background: var(--md-default-bg-color);
+  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.045);
+}
+
+.md-typeset .silva-doclog__date strong {
+  display: block;
+  color: var(--md-accent-fg-color);
+  font-size: 0.82rem;
+}
+
+.md-typeset .silva-doclog__date span {
+  display: block;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.68rem;
+}
+
+.md-typeset .silva-doclog__body > :first-child {
+  margin-top: 0;
+}
+
+.md-typeset .silva-doclog__body > :last-child {
+  margin-bottom: 0;
+}
+
+.md-typeset .silva-learning-grid,
+.md-typeset .silva-run-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 1rem 0 1.6rem;
+}
+
+.md-typeset .silva-learning-card,
+.md-typeset .silva-run-card {
+  padding: 0.85rem;
+  border: 1px solid var(--silva-line);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(37, 99, 235, 0.065), transparent 60%),
+    var(--md-default-bg-color);
+  box-shadow: 0 9px 24px rgba(37, 99, 235, 0.05);
+}
+
+.md-typeset .silva-learning-card strong,
+.md-typeset .silva-run-card strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--md-accent-fg-color);
+  font-size: 0.78rem;
+}
+
+.md-typeset .silva-learning-card span,
+.md-typeset .silva-run-card span {
+  display: block;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.68rem;
+  line-height: 1.38;
+}
+
+.md-typeset .silva-derivation-step {
+  margin: 1rem 0;
+  padding: 0.9rem 1rem;
+  border-left: 4px solid var(--silva-blue);
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0.09), rgba(56, 189, 248, 0.035));
+}
+
+.md-typeset .silva-derivation-step > :first-child {
+  margin-top: 0;
+}
+
+.md-typeset .silva-derivation-step > :last-child {
+  margin-bottom: 0;
+}
+
+.md-typeset .silva-proof-table td:first-child {
+  width: 9rem;
+  color: var(--md-accent-fg-color);
+  font-weight: 700;
+}
+
+.md-typeset table:not([class]) {
+  overflow: hidden;
+  border: 1px solid var(--silva-line);
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(37, 99, 235, 0.05);
+}
+
+.md-typeset table:not([class]) th {
+  color: #0f172a;
+  background: rgba(37, 99, 235, 0.08);
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) th {
+  color: #dbeafe;
+  background: rgba(96, 165, 250, 0.13);
+}
+
+.md-typeset table:not([class]) tr:hover {
+  background: rgba(37, 99, 235, 0.035);
+}
+
+.md-nav__link--active,
+.md-nav__link:focus,
+.md-nav__link:hover {
+  color: var(--md-accent-fg-color);
+}
+
+.md-typeset .admonition,
+.md-typeset details {
+  border-color: rgba(37, 99, 235, 0.24);
+  border-radius: 8px;
+  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.045);
+}
+
+.md-typeset code {
+  border-radius: 5px;
+}
+
+.md-typeset .highlight {
+  overflow: hidden;
+  border: 1px solid var(--silva-line);
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(2, 6, 23, 0.045);
+}
+
+.md-typeset .arithmatex {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.md-typeset .arithmatex > mjx-container {
+  min-width: max-content;
+}
+
+.md-typeset .jp-RenderedImage img,
+.md-typeset .jp-OutputArea-output img,
+.md-typeset .output_png img {
+  display: block;
+  width: min(100%, 44rem);
+  max-width: 100%;
+  height: auto;
+  margin: 0.85rem auto;
+}
+
+@media screen and (max-width: 900px) {
+  .md-typeset .silva-hero,
+  .md-typeset .silva-action-grid,
+  .md-typeset .silva-citation-grid,
+  .md-typeset .silva-grid,
+  .md-typeset .silva-doclog,
+  .md-typeset .silva-learning-grid,
+  .md-typeset .silva-run-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .md-typeset .silva-hero {
+    gap: 0.85rem;
+    padding-top: 1.35rem;
+    padding-bottom: 1.35rem;
+  }
+
+  .md-typeset .silva-hero__mark {
+    justify-content: flex-start;
+  }
+
+  .md-typeset .silva-hero__mark img {
+    width: min(6.1rem, 34vw);
+  }
+
+  .md-typeset .silva-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .md-typeset .silva-step-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .md-typeset .silva-equation-legend {
+    grid-template-columns: 1fr;
+  }
+
+  .md-typeset .silva-home-equation {
+    padding: 0.85rem 0.75rem;
+  }
+
+  .md-typeset .silva-home-equation .arithmatex {
+    font-size: 0.72rem;
+  }
+}
+
+@media screen and (min-width: 901px) and (max-width: 1220px) {
+  .md-typeset .silva-action-grid,
+  .md-typeset .silva-step-grid,
+  .md-typeset .silva-grid,
+  .md-typeset .silva-equation-legend,
+  .md-typeset .silva-learning-grid,
+  .md-typeset .silva-run-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

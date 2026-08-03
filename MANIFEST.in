@@ -1,0 +1,18 @@
+include CHANGELOG.md
+include CITATION.cff
+include CONTRIBUTING.md
+include LICENSE
+include README.md
+include mkdocs.yml
+include pyproject.toml
+include requirements*.txt
+
+recursive-include docs *.bib *.css *.ipynb *.js *.md *.png *.svg *.txt *.woff
+include docs/assets/papers/silva-networks-arxiv-2607.28989.pdf
+prune docs/assets/pdfs
+recursive-include examples *.py
+recursive-include experiments/public *.py
+recursive-include experiments/public/configs *.json
+include scripts/smoke_test.sh
+recursive-include src/silva_networks/configs *.json
+include src/silva_networks/cases.py

@@ -1,0 +1,196 @@
+site_name: SILVA Networks
+site_description: PyTorch layers, solvers, tutorials, and documentation for SILVA networks.
+site_author: Dr. Jose Luis Silva
+copyright: Copyright &copy; 2026 Dr. Jose Luis Silva. Released under the MIT License.
+site_url: https://jseluis.github.io/silva-networks/
+repo_url: https://github.com/jseluis/silva-networks
+repo_name: jseluis/silva-networks
+
+theme:
+  name: material
+  language: en
+  logo: assets/images/silva-networks-icon.svg
+  favicon: assets/images/silva-networks-icon.svg
+  features:
+    - navigation.tracking
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - content.tooltips
+  palette:
+    - scheme: default
+      primary: black
+      accent: blue
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: black
+      accent: light blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+plugins:
+  - search
+  - mkdocs-jupyter:
+      include_source: true
+      execute: false
+      ignore_h1_titles: false
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_source: true
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: false
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+extra_javascript:
+  - javascripts/page-dates.js
+  - javascripts/mathjax.js
+  - javascripts/vendor/mathjax/tex-mml-chtml.js
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - Home: index.md
+  - Start Here: start-here.md
+  - Run Everything: run-everything.md
+  - CLI Guide: cli.md
+  - Results: results.md
+  - Documentation Log: documentation-log.md
+  - Equation and PDF Audit: equation-and-pdf-audit.md
+  - Release Readiness: release-readiness.md
+  - Publishing: publishing.md
+  - Installation: installation.md
+  - Dependency Policy: dependency-policy.md
+  - Get Started:
+      - Introduction by Example: get-started/introduction-by-example.md
+      - Data Objects and Batching: get-started/data-and-batching.md
+      - Derivations to Code: get-started/derivation-to-code.md
+  - Learn SILVA From Scratch:
+      - Mathematical Foundations: learn/mathematical-foundations.md
+      - Derivation Workbook: learn/derivation-workbook.md
+      - Implementation Derivations: learn/implementation-derivations.md
+      - Case Atlas: learn/case-atlas.md
+      - Fixed Points: learn/fixed-points.md
+      - Solver Derivation Lab: learn/solver-derivation-lab.md
+      - Implicit Layers Bridge: learn/implicit-bridge.md
+      - Implicit Backward Guide: learn/implicit-backward-guide.md
+      - Interactive Diagnostics Lab: learn/interactive-diagnostics-lab.md
+      - Method Adaptation Atlas: learn/method-adaptation-atlas.md
+      - DEQ Engine and Optical Flow: learn/deq-engine-and-flow.md
+      - Selecting Model Families: learn/selecting-model-families.md
+      - SILVA Layer: learn/silva-from-scratch.md
+      - SILVA Operators: learn/silva-operators.md
+      - Jacobians and Stability: learn/jacobians.md
+      - Custom Layers: learn/custom-layers.md
+      - Cortex Hierarchies: learn/cortex-hierarchy.md
+      - Stacking and Devices: learn/stacking-and-devices.md
+      - Datasets and Preprocessing: learn/datasets-and-preprocessing.md
+      - Reconstructing Paper Experiments: learn/reconstructing-paper-experiments.md
+      - Paper Family Adaptations: learn/paper-family-adaptations.md
+  - Book and Solutions Manual: book.md
+  - Research Citation Audit: research-citation-audit.md
+  - Notebooks:
+      - Overview: notebooks.md
+      - Run in Colab: colab.md
+      - Package Quickstart: package-notebooks/01_package_quickstart.ipynb
+      - Solvers and Jacobians: package-notebooks/02_solvers_and_jacobians.ipynb
+      - Datasets to SILVA: package-notebooks/03_datasets_to_silva.ipynb
+      - Public Experiments: package-notebooks/04_public_experiments.ipynb
+      - Custom Operator: package-notebooks/05_custom_operator_experiment.ipynb
+      - SILVA Operator Options: package-notebooks/06_silva_operator_options.ipynb
+      - Research Citation Audit: package-notebooks/07_research_citation_audit.ipynb
+      - Equation-to-Code Walkthrough: package-notebooks/08_equation_to_code_walkthrough.ipynb
+      - Family Selector and Projected QP: package-notebooks/09_family_selector_and_projected_qp.ipynb
+      - Training Helpers Smoke: package-notebooks/10_training_helpers_smoke.ipynb
+      - Cortex Hierarchy: package-notebooks/11_cortex_hierarchy.ipynb
+      - Paper Family Architectures: package-notebooks/12_paper_family_architectures.ipynb
+      - RAFT and DEQ-Flow: package-notebooks/13_raft_deq_flow.ipynb
+      - Implicit Layers Bridge:
+          - Fixed Points as Layers: implicit-bridge-notebooks/01_introduction_fixed_points.ipynb
+          - Implicit Autodiff: implicit-bridge-notebooks/02_implicit_autodiff.ipynb
+          - Neural ODE Bridge: implicit-bridge-notebooks/03_neural_odes_as_implicit_layers.ipynb
+          - DEQ and SILVA: implicit-bridge-notebooks/04_deq_and_silva.ipynb
+          - Optimization Layers: implicit-bridge-notebooks/05_differentiable_optimization.ipynb
+          - MDEQ and Jacobian Regularization: implicit-bridge-notebooks/06_mdeq_jacobian_regularization.ipynb
+          - SILVA DEQ Engine: implicit-bridge-notebooks/07_silva_deq_engine_torchdeq_bridge.ipynb
+          - SILVA Optical Flow: implicit-bridge-notebooks/08_silva_optical_flow_deq_raft_bridge.ipynb
+          - Method Adaptation Atlas: implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb
+  - API Reference:
+      - Overview: api/reference.md
+      - Public API: api/public-api.md
+      - Solvers: api/solvers.md
+      - Jacobians: api/jacobians.md
+      - Diagnostics: api/diagnostics.md
+      - Layers: api/layers.md
+      - Architectures: api/architectures.md
+      - Implicit Bridge: api/implicit.md
+      - DEQ Engine: api/deq-engine.md
+      - Optical Flow: api/flow.md
+      - Generalized Cases: api/cases.md
+      - Family Selection: api/families.md
+      - Optimization: api/optimization.md
+      - SILVA Presets: api/presets.md
+      - Datasets: api/datasets.md
+      - Dataset CLI: api/dataset_cli.md
+      - Training: api/training.md
+      - Public Experiments: api/public_experiments.md
+      - Devices: api/devices.md
+      - Coverage Registry: api/coverage.md
+      - Educational NumPy: api/educational.md
+  - Public Experiments:
+      - Overview: experiments/index.md
+      - Benchmark Cards: experiments/benchmark-cards.md
+      - Dataset Cases: experiments/datasets.md
+      - Extensions: experiments/extensions.md
+  - Examples:
+      - Overview: examples/index.md
+      - Scalar DEQ: examples/scalar-deq.md
+      - Graph SILVA: examples/graph-silva.md
+      - Vision Channels: examples/vision-channels.md
+      - Molecules: examples/molecules.md
+      - Custom Layers: examples/custom-layers.md
+      - DEQ Engine Bridge: examples/deq-engine-bridge.md
+      - Cortex Hierarchy: examples/cortex-hierarchy.md
+      - Optical Flow SILVA: examples/optical-flow-silva.md
+      - Constrained Optimization: examples/constrained-optimization.md
+      - Stacked Architecture: examples/stacked-architecture.md
+      - Dataset Quickstart: examples/datasets-quickstart.md
+      - Citation-Aware Reporting: examples/citation-aware-reporting.md
+      - Paper Family Cases: examples/paper-family-cases.md
+      - RAFT and DEQ-Flow: examples/raft-deq-flow.md
+  - Cheatsheets:
+      - SILVA API: cheatsheets/silva-api.md
+  - Paper and References: paper/references.md
+  - Contributing: contributing.md

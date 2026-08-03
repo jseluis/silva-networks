@@ -1,0 +1,21 @@
+{
+  "name": "graph_silva_smoke",
+  "kind": "graph_classification",
+  "device": "cpu",
+  "losses": [
+    0.7264446020126343
+  ],
+  "accuracy": 0.25,
+  "output_shape": [
+    4,
+    2
+  ],
+  "state_shape": [
+    24,
+    12
+  ],
+  "solver_residuals": [
+    9.819916725158691,
+    9.58942985534668
+  ]
+}

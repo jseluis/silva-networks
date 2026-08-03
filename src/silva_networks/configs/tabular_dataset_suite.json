@@ -1,0 +1,54 @@
+{
+  "name": "tabular_dataset_suite",
+  "kind": "tabular_dataset_suite",
+  "seed": 37,
+  "device": "auto",
+  "data_root": "data",
+  "download": true,
+  "normalize": true,
+  "renormalize_subset": true,
+  "hidden_dims": [16, 16],
+  "local": "topk",
+  "global_term": "mean",
+  "head_hidden_dims": [16],
+  "k": 8,
+  "solver": {
+    "solver": "anderson",
+    "max_iter": 8,
+    "tol": 1e-5,
+    "alpha": 0.5,
+    "history": 4
+  },
+  "steps": 5,
+  "lr": 0.01,
+  "datasets": [
+    {
+      "dataset": "iris",
+      "max_samples": 150
+    },
+    {
+      "dataset": "wine",
+      "max_samples": 178
+    },
+    {
+      "dataset": "wdbc",
+      "max_samples": 250
+    },
+    {
+      "dataset": "seeds",
+      "max_samples": 210
+    },
+    {
+      "dataset": "glass",
+      "max_samples": 214
+    },
+    {
+      "dataset": "banknote_authentication",
+      "max_samples": 300
+    },
+    {
+      "dataset": "yeast",
+      "max_samples": 300
+    }
+  ]
+}
