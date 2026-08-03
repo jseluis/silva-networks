@@ -19,6 +19,7 @@ broken package builds before a public release.
 | Book and solutions manual | Planned long-form learning assets |
 | Implementation registry | `silva_networks.coverage.implementation_cases()` |
 | Cortex hierarchy | vector and spatial `SILVACortexLayer` transitions, heterogeneous `SILVACortexNetwork` points, and `SILVAImageCortexClassifier` documented and smoke-tested |
+| Point architecture catalog | ten vector, token, and spatial modules with shape, gradient, fixed-point, tiny-data, example, and notebook checks |
 | Generalized cases | sequence, multiscale vision, Jacobian, IGNN, INR, diffusion, and coupled RAFT/DEQ-Flow APIs documented and smoke-tested |
 | Public datasets | UCI tabular loaders plus TorchVision adapters for MNIST, FashionMNIST, KMNIST, EMNIST, CIFAR10, CIFAR100, and SVHN |
 | Public results | [Results](results.md) records measured smoke metrics, tensor shapes, residuals, and reproduction commands |
@@ -77,7 +78,7 @@ Vector Attractors via Dynamic Interaction Fields. 2026. arXiv:2607.28989.
 
 Package highlights:
 - Structured SILVA equilibrium layers and presets.
-- Cortex hierarchies with deep MLP, residual CNN, U-Net, and independently configured per-point architectures.
+- Cortex hierarchies with independently configured per-point architectures and a ten-entry vector, token, spatial, attention, and spectral catalog.
 - Picard, Anderson, Broyden, and GMRES diagnostics.
 - DEQ, MDEQ, Neural ODE, optimization, and optical-flow bridge material.
 - Configurable sequence, multiscale, graph, INR, diffusion, and coupled RAFT/DEQ-Flow cases.

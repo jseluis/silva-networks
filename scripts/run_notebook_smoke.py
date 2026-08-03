@@ -12,6 +12,7 @@ DEFAULT_NOTEBOOKS = (
     "docs/package-notebooks/11_cortex_hierarchy.ipynb",
     "docs/package-notebooks/12_paper_family_architectures.ipynb",
     "docs/package-notebooks/13_raft_deq_flow.ipynb",
+    "docs/package-notebooks/14_point_architecture_catalog.ipynb",
     "docs/implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb",
 )
 

@@ -109,6 +109,8 @@ Optional self terms:
 | `SILVAConvVisionClassifier` | convolutional stem plus vector SILVA stack |
 | `SILVACortexLayer` | one SILVA point with an arbitrary internal PyTorch architecture |
 | `SILVACortexNetwork` | linked SILVA points with independent architectures and solvers |
+| `silva_point_architecture` | factory for ten shape-preserving internal point architectures |
+| `available_silva_point_architectures` | stable point-architecture registry |
 | `SILVAMolecularRegressor` | atom/bond graph SILVA regressor |
 
 ## Case Picker
@@ -123,6 +125,7 @@ Optional self terms:
 | image tensor plus conv stem | `SILVAConvVisionClassifier` |
 | deep architecture inside one point | `SILVACortexLayer(state_network=...)` |
 | heterogeneous linked SILVA points | `SILVACortexNetwork` or family `silva_cortex_network` |
+| built-in vector, token, or spatial field | `silva_point_architecture(name, **kwargs)` |
 | molecule regression | `SILVAMolecularRegressor` |
 | custom local/global physics | `SILVALayer` with custom modules |
 | hand-checking math | `np_picard`, `np_exact_tanh_affine_jacobian`, `np_implicit_gradient` |

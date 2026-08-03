@@ -146,6 +146,41 @@ CIFAR100, and SVHN. Unit tests cover the runner route with local in-memory
 datasets; real full-suite execution is best done on a machine where the image
 archives can be cached once under `data/`.
 
+## Point Architecture Smokes
+
+The point architecture catalog runs each built-in field inside a
+`SILVACortexLayer` for two damped Picard steps. The deterministic tiny batches
+use vector, token, or bar-image states according to the architecture's tensor
+contract. Each row includes a backward pass and one optimizer update.
+
+| Architecture | Parameters | Loss | Initial residual | Final residual | Gradient norm |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `mlp` | 368 | 0.7489 | 2.670 | 2.003 | 4.669e-4 |
+| `residual_mlp` | 456 | 0.6127 | 2.676 | 1.963 | 1.476e-2 |
+| `residual_cnn` | 312 | 0.7001 | 21.42 | 16.32 | 6.279e-3 |
+| `unet` | 1,758 | 0.6958 | 21.19 | 15.86 | 1.061e-3 |
+| `dense_cnn` | 369 | 0.6990 | 21.18 | 15.86 | 5.823e-3 |
+| `transformer` | 532 | 0.7195 | 4.740 | 3.723 | 6.807e-2 |
+| `inverted_residual` | 172 | 0.6934 | 21.03 | 16.01 | 2.309e-4 |
+| `fourier_operator` | 596 | 0.7073 | 21.08 | 15.84 | 3.258e-3 |
+| `mlp_mixer` | 474 | 0.7014 | 4.760 | 3.683 | 1.020e-2 |
+| `convnext_v2` | 300 | 0.7568 | 21.44 | 16.16 | 1.039e-2 |
+
+All ten fields preserve the input-state shape, produce finite outputs, receive
+nonzero parameter gradients, and reduce the residual after the second damped
+step. Parameter counts describe the compact smoke configurations, not canonical
+model sizes or an accuracy ranking.
+
+Reproduce the table with:
+
+```bash
+python examples/point_architecture_catalog.py
+```
+
+The [Point Architecture Catalog notebook](package-notebooks/14_point_architecture_catalog.ipynb)
+adds a 300 DPI residual-ratio plot and examples of composition within one point
+and across linked points.
+
 ## Interpreting These Numbers
 
 Smoke metrics are useful for implementation fidelity, but they are intentionally

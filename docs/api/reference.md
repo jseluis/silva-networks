@@ -17,6 +17,7 @@ inputs, outputs, and source links.
 | [Diagnostics](diagnostics.md) | residual curves, damped updates, Lyapunov-style energy traces |
 | [Layers](layers.md) | `SILVALayer`, `SILVAGraphLayer`, `silva_generalized_layer`, `silva_deq_reduction_layer`, global/local/self operators |
 | [Architectures](architectures.md) | stacks, cortex hierarchies, graph networks, image classifiers, pooling, readout heads |
+| [Point Architectures](point_architectures.md) | ten shape-preserving vector, token, convolutional, U-Net, attention, and spectral fields |
 | [Implicit Bridge](implicit.md) | SILVA-named DEQ transition, fixed-point classifier, Euler flow, quadratic optimization, MDEQ bridge |
 | [DEQ Engine](deq-engine.md) | general single-state and multi-state SILVA DEQ engine, variational dropout, state packing |
 | [Optical Flow](flow.md) | RAFT-style correlation, warping, DEQ-flow fixed point, synthetic flow data |
@@ -37,6 +38,7 @@ inputs, outputs, and source links.
 | Scalar DEQ | `fixed_point`, `DEQLayer`, `np_picard` |
 | Generic SILVA layer | `SILVALayer`, `silva_generalized_layer`, `make_local_operator`, `make_global_operator`, `make_self_operator` |
 | Cortex hierarchy | `SILVACortexLayer`, `SILVACortexNetwork`, `SILVAImageCortexClassifier`, `silva_cortex_layer`, `silva_cortex_network` |
+| Internal point architectures | `available_silva_point_architectures`, `silva_point_architecture`, and ten `SILVA...PointArchitecture` modules |
 | SILVA reductions to baseline implicit models | `silva_deq_reduction_layer`, `silva_message_passing_reduction_layer`, `SILVAFixedPointBlock`, `SILVADEQEngine` |
 | Graph node or graph prediction | `SILVAGraphLayer`, `SILVAGraphNetwork`, `SILVAGraphPresetNetwork`, `pool_entities` |
 | Vision vectors | `SILVAVisionVectorLayer`, `SILVAVisionVectorClassifier`, `DynamicChannelLocal`, `ChannelSelfAttentionGlobal` |
@@ -74,6 +76,7 @@ inputs, outputs, and source links.
 | optical flow | RAFT and DEQ-Flow, plus the optical-flow dataset or benchmark |
 | optimization | projected-gradient methods, OptNet, CVXPYlayers depending on the selected layer |
 | presets | SILVA paper/package plus the branch-level citations used by the chosen preset |
+| point architectures | SILVA plus the primary architecture paper when the selected field derives from a named architecture |
 
 ## Common Imports
 
@@ -94,8 +97,10 @@ from silva_networks import (
     SILVAImplicitNeuralRepresentation,
     SILVAImageCortexClassifier,
     available_silva_families,
+    available_silva_point_architectures,
     silva_deq_reduction_layer,
     silva_projected_qp_layer,
+    silva_point_architecture,
     silva_equilibrium_model,
     silva_generalized_layer,
     silva_deq,

@@ -82,9 +82,9 @@ The same tutorials are rendered in the docs under [Notebooks](notebooks.md).
 
 The top-level package track includes quickstart, solvers and Jacobians,
 datasets, public experiments, custom operators, operator options, citation
-audit, the equation-to-code walkthrough, and the family-selector/projected-QP
-smoke tutorial, the training-helper smoke tutorial, and the cortex hierarchy
-tutorial.
+audit, the equation-to-code walkthrough, family-selector/projected-QP and
+training-helper smoke tutorials, the cortex hierarchy, generalized architecture
+cases, RAFT/DEQ-Flow, and the ten-entry point architecture catalog.
 
 ## Bridge Notebooks
 

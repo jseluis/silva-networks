@@ -116,6 +116,7 @@ nav:
       - Jacobians and Stability: learn/jacobians.md
       - Custom Layers: learn/custom-layers.md
       - Cortex Hierarchies: learn/cortex-hierarchy.md
+      - Point Architecture Catalog: learn/point-architecture-catalog.md
       - Stacking and Devices: learn/stacking-and-devices.md
       - Datasets and Preprocessing: learn/datasets-and-preprocessing.md
       - Reconstructing Paper Experiments: learn/reconstructing-paper-experiments.md
@@ -138,6 +139,7 @@ nav:
       - Cortex Hierarchy: package-notebooks/11_cortex_hierarchy.ipynb
       - Paper Family Architectures: package-notebooks/12_paper_family_architectures.ipynb
       - RAFT and DEQ-Flow: package-notebooks/13_raft_deq_flow.ipynb
+      - Point Architecture Catalog: package-notebooks/14_point_architecture_catalog.ipynb
       - Implicit Layers Bridge:
           - Fixed Points as Layers: implicit-bridge-notebooks/01_introduction_fixed_points.ipynb
           - Implicit Autodiff: implicit-bridge-notebooks/02_implicit_autodiff.ipynb
@@ -156,6 +158,7 @@ nav:
       - Diagnostics: api/diagnostics.md
       - Layers: api/layers.md
       - Architectures: api/architectures.md
+      - Point Architectures: api/point_architectures.md
       - Implicit Bridge: api/implicit.md
       - DEQ Engine: api/deq-engine.md
       - Optical Flow: api/flow.md
@@ -185,6 +188,7 @@ nav:
       - DEQ Engine Bridge: examples/deq-engine-bridge.md
       - Cortex Hierarchy: examples/cortex-hierarchy.md
       - Spatial SILVA Cortex: examples/spatial-cortex.md
+      - Point Architecture Catalog: examples/point-architecture-catalog.md
       - Optical Flow SILVA: examples/optical-flow-silva.md
       - Constrained Optimization: examples/constrained-optimization.md
       - Stacked Architecture: examples/stacked-architecture.md

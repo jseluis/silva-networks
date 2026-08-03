@@ -17,6 +17,7 @@ def test_examples_import_and_run() -> None:
         "add_layers_on_top.py",
         "cortex_hierarchy.py",
         "spatial_cortex.py",
+        "point_architecture_catalog.py",
         "optical_flow_silva.py",
         "constrained_optimization.py",
         "stacked_architecture.py",

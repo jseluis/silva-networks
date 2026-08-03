@@ -8,6 +8,8 @@
   multistate transitions; and Jacobian diagnostics and regularization.
 - Extensible graph, sequence, multiscale vision, implicit representation,
   diffusion, optimization, and RAFT/DEQ-Flow case architectures.
+- Ten shape-preserving internal point architectures spanning vector, token,
+  convolutional, multiscale, attention, and spectral transition fields.
 - Reusable training, evaluation, checkpoint/resume, metrics, dataset contracts,
   conversion, and custom batch-step APIs without embedded paper configurations.
 - Material for MkDocs documentation site.

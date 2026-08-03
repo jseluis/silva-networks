@@ -41,6 +41,7 @@
     "package-notebooks/09_family_selector_and_projected_qp/": "Family selector and projected-QP smoke notebook added.",
     "package-notebooks/10_training_helpers_smoke/": "Training-helper smoke notebook added.",
     "package-notebooks/11_cortex_hierarchy/": "Cortex hierarchy notebook added with linked points, alphas, residual plots, and image preset smoke.",
+    "package-notebooks/14_point_architecture_catalog/": "Ten point architectures added with tensor contracts, residual checks, gradients, and composition examples.",
     "implicit-bridge-notebooks/01_introduction_fixed_points/": "Fixed-point tutorial converted to package-native solvers.",
     "implicit-bridge-notebooks/02_implicit_autodiff/": "Implicit autodiff tutorial connected to package Jacobian helpers.",
     "implicit-bridge-notebooks/03_neural_odes_as_implicit_layers/": "Neural ODE bridge documented with the package Euler block.",

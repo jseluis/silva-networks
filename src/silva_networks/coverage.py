@@ -83,6 +83,27 @@ _IMPLEMENTATION_CASES: tuple[SILVAImplementationCase, ...] = (
         ),
     ),
     SILVAImplementationCase(
+        key="point_architectures",
+        public_objects=(
+            "available_silva_point_architectures",
+            "silva_point_architecture",
+            "SILVAMLPPointArchitecture",
+            "SILVAResidualConvPointArchitecture",
+            "SILVAUNetPointArchitecture",
+            "SILVATransformerPointArchitecture",
+            "SILVAFourierOperatorPointArchitecture",
+            "SILVAConvNeXtV2PointArchitecture",
+        ),
+        tutorial="docs/learn/point-architecture-catalog.md",
+        notebooks=("docs/package-notebooks/14_point_architecture_catalog.ipynb",),
+        smoke_tests=("tests/test_point_architectures.py",),
+        examples=("examples/point_architecture_catalog.py",),
+        scope=(
+            "Ten shape-preserving vector, token, and spatial architectures tested inside "
+            "SILVA equilibrium points."
+        ),
+    ),
+    SILVAImplementationCase(
         key="presets",
         public_objects=("SILVAGraphPresetNetwork", "SILVAVisionVectorClassifier", "SILVAMolecularRegressor"),
         tutorial="docs/api/presets.md",

@@ -344,6 +344,7 @@ logits = model(x, edge_index=edge_index)
 | [Solvers](api/solvers.md) | Picard, Anderson, Broyden, GMRES, implicit adjoint helper |
 | [Layers](api/layers.md) | stimulus, local, global, self, graph, image, DEQ wrappers |
 | [Architectures](api/architectures.md) | stacks, heterogeneous SILVA cortex points, graph/image models, readouts |
+| [Point Architectures](api/point_architectures.md) | ten shape-preserving MLP, attention, convolutional, U-Net, spectral, and token-mixing fields |
 | [Implicit Bridge](api/implicit.md) | tutorial DEQ, ODE, optimization, MDEQ, Jacobian-regularization modules |
 | [DEQ Engine](api/deq-engine.md) | TorchDEQ-style single-state and multi-state engine helpers |
 | [Optical Flow](api/flow.md) | RAFT/DEQ-Flow-style package-native optical-flow utilities |
@@ -370,6 +371,7 @@ logits = model(x, edge_index=edge_index)
 | [Family Selector and Projected QP](package-notebooks/09_family_selector_and_projected_qp.ipynb) | SILVA-style family names, projected constraints, flow alias, gradients |
 | [Training Helpers Smoke](package-notebooks/10_training_helpers_smoke.ipynb) | supervised fit/evaluate, checkpoint, resume, device movement |
 | [Cortex Hierarchy](package-notebooks/11_cortex_hierarchy.ipynb) | deep MLP, residual CNN, and U-Net transitions inside linked SILVA points |
+| [Point Architecture Catalog](package-notebooks/14_point_architecture_catalog.ipynb) | all ten internal architectures, tensor contracts, gradients, residuals, and point composition |
 | [Fixed Points as Layers](implicit-bridge-notebooks/01_introduction_fixed_points.ipynb) | implicit-layer introduction through package solvers |
 | [DEQ and SILVA](implicit-bridge-notebooks/04_deq_and_silva.ipynb) | DEQ baseline and configurable SILVA graph model in one API |
 | [SILVA DEQ Engine](implicit-bridge-notebooks/07_silva_deq_engine_torchdeq_bridge.ipynb) | single-state, multi-state, and variational-dropout fixed-point systems |

@@ -200,6 +200,11 @@ The runnable [Spatial SILVA Cortex example](../examples/spatial-cortex.md)
 uses a residual convolutional block and a U-Net-shaped transition inside the
 first point, then links its spatial state to a different vector point.
 
+The [Point Architecture Catalog](point-architecture-catalog.md) provides ten
+built-in choices for vector, token, and spatial states, plus examples of several
+architectures composed inside one point and different architectures assigned to
+linked points.
+
 ### Fixed-Point-Safe Modules
 
 During one solve, the transition should be deterministic, differentiable, and

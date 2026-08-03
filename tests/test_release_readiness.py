@@ -56,6 +56,7 @@ def test_notebook_smoke_script_lists_defaults() -> None:
     assert "docs/implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb" in result.stdout
     assert "docs/package-notebooks/12_paper_family_architectures.ipynb" in result.stdout
     assert "docs/package-notebooks/13_raft_deq_flow.ipynb" in result.stdout
+    assert "docs/package-notebooks/14_point_architecture_catalog.ipynb" in result.stdout
 
 
 def test_api_reference_covers_every_source_module() -> None:

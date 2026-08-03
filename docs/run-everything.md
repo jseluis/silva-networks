@@ -102,6 +102,7 @@ python examples/custom_layers.py
 python examples/add_layers_on_top.py
 python examples/cortex_hierarchy.py
 python examples/spatial_cortex.py
+python examples/point_architecture_catalog.py
 python examples/stacked_architecture.py
 python examples/datasets_quickstart.py
 python examples/deq_engine_bridge.py
@@ -120,6 +121,7 @@ Use the example pages for explanations:
 | [Custom Layers](examples/custom-layers.md) | replacing \(L\), \(G\), or \(H\) with user modules |
 | [Cortex Hierarchy](examples/cortex-hierarchy.md) | deep internal modules inside linked equilibrium points |
 | [Spatial SILVA Cortex](examples/spatial-cortex.md) | residual CNN and U-Net transition linked to a different vector point |
+| [Point Architecture Catalog](examples/point-architecture-catalog.md) | ten shape, residual, gradient, and tiny-data compatibility checks |
 | [Stacked Architecture](examples/stacked-architecture.md) | multiple equilibrium layers with mixed solvers |
 | [Dataset Quickstart](examples/datasets-quickstart.md) | public data to `GraphTensorBatch` |
 | [DEQ Engine Bridge](examples/deq-engine-bridge.md) | arbitrary single-state and multi-state fixed-point systems |
@@ -152,6 +154,7 @@ The package API track:
 | [Cortex Hierarchy](package-notebooks/11_cortex_hierarchy.ipynb) | linked cortex points, MLP/CNN/U-Net internals, tiny spatial data, residuals, and gradients |
 | [Paper Family Architectures](package-notebooks/12_paper_family_architectures.ipynb) | sequence, multiscale, Jacobian, graph, INR, diffusion, and custom-transition cases |
 | [RAFT and DEQ-Flow](package-notebooks/13_raft_deq_flow.ipynb) | coupled hidden/flow state, exact implicit gradients, corrections, upsampling, and reuse |
+| [Point Architecture Catalog](package-notebooks/14_point_architecture_catalog.ipynb) | ten internal architectures plus composition inside one point and across linked points |
 
 The implicit bridge track:
 
@@ -319,13 +322,14 @@ Run the quick notebook smoke set:
 python scripts/run_notebook_smoke.py --timeout 180
 ```
 
-The default release smoke includes the generalized paper-family and coupled
-RAFT/DEQ-Flow notebooks. To run them directly:
+The default release smoke includes the generalized paper-family, coupled
+RAFT/DEQ-Flow, and point-architecture notebooks. To run them directly:
 
 ```bash
 python scripts/run_notebook_smoke.py \
   docs/package-notebooks/12_paper_family_architectures.ipynb \
-  docs/package-notebooks/13_raft_deq_flow.ipynb
+  docs/package-notebooks/13_raft_deq_flow.ipynb \
+  docs/package-notebooks/14_point_architecture_catalog.ipynb
 ```
 
 List the default smoke notebooks:

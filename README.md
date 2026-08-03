@@ -267,6 +267,29 @@ The same composition is selectable as the canonical
 network, residual network, U-Net, attention block, graph module, or another
 PyTorch transition that returns the equilibrium-state shape.
 
+Ten compact vector, token, and spatial choices are available through the point
+architecture registry:
+
+```python
+from silva_networks import (
+    available_silva_point_architectures,
+    silva_point_architecture,
+)
+
+print(available_silva_point_architectures())
+transition = silva_point_architecture(
+    "unet",
+    channels=8,
+    base_channels=16,
+)
+```
+
+The catalog includes MLP, residual MLP, residual CNN, U-Net, dense CNN,
+Transformer, inverted residual, Fourier operator, MLP-Mixer, and ConvNeXt V2
+fields. See `docs/learn/point-architecture-catalog.md` and
+`notebooks/package_api/14_point_architecture_catalog.ipynb` for tensor
+contracts, composition patterns, and executable checks.
+
 Use the family selector when you want a single choice point:
 
 ```python
@@ -300,9 +323,9 @@ vector, image pixel-grid, and molecular graph adapters.
 ## What Is Included
 
 - `src/silva_networks/`: PyTorch package with solvers, Jacobian diagnostics,
-  SILVA layers, cortex hierarchies, stackable architectures, DEQ engine
-  utilities, optical-flow modules, constrained optimization layers, dataset
-  helpers, and device helpers.
+  SILVA layers, cortex hierarchies, ten internal point architectures, stackable
+  architectures, DEQ engine utilities, optical-flow modules, constrained
+  optimization layers, dataset helpers, and device helpers.
 - `docs/`: Material for MkDocs documentation site, including the case atlas,
   derivation-first math pages, API maps, examples, and references.
 - Companion book and solutions manual: planned long-form learning assets.

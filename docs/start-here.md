@@ -44,6 +44,7 @@ $$
 | Method adaptation | [Method Adaptation Atlas](learn/method-adaptation-atlas.md) | translate external implicit-layer, DEQ, ODE, optimization, and flow sources into SILVA equations |
 | SILVA operators | [SILVA Operators](learn/silva-operators.md) | vary Figure 1 branches and ablations |
 | Cortex hierarchy | [Cortex Hierarchies](learn/cortex-hierarchy.md) | build linked SILVA points with independently configured MLP, convolutional, U-Net, attention, or graph internals |
+| Internal architecture selection | [Point Architecture Catalog](learn/point-architecture-catalog.md) | choose among ten vector, token, and spatial fields and compose them inside or across points |
 | Stability | [Jacobians and Stability](learn/jacobians.md) | compute Jacobians, products, spectral-radius diagnostics |
 | Dataset adaptation | [Datasets and Preprocessing](learn/datasets-and-preprocessing.md) | convert public or private data into the engine |
 
@@ -55,6 +56,7 @@ $$
 | Pick a solver | [Solvers API](api/solvers.md) |
 | Pick a layer | [Layers API](api/layers.md) |
 | Build cortex hierarchies | [Architectures API](api/architectures.md) |
+| Choose an internal point architecture | [Point Architectures API](api/point_architectures.md) |
 | Pick a model family | [Selecting Model Families](learn/selecting-model-families.md) |
 | Use reference presets | [SILVA Presets API](api/presets.md) |
 | Use the DEQ engine | [DEQ Engine API](api/deq-engine.md) |

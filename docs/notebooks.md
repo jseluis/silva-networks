@@ -28,6 +28,7 @@ dataset adapters, and extension points work together.
 | [Cortex Hierarchy](package-notebooks/11_cortex_hierarchy.ipynb) | `notebooks/package_api/11_cortex_hierarchy.ipynb` | builds heterogeneous linked points with MLP, CNN, and U-Net internals on vector and spatial states |
 | [Paper Family Architectures](package-notebooks/12_paper_family_architectures.ipynb) | `notebooks/package_api/12_paper_family_architectures.ipynb` | runs sequence DEQ, MDEQ, Jacobian regularization, IGNN, INR, diffusion, and a custom transition |
 | [RAFT and DEQ-Flow](package-notebooks/13_raft_deq_flow.ipynb) | `notebooks/package_api/13_raft_deq_flow.ipynb` | runs the coupled hidden/flow equilibrium, exact implicit gradients, sparse corrections, learned upsampling, and reuse |
+| [Point Architecture Catalog](package-notebooks/14_point_architecture_catalog.ipynb) | `notebooks/package_api/14_point_architecture_catalog.ipynb` | checks ten vector, token, and spatial architectures inside SILVA points, then composes modules within and across points |
 
 ## Implicit Layers Bridge Track
 
