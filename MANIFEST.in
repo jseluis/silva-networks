@@ -11,6 +11,8 @@ include requirements*.txt
 recursive-include docs *.bib *.css *.ipynb *.js *.md *.png *.svg *.txt *.woff
 include docs/assets/papers/silva-networks-arxiv-2607.28989.pdf
 prune docs/assets/pdfs
+recursive-include notebooks *.ipynb
+recursive-include colab *.ipynb *.md
 recursive-include examples *.py
 recursive-include experiments/public *.py
 recursive-include experiments/public/configs *.json

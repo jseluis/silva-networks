@@ -140,6 +140,9 @@ Background references used in the tutorial suite include:
 """
 
 
+STATIC_MIRRORED_NOTEBOOKS = ("07_research_citation_audit.ipynb",)
+
+
 NOTEBOOKS = {
     "01_package_quickstart.ipynb": notebook(
         [
@@ -867,6 +870,10 @@ def main() -> None:
         payload = json.dumps(nb_with_citation, indent=2) + "\n"
         for target in (OUT, DOCS_OUT, COLAB_OUT):
             (target / name).write_text(payload)
+    for name in STATIC_MIRRORED_NOTEBOOKS:
+        payload = (DOCS_OUT / name).read_text(encoding="utf-8")
+        for target in (OUT, COLAB_OUT):
+            (target / name).write_text(payload, encoding="utf-8")
 
 
 if __name__ == "__main__":

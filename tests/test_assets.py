@@ -211,6 +211,20 @@ def test_notebook_json_and_code_cells_parse() -> None:
     assert code_cells > 100
 
 
+def test_notebook_mirror_sets_are_complete() -> None:
+    package_docs = sorted(path.name for path in (ROOT / "docs/package-notebooks").glob("*.ipynb"))
+    bridge_docs = sorted(
+        path.name for path in (ROOT / "docs/implicit-bridge-notebooks").glob("*.ipynb")
+    )
+
+    assert len(package_docs) >= 13
+    assert len(bridge_docs) >= 9
+    assert sorted(path.name for path in (ROOT / "notebooks/package_api").glob("*.ipynb")) == package_docs
+    assert sorted(path.name for path in (ROOT / "colab").glob("*.ipynb")) == package_docs
+    assert sorted(path.name for path in (ROOT / "notebooks/implicit_bridge").glob("*.ipynb")) == bridge_docs
+    assert sorted(path.name for path in (ROOT / "colab/implicit_bridge").glob("*.ipynb")) == bridge_docs
+
+
 def test_no_external_paper_cache() -> None:
     assert not (ROOT / "references/papers").exists()
     assert not (ROOT / "references/upstream").exists()

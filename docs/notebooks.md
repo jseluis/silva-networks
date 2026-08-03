@@ -21,7 +21,7 @@ dataset adapters, and extension points work together.
 | [Public Experiments](package-notebooks/04_public_experiments.ipynb) | `notebooks/package_api/04_public_experiments.ipynb` | runs config-driven package checks and plots loss curves |
 | [Custom Operator](package-notebooks/05_custom_operator_experiment.ipynb) | `notebooks/package_api/05_custom_operator_experiment.ipynb` | replaces a local branch with a user-defined PyTorch module |
 | [SILVA Operator Options](package-notebooks/06_silva_operator_options.ipynb) | `notebooks/package_api/06_silva_operator_options.ipynb` | exercises Figure 1-style operators, ablations, molecules, and diagnostics |
-| [Research Citation Audit](package-notebooks/07_research_citation_audit.ipynb) | `docs/package-notebooks/07_research_citation_audit.ipynb` | turns solver/operator choices into a citation checklist |
+| [Research Citation Audit](package-notebooks/07_research_citation_audit.ipynb) | `notebooks/package_api/07_research_citation_audit.ipynb` | turns solver/operator choices into a citation checklist |
 | [Equation-to-Code Walkthrough](package-notebooks/08_equation_to_code_walkthrough.ipynb) | `notebooks/package_api/08_equation_to_code_walkthrough.ipynb` | derives SILVA reductions, runs the matching package APIs, and plots residuals |
 | [Family Selector and Projected QP](package-notebooks/09_family_selector_and_projected_qp.ipynb) | `notebooks/package_api/09_family_selector_and_projected_qp.ipynb` | checks SILVA-style family names, projected constraints, flow aliases, residuals, and gradients |
 | [Training Helpers Smoke](package-notebooks/10_training_helpers_smoke.ipynb) | `notebooks/package_api/10_training_helpers_smoke.ipynb` | checks `fit_supervised`, `evaluate`, device movement, checkpointing, and resume |
