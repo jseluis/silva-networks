@@ -1,0 +1,37 @@
+{
+  "title": "SILVA Networks",
+  "upload_type": "software",
+  "publication_date": "2026-08-03",
+  "creators": [
+    {
+      "name": "Silva, Jose Luis"
+    }
+  ],
+  "description": "SILVA Networks is a PyTorch package for structured implicit layers, fixed-point solvers, configurable stimulus/local/global operators, Jacobian diagnostics, cortex hierarchies, dataset utilities, examples, and notebooks for deep equilibrium and SILVA-style models.",
+  "access_right": "open",
+  "license": "mit",
+  "version": "1.0.0",
+  "language": "eng",
+  "keywords": [
+    "SILVA networks",
+    "deep equilibrium models",
+    "implicit layers",
+    "fixed-point solvers",
+    "implicit differentiation",
+    "PyTorch",
+    "graph neural networks",
+    "Jacobian diagnostics"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://doi.org/10.48550/arXiv.2607.28989",
+      "relation": "isSupplementTo",
+      "resource_type": "publication-article"
+    },
+    {
+      "identifier": "https://github.com/jseluis/silva-networks",
+      "relation": "isIdenticalTo",
+      "resource_type": "software"
+    }
+  ]
+}

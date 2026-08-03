@@ -5,7 +5,7 @@ authors:
   - family-names: "Silva"
     given-names: "Jose Luis"
 version: "1.0.0"
-date-released: "2026-08-02"
+date-released: "2026-08-03"
 license: "MIT"
 url: "https://jsluis.com"
 repository-code: "https://github.com/jseluis/silva-networks"
@@ -16,7 +16,7 @@ preferred-citation:
     - family-names: "Silva"
       given-names: "Jose Luis"
   version: "1.0.0"
-  date-released: "2026-08-02"
+  date-released: "2026-08-03"
   url: "https://github.com/jseluis/silva-networks"
 references:
   - type: article

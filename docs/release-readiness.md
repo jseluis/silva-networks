@@ -10,6 +10,8 @@ broken package builds before a public release.
 | --- | --- |
 | Package version | `1.0.0` |
 | Citation metadata | `CITATION.cff`, README, references page, and BibTeX file updated |
+| Zenodo metadata | `.zenodo.json` added for GitHub release archiving |
+| PyPI workflow | `.github/workflows/release.yml` builds and publishes through PyPI Trusted Publishing |
 | Article citation | arXiv:2607.28989, submitted July 31, 2026 |
 | Article PDF | `docs/assets/papers/silva-networks-arxiv-2607.28989.pdf` |
 | License | MIT |
@@ -36,6 +38,8 @@ broken package builds before a public release.
 | Notebook smoke | `python scripts/run_notebook_smoke.py --timeout 180` | yes for selected quick notebooks |
 | Package build | `python -m build` | yes |
 | Distribution metadata | `twine check dist/*` | yes |
+| PyPI trusted publisher | PyPI pending publisher for `jseluis/silva-networks`, workflow `release.yml`, environment `pypi` | yes before GitHub Release |
+| Zenodo archiving | Zenodo GitHub integration enabled for `jseluis/silva-networks` | yes before GitHub Release |
 
 For local offline validation, `python -m build --no-isolation` is acceptable
 when the active virtualenv already contains the build requirements.
@@ -50,6 +54,7 @@ tooling such as command-line PDF utilities.
 | Area | Check |
 | --- | --- |
 | Citation | arXiv ID in README, CFF, references page, and BibTeX |
+| Release metadata | `.zenodo.json`, PyPI workflow, and publishing instructions present |
 | BibTeX | `silva2026silvanetworksstructuredimplicit` and software entries present |
 | Docs | required learning, API, experiment, and audit pages exist |
 | Navigation | new release/audit/derivation pages are wired into `mkdocs.yml` |

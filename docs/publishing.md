@@ -57,6 +57,86 @@ mkdocs build --strict
 python scripts/release_audit.py
 ```
 
+## PyPI
+
+The package name is:
+
+```text
+silva-networks
+```
+
+The import name is:
+
+```python
+import silva_networks
+```
+
+Publishing is configured through the `Release` workflow in
+`.github/workflows/release.yml`. It uses PyPI Trusted Publishing, so no PyPI
+API token is stored in GitHub. PyPI's trusted-publisher flow exchanges a
+GitHub Actions identity token for a short-lived publishing credential during
+the release job.
+
+Before creating the first GitHub Release:
+
+1. Open PyPI and sign in.
+2. Open **Account settings**.
+3. Open **Publishing**.
+4. Add a pending trusted publisher with:
+
+| Field | Value |
+| --- | --- |
+| PyPI project name | `silva-networks` |
+| Owner | `jseluis` |
+| Repository name | `silva-networks` |
+| Workflow filename | `release.yml` |
+| Environment name | `pypi` |
+
+Then configure the matching GitHub environment:
+
+1. Open the GitHub repository.
+2. Open **Settings**.
+3. Open **Environments**.
+4. Create an environment named `pypi`.
+5. Add a required reviewer for the environment.
+
+The environment gate keeps package upload as an explicit release action. After
+the publisher and environment exist, create the GitHub Release from tag
+`v1.0.0`. The workflow builds the source distribution and wheel, runs
+`twine check`, and publishes the package to PyPI.
+
+After the workflow succeeds:
+
+```bash
+python -m pip install silva-networks
+python -c "import silva_networks; print(silva_networks.__version__)"
+```
+
+## Zenodo
+
+Zenodo archiving should be connected before the first GitHub Release is
+created. The repository includes `.zenodo.json`, which gives Zenodo software
+metadata, the MIT license, keywords, repository relation, and the arXiv article
+relation.
+
+To enable the archive:
+
+1. Open Zenodo and sign in with GitHub.
+2. Open the GitHub integration page.
+3. Enable archiving for `jseluis/silva-networks`.
+4. Create the GitHub Release from tag `v1.0.0`.
+
+Zenodo will archive the GitHub release and mint a DOI. After Zenodo finishes,
+update the repository with the DOI badge, the Zenodo DOI in `CITATION.cff`,
+and the DOI link in the documentation.
+
+Official setup references:
+
+- [PyPI Trusted Publishing](https://docs.pypi.org/trusted-publishers/)
+- [Publishing with a trusted publisher](https://docs.pypi.org/trusted-publishers/using-a-publisher/)
+- [Creating a PyPI project with a trusted publisher](https://docs.pypi.org/trusted-publishers/creating-a-project-through-oidc/)
+- [Zenodo `.zenodo.json`](https://help.zenodo.org/docs/github/describe-software/zenodo-json/)
+
 ## Website Mirror
 
 If the site is mirrored to `jsluis.com`, keep GitHub Pages enabled as the

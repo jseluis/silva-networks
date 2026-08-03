@@ -23,8 +23,10 @@ MIN_PUBLICATION_DPI = 299.0
 REQUIRED_FILES = (
     "README.md",
     "CITATION.cff",
+    ".zenodo.json",
     "pyproject.toml",
     "mkdocs.yml",
+    ".github/workflows/release.yml",
     "docs/index.md",
     "docs/cli.md",
     "docs/paper/references.md",
@@ -133,6 +135,7 @@ def _check_arxiv_and_bibtex(root: Path, errors: list[str]) -> None:
         "README.md": (ARXIV_ID, "silva2026silvanetworksstructuredimplicit"),
         "CITATION.cff": (ARXIV_ID, "https://arxiv.org/abs/2607.28989"),
         "MANIFEST.in": (
+            ".zenodo.json",
             "CITATION.cff",
             "mkdocs.yml",
             "*.bib",
@@ -145,6 +148,27 @@ def _check_arxiv_and_bibtex(root: Path, errors: list[str]) -> None:
             "silva-experiment",
             "silva-download-datasets",
             "configs/*.json",
+        ),
+        ".zenodo.json": (
+            "Silva, Jose Luis",
+            "10.48550/arXiv.2607.28989",
+            "https://github.com/jseluis/silva-networks",
+            "mit",
+        ),
+        ".github/workflows/release.yml": (
+            "pypa/gh-action-pypi-publish@release/v1",
+            "environment:",
+            "name: pypi",
+            "id-token: write",
+            "python -m build",
+            "twine check dist/*",
+        ),
+        "docs/publishing.md": (
+            "PyPI Trusted Publishing",
+            "silva-networks",
+            "Workflow filename",
+            "release.yml",
+            ".zenodo.json",
         ),
         "docs/paper/references.md": (ARXIV_ID, "docs/assets/bib/silva-networks.bib"),
         "docs/assets/bib/silva-networks.bib": (
