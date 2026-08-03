@@ -154,6 +154,24 @@ The optical-flow implementation in `silva_networks.flow` is also package-native.
 It expresses all-pairs correlation, recurrent update fields, local correlation
 lookup, and fixed-point flow solving through SILVA APIs.
 
+## Point Architecture Sources
+
+The built-in point-architecture catalog uses compact, shape-preserving
+adaptations of the following architecture patterns:
+
+- [Learning Representations by Back-Propagating Errors](https://doi.org/10.1038/323533a0), Rumelhart, Hinton, and Williams, Nature 1986. BibTeX: `rumelhart1986learning`.
+- [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385), He et al., CVPR 2016. BibTeX: `he2016deepresidual`.
+- [U-Net: Convolutional Networks for Biomedical Image Segmentation](https://arxiv.org/abs/1505.04597), Ronneberger, Fischer, and Brox, MICCAI 2015. BibTeX: `ronneberger2015unet`.
+- [Densely Connected Convolutional Networks](https://arxiv.org/abs/1608.06993), Huang et al., CVPR 2017. BibTeX: `huang2017densely`.
+- [Attention Is All You Need](https://arxiv.org/abs/1706.03762), Vaswani et al., NeurIPS 2017. BibTeX: `vaswani2017attention`.
+- [MobileNetV2: Inverted Residuals and Linear Bottlenecks](https://arxiv.org/abs/1801.04381), Sandler et al., CVPR 2018. BibTeX: `sandler2018mobilenetv2`.
+- [Fourier Neural Operator for Parametric Partial Differential Equations](https://arxiv.org/abs/2010.08895), Li et al., ICLR 2021. BibTeX: `li2021fourier`.
+- [MLP-Mixer: An all-MLP Architecture for Vision](https://arxiv.org/abs/2105.01601), Tolstikhin et al., NeurIPS 2021. BibTeX: `tolstikhin2021mlpmixer`.
+- [ConvNeXt V2: Co-designing and Scaling ConvNets with Masked Autoencoders](https://arxiv.org/abs/2301.00808), Woo et al., CVPR 2023. BibTeX: `woo2023convnextv2`.
+
+The catalog translates these patterns into compact, shape-preserving transition
+modules designed for use inside SILVA points.
+
 ## Solvers and Linear Algebra
 
 - [Iterative Procedures for Nonlinear Integral Equations](https://doi.org/10.1145/321296.321305), Anderson, Journal of the ACM, 1965.

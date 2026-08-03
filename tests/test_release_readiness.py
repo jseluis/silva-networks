@@ -29,9 +29,8 @@ def test_release_audit_passes() -> None:
 
 def test_bibtex_contains_silva_article_and_related_sources() -> None:
     bibtex = (ROOT / "docs/assets/bib/silva-networks.bib").read_text(encoding="utf-8")
-    for marker in [
+    for key in [
         "silva2026silvanetworksstructuredimplicit",
-        "2607.28989",
         "kolter2020deepimplicitlayersdeq",
         "locuslab2019deq",
         "torchdeq2023",
@@ -40,8 +39,18 @@ def test_bibtex_contains_silva_article_and_related_sources() -> None:
         "gu2020implicit",
         "huang2021implicit2",
         "pokle2022deqddim",
+        "rumelhart1986learning",
+        "he2016deepresidual",
+        "ronneberger2015unet",
+        "huang2017densely",
+        "vaswani2017attention",
+        "sandler2018mobilenetv2",
+        "li2021fourier",
+        "tolstikhin2021mlpmixer",
+        "woo2023convnextv2",
     ]:
-        assert marker in bibtex
+        assert f"{{{key}," in bibtex
+    assert "2607.28989" in bibtex
 
 
 def test_notebook_smoke_script_lists_defaults() -> None:

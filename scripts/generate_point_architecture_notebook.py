@@ -397,7 +397,8 @@ print(
 - Use the Fourier operator when global spectral modes are part of the modeling assumption.
 - Keep every module shape-preserving at the point boundary and tune solver damping after changing the internal architecture.
 
-Primary sources: [ResNet](https://arxiv.org/abs/1512.03385),
+Primary sources: [multilayer back-propagation](https://doi.org/10.1038/323533a0),
+[ResNet](https://arxiv.org/abs/1512.03385),
 [U-Net](https://arxiv.org/abs/1505.04597),
 [DenseNet](https://arxiv.org/abs/1608.06993),
 [Transformer](https://arxiv.org/abs/1706.03762),

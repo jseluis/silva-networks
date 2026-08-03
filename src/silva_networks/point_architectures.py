@@ -539,8 +539,8 @@ _ARCHITECTURE_INFO: dict[SILVAPointArchitectureName, SILVAPointArchitectureInfo]
     "mlp": SILVAPointArchitectureInfo(
         "mlp",
         "(..., channels)",
-        None,
-        None,
+        1986,
+        "https://doi.org/10.1038/323533a0",
         "Classic feed-forward channel mixing.",
     ),
     "residual_mlp": SILVAPointArchitectureInfo(

@@ -28,7 +28,7 @@ solver settings, training, and evaluation protocol.
 
 | Name | Public class | State layout | Internal pattern | Source |
 | --- | --- | --- | --- | --- |
-| `mlp` | `SILVAMLPPointArchitecture` | `(..., channels)` | feed-forward channel mixing | classic multilayer perceptron |
+| `mlp` | `SILVAMLPPointArchitecture` | `(..., channels)` | feed-forward channel mixing | [Rumelhart et al., 1986](https://doi.org/10.1038/323533a0) |
 | `residual_mlp` | `SILVAResidualMLPPointArchitecture` | `(..., channels)` | residual dense blocks | [ResNet, 2015](https://arxiv.org/abs/1512.03385) |
 | `residual_cnn` | `SILVAResidualConvPointArchitecture` | `(batch, channels, height, width)` | local residual convolutions | [ResNet, 2015](https://arxiv.org/abs/1512.03385) |
 | `unet` | `SILVAUNetPointArchitecture` | `(batch, channels, height, width)` | downsample, bottleneck, upsample, skip | [U-Net, 2015](https://arxiv.org/abs/1505.04597) |
@@ -42,6 +42,9 @@ solver settings, training, and evaluation protocol.
 Each module returns a state-shaped field. `SILVACortexLayer` adds that field to
 the encoded stimulus and any self, local, global, or custom interaction fields.
 The point then applies its output transform, normalization, and solver damping.
+Complete entries for all nine primary source architectures are included in
+[`silva-networks.bib`](../assets/bib/silva-networks.bib) and indexed on the
+[Paper and References](../paper/references.md) page.
 
 ## Inspect and Build
 

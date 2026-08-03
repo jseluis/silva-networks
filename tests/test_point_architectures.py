@@ -30,6 +30,19 @@ ARCHITECTURE_CASES = {
     "convnext_v2": ((2, 4, 8, 8), {"channels": 4, "expansion": 2}),
 }
 
+ARCHITECTURE_SOURCES = {
+    "mlp": "https://doi.org/10.1038/323533a0",
+    "residual_mlp": "https://arxiv.org/abs/1512.03385",
+    "residual_cnn": "https://arxiv.org/abs/1512.03385",
+    "unet": "https://arxiv.org/abs/1505.04597",
+    "dense_cnn": "https://arxiv.org/abs/1608.06993",
+    "transformer": "https://arxiv.org/abs/1706.03762",
+    "inverted_residual": "https://arxiv.org/abs/1801.04381",
+    "fourier_operator": "https://arxiv.org/abs/2010.08895",
+    "mlp_mixer": "https://arxiv.org/abs/2105.01601",
+    "convnext_v2": "https://arxiv.org/abs/2301.00808",
+}
+
 
 def test_point_architecture_registry_has_ten_stable_entries() -> None:
     assert available_silva_point_architectures() == tuple(ARCHITECTURE_CASES)
@@ -38,6 +51,8 @@ def test_point_architecture_registry_has_ten_stable_entries() -> None:
         assert info.name == name
         assert info.state_layout
         assert info.summary
+        assert info.introduced is not None
+        assert info.reference_url == ARCHITECTURE_SOURCES[name]
 
 
 @pytest.mark.parametrize("name", ARCHITECTURE_CASES)
