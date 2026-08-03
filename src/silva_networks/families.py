@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from .architectures import SILVAGraphNetwork, silva_cortex_layer
+from .architectures import SILVAGraphNetwork, silva_cortex_layer, silva_cortex_network
 from .cases import (
     SILVADiffusionEquilibrium,
     SILVAImplicitGraphNetwork,
@@ -30,6 +30,7 @@ SILVAFamily = Literal[
     "silva_graph",
     "silva_graph_preset",
     "silva_cortex",
+    "silva_cortex_network",
     "silva_image_cortex",
     "compact_deq",
     "message_passing_deq",
@@ -50,6 +51,9 @@ _FAMILY_DESCRIPTIONS: dict[str, str] = {
     "silva_graph": "stacked SILVA graph model with per-layer operators and solvers",
     "silva_graph_preset": "reference graph SILVA architecture with configurable interaction modes",
     "silva_cortex": "single flexible cortex-style equilibrium point with internal modules",
+    "silva_cortex_network": (
+        "linked cortex equilibrium points with independent internal architectures"
+    ),
     "silva_image_cortex": "convolutional-retina plus linked fast/slow cortex equilibrium points",
     "compact_deq": "affine-tanh DEQ reduction inside the SILVA grammar",
     "message_passing_deq": "local graph/message-passing DEQ reduction",
@@ -69,6 +73,8 @@ _FAMILY_ALIASES: dict[str, str] = {
     "silva_compact_deq": "compact_deq",
     "cortex": "silva_cortex",
     "cortex_layer": "silva_cortex",
+    "silva_heterogeneous_cortex": "silva_cortex_network",
+    "silva_stacked_cortex": "silva_cortex_network",
     "image_cortex": "silva_image_cortex",
     "retinal_cortex": "silva_image_cortex",
     "visual_cortex": "silva_image_cortex",
@@ -128,6 +134,8 @@ def silva_equilibrium_model(family: SILVAFamily | str, **kwargs: Any) -> Any:
         return SILVAGraphPresetNetwork(**kwargs)
     if key == "silva_cortex":
         return silva_cortex_layer(**kwargs)
+    if key == "silva_cortex_network":
+        return silva_cortex_network(**kwargs)
     if key == "silva_image_cortex":
         return SILVAImageCortexClassifier(**kwargs)
     if key == "compact_deq":

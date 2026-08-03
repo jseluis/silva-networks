@@ -16,6 +16,7 @@ def test_examples_import_and_run() -> None:
         "deq_engine_bridge.py",
         "add_layers_on_top.py",
         "cortex_hierarchy.py",
+        "spatial_cortex.py",
         "optical_flow_silva.py",
         "constrained_optimization.py",
         "stacked_architecture.py",

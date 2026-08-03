@@ -18,6 +18,7 @@ claims.
 | `silva_graph` | stacked graph SILVA network |
 | `silva_graph_preset` | reference graph SILVA preset |
 | `silva_cortex` | single cortex-style equilibrium point |
+| `silva_cortex_network` | linked SILVA points with independent internal architectures |
 | `silva_image_cortex` | convolutional retina plus linked cortex points |
 | `compact_deq` | affine-tanh DEQ reduction |
 | `message_passing_deq` | message-passing DEQ reduction |
@@ -45,6 +46,17 @@ model = silva_equilibrium_model(
     num_layers=2,
     task="graph",
     solver_configs=SolverConfig(solver="anderson", max_iter=20),
+)
+```
+
+For heterogeneous SILVA equilibrium points:
+
+```python
+model = silva_equilibrium_model(
+    "silva_cortex_network",
+    layers=[spatial_point, vector_point],
+    links=[spatial_to_vector],
+    head=classification_head,
 )
 ```
 

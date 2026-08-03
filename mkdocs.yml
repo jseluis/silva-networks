@@ -184,6 +184,7 @@ nav:
       - Custom Layers: examples/custom-layers.md
       - DEQ Engine Bridge: examples/deq-engine-bridge.md
       - Cortex Hierarchy: examples/cortex-hierarchy.md
+      - Spatial SILVA Cortex: examples/spatial-cortex.md
       - Optical Flow SILVA: examples/optical-flow-silva.md
       - Constrained Optimization: examples/constrained-optimization.md
       - Stacked Architecture: examples/stacked-architecture.md

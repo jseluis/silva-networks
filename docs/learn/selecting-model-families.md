@@ -39,6 +39,7 @@ print(available_silva_families())
 | `"silva_graph"` | stacked SILVA graph model |
 | `"silva_graph_preset"` | reference graph preset with configurable interaction modes |
 | `"silva_cortex"` | one flexible cortex-style equilibrium point |
+| `"silva_cortex_network"` | linked SILVA points with independent internal architectures |
 | `"silva_image_cortex"` | convolutional retina plus linked cortex equilibrium points |
 | `"compact_deq"` | affine-tanh DEQ reduction |
 | `"message_passing_deq"` | local graph/message-passing DEQ reduction |
@@ -128,6 +129,27 @@ cortex = silva_equilibrium_model(
     config=SolverConfig(solver="picard", max_iter=10, alpha=0.5),
 )
 ```
+
+The generic network family links independently constructed points. This is the
+family for different internal architectures, state shapes, solvers, and damping
+values at each SILVA point:
+
+```python
+network = silva_equilibrium_model(
+    "silva_cortex_network",
+    layers=[spatial_unet_point, vector_attention_point],
+    links=[spatial_to_vector],
+    head=classification_head,
+)
+```
+
+Each point still solves its own equation
+
+$$
+z_\ell^\star=F_{\theta_\ell}(z_\ell^\star,h_{\ell-1}),
+$$
+
+while the link maps the solved state into the next point's input space.
 
 The image preset adds the convolutional-retina hierarchy:
 

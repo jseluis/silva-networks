@@ -107,6 +107,8 @@ Optional self terms:
 | `SILVAVisionVectorLayer` | hidden-channel vector equilibrium |
 | `SILVAVisionVectorClassifier` | flattened/vector image classifier |
 | `SILVAConvVisionClassifier` | convolutional stem plus vector SILVA stack |
+| `SILVACortexLayer` | one SILVA point with an arbitrary internal PyTorch architecture |
+| `SILVACortexNetwork` | linked SILVA points with independent architectures and solvers |
 | `SILVAMolecularRegressor` | atom/bond graph SILVA regressor |
 
 ## Case Picker
@@ -119,6 +121,8 @@ Optional self terms:
 | graph modes and alphas | `SILVAGraphPresetNetwork` |
 | flattened image vectors | `SILVAVisionVectorClassifier` |
 | image tensor plus conv stem | `SILVAConvVisionClassifier` |
+| deep architecture inside one point | `SILVACortexLayer(state_network=...)` |
+| heterogeneous linked SILVA points | `SILVACortexNetwork` or family `silva_cortex_network` |
 | molecule regression | `SILVAMolecularRegressor` |
 | custom local/global physics | `SILVALayer` with custom modules |
 | hand-checking math | `np_picard`, `np_exact_tanh_affine_jacobian`, `np_implicit_gradient` |
@@ -213,5 +217,12 @@ optimizer_layer = silva_equilibrium_model(
     in_dim=features,
     state_dim=8,
     constraint="simplex",
+)
+
+cortex = silva_equilibrium_model(
+    "silva_cortex_network",
+    layers=[spatial_point, vector_point],
+    links=[spatial_to_vector],
+    head=classification_head,
 )
 ```

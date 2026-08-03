@@ -311,7 +311,7 @@ class SILVACortexLayer(nn.Module):
         signal = self.activation(z)
         total = stimulus
         if len(self.state_network) > 0:
-            total = total + _run_cortex_sequence(
+            state_field = _run_cortex_sequence(
                 self.state_network,
                 signal,
                 stimulus=stimulus,
@@ -320,13 +320,19 @@ class SILVACortexLayer(nn.Module):
                 edge_attr=edge_attr,
                 batch=batch,
             )
+            total = _add_cortex_field(
+                total,
+                state_field,
+                z,
+                source="state_network",
+            )
         for module in (
             *self.self_terms,
             *self.local_terms,
             *self.global_terms,
             *self.interaction_terms,
         ):
-            total = total + _call_cortex_module(
+            field = _call_cortex_module(
                 module,
                 signal,
                 stimulus=stimulus,
@@ -334,6 +340,12 @@ class SILVACortexLayer(nn.Module):
                 edge_index=edge_index,
                 edge_attr=edge_attr,
                 batch=batch,
+            )
+            total = _add_cortex_field(
+                total,
+                field,
+                z,
+                source=module.__class__.__name__,
             )
         total = _call_cortex_module(
             self.output_network,
@@ -344,7 +356,13 @@ class SILVACortexLayer(nn.Module):
             edge_attr=edge_attr,
             batch=batch,
         )
-        return self.normalizer(self.output_activation(total))
+        output = self.normalizer(self.output_activation(total))
+        if output.shape != z.shape:
+            raise ValueError(
+                "cortex transition must preserve the equilibrium-state shape: "
+                f"expected {tuple(z.shape)}, received {tuple(output.shape)}"
+            )
+        return output
 
     def forward(
         self,
@@ -603,6 +621,30 @@ def _call_cortex_module(module: nn.Module, z: Tensor, **kwargs) -> Tensor:
         if key in signature.parameters and value is not None
     }
     return module(z, **accepted)
+
+
+def _add_cortex_field(
+    total: Tensor,
+    field: Tensor,
+    state: Tensor,
+    *,
+    source: str,
+) -> Tensor:
+    if not isinstance(field, Tensor):
+        raise TypeError(f"{source} must return a torch.Tensor, received {type(field).__name__}")
+    try:
+        combined = total + field
+    except RuntimeError as exc:
+        raise ValueError(
+            f"{source} returned shape {tuple(field.shape)}, which cannot be added to "
+            f"equilibrium state shape {tuple(state.shape)}"
+        ) from exc
+    if combined.shape != state.shape:
+        raise ValueError(
+            f"{source} changed the equilibrium-state shape from {tuple(state.shape)} "
+            f"to {tuple(combined.shape)}"
+        )
+    return combined
 
 
 def _normalize_cortex_links(

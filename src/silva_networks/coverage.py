@@ -76,8 +76,11 @@ _IMPLEMENTATION_CASES: tuple[SILVAImplementationCase, ...] = (
         tutorial="docs/learn/cortex-hierarchy.md",
         notebooks=("docs/package-notebooks/11_cortex_hierarchy.ipynb",),
         smoke_tests=("tests/test_architectures.py",),
-        examples=("examples/cortex_hierarchy.py",),
-        scope="Linked cortex-style equilibrium points with flexible internal modules and per-point alphas.",
+        examples=("examples/cortex_hierarchy.py", "examples/spatial_cortex.py"),
+        scope=(
+            "Linked SILVA equilibrium points with independent vector or spatial internal "
+            "architectures and per-point solvers."
+        ),
     ),
     SILVAImplementationCase(
         key="presets",

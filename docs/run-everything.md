@@ -101,6 +101,7 @@ python examples/molecules.py
 python examples/custom_layers.py
 python examples/add_layers_on_top.py
 python examples/cortex_hierarchy.py
+python examples/spatial_cortex.py
 python examples/stacked_architecture.py
 python examples/datasets_quickstart.py
 python examples/deq_engine_bridge.py
@@ -118,6 +119,7 @@ Use the example pages for explanations:
 | [Molecules](examples/molecules.md) | atoms, bonds, edge attributes, molecule batch |
 | [Custom Layers](examples/custom-layers.md) | replacing \(L\), \(G\), or \(H\) with user modules |
 | [Cortex Hierarchy](examples/cortex-hierarchy.md) | deep internal modules inside linked equilibrium points |
+| [Spatial SILVA Cortex](examples/spatial-cortex.md) | residual CNN and U-Net transition linked to a different vector point |
 | [Stacked Architecture](examples/stacked-architecture.md) | multiple equilibrium layers with mixed solvers |
 | [Dataset Quickstart](examples/datasets-quickstart.md) | public data to `GraphTensorBatch` |
 | [DEQ Engine Bridge](examples/deq-engine-bridge.md) | arbitrary single-state and multi-state fixed-point systems |
@@ -147,7 +149,7 @@ The package API track:
 | [Equation-to-Code Walkthrough](package-notebooks/08_equation_to_code_walkthrough.ipynb) | derivation, code, data, diagnostics in one path |
 | [Family Selector and Projected QP](package-notebooks/09_family_selector_and_projected_qp.ipynb) | SILVA-style family selection, constraints, residuals, gradients, and flow smoke |
 | [Training Helpers Smoke](package-notebooks/10_training_helpers_smoke.ipynb) | fit/evaluate helper smoke, checkpointing, resume, device routing |
-| [Cortex Hierarchy](package-notebooks/11_cortex_hierarchy.ipynb) | linked cortex points, alphas, internal depth, image preset, residuals, and gradients |
+| [Cortex Hierarchy](package-notebooks/11_cortex_hierarchy.ipynb) | linked cortex points, MLP/CNN/U-Net internals, tiny spatial data, residuals, and gradients |
 | [Paper Family Architectures](package-notebooks/12_paper_family_architectures.ipynb) | sequence, multiscale, Jacobian, graph, INR, diffusion, and custom-transition cases |
 | [RAFT and DEQ-Flow](package-notebooks/13_raft_deq_flow.ipynb) | coupled hidden/flow state, exact implicit gradients, corrections, upsampling, and reuse |
 

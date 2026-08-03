@@ -7,6 +7,7 @@ from silva_networks import (
     SILVARAFTDEQ,
     SILVAConstrainedQuadraticLayer,
     SILVACortexLayer,
+    SILVACortexNetwork,
     SILVADEQFlow,
     SILVADiffusionEquilibrium,
     SILVAImageCortexClassifier,
@@ -35,6 +36,7 @@ def test_family_registry_lists_selectable_models() -> None:
     assert "message_passing_deq" in families
     assert "silva_deq_flow" in families
     assert "silva_cortex" in families
+    assert "silva_cortex_network" in families
     assert "silva_image_cortex" in families
     assert "silva_projected_qp" in families
     assert "sequence_deq" in families
@@ -111,11 +113,29 @@ def test_family_factory_builds_cortex_models() -> None:
         max_iter=1,
         dropout=0.0,
     )
+    cortex_network = silva_equilibrium_model(
+        "silva_cortex_network",
+        layers=[
+            SILVACortexLayer(
+                input_dim=3,
+                state_dim=5,
+                config=SolverConfig(max_iter=2, alpha=0.5),
+            ),
+            SILVACortexLayer(
+                input_dim=5,
+                state_dim=4,
+                config=SolverConfig(max_iter=2, alpha=0.2),
+            ),
+        ],
+        head=nn.Linear(4, 2),
+    )
 
     assert isinstance(cortex, SILVACortexLayer)
     assert cortex(torch.randn(4, 3)).shape == (4, 5)
     assert isinstance(image_cortex, SILVAImageCortexClassifier)
     assert image_cortex(torch.randn(2, 3, 8, 8)).shape == (2, 2)
+    assert isinstance(cortex_network, SILVACortexNetwork)
+    assert cortex_network(torch.randn(2, 3)).shape == (2, 2)
 
 
 def test_family_factory_builds_generalized_paper_cases() -> None:

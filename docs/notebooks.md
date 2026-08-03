@@ -25,7 +25,7 @@ dataset adapters, and extension points work together.
 | [Equation-to-Code Walkthrough](package-notebooks/08_equation_to_code_walkthrough.ipynb) | `notebooks/package_api/08_equation_to_code_walkthrough.ipynb` | derives SILVA reductions, runs the matching package APIs, and plots residuals |
 | [Family Selector and Projected QP](package-notebooks/09_family_selector_and_projected_qp.ipynb) | `notebooks/package_api/09_family_selector_and_projected_qp.ipynb` | checks SILVA-style family names, projected constraints, flow aliases, residuals, and gradients |
 | [Training Helpers Smoke](package-notebooks/10_training_helpers_smoke.ipynb) | `notebooks/package_api/10_training_helpers_smoke.ipynb` | checks `fit_supervised`, `evaluate`, device movement, checkpointing, and resume |
-| [Cortex Hierarchy](package-notebooks/11_cortex_hierarchy.ipynb) | `notebooks/package_api/11_cortex_hierarchy.ipynb` | builds linked cortex points, varies alphas and internal depth, runs the image preset, and checks gradients |
+| [Cortex Hierarchy](package-notebooks/11_cortex_hierarchy.ipynb) | `notebooks/package_api/11_cortex_hierarchy.ipynb` | builds heterogeneous linked points with MLP, CNN, and U-Net internals on vector and spatial states |
 | [Paper Family Architectures](package-notebooks/12_paper_family_architectures.ipynb) | `notebooks/package_api/12_paper_family_architectures.ipynb` | runs sequence DEQ, MDEQ, Jacobian regularization, IGNN, INR, diffusion, and a custom transition |
 | [RAFT and DEQ-Flow](package-notebooks/13_raft_deq_flow.ipynb) | `notebooks/package_api/13_raft_deq_flow.ipynb` | runs the coupled hidden/flow equilibrium, exact implicit gradients, sparse corrections, learned upsampling, and reuse |
 

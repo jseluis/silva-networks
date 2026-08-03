@@ -262,6 +262,11 @@ model = SILVACortexNetwork(
 )
 ```
 
+The same composition is selectable as the canonical
+`"silva_cortex_network"` family. Each point may use an MLP, convolutional
+network, residual network, U-Net, attention block, graph module, or another
+PyTorch transition that returns the equilibrium-state shape.
+
 Use the family selector when you want a single choice point:
 
 ```python

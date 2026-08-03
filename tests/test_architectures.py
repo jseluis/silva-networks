@@ -42,6 +42,21 @@ class StimulusGate(torch.nn.Module):
         return torch.sigmoid(self.gate(stimulus)) * z
 
 
+class SpatialTransition(torch.nn.Module):
+    def __init__(self, channels: int):
+        super().__init__()
+        self.down = torch.nn.Conv2d(channels, 2 * channels, kernel_size=3, stride=2, padding=1)
+        self.up = torch.nn.ConvTranspose2d(2 * channels, channels, kernel_size=2, stride=2)
+
+    def forward(self, z: torch.Tensor) -> torch.Tensor:
+        return self.up(torch.tanh(self.down(z)))
+
+
+class WrongShapeTransition(torch.nn.Module):
+    def forward(self, z: torch.Tensor) -> torch.Tensor:
+        return z[..., :-1]
+
+
 def test_stack_supports_solver_sequence_and_custom_operator() -> None:
     x = torch.randn(7, 3)
     edge_index = torch.tensor([[0, 1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6, 0]])
@@ -81,6 +96,36 @@ def test_cortex_layer_supports_internal_network_and_context_terms() -> None:
     assert result.z.shape == (5, 6)
     assert layer.input_encoder.weight.grad is not None
     assert result.iterations >= 1
+
+
+def test_cortex_layer_supports_spatial_downsample_upsample_transition() -> None:
+    torch.manual_seed(34)
+    x = torch.randn(4, 1, 8, 8)
+    layer = SILVACortexLayer(
+        input_encoder=torch.nn.Conv2d(1, 4, kernel_size=3, padding=1),
+        state_network=SpatialTransition(4),
+        global_terms=torch.nn.AdaptiveAvgPool2d(1),
+        normalizer=torch.nn.GroupNorm(1, 4),
+        config=SolverConfig(max_iter=2, alpha=0.3),
+    )
+    result = layer(x, return_result=True)
+    result.z.square().mean().backward()
+
+    assert result.z.shape == (4, 4, 8, 8)
+    assert layer.input_encoder.weight.grad is not None
+    assert layer.state_network[0].down.weight.grad is not None
+
+
+def test_cortex_layer_reports_incompatible_transition_shape() -> None:
+    layer = SILVACortexLayer(
+        input_dim=4,
+        state_dim=6,
+        state_network=WrongShapeTransition(),
+        config=SolverConfig(max_iter=1),
+    )
+
+    with pytest.raises(ValueError, match=r"state_network returned shape .* equilibrium state shape"):
+        layer(torch.randn(3, 4))
 
 
 def test_cortex_network_links_distinct_equilibrium_points() -> None:

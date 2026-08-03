@@ -7,6 +7,28 @@ paper, book sources, or production code outside the package.
 <div class="silva-doclog" markdown>
 <div class="silva-doclog__date" markdown>
 <strong>August 3, 2026</strong>
+<span>Spatial and heterogeneous SILVA cortex architectures</span>
+</div>
+<div class="silva-doclog__body" markdown>
+## Internal Architecture And Linked-Point Pass
+
+Made the distinction between depth inside one SILVA equilibrium point and
+depth across several linked SILVA points explicit throughout the package.
+
+| Area | Change |
+| --- | --- |
+| Family API | Added the canonical `silva_cortex_network` family for independently constructed linked points. |
+| State contract | Added targeted validation that a completed transition preserves the equilibrium-state shape. |
+| Spatial example | Added a deterministic tiny-image example with a residual CNN and U-Net-shaped first point linked to a vector MLP point. |
+| Notebook | Extended the cortex notebook with spatial states, heterogeneous point architectures, tiny-data training, and fixed-point-safe module guidance. |
+| Documentation | Added spatial normalization, determinism, state-shape, damping, and residual-diagnostic guidance. |
+| Tests | Added spatial forward/backward, family construction, shape failure, example execution, and coverage-registry checks. |
+</div>
+</div>
+
+<div class="silva-doclog" markdown>
+<div class="silva-doclog__date" markdown>
+<strong>August 3, 2026</strong>
 <span>Cinematic SILVA method visual and mobile equation polish</span>
 </div>
 <div class="silva-doclog__body" markdown>

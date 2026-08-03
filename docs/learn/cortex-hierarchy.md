@@ -157,6 +157,62 @@ The first point has a ten-layer internal transition network. The second point
 uses a different architecture, different state dimension, different solver, and
 different damping. Both are trained by ordinary PyTorch gradients.
 
+## Internal Architecture Contract
+
+The internal architecture is defined by ordinary PyTorch modules. A SILVA
+equilibrium point does not require an MLP: `state_network` may contain
+convolutions, residual blocks, a U-Net, attention, graph operations, or a
+domain-specific module. The final transition must preserve the equilibrium
+state space:
+
+$$
+F_\theta:\mathcal Z\rightarrow\mathcal Z,
+\qquad
+\operatorname{shape}(F_\theta(z,x))=\operatorname{shape}(z).
+$$
+
+The controls have distinct roles:
+
+| Control | Role |
+| --- | --- |
+| `input_encoder` | maps the incoming object to the equilibrium-state shape |
+| `state_network` | runs the internal architecture during every solver iteration |
+| interaction terms | add broadcast-compatible self, local, global, or custom fields |
+| `output_network` | processes the summed transition before the outer activation |
+| `normalizer` | applies shape-appropriate normalization |
+| `links` | transforms one solved point before it enters the next point |
+
+For an image state with shape `(batch, channels, height, width)`, use a
+convolutional `input_encoder` and a spatial normalizer such as `GroupNorm`.
+A U-Net may change resolution internally, but its returned tensor must restore
+the state channels, height, and width.
+
+```python
+spatial_point = SILVACortexLayer(
+    input_encoder=torch.nn.Conv2d(1, 8, kernel_size=3, padding=1),
+    state_network=my_unet_transition,
+    normalizer=torch.nn.GroupNorm(2, 8),
+    config=SolverConfig(solver="anderson", max_iter=20, alpha=0.35),
+)
+```
+
+The runnable [Spatial SILVA Cortex example](../examples/spatial-cortex.md)
+uses a residual convolutional block and a U-Net-shaped transition inside the
+first point, then links its spatial state to a different vector point.
+
+### Fixed-Point-Safe Modules
+
+During one solve, the transition should be deterministic, differentiable, and
+device/dtype preserving. Prefer `GroupNorm` for spatial states. Ordinary
+training-mode batch normalization changes running statistics during repeated
+transition evaluations, and ordinary dropout draws a new mask at every
+iteration. Use fixed statistics or a solver-consistent mask when those
+operations are required.
+
+Large internal networks are not automatically stable. Damping, residual
+scaling, spectral normalization, and the recorded residual curve remain the
+practical controls for checking convergence.
+
 ## Image Cortex Preset
 
 `SILVAImageCortexClassifier` packages the CIFAR-style pattern:

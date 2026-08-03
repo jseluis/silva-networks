@@ -16,6 +16,7 @@ python examples/custom_layers.py
 python examples/deq_engine_bridge.py
 python examples/add_layers_on_top.py
 python examples/cortex_hierarchy.py
+python examples/spatial_cortex.py
 python examples/optical_flow_silva.py
 python examples/constrained_optimization.py
 python examples/stacked_architecture.py
@@ -35,6 +36,7 @@ python examples/raft_deq_flow.py
 | [Custom Layers](custom-layers.md) | `SILVALayer`, custom `nn.Module` branches | replacing interaction branches |
 | [DEQ Engine Bridge](deq-engine-bridge.md) | `SILVADEQEngine`, `SILVADEQConfig`, `silva_deq` | solving arbitrary single-state and multi-state systems |
 | [Cortex Hierarchy](cortex-hierarchy.md) | `SILVACortexLayer`, `SILVACortexNetwork` | deep internal modules inside linked equilibrium points |
+| [Spatial SILVA Cortex](spatial-cortex.md) | `SILVACortexLayer`, `silva_equilibrium_model` | residual CNN and U-Net inside one point linked to a different vector point |
 | [Optical Flow SILVA](optical-flow-silva.md) | `SILVADEQFlow`, RAFT-style correlation helpers | synthetic flow fixed point, EPE, smoothness, gradients |
 | [Constrained Optimization](constrained-optimization.md) | `SILVAProjectedQPLayer`, `silva_projected_qp_layer` | projected-QP fixed point, simplex constraints, gradients |
 | [Stacked Architecture](stacked-architecture.md) | `SILVAGraphNetwork`, mixed solvers | multi-layer equilibrium stack on a selected device |

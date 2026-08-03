@@ -43,7 +43,7 @@ $$
 | Family selection | [Selecting Model Families](learn/selecting-model-families.md) | choose SILVA, DEQ, MDEQ, flow, and optimization modules from one selector |
 | Method adaptation | [Method Adaptation Atlas](learn/method-adaptation-atlas.md) | translate external implicit-layer, DEQ, ODE, optimization, and flow sources into SILVA equations |
 | SILVA operators | [SILVA Operators](learn/silva-operators.md) | vary Figure 1 branches and ablations |
-| Cortex hierarchy | [Cortex Hierarchies](learn/cortex-hierarchy.md) | build linked fast/slow equilibrium points with flexible internal modules |
+| Cortex hierarchy | [Cortex Hierarchies](learn/cortex-hierarchy.md) | build linked SILVA points with independently configured MLP, convolutional, U-Net, attention, or graph internals |
 | Stability | [Jacobians and Stability](learn/jacobians.md) | compute Jacobians, products, spectral-radius diagnostics |
 | Dataset adaptation | [Datasets and Preprocessing](learn/datasets-and-preprocessing.md) | convert public or private data into the engine |
 

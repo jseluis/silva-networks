@@ -169,6 +169,17 @@ Custom modules may accept `z`, `stimulus`, `x`, `edge_index`, `edge_attr`, or
 ordinary PyTorch modules usable while still allowing graph-aware and
 context-aware interaction branches.
 
+The internal modules may be MLPs, convolutions, residual networks, U-Nets,
+attention blocks, or graph modules. Intermediate representations may change
+shape, but the completed transition must return exactly the equilibrium-state
+shape. Interaction fields may broadcast into that shape. A shape mismatch
+raises an error naming the responsible transition or branch before the solver
+continues.
+
+Use `normalizer=torch.nn.GroupNorm(...)` for `(batch, channels, height, width)`
+states. The default `LayerNorm(state_dim)` is intended for states whose final
+dimension is the feature width.
+
 ## Graph Readout
 
 For graph-level prediction, entity states are pooled:

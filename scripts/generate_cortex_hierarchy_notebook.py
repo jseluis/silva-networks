@@ -154,6 +154,7 @@ gradients, and an image-cortex preset.
         code(
             """
 import torch
+import torch.nn.functional as F
 import matplotlib.pyplot as plt
 
 from silva_networks import (
@@ -162,6 +163,7 @@ from silva_networks import (
     SILVAImageCortexClassifier,
     SolverConfig,
     resolve_device,
+    silva_equilibrium_model,
 )
 
 torch.manual_seed(11)
@@ -266,6 +268,147 @@ plt.ylabel("residual")
 plt.title("Cortex hierarchy residuals")
 plt.legend()
 plt.tight_layout()
+"""
+        ),
+        md(
+            r"""
+## Spatial Architecture Inside a SILVA Point
+
+The equilibrium state may be an image tensor rather than a feature vector. In
+this example, the first point has state shape `(batch, 4, 8, 8)` and evaluates
+a residual convolutional block plus a U-Net-shaped transition during every
+solver iteration. The U-Net may downsample internally, but it restores the
+equilibrium-state shape before returning:
+
+$$
+F_{\theta_1}:\mathbb R^{4\times8\times8}
+\rightarrow\mathbb R^{4\times8\times8}.
+$$
+
+The solved spatial state is flattened and passed to a second SILVA point with
+a different vector architecture and solver.
+"""
+        ),
+        code(
+            """
+class SILVAResidualConvTransition(torch.nn.Module):
+    def __init__(self, channels):
+        super().__init__()
+        self.conv1 = torch.nn.Conv2d(channels, channels, 3, padding=1)
+        self.conv2 = torch.nn.Conv2d(channels, channels, 3, padding=1)
+        self.norm1 = torch.nn.GroupNorm(1, channels)
+        self.norm2 = torch.nn.GroupNorm(1, channels)
+
+    def forward(self, z):
+        update = F.gelu(self.norm1(self.conv1(z)))
+        return z + 0.25 * self.norm2(self.conv2(update))
+
+
+class SILVATinyUNetTransition(torch.nn.Module):
+    def __init__(self, channels):
+        super().__init__()
+        expanded = 2 * channels
+        self.encoder = SILVAResidualConvTransition(channels)
+        self.down = torch.nn.Conv2d(channels, expanded, 3, stride=2, padding=1)
+        self.bottleneck = SILVAResidualConvTransition(expanded)
+        self.up = torch.nn.ConvTranspose2d(expanded, channels, 2, stride=2)
+        self.decoder = torch.nn.Conv2d(2 * channels, channels, 3, padding=1)
+
+    def forward(self, z):
+        skip = self.encoder(z)
+        low = self.bottleneck(F.gelu(self.down(skip)))
+        up = self.up(low)
+        if up.shape[-2:] != skip.shape[-2:]:
+            up = F.interpolate(up, size=skip.shape[-2:], mode="bilinear", align_corners=False)
+        return 0.25 * torch.tanh(self.decoder(torch.cat([skip, up], dim=1)))
+
+
+class SILVASpatialToVectorLink(torch.nn.Module):
+    def forward(self, z):
+        return z.flatten(start_dim=1)
+
+
+def make_tiny_pattern_dataset(samples=24, image_size=8):
+    generator = torch.Generator().manual_seed(57)
+    images = 0.04 * torch.randn(samples, 1, image_size, image_size, generator=generator)
+    labels = torch.arange(samples) % 2
+    center = image_size // 2
+    for index, label in enumerate(labels):
+        if int(label) == 0:
+            images[index, 0, :, center - 1:center + 1] += 1.0
+        else:
+            images[index, 0, center - 1:center + 1, :] += 1.0
+    return images, labels
+"""
+        ),
+        code(
+            """
+channels = 4
+spatial_point = SILVACortexLayer(
+    input_encoder=torch.nn.Conv2d(1, channels, 3, padding=1),
+    state_network=torch.nn.Sequential(
+        SILVAResidualConvTransition(channels),
+        SILVATinyUNetTransition(channels),
+    ),
+    normalizer=torch.nn.GroupNorm(1, channels),
+    config=SolverConfig(solver="picard", max_iter=3, alpha=0.35),
+)
+vector_point = SILVACortexLayer(
+    input_dim=channels * 8 * 8,
+    state_dim=12,
+    state_network=torch.nn.Sequential(
+        torch.nn.Linear(12, 24),
+        torch.nn.GELU(),
+        torch.nn.Linear(24, 12),
+    ),
+    config=SolverConfig(solver="anderson", max_iter=3, alpha=0.2, history=2),
+)
+spatial_model = silva_equilibrium_model(
+    "silva_cortex_network",
+    layers=[spatial_point, vector_point],
+    links=[SILVASpatialToVectorLink()],
+    head=torch.nn.Linear(12, 2),
+).to(device)
+
+pattern_images, pattern_labels = make_tiny_pattern_dataset()
+pattern_images = pattern_images.to(device)
+pattern_labels = pattern_labels.to(device)
+optimizer = torch.optim.Adam(spatial_model.parameters(), lr=2e-2)
+
+for _ in range(4):
+    spatial_result = spatial_model(pattern_images, return_results=True)
+    spatial_loss = F.cross_entropy(spatial_result.output, pattern_labels)
+    optimizer.zero_grad()
+    spatial_loss.backward()
+    optimizer.step()
+
+spatial_accuracy = (spatial_result.output.argmax(dim=1) == pattern_labels).float().mean()
+spatial_gradients = [
+    spatial_model.layers[0].input_encoder.weight.grad is not None,
+    spatial_model.layers[1].input_encoder.weight.grad is not None,
+]
+if not all(spatial_gradients):
+    raise RuntimeError("gradients did not reach both SILVA equilibrium points")
+print("state shapes:", [tuple(state.shape) for state in spatial_result.states])
+print("solvers:", [item.solver for item in spatial_result.solver_results])
+print("loss:", float(spatial_loss.detach().cpu()))
+print("accuracy:", float(spatial_accuracy.detach().cpu()))
+print("point gradients:", spatial_gradients)
+"""
+        ),
+        md(
+            r"""
+The module contract for one SILVA point is:
+
+1. the completed transition returns the equilibrium-state shape;
+2. the transition is deterministic during one solve;
+3. tensors remain on the same device and dtype;
+4. every operation supports the selected backward mode.
+
+For spatial states, `GroupNorm` avoids mutable batch statistics. Random masks
+must remain consistent during repeated transition evaluations. Larger internal
+architectures may require stronger damping, residual scaling, or spectral
+normalization; residual curves remain the direct convergence check.
 """
         ),
         md(
