@@ -6,6 +6,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from release_audit import _contains_blocked_provenance_token
 
 API_PAGE_NAMES = {
     "deq_engine": "deq-engine",
@@ -25,6 +28,12 @@ def test_release_audit_passes() -> None:
     assert result.returncode == 0, result.stdout + result.stderr
     report = json.loads(result.stdout)
     assert report["errors"] == []
+
+
+def test_release_audit_detects_blocked_provenance_tokens() -> None:
+    blocked = bytes((99, 111, 100, 101, 120)).decode("ascii")
+    assert _contains_blocked_provenance_token(f"created with {blocked}")
+    assert not _contains_blocked_provenance_token("SILVA equilibrium network")
 
 
 def test_documentation_audit_passes() -> None:

@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import argparse
 import base64
+import hashlib
 import json
 import re
 import struct
+import subprocess
 import sys
 from html.parser import HTMLParser
 from pathlib import Path
@@ -120,6 +122,30 @@ STALE_PATTERNS = (
 
 TEXT_SUFFIXES = {".md", ".cff", ".yml", ".yaml", ".toml", ".py", ".bib", ".ipynb"}
 SKIP_PARTS = {".git", ".venv", "venv", "__pycache__", "site", "dist", "build"}
+PROVENANCE_TEXT_SUFFIXES = TEXT_SUFFIXES | {
+    ".cfg",
+    ".css",
+    ".html",
+    ".in",
+    ".ini",
+    ".js",
+    ".json",
+    ".rst",
+    ".sh",
+    ".txt",
+}
+PROVENANCE_TOKEN_RE = re.compile(r"[A-Za-z][A-Za-z0-9_-]*")
+PROVENANCE_TOKEN_FINGERPRINTS = frozenset(
+    {
+        "57de4cf40144bdf7d00010f2f5557a7d642c2b9705309bfade167dd313e2ca93",
+        "60965168ce762e949600281ba6d01fee136e5b6e8257b1f216f9025ed324474c",
+        "7d3194f79e645c42e4396dda38be04766810ec6a00d00aced3ffc2a0a1f1a9ef",
+        "c70eca6b0f88f44d81a41311647e50fda1ac454ec04ffd442b0eb4743a993131",
+        "c857d09db23e6822e3600bc06ad8d58f92ed62bc8efd81c753f77048662cb97d",
+        "5d72436256ada53828b51895a94bb8489e9f1ac4fe937a8024ef1594e7045ff6",
+        "3ea125d0bff386e6754b3782b300016fc79a9cf8f8669c0a5c3db64467ddb681",
+    }
+)
 CODE_FENCE_RE = re.compile(r"```.*?```", re.DOTALL)
 INLINE_CODE_RE = re.compile(r"`[^`\n]*`")
 VISIBLE_MATH_RE = re.compile(r"(\\\(|\\\)|\\\[|\\\]|\$\$|(?<!\\)\$(?=[^$]*(?:\\[A-Za-z]|[_^])))")
@@ -146,6 +172,7 @@ def run_audit(root: Path = ROOT) -> dict[str, list[str]]:
     _check_nav(root, errors)
     _check_api_reference(root, errors)
     _check_stale_patterns(root, errors)
+    _check_repository_provenance(root, errors)
     _check_coverage_registry(root, errors)
     _check_companion_asset_policy(root, errors, warnings)
     _check_docs_rendering_assets(root, errors)
@@ -299,6 +326,65 @@ def _check_stale_patterns(root: Path, errors: list[str]) -> None:
         for pattern in STALE_PATTERNS:
             if pattern in text:
                 errors.append(f"stale citation text in {path.relative_to(root)}: {pattern}")
+
+
+def _contains_blocked_provenance_token(text: str) -> bool:
+    for match in PROVENANCE_TOKEN_RE.finditer(text):
+        token = match.group(0).lower().encode("utf-8")
+        if hashlib.sha256(token).hexdigest() in PROVENANCE_TOKEN_FINGERPRINTS:
+            return True
+    return False
+
+
+def _tracked_paths(root: Path) -> list[Path]:
+    if (root / ".git").exists():
+        result = subprocess.run(
+            ["git", "ls-files", "-z"],
+            cwd=root,
+            capture_output=True,
+            check=False,
+        )
+        if result.returncode == 0:
+            return [root / item.decode("utf-8") for item in result.stdout.split(b"\0") if item]
+    return [
+        path
+        for path in root.rglob("*")
+        if path.is_file() and not any(part in SKIP_PARTS for part in path.parts)
+    ]
+
+
+def _provenance_text(path: Path) -> str:
+    if path.suffix == ".ipynb":
+        notebook = json.loads(path.read_text(encoding="utf-8"))
+        chunks = [json.dumps(notebook.get("metadata", {}), sort_keys=True)]
+        chunks.extend(
+            "".join(cell.get("source", [])) for cell in notebook.get("cells", [])
+        )
+        return "\n".join(chunks)
+    return path.read_text(encoding="utf-8", errors="ignore")
+
+
+def _check_repository_provenance(root: Path, errors: list[str]) -> None:
+    for path in _tracked_paths(root):
+        relative = path.relative_to(root)
+        if _contains_blocked_provenance_token(relative.as_posix()):
+            errors.append(f"blocked provenance reference in repository path: {relative}")
+        if path.suffix.lower() not in PROVENANCE_TEXT_SUFFIXES:
+            continue
+        if _contains_blocked_provenance_token(_provenance_text(path)):
+            errors.append(f"blocked provenance reference in repository text: {relative}")
+
+    if not (root / ".git").exists():
+        return
+    result = subprocess.run(
+        ["git", "log", "--all", "--format=%B%x00"],
+        cwd=root,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if result.returncode == 0 and _contains_blocked_provenance_token(result.stdout):
+        errors.append("blocked provenance reference in commit history")
 
 
 def _check_coverage_registry(root: Path, errors: list[str]) -> None:
