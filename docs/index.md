@@ -402,3 +402,12 @@ logits = model(x, edge_index=edge_index)
 !!! note "Citation policy"
     Method pages link each external result to its primary paper or repository.
     The local article asset is the SILVA companion paper.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Where should I begin learning SILVA? | [Start Here](start-here.md) |
+| How does a SILVA layer emerge from fixed-point mathematics? | [SILVA From Scratch](learn/silva-from-scratch.md) |
+| How are the available scientific cases organized? | [Case Atlas](learn/case-atlas.md) |
+| How should the software and article be cited? | [Paper and References](paper/references.md) |

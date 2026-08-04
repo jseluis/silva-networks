@@ -411,3 +411,12 @@ print(out.shape, float(loss.detach()))
 6. [Method Adaptation Atlas](learn/method-adaptation-atlas.md)
 7. [Research Citation Audit](research-citation-audit.md)
 8. [Equation-to-Code Walkthrough](package-notebooks/08_equation_to_code_walkthrough.ipynb)
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Which dependencies should I install first? | [Installation](installation.md) |
+| Which executable notebooks are available? | [Notebooks](notebooks.md) |
+| Which public experiment configurations can I run? | [Public Experiments](experiments/index.md) |
+| Which checks determine release readiness? | [Release Readiness](release-readiness.md) |

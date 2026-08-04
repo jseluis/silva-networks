@@ -65,6 +65,7 @@ REQUIRED_FILES = (
     "experiments/public/configs/torchvision_dataset_suite.json",
     "scripts/smoke_test.sh",
     "scripts/run_notebook_smoke.py",
+    "scripts/notebook_navigation.py",
 )
 
 REQUIRED_NAV_MARKERS = (

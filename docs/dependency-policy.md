@@ -100,3 +100,11 @@ Before release, test both:
 
 Dependency pins should be strict only when they protect users from known
 compatibility failures. Otherwise, ranges should allow current stable releases.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Which installation command selects each extra? | [Installation](installation.md) |
+| Which architecture families need optional components? | [Selecting Model Families](learn/selecting-model-families.md) |
+| Which dataset routes may download external data? | [Dataset Cases](experiments/datasets.md) |

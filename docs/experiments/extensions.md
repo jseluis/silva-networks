@@ -86,6 +86,6 @@ a small training loop.
 
 | Question | Page |
 | --- | --- |
-| How can a new branch or operator be implemented? | [Custom Layers](../learn/custom-layers.md) |
+| Where is a custom branch implemented and executed? | [Custom Layers Example](../examples/custom-layers.md) |
 | What evidence should an extended experiment report? | [Reconstructing Paper Experiments](../learn/reconstructing-paper-experiments.md) |
 | How are research architecture families represented? | [Paper Family Adaptations](../learn/paper-family-adaptations.md) |

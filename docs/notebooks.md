@@ -140,3 +140,11 @@ through them is:
 Those notebooks complement the package API notebooks: the book track is
 derivation-heavy, while the package track is installation, usage, and
 extension-oriented.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How can notebooks be opened in a hosted environment? | [Run in Colab](colab.md) |
+| Which notebook gives the shortest package introduction? | [Package Quickstart Notebook](package-notebooks/01_package_quickstart.ipynb) |
+| Where is the complete conceptual learning path? | [Learn SILVA From Scratch](learn/mathematical-foundations.md) |

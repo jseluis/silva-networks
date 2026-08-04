@@ -222,3 +222,11 @@ Public dataset sources:
 Reference policy: the SILVA article PDF is included with the documentation
 assets. Third-party papers and upstream repositories are cited through canonical
 links.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How should the article and package be cited? | [How to Cite](../index.md#how-to-cite) |
+| How does each cited method connect to SILVA? | [Method Adaptation Atlas](../learn/method-adaptation-atlas.md) |
+| Which identifiers and records have been audited? | [Research Citation Audit](../research-citation-audit.md) |

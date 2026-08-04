@@ -436,3 +436,4 @@ print(result.z.shape, result.residual, report.spectral_radius)
 | What does a fixed point mean operationally? | [Fixed Points](fixed-points.md) |
 | How do the equations become named SILVA branches? | [Derivation Workbook](derivation-workbook.md) |
 | How is the backward linear system implemented? | [Implicit Backward Guide](implicit-backward-guide.md) |
+| Which solver contracts implement these iterations? | [Solvers API](../api/solvers.md) |

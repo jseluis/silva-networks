@@ -128,3 +128,11 @@ https://arxiv.org/abs/2607.28989
 
 The full BibTeX file is
 [`docs/assets/bib/silva-networks.bib`](assets/bib/silva-networks.bib).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Which notebooks and topics are available? | [Notebooks](notebooks.md) |
+| Which notebook should I open first? | [Package Quickstart Notebook](package-notebooks/01_package_quickstart.ipynb) |
+| How do I install the same environment locally? | [Installation](installation.md) |

@@ -116,3 +116,12 @@ The public package is available at
 and requires Python 3.10 or newer. A Python 3.9 environment will report no
 matching distribution because the published metadata declares
 `Requires-Python >=3.10`.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| What is the shortest path after installation? | [Start Here](start-here.md) |
+| Why are dependencies separated into extras? | [Dependency Policy](dependency-policy.md) |
+| Can I verify the installation with one example? | [Introduction by Example](get-started/introduction-by-example.md) |
+| Which notebook should I run first? | [Package Quickstart Notebook](package-notebooks/01_package_quickstart.ipynb) |

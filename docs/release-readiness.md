@@ -21,7 +21,7 @@ broken package builds before a public release.
 | Cortex hierarchy | vector and spatial `SILVACortexLayer` transitions, heterogeneous `SILVACortexNetwork` points, and `SILVAImageCortexClassifier` documented and validated |
 | Point architecture catalog | ten vector, token, and spatial modules with shape, gradient, fixed-point, tiny-data, example, and notebook checks |
 | Generalized cases | sequence, multiscale vision, Jacobian, IGNN, INR, diffusion, and coupled RAFT/DEQ-Flow APIs documented and validated |
-| Guided navigation | all 70 Get Started, Learn, Examples, API, and Public Experiments pages include contextual question-based next steps |
+| Guided navigation | all 88 Markdown pages and 24 rendered notebooks include contextual question-based next steps |
 | Public datasets | UCI tabular loaders plus TorchVision adapters for MNIST, FashionMNIST, KMNIST, EMNIST, CIFAR10, CIFAR100, and SVHN |
 | Public results | [Results](results.md) records measured validation metrics, tensor shapes, residuals, and reproduction commands |
 | CLI workflow | [CLI Guide](cli.md), `silva-experiment`, `silva-download-datasets`, `scripts/smoke_test.sh`, config listing, config display, device override, and dotted `--set` overrides |
@@ -110,3 +110,11 @@ Validation:
 | CUDA validation is hardware-dependent | Required CUDA checks should run on a CUDA machine; CPU checks do not replace that hardware validation. |
 | Full real TorchVision suite is opt-in | The package tests the runner route and real CIFAR10 smokes locally; the complete real image suite should run where dataset archives can be cached. |
 | Optimization extras may be absent | Install `.[optimization]` only for CVXPYlayers experiments. |
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How can I run every required check? | [Run Everything](run-everything.md) |
+| What is the publication sequence? | [Publishing](publishing.md) |
+| Which documentation changes are recorded? | [Documentation Log](documentation-log.md) |

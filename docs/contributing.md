@@ -19,8 +19,7 @@ Contribution guidelines:
 
 ## Guided Page Endings
 
-Every Markdown page in `docs/get-started`, `docs/learn`, `docs/examples`,
-`docs/api`, and `docs/experiments` ends with:
+Every Markdown documentation page ends with:
 
 ```markdown
 ## Where to Go Next
@@ -32,5 +31,21 @@ Every Markdown page in `docs/get-started`, `docs/learn`, `docs/examples`,
 
 Use three or four distinct destinations. Phrase the first column as actual
 reader questions, and select links that connect explanation, execution, and API
-reference where possible. The documentation audit validates the heading, table
-shape, question wording, destination uniqueness, and local link targets.
+reference where possible. Rendered notebooks use the same table in a final
+tagged Markdown cell. Synchronize those cells across notebook copies with:
+
+```bash
+python scripts/notebook_navigation.py
+```
+
+The documentation audit validates the heading, table shape, question wording,
+destination uniqueness, cross-section reach, local link targets, notebook cell
+placement, and notebook source synchronization.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Which documentation changes have already been recorded? | [Documentation Log](documentation-log.md) |
+| Which checks must a contribution pass? | [Release Readiness](release-readiness.md) |
+| How can contributors run the complete local workflow? | [Run Everything](run-everything.md) |

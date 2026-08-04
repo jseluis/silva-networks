@@ -32,8 +32,10 @@ EXAMPLE_EXCEPTIONS = {
     "docs/examples/index.md",
     "docs/examples/citation-aware-reporting.md",
 }
-NEXT_STEP_DIRECTORIES = ("get-started", "learn", "examples", "api", "experiments")
 NEXT_STEP_LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
+FENCED_CODE_RE = re.compile(r"```.*?```|~~~.*?~~~", re.DOTALL)
+NEXT_STEP_CELL_TAG = "silva-next-steps"
+SITE_PREFIX = "https://jseluis.github.io/silva-networks/"
 
 
 def run_documentation_audit(root: Path = ROOT) -> dict[str, list[str]]:
@@ -69,53 +71,14 @@ def _check_navigation(root: Path, docs: Path, errors: list[str]) -> None:
 
 
 def _check_next_steps(docs: Path, errors: list[str]) -> None:
-    pages = [
-        path
-        for directory in NEXT_STEP_DIRECTORIES
-        for path in sorted((docs / directory).glob("*.md"))
-    ]
-    for path in pages:
-        text = path.read_text(encoding="utf-8")
-        if text.count("## Where to Go Next") != 1:
-            errors.append(
-                f"{path.relative_to(ROOT)} must contain one Where to Go Next section"
-            )
-            continue
-
-        section = text.split("## Where to Go Next", 1)[1]
-        section = re.split(r"^## ", section, maxsplit=1, flags=re.MULTILINE)[0]
-        if "| Question | Page |" not in section:
-            errors.append(
-                f"{path.relative_to(ROOT)} next steps must use a Question/Page table"
-            )
-            continue
-
-        rows = []
-        for line in section.splitlines():
-            if not line.startswith("|") or line in {
-                "| Question | Page |",
-                "| --- | --- |",
-            }:
-                continue
-            cells = [cell.strip() for cell in line.strip("|").split("|")]
-            if len(cells) == 2:
-                rows.append(cells)
-
-        if len(rows) < 3:
-            errors.append(f"{path.relative_to(ROOT)} needs at least three next-step rows")
-            continue
-
+    for path in sorted(docs.rglob("*.md")):
+        label = path.relative_to(ROOT).as_posix()
+        rows = _next_step_rows(path.read_text(encoding="utf-8"), label, errors)
         destinations: list[str] = []
+        destination_families: set[str] = set()
         for question, page_cell in rows:
-            if not question.endswith("?"):
-                errors.append(
-                    f"{path.relative_to(ROOT)} next-step prompt is not a question: {question}"
-                )
             links = NEXT_STEP_LINK_RE.findall(page_cell)
-            if len(links) != 1:
-                errors.append(
-                    f"{path.relative_to(ROOT)} next-step row needs one page link: {page_cell}"
-                )
+            if not links:
                 continue
             destination = links[0]
             destinations.append(destination)
@@ -124,12 +87,56 @@ def _check_next_steps(docs: Path, errors: list[str]) -> None:
                 continue
             target = (path.parent / target_text).resolve()
             if not target.exists():
-                errors.append(
-                    f"{path.relative_to(ROOT)} next-step target does not exist: {destination}"
-                )
+                errors.append(f"{label} next-step target does not exist: {destination}")
+                continue
+            if target == path.resolve():
+                errors.append(f"{label} contains a self-referential next-step link")
+            try:
+                parts = target.relative_to(docs).parts
+            except ValueError:
+                continue
+            destination_families.add(parts[0] if len(parts) > 1 else "root")
 
         if len(destinations) != len(set(destinations)):
-            errors.append(f"{path.relative_to(ROOT)} repeats a next-step destination")
+            errors.append(f"{label} repeats a next-step destination")
+        if path.parent != docs and len(destination_families) < 2:
+            errors.append(f"{label} next steps do not connect multiple documentation families")
+
+
+def _next_step_rows(
+    text: str, label: str, errors: list[str]
+) -> list[tuple[str, str]]:
+    visible = FENCED_CODE_RE.sub("", text)
+    if visible.count("## Where to Go Next") != 1:
+        errors.append(f"{label} must contain one Where to Go Next section")
+        return []
+
+    section = visible.split("## Where to Go Next", 1)[1]
+    section = re.split(r"^## ", section, maxsplit=1, flags=re.MULTILINE)[0]
+    if "| Question | Page |" not in section:
+        errors.append(f"{label} next steps must use a Question/Page table")
+        return []
+
+    rows: list[tuple[str, str]] = []
+    for line in section.splitlines():
+        if not line.startswith("|") or line in {
+            "| Question | Page |",
+            "| --- | --- |",
+        }:
+            continue
+        cells = [cell.strip() for cell in line.strip("|").split("|")]
+        if len(cells) == 2:
+            rows.append((cells[0], cells[1]))
+
+    if not 3 <= len(rows) <= 4:
+        errors.append(f"{label} needs three or four next-step rows")
+    for question, page_cell in rows:
+        if not question.endswith("?"):
+            errors.append(f"{label} next-step prompt is not a question: {question}")
+        links = NEXT_STEP_LINK_RE.findall(page_cell)
+        if len(links) != 1:
+            errors.append(f"{label} next-step row needs one page link: {page_cell}")
+    return rows
 
 
 def _page_features(text: str) -> dict[str, bool]:
@@ -185,20 +192,41 @@ def _check_api_pages(docs: Path, errors: list[str]) -> None:
 
 
 def _check_notebooks(root: Path, docs: Path, errors: list[str]) -> None:
-    pairs = (
-        (root / "notebooks/package_api", docs / "package-notebooks"),
-        (root / "notebooks/implicit_bridge", docs / "implicit-bridge-notebooks"),
+    groups = (
+        (
+            root / "notebooks/package_api",
+            docs / "package-notebooks",
+            root / "colab",
+        ),
+        (
+            root / "notebooks/implicit_bridge",
+            docs / "implicit-bridge-notebooks",
+            root / "colab/implicit_bridge",
+        ),
     )
-    for source_dir, rendered_dir in pairs:
-        source_names = {path.name for path in source_dir.glob("*.ipynb")}
-        rendered_names = {path.name for path in rendered_dir.glob("*.ipynb")}
-        if source_names != rendered_names:
-            errors.append(
-                f"notebook names differ between {source_dir.relative_to(root)} and "
-                f"{rendered_dir.relative_to(root)}"
-            )
-        for path in sorted(source_dir.glob("*.ipynb")):
-            notebook = json.loads(path.read_text(encoding="utf-8"))
+    for directories in groups:
+        name_sets = [
+            {path.name for path in directory.glob("*.ipynb")}
+            for directory in directories
+        ]
+        source_names = name_sets[0]
+        if any(names != source_names for names in name_sets[1:]):
+            labels = ", ".join(str(directory.relative_to(root)) for directory in directories)
+            errors.append(f"notebook names differ across {labels}")
+        for path in sorted(directories[0].glob("*.ipynb")):
+            copies = [directory / path.name for directory in directories]
+            notebooks = [json.loads(path.read_text(encoding="utf-8")) for path in copies]
+            signatures = [
+                [
+                    (cell.get("cell_type"), "".join(cell.get("source", [])))
+                    for cell in notebook.get("cells", [])
+                ]
+                for notebook in notebooks
+            ]
+            if any(signature != signatures[0] for signature in signatures[1:]):
+                errors.append(f"notebook cell sources are not synchronized: {path.name}")
+
+            notebook = notebooks[0]
             cells = notebook.get("cells", [])
             markdown_count = sum(cell.get("cell_type") == "markdown" for cell in cells)
             code_count = sum(cell.get("cell_type") == "code" for cell in cells)
@@ -207,6 +235,43 @@ def _check_notebooks(root: Path, docs: Path, errors: list[str]) -> None:
                     f"{path.relative_to(root)} needs at least five cells, "
                     "three explanations, and two executable cells"
                 )
+
+            navigation_cells = [
+                cell
+                for cell in cells
+                if NEXT_STEP_CELL_TAG in cell.get("metadata", {}).get("tags", [])
+            ]
+            if len(navigation_cells) != 1 or cells[-1] is not navigation_cells[0]:
+                errors.append(f"{path.relative_to(root)} needs one final tagged next-step cell")
+                continue
+            label = path.relative_to(root).as_posix()
+            rows = _next_step_rows(
+                "".join(navigation_cells[0].get("source", [])), label, errors
+            )
+            destinations = []
+            families = set()
+            for _, page_cell in rows:
+                links = NEXT_STEP_LINK_RE.findall(page_cell)
+                if not links:
+                    continue
+                destination = links[0]
+                destinations.append(destination)
+                if not destination.startswith(SITE_PREFIX):
+                    errors.append(f"{label} next-step link is not on the SILVA site: {destination}")
+                    continue
+                route = destination.removeprefix(SITE_PREFIX).split("#", 1)[0].strip("/")
+                families.add(route.split("/", 1)[0])
+                candidates = (
+                    docs / f"{route}.md",
+                    docs / route / "index.md",
+                    docs / f"{route}.ipynb",
+                )
+                if not any(candidate.exists() for candidate in candidates):
+                    errors.append(f"{label} notebook next-step target does not exist: {destination}")
+            if len(destinations) != len(set(destinations)):
+                errors.append(f"{label} repeats a notebook next-step destination")
+            if len(families) < 2:
+                errors.append(f"{label} next steps do not connect multiple site families")
 
 
 def _check_download_surface(root: Path, errors: list[str]) -> None:

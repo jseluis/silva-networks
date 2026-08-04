@@ -265,10 +265,10 @@ PDFs are treated as sources and references, not as files to rewrite here.
 | Companion book/manual | Planned public learning assets connected to the package roadmap. |
 | External papers | References are cited and linked from the documentation. |
 
-All 70 guided Markdown pages use contextual `Where to Go Next` tables. Each
-table connects the current page to the most relevant derivation, executable
-material, example, or API contract, and the documentation audit checks this
-coverage during release validation.
+All 88 Markdown pages and 24 rendered notebooks use contextual `Where to Go
+Next` tables. Each table connects the current page to the most relevant
+derivation, executable material, example, or API contract, and the
+documentation audit checks this coverage during release validation.
 
 ## Update Standard
 
@@ -279,3 +279,11 @@ Future documentation changes should record:
 3. Equation/API behavior affected.
 4. Validation command used.
 5. Any discrepancy found between documentation, package code, tests, article, or book material.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| What writing conventions should future changes follow? | [Contributing](contributing.md) |
+| Which automated checks cover the documentation? | [Release Readiness](release-readiness.md) |
+| Where are equation and companion-asset checks recorded? | [Equation and PDF Audit](equation-and-pdf-audit.md) |

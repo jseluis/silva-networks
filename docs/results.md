@@ -188,3 +188,12 @@ small. They verify tensor shapes, solver integration, gradients, and dataset
 preprocessing. Full experiment reproduction should be reported separately with
 the exact configs, seeds, splits, training budgets, hardware, and saved
 artifacts used for the article-scale runs.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Which compact metrics are collected by case? | [Benchmark Cards](experiments/benchmark-cards.md) |
+| What evidence is needed for a paper-level claim? | [Reconstructing Paper Experiments](learn/reconstructing-paper-experiments.md) |
+| How should metrics and citations be reported? | [Citation-Aware Reporting](examples/citation-aware-reporting.md) |
+| How can I reproduce these outputs? | [Run Everything](run-everything.md) |

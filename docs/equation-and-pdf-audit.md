@@ -75,3 +75,11 @@ family with a code target, tutorial target, notebook target, and test target.
    the symbolic SILVA field into package classes.
 5. Run [Run Everything](run-everything.md) to execute tests, notebook validation
    checks, release checks, and docs builds.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Where are the equations derived from first principles? | [Mathematical Foundations](learn/mathematical-foundations.md) |
+| Which article citations and metadata have been checked? | [Research Citation Audit](research-citation-audit.md) |
+| Where is the complete bibliography? | [Paper and References](paper/references.md) |

@@ -153,3 +153,11 @@ For an optical-flow DEQ validation experiment, cite:
 | Dataset adapters cannot be fully cited without knowing the downstream dataset actually used. | Docs instruct users to cite each dataset source separately. |
 | External tutorials and repositories needed a clear method lineage. | Added the Method Adaptation Atlas and notebook as SILVA-native translations with upstream citations. |
 | The optimization bridge could be misread as one object with one scope. | Scope note added: the implicit tutorial object is an unconstrained quadratic bridge; the optimization module adds projected constrained QP layers and an optional CVXPYlayers wrapper. |
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Where is the maintained bibliography? | [Paper and References](paper/references.md) |
+| How should methods and results be cited in reports? | [Citation-Aware Reporting](examples/citation-aware-reporting.md) |
+| Where is the front-page citation presented? | [Home](index.md#how-to-cite) |

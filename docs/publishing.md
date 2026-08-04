@@ -147,3 +147,11 @@ Official setup references:
 If the site is mirrored to `jsluis.com`, keep GitHub Pages enabled as the
 package-native documentation target. That keeps all repository links,
 notebook paths, GitHub Actions checks, and release documentation stable.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Which checks must pass before publication? | [Release Readiness](release-readiness.md) |
+| How should the release be cited? | [Citation-Aware Reporting](examples/citation-aware-reporting.md) |
+| Where are article and software identifiers recorded? | [Paper and References](paper/references.md) |

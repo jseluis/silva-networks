@@ -58,3 +58,11 @@ The package-native study path is:
 
 The website pages make the derivation spine package-facing while the long-form
 book and solved manual are developed.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Where can I study the fixed-point mathematics now? | [Mathematical Foundations](learn/mathematical-foundations.md) |
+| Which derivations connect equations to implementation? | [Derivation Workbook](learn/derivation-workbook.md) |
+| Which executable learning materials are available? | [Notebooks](notebooks.md) |

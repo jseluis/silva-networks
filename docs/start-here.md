@@ -87,3 +87,12 @@ $$
 \quad\to\quad
 \text{extend}.
 $$
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How do I install the package and optional components? | [Installation](installation.md) |
+| Can I begin with one small executable example? | [Introduction by Example](get-started/introduction-by-example.md) |
+| Which SILVA case matches my problem? | [Case Atlas](learn/case-atlas.md) |
+| How can I validate the complete repository? | [Run Everything](run-everything.md) |
