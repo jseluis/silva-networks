@@ -161,3 +161,11 @@ See [Solvers](../api/solvers.md) for every configuration field and
 [Equilibrium and Implicit Layers](../paper/references.md#equilibrium-and-implicit-layers)
 for the implicit-function and DEQ sources. GMRES is listed under
 [Solvers and Linear Algebra](../paper/references.md#solvers-and-linear-algebra).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Where is implicit differentiation derived? | [Mathematical Foundations](mathematical-foundations.md#implicit-differentiation) |
+| Which solver options control the backward system? | [Solvers API](../api/solvers.md) |
+| Can I run a minimal implicit-gradient notebook? | [Implicit Autodiff Notebook](../implicit-bridge-notebooks/02_implicit_autodiff.ipynb) |

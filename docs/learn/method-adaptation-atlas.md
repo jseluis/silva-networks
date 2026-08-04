@@ -678,3 +678,11 @@ Colab-ready notebook:
 ```text
 colab/implicit_bridge/09_method_adaptation_atlas.ipynb
 ```
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How are complete architecture families represented? | [Paper Family Adaptations](paper-family-adaptations.md) |
+| Can I execute the source-to-SILVA comparisons? | [Method Adaptation Atlas Notebook](../implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb) |
+| Where are the primary references collected? | [Paper and References](../paper/references.md) |

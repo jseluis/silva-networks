@@ -99,3 +99,11 @@ sources are in [Citation-Aware Reporting](../examples/citation-aware-reporting.m
 and [Paper and References](../paper/references.md).
 
 ::: silva_networks.training
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Can I execute fitting, evaluation, checkpointing, and resume? | [Training Helpers Validation Notebook](../package-notebooks/10_training_helpers_smoke.ipynb) |
+| What evidence should a trained experiment report? | [Reconstructing Paper Experiments](../learn/reconstructing-paper-experiments.md) |
+| Which measured outputs are published? | [Results](../results.md) |

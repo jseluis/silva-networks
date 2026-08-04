@@ -580,3 +580,11 @@ advertised as prebuilt classes unless a public API exists.
 The rule for all extension cases is the same: state the residual, show the
 solver trace, inspect the linearization, and make only the claim supported by
 those diagnostics.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How do I select among these model families? | [Selecting Model Families](selecting-model-families.md) |
+| How are research architectures represented in SILVA? | [Paper Family Adaptations](paper-family-adaptations.md) |
+| Where are the runnable cases? | [Examples](../examples/index.md) |

@@ -53,3 +53,11 @@ $$
 
 Primary publications for all ten internal mappings are listed in
 [Point Architecture Sources](../paper/references.md#point-architecture-sources).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Where is every internal mapping derived? | [Point Architecture Catalog](../learn/point-architecture-catalog.md) |
+| Which factory names and parameters are public? | [Point Architectures API](../api/point_architectures.md) |
+| How can all branch operators be combined? | [Full Cortex Operators](full-cortex-operators.md) |

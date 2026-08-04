@@ -220,3 +220,11 @@ The complete method map and primary sources are in
 [Paper Families as SILVA Configurations](paper-family-adaptations.md) and
 [Paper and References](../paper/references.md). Runnable family instances are
 provided in [Paper Family Cases](../examples/paper-family-cases.md).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Where can I compare every supported case? | [Case Atlas](case-atlas.md) |
+| Which selector objects are public? | [Family Selection API](../api/families.md) |
+| Where are several selected families executed together? | [Paper Family Cases](../examples/paper-family-cases.md) |

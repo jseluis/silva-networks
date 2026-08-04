@@ -81,3 +81,11 @@ model = silva_equilibrium_model(
 ## API
 
 ::: silva_networks.families
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How should I choose among these families? | [Selecting Model Families](../learn/selecting-model-families.md) |
+| Where are several families executed? | [Paper Family Cases](../examples/paper-family-cases.md) |
+| Which classes implement the generalized cases? | [Generalized Cases API](cases.md) |

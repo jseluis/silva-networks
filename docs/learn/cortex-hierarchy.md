@@ -318,3 +318,11 @@ built-in internal mappings, while the
 [Full Cortex Operator Example](../examples/full-cortex-operators.md) executes
 every branch family. Primary architecture sources are listed in
 [Point Architecture Sources](../paper/references.md#point-architecture-sources).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How are several equilibrium points composed and placed on devices? | [Stacking and Devices](stacking-and-devices.md) |
+| Where is the hierarchy executed end to end? | [Cortex Hierarchy Example](../examples/cortex-hierarchy.md) |
+| Which API objects build the hierarchy? | [Architectures API](../api/architectures.md) |

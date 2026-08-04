@@ -214,3 +214,11 @@ This is the estimator behind `hutchinson_jacobian_norm`.
 The Jacobian-regularized equilibrium source and Hutchinson estimator source are
 listed in [Equilibrium and Implicit Layers](../paper/references.md#equilibrium-and-implicit-layers)
 and [Solvers and Linear Algebra](../paper/references.md#solvers-and-linear-algebra).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How do solver updates alter the effective Jacobian? | [Solver Derivation Lab](solver-derivation-lab.md) |
+| Which Jacobian estimators are public? | [Jacobians API](../api/jacobians.md) |
+| Where can I vary stability diagnostics interactively? | [Interactive Diagnostics Lab](interactive-diagnostics-lab.md) |

@@ -431,3 +431,11 @@ the [Point Architecture Catalog](point-architecture-catalog.md), and the
 - [Silva, SILVA Networks as Structured Implicit Layers and Vector Attractors via Dynamic Interaction Fields](https://arxiv.org/abs/2607.28989)
 
 BibTeX entries are collected in [`silva-networks.bib`](../assets/bib/silva-networks.bib).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Which spatial internal mappings are available? | [Point Architecture Catalog](point-architecture-catalog.md) |
+| Can I execute the operator, ODE, and PDE examples? | [Neural Operators, ODEs, and PDEs Notebook](../package-notebooks/15_neural_operators_ode_pde.ipynb) |
+| How is the Fourier mapping constructed through the API? | [Point Architectures API](../api/point_architectures.md) |

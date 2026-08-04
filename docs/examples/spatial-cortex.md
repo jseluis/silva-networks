@@ -75,3 +75,11 @@ Inspect residuals and convergence separately for the spatial and vector points;
 the classification loss alone cannot show whether either fixed point was
 solved. U-Net, residual, and other internal architecture sources are listed in
 [Point Architecture Sources](../paper/references.md#point-architecture-sources).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How do linked spatial points form a hierarchy? | [Cortex Hierarchies](../learn/cortex-hierarchy.md) |
+| Which internal spatial mappings can replace this field? | [Point Architecture Catalog](../learn/point-architecture-catalog.md) |
+| Which layer constructors define this point? | [Layers API](../api/layers.md) |

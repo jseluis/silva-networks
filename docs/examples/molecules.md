@@ -70,3 +70,11 @@ to the input projection.
 Use [Datasets and Preprocessing](../learn/datasets-and-preprocessing.md) for
 real molecular records and edge attributes. The graph and molecular sources
 are listed in [Graphs, Attention, and Messages](../paper/references.md#graphs-attention-and-messages).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How should molecular tensors be prepared? | [Datasets and Preprocessing](../learn/datasets-and-preprocessing.md) |
+| Which molecular adapters are public? | [Datasets API](../api/datasets.md) |
+| How does the underlying graph layer work? | [Graph SILVA Example](graph-silva.md) |

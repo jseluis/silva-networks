@@ -590,3 +590,11 @@ for every configurable branch in one point, the
 [Neural Operators, ODEs, PDEs, and SILVA](neural-operators-ode-pde.md) guide for
 function-space derivations, and the [Point Architectures API](../api/point_architectures.md)
 for complete signatures.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How do Fourier mappings connect to ODEs and PDEs? | [Neural Operators, ODEs, PDEs, and SILVA](neural-operators-ode-pde.md) |
+| Can I execute all ten internal mappings? | [Point Architecture Catalog Notebook](../package-notebooks/14_point_architecture_catalog.ipynb) |
+| Which factory names and arguments are public? | [Point Architectures API](../api/point_architectures.md) |

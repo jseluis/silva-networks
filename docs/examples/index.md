@@ -66,3 +66,11 @@ $$
 
 The same pattern supports user datasets after preprocessing into the package
 tensor contract.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How do I choose an example for my data and state layout? | [Case Atlas](../learn/case-atlas.md) |
+| Where should a first-time reader begin? | [Introduction by Example](../get-started/introduction-by-example.md) |
+| How can I run the examples and validation suite? | [Run Everything](../run-everything.md) |

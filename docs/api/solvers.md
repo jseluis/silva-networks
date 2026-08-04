@@ -254,3 +254,11 @@ Tensor device and dtype follow the initial state `z0`.
 fields except that the solution field is named `x`.
 
 ::: silva_networks.solvers
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| What mathematical problem do these solvers address? | [Fixed Points](../learn/fixed-points.md) |
+| How is each update derived? | [Solver Derivation Lab](../learn/solver-derivation-lab.md) |
+| Where is a solver checked against a closed form? | [Scalar Equilibrium Example](../examples/scalar-deq.md) |

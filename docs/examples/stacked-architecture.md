@@ -83,3 +83,11 @@ because the final loss does not establish convergence of an earlier point.
 See [Stacking, Solvers, and Devices](../learn/stacking-and-devices.md) for the
 full contract and [Solvers and Linear Algebra](../paper/references.md#solvers-and-linear-algebra)
 for the numerical-method sources.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How do multiple fixed points differ from depth inside one point? | [Stacking and Devices](../learn/stacking-and-devices.md) |
+| How are heterogeneous points linked? | [Cortex Hierarchies](../learn/cortex-hierarchy.md) |
+| Which architecture containers are public? | [Architectures API](../api/architectures.md) |

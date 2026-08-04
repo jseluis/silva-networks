@@ -68,3 +68,11 @@ residual trajectory, and gradients on the custom module. The complete branch
 validation pattern is in [Custom Layers](../learn/custom-layers.md), with
 operator sources under
 [Graphs, Attention, and Messages](../paper/references.md#graphs-attention-and-messages).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How are custom branches derived and validated? | [Custom Layers](../learn/custom-layers.md) |
+| Which base-layer contracts must a branch preserve? | [Layers API](../api/layers.md) |
+| How can several operators be combined in one cortex? | [Full Cortex Operators](full-cortex-operators.md) |

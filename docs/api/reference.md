@@ -127,3 +127,11 @@ The package has three layers of abstraction:
 The tensor adapters are intentionally separate from the model classes. This
 keeps the engine stable while allowing new datasets to be preprocessed into the
 same `x`, `edge_index`, `edge_attr`, `batch`, `y` structure.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Which names form the stable import surface? | [Public API](public-api.md) |
+| How are objects organized by scientific case? | [Case Atlas](../learn/case-atlas.md) |
+| Where are complete runnable programs? | [Examples](../examples/index.md) |

@@ -77,3 +77,11 @@ Then attach the citations selected above. The full package-wide mapping is in
 The exact article, software, solver, graph, attention, and dataset links are in
 [Paper and References](../paper/references.md). Report tensor layouts with the
 table above when the state is not an ordinary `(batch, features)` matrix.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Which sources and citation fields have been audited? | [Research Citation Audit](../research-citation-audit.md) |
+| Which measured outputs can be reported? | [Results](../results.md) |
+| Where is the complete bibliography? | [Paper and References](../paper/references.md) |

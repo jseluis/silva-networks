@@ -408,3 +408,11 @@ This keeps the SILVA form while allowing new datasets, new operators, new
 heads, and new solver settings.
 
 ::: silva_networks.presets
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How do presets correspond to scientific cases? | [Case Atlas](../learn/case-atlas.md) |
+| Where is a vision preset executed? | [Vision Channels Example](../examples/vision-channels.md) |
+| How can a preset be replaced by a custom architecture? | [Architectures API](architectures.md) |

@@ -1351,14 +1351,9 @@ When reporting a SILVA experiment, include:
 
 ## Where to Go Next
 
-| Need | Page |
+| Question | Page |
 | --- | --- |
-| first-principles fixed-point math | [Mathematical Foundations](mathematical-foundations.md) |
-| all supported case families | [Case Atlas](case-atlas.md) |
-| package-native implicit tutorials | [Implicit Layers Bridge](implicit-bridge.md) |
-| API signatures | [API Reference](../api/reference.md) |
-| implicit bridge objects | [Implicit Bridge API](../api/implicit.md) |
-| solver objects | [Solvers API](../api/solvers.md) |
-| Jacobian tools | [Jacobians API](../api/jacobians.md) |
-| diagnostic traces | [Diagnostics API](../api/diagnostics.md) |
-| documentation modifications | [Documentation Log](../documentation-log.md) |
+| Where is the fixed-point mathematics developed from first principles? | [Mathematical Foundations](mathematical-foundations.md) |
+| How are the supported scientific cases organized? | [Case Atlas](case-atlas.md) |
+| Where can I execute the implicit-layer derivations? | [Implicit Layers Bridge](implicit-bridge.md) |
+| Which package signatures implement these equations? | [API Reference](../api/reference.md) |

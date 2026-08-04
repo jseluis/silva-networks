@@ -286,3 +286,11 @@ $$
 
 Together, these quantities separate photometric or supervised flow quality from
 the numerical behavior of the implicit layer.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Which objects expose general equilibrium states? | [DEQ Engine API](../api/deq-engine.md) |
+| Which objects implement equilibrium optical flow? | [Optical Flow API](../api/flow.md) |
+| Where is the coupled flow state executed? | [RAFT and DEQ-Flow Example](../examples/raft-deq-flow.md) |

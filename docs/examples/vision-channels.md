@@ -37,3 +37,11 @@ image size or hidden width. Continue with
 for spatial operator derivations and
 [Point Architecture Sources](../paper/references.md#point-architecture-sources)
 for convolutional and U-Net references.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How do spatial operators enter the transition? | [SILVA Operators](../learn/silva-operators.md) |
+| Which vision presets are public? | [Presets API](../api/presets.md) |
+| Where is a spatial equilibrium point constructed? | [Spatial SILVA Cortex](spatial-cortex.md) |

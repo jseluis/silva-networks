@@ -106,3 +106,11 @@ The [Full Cortex Operator Example](../examples/full-cortex-operators.md) runs
 every configurable branch slot together. Source lineages for graph, attention,
 and set operators are collected in
 [Graphs, Attention, and Messages](../paper/references.md#graphs-attention-and-messages).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Which built-in operators can fill the same branches? | [SILVA Operators](silva-operators.md) |
+| Where is a custom branch executed? | [Custom Layers Example](../examples/custom-layers.md) |
+| What contracts do the layer classes expose? | [Layers API](../api/layers.md) |

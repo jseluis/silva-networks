@@ -105,3 +105,11 @@ Primary architecture sources are listed in
       show_root_heading: true
       members_order: source
       show_signature_annotations: true
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Where are all ten mappings derived? | [Point Architecture Catalog](../learn/point-architecture-catalog.md) |
+| Where are their shape and gradient contracts executed? | [Point Architecture Catalog Example](../examples/point-architecture-catalog.md) |
+| How do Fourier mappings connect to differential equations? | [Neural Operators, ODEs, PDEs, and SILVA](../learn/neural-operators-ode-pde.md) |

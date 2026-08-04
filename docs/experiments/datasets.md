@@ -126,3 +126,11 @@ notebooks/package_api/03_datasets_to_silva.ipynb
 ```
 
 That notebook walks through the same derivation and computation cell by cell.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How should dataset tensors be prepared? | [Datasets and Preprocessing](../learn/datasets-and-preprocessing.md) |
+| Which dataset loaders are public? | [Datasets API](../api/datasets.md) |
+| How can every configured case be run? | [Run Everything](../run-everything.md) |

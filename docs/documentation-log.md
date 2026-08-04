@@ -265,6 +265,11 @@ PDFs are treated as sources and references, not as files to rewrite here.
 | Companion book/manual | Planned public learning assets connected to the package roadmap. |
 | External papers | References are cited and linked from the documentation. |
 
+All 70 guided Markdown pages use contextual `Where to Go Next` tables. Each
+table connects the current page to the most relevant derivation, executable
+material, example, or API contract, and the documentation audit checks this
+coverage during release validation.
+
 ## Update Standard
 
 Future documentation changes should record:

@@ -69,3 +69,11 @@ API behavior. For the curated results, see [Benchmark Cards](../experiments/benc
 and [Results](../results.md).
 
 ::: silva_networks.public_experiments
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Which experiment configurations are available? | [Public Experiments](../experiments/index.md) |
+| Which measured summaries have been checked? | [Benchmark Cards](../experiments/benchmark-cards.md) |
+| How are experiments launched and overridden? | [CLI Guide](../cli.md) |

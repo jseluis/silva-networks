@@ -150,3 +150,11 @@ steps that did not increase.
 | theorem-level assumptions plus diagnostics | certificate or guarantee |
 
 ::: silva_networks.diagnostics
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How should residual and stability traces be interpreted? | [Interactive Diagnostics Lab](../learn/interactive-diagnostics-lab.md) |
+| Which Jacobian estimates support the diagnostics? | [Jacobians API](jacobians.md) |
+| Which solver result fields supply the traces? | [Solvers API](solvers.md) |

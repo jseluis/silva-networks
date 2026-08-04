@@ -40,3 +40,11 @@ before using the task loss as evidence, and compare the spectral radius under
 the same damping used by the solver. Graph, attention, and message-passing
 sources are listed in
 [Graphs, Attention, and Messages](../paper/references.md#graphs-attention-and-messages).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How is this graph transition derived branch by branch? | [SILVA From Scratch](../learn/silva-from-scratch.md) |
+| Which graph-layer arguments are public? | [Layers API](../api/layers.md) |
+| How is graph pooling extended to molecules? | [Molecules Example](molecules.md) |

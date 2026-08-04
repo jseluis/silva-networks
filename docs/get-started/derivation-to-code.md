@@ -279,3 +279,11 @@ For every equation-to-code step, check four invariants:
 The complete source lineage is organized in
 [Implementation Derivations](../learn/implementation-derivations.md), with
 primary method links in [Paper and References](../paper/references.md).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Where are the complete implementation derivations? | [Implementation Derivations](../learn/implementation-derivations.md) |
+| What fixed-point assumptions support the translation? | [Fixed Points](../learn/fixed-points.md) |
+| Can I execute the derivation cell by cell? | [Equation-to-Code Walkthrough](../package-notebooks/08_equation_to_code_walkthrough.ipynb) |

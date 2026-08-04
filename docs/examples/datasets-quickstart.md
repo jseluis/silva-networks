@@ -50,3 +50,11 @@ Before interpreting the task metric, verify `graph.validate()`, finite
 standardized features, valid edge bounds, and the residual of every SILVA
 equilibrium layer. Dataset sources and reporting rules are listed in
 [Paper and References](../paper/references.md#citation-rules-for-reports).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How should datasets be validated before solving? | [Datasets and Preprocessing](../learn/datasets-and-preprocessing.md) |
+| Which loaders and tensor objects are public? | [Datasets API](../api/datasets.md) |
+| Which public dataset experiments are configured? | [Dataset Cases](../experiments/datasets.md) |

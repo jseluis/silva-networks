@@ -53,3 +53,11 @@ See [Paper Families as SILVA Configurations](../learn/paper-family-adaptations.m
 for the family-by-family derivations and
 [Paper and References](../paper/references.md) for the corresponding primary
 sources.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How does each research family connect to SILVA? | [Paper Family Adaptations](../learn/paper-family-adaptations.md) |
+| Which generalized case classes are public? | [Generalized Cases API](../api/cases.md) |
+| Can I execute every family in one notebook? | [Paper Family Architectures Notebook](../package-notebooks/12_paper_family_architectures.ipynb) |

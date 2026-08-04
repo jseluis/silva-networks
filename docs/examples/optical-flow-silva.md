@@ -135,3 +135,11 @@ equilibrium optical-flow framing.
 
 Direct source links are collected in
 [DEQ Engines and Optical Flow](../paper/references.md#deq-engines-and-optical-flow).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How is equilibrium optical flow connected to the SILVA transition? | [DEQ Engine and Optical Flow](../learn/deq-engine-and-flow.md) |
+| Which compact flow objects are public? | [Optical Flow API](../api/flow.md) |
+| Where is the coupled recurrent flow state implemented? | [RAFT and DEQ-Flow Example](raft-deq-flow.md) |

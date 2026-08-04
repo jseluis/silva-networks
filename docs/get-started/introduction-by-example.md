@@ -193,3 +193,11 @@ datasets into the same engine.
 
 References: [PyTorch Geometric documentation](https://pytorch-geometric.readthedocs.io/en/latest/index.html),
 [PyG introduction by example](https://pytorch-geometric.readthedocs.io/en/latest/get_started/introduction.html).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How do tensors and batches enter the transition? | [Data Objects and Batching](data-and-batching.md) |
+| How does each equation become package code? | [Derivations to Code](derivation-to-code.md) |
+| How is a complete SILVA layer assembled? | [SILVA From Scratch](../learn/silva-from-scratch.md) |

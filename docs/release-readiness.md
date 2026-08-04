@@ -21,6 +21,7 @@ broken package builds before a public release.
 | Cortex hierarchy | vector and spatial `SILVACortexLayer` transitions, heterogeneous `SILVACortexNetwork` points, and `SILVAImageCortexClassifier` documented and validated |
 | Point architecture catalog | ten vector, token, and spatial modules with shape, gradient, fixed-point, tiny-data, example, and notebook checks |
 | Generalized cases | sequence, multiscale vision, Jacobian, IGNN, INR, diffusion, and coupled RAFT/DEQ-Flow APIs documented and validated |
+| Guided navigation | all 70 Get Started, Learn, Examples, API, and Public Experiments pages include contextual question-based next steps |
 | Public datasets | UCI tabular loaders plus TorchVision adapters for MNIST, FashionMNIST, KMNIST, EMNIST, CIFAR10, CIFAR100, and SVHN |
 | Public results | [Results](results.md) records measured validation metrics, tensor shapes, residuals, and reproduction commands |
 | CLI workflow | [CLI Guide](cli.md), `silva-experiment`, `silva-download-datasets`, `scripts/smoke_test.sh`, config listing, config display, device override, and dotted `--set` overrides |

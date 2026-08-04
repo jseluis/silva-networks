@@ -264,3 +264,11 @@ and dtype. CUDA, MPS, and CPU use the same public API; the installed PyTorch
 wheel determines which accelerators are available.
 
 ::: silva_networks.architectures
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How are linked points derived? | [Cortex Hierarchies](../learn/cortex-hierarchy.md) |
+| Where is a hierarchy executed? | [Cortex Hierarchy Example](../examples/cortex-hierarchy.md) |
+| Which objects define an individual point? | [Layers API](layers.md) |

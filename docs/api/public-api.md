@@ -45,3 +45,11 @@ Every equilibrium-facing route ultimately evaluates
 transition, solver result, and diagnostics are represented for that task.
 
 ::: silva_networks
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Where should a first-time package user begin? | [Introduction by Example](../get-started/introduction-by-example.md) |
+| How are all API modules organized? | [API Reference](reference.md) |
+| Can I execute the public imports in one notebook? | [Package Quickstart Notebook](../package-notebooks/01_package_quickstart.ipynb) |

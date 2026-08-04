@@ -208,3 +208,11 @@ Paper-level empirical reproduction additionally requires the precise data,
 preprocessing, random seeds, hardware/distribution choices, optimizer schedule,
 training duration, evaluation scripts, and any pretrained denoiser or encoder
 identified by the source paper.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| What evidence is needed to reconstruct a published experiment? | [Reconstructing Paper Experiments](reconstructing-paper-experiments.md) |
+| Where are the compact family cases executed? | [Paper Family Cases](../examples/paper-family-cases.md) |
+| Can I inspect every family in one notebook? | [Paper Family Architectures Notebook](../package-notebooks/12_paper_family_architectures.ipynb) |

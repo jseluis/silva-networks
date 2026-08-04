@@ -70,3 +70,11 @@ flag, and parameter gradients. The five-iteration settings make this a compact
 architecture validation; they are not evidence that both points meet a strict
 equilibrium tolerance. Architecture sources are listed in
 [Point Architecture Sources](../paper/references.md#point-architecture-sources).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How is the hierarchy derived? | [Cortex Hierarchies](../learn/cortex-hierarchy.md) |
+| How are points placed across devices? | [Stacking and Devices](../learn/stacking-and-devices.md) |
+| Which architecture containers are public? | [Architectures API](../api/architectures.md) |

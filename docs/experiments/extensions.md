@@ -81,3 +81,11 @@ notebooks/package_api/05_custom_operator_experiment.ipynb
 
 The notebook builds the custom branch, inserts it into a SILVA stack, and runs
 a small training loop.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How can a new branch or operator be implemented? | [Custom Layers](../learn/custom-layers.md) |
+| What evidence should an extended experiment report? | [Reconstructing Paper Experiments](../learn/reconstructing-paper-experiments.md) |
+| How are research architecture families represented? | [Paper Family Adaptations](../learn/paper-family-adaptations.md) |

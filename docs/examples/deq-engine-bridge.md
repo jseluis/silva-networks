@@ -85,3 +85,11 @@ interface lineage.
 
 Direct links and BibTeX keys are collected in
 [Equilibrium and Implicit Layers](../paper/references.md#equilibrium-and-implicit-layers).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How does the general engine connect to SILVA and optical flow? | [DEQ Engine and Optical Flow](../learn/deq-engine-and-flow.md) |
+| Which engine state contracts are public? | [DEQ Engine API](../api/deq-engine.md) |
+| How does exact implicit backward work? | [Implicit Backward Guide](../learn/implicit-backward-guide.md) |

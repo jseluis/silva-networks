@@ -125,3 +125,11 @@ configuration must use `anderson_batch_dims=0`.
 ## API Docs
 
 ::: silva_networks.deq_engine
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How does the engine connect to SILVA and optical flow? | [DEQ Engine and Optical Flow](../learn/deq-engine-and-flow.md) |
+| Where is a structured state executed? | [DEQ Engine Bridge Example](../examples/deq-engine-bridge.md) |
+| How is the backward system solved? | [Implicit Backward Guide](../learn/implicit-backward-guide.md) |

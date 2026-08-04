@@ -316,3 +316,12 @@ attention, and set aggregation are collected in
 [Paper and References](../paper/references.md). The
 [Equation-to-Code Walkthrough](../package-notebooks/08_equation_to_code_walkthrough.ipynb)
 executes the scalar-to-graph construction in separate cells.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Which operators can fill the named branches? | [SILVA Operators](silva-operators.md) |
+| How do I implement a new branch? | [Custom Layers](custom-layers.md) |
+| Where is a complete graph layer executed? | [Graph SILVA Example](../examples/graph-silva.md) |
+| How do I compose several equilibrium points? | [Stacking and Devices](stacking-and-devices.md) |

@@ -208,3 +208,11 @@ Primary sources for Anderson acceleration, Broyden updates, and GMRES are
 listed in [Solvers and Linear Algebra](../paper/references.md#solvers-and-linear-algebra).
 The executable comparison is in
 [Solvers and Jacobians](../package-notebooks/02_solvers_and_jacobians.ipynb).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Which solver configurations are public? | [Solvers API](../api/solvers.md) |
+| What mathematical assumptions support convergence? | [Fixed Points](fixed-points.md) |
+| Where can I inspect residual and stability traces? | [Interactive Diagnostics Lab](interactive-diagnostics-lab.md) |

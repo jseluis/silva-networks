@@ -37,3 +37,10 @@ buffers on the device of the current state.
 
 ::: silva_networks.device
 
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How are several points placed across devices? | [Stacking and Devices](../learn/stacking-and-devices.md) |
+| Which optional backends can be installed? | [Installation](../installation.md) |
+| Which model containers use these helpers? | [Architectures API](architectures.md) |

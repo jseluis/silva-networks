@@ -132,3 +132,11 @@ The derivations behind these cells are in [Jacobians and Stability](jacobians.md
 and [Solver Derivation Lab](solver-derivation-lab.md). Primary sources are
 listed under [Solvers and Linear Algebra](../paper/references.md#solvers-and-linear-algebra)
 and [Equilibrium and Implicit Layers](../paper/references.md#equilibrium-and-implicit-layers).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How are Jacobians connected to local stability? | [Jacobians and Stability](jacobians.md) |
+| Which diagnostic functions are available? | [Diagnostics API](../api/diagnostics.md) |
+| How do solver choices change residual traces? | [Solver Derivation Lab](solver-derivation-lab.md) |

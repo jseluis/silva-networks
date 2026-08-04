@@ -133,3 +133,11 @@ Use [Citation-Aware Reporting](../examples/citation-aware-reporting.md) for the
 methods table and [Paper and References](../paper/references.md) for primary
 sources. The [Public Experiments](../api/public_experiments.md) page shows how
 to serialize compact runs with the same controls.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How are paper architecture families expressed in SILVA? | [Paper Family Adaptations](paper-family-adaptations.md) |
+| Which measured validation results are already published? | [Benchmark Cards](../experiments/benchmark-cards.md) |
+| How should claims and citations be reported? | [Citation-Aware Reporting](../examples/citation-aware-reporting.md) |

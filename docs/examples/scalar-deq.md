@@ -64,3 +64,11 @@ Agreement among these values establishes four separate facts:
 Continue with [Fixed Points](../learn/fixed-points.md) for vector states,
 damping, and convergence claims. The relevant method sources are collected in
 [Equilibrium and Implicit Layers](../paper/references.md#equilibrium-and-implicit-layers).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| What fixed-point result does this example illustrate? | [Fixed Points](../learn/fixed-points.md) |
+| How do the iterative solvers differ? | [Solver Derivation Lab](../learn/solver-derivation-lab.md) |
+| Which solver objects reproduce the calculation? | [Solvers API](../api/solvers.md) |

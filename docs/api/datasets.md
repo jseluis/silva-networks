@@ -212,3 +212,11 @@ dataset sources under
 [Citation Rules for Reports](../paper/references.md#citation-rules-for-reports).
 
 ::: silva_networks.datasets
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How should data be preprocessed and validated? | [Datasets and Preprocessing](../learn/datasets-and-preprocessing.md) |
+| Where is a dataset passed through a model? | [Dataset Quickstart](../examples/datasets-quickstart.md) |
+| How can datasets be downloaded from the command line? | [Dataset CLI API](dataset_cli.md) |

@@ -100,3 +100,11 @@ Reports that use these cards should cite the package and the SILVA article. If
 a card uses a specific external lineage, cite that lineage too: DEQ for
 equilibrium claims, GAT/GCN/MPNN for graph branches, RAFT/DEQ-Flow for optical
 flow, and OptNet/CVXPYlayers for optimization layers.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Where are the complete measured outputs explained? | [Results](../results.md) |
+| What evidence is required beyond compact validation? | [Reconstructing Paper Experiments](../learn/reconstructing-paper-experiments.md) |
+| How should metrics and claims be cited? | [Citation-Aware Reporting](../examples/citation-aware-reporting.md) |

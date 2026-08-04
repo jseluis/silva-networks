@@ -196,3 +196,11 @@ The equations behind standardization and graph construction are developed in
 [Datasets and Preprocessing](../learn/datasets-and-preprocessing.md). Dataset
 sources and reporting rules are collected in
 [Paper and References](../paper/references.md#citation-rules-for-reports).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How are these tensors consumed by a complete layer? | [SILVA From Scratch](../learn/silva-from-scratch.md) |
+| Which dataset adapters and preprocessing rules are available? | [Datasets and Preprocessing](../learn/datasets-and-preprocessing.md) |
+| Where is a runnable dataset example? | [Dataset Quickstart](../examples/datasets-quickstart.md) |

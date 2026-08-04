@@ -444,3 +444,11 @@ The bridge notebooks are available in three places:
 
 They are intentionally small. The goal is fast, inspectable execution on CPU,
 with the same cells able to use CUDA when the runtime provides it.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How does each source method map into SILVA? | [Method Adaptation Atlas](method-adaptation-atlas.md) |
+| Which compact bridge objects are public? | [Implicit Bridge API](../api/implicit.md) |
+| Where should I begin executing the bridge material? | [Fixed Points as Layers Notebook](../implicit-bridge-notebooks/01_introduction_fixed_points.ipynb) |

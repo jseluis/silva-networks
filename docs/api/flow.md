@@ -169,3 +169,11 @@ fixed-point residual and valid-pixel mask.
 ## API Docs
 
 ::: silva_networks.flow
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How is the flow equilibrium derived? | [DEQ Engine and Optical Flow](../learn/deq-engine-and-flow.md) |
+| Where is the compact flow model executed? | [Optical Flow SILVA Example](../examples/optical-flow-silva.md) |
+| Where is the coupled recurrent state executed? | [RAFT and DEQ-Flow Example](../examples/raft-deq-flow.md) |

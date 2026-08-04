@@ -32,6 +32,8 @@ EXAMPLE_EXCEPTIONS = {
     "docs/examples/index.md",
     "docs/examples/citation-aware-reporting.md",
 }
+NEXT_STEP_DIRECTORIES = ("get-started", "learn", "examples", "api", "experiments")
+NEXT_STEP_LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
 
 
 def run_documentation_audit(root: Path = ROOT) -> dict[str, list[str]]:
@@ -42,6 +44,7 @@ def run_documentation_audit(root: Path = ROOT) -> dict[str, list[str]]:
     docs = root / "docs"
 
     _check_navigation(root, docs, errors)
+    _check_next_steps(docs, errors)
     _check_learning_pages(docs, errors)
     _check_example_pages(root, docs, errors)
     _check_api_pages(docs, errors)
@@ -63,6 +66,70 @@ def _check_navigation(root: Path, docs: Path, errors: list[str]) -> None:
         errors.append(f"documentation file is not in navigation: docs/{target}")
     for target in sorted(targets - documents):
         errors.append(f"navigation target does not exist: docs/{target}")
+
+
+def _check_next_steps(docs: Path, errors: list[str]) -> None:
+    pages = [
+        path
+        for directory in NEXT_STEP_DIRECTORIES
+        for path in sorted((docs / directory).glob("*.md"))
+    ]
+    for path in pages:
+        text = path.read_text(encoding="utf-8")
+        if text.count("## Where to Go Next") != 1:
+            errors.append(
+                f"{path.relative_to(ROOT)} must contain one Where to Go Next section"
+            )
+            continue
+
+        section = text.split("## Where to Go Next", 1)[1]
+        section = re.split(r"^## ", section, maxsplit=1, flags=re.MULTILINE)[0]
+        if "| Question | Page |" not in section:
+            errors.append(
+                f"{path.relative_to(ROOT)} next steps must use a Question/Page table"
+            )
+            continue
+
+        rows = []
+        for line in section.splitlines():
+            if not line.startswith("|") or line in {
+                "| Question | Page |",
+                "| --- | --- |",
+            }:
+                continue
+            cells = [cell.strip() for cell in line.strip("|").split("|")]
+            if len(cells) == 2:
+                rows.append(cells)
+
+        if len(rows) < 3:
+            errors.append(f"{path.relative_to(ROOT)} needs at least three next-step rows")
+            continue
+
+        destinations: list[str] = []
+        for question, page_cell in rows:
+            if not question.endswith("?"):
+                errors.append(
+                    f"{path.relative_to(ROOT)} next-step prompt is not a question: {question}"
+                )
+            links = NEXT_STEP_LINK_RE.findall(page_cell)
+            if len(links) != 1:
+                errors.append(
+                    f"{path.relative_to(ROOT)} next-step row needs one page link: {page_cell}"
+                )
+                continue
+            destination = links[0]
+            destinations.append(destination)
+            target_text = destination.split("#", 1)[0]
+            if not target_text or "://" in target_text:
+                continue
+            target = (path.parent / target_text).resolve()
+            if not target.exists():
+                errors.append(
+                    f"{path.relative_to(ROOT)} next-step target does not exist: {destination}"
+                )
+
+        if len(destinations) != len(set(destinations)):
+            errors.append(f"{path.relative_to(ROOT)} repeats a next-step destination")
 
 
 def _page_features(text: str) -> dict[str, bool]:

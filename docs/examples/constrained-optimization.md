@@ -106,3 +106,11 @@ Cite the SILVA package for this implementation. Cite
 quadratic-program layers and
 [CVXPYlayers](https://github.com/cvxpy/cvxpylayers) when using the optional
 general disciplined convex-program bridge.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Which projected and differentiable layers are public? | [Optimization API](../api/optimization.md) |
+| How do optimization layers relate to implicit layers? | [Implicit Layers Bridge](../learn/implicit-bridge.md) |
+| Can I execute the quadratic-layer derivation? | [Optimization Layers Notebook](../implicit-bridge-notebooks/05_differentiable_optimization.ipynb) |

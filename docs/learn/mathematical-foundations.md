@@ -428,3 +428,11 @@ result = fixed_point(f, torch.zeros(2), SolverConfig(max_iter=30, tol=1e-7))
 report = stability_report(f, result.z, samples=4, iters=12)
 print(result.z.shape, result.residual, report.spectral_radius)
 ```
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| What does a fixed point mean operationally? | [Fixed Points](fixed-points.md) |
+| How do the equations become named SILVA branches? | [Derivation Workbook](derivation-workbook.md) |
+| How is the backward linear system implemented? | [Implicit Backward Guide](implicit-backward-guide.md) |

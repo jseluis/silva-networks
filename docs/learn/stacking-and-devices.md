@@ -134,3 +134,11 @@ edges, batch ids, targets, model parameters, and every returned state.
 The runnable construction is in [Stacked Architecture](../examples/stacked-architecture.md).
 Solver sources are collected in
 [Solvers and Linear Algebra](../paper/references.md#solvers-and-linear-algebra).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How are linked points organized as a cortex hierarchy? | [Cortex Hierarchies](cortex-hierarchy.md) |
+| Where is a stacked model executed? | [Stacked Architecture Example](../examples/stacked-architecture.md) |
+| Which modules and device helpers are public? | [Architectures API](../api/architectures.md) |

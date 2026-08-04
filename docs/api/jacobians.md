@@ -99,3 +99,10 @@ probes.
 
 ::: silva_networks.jacobian
 
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How do these estimates support stability claims? | [Jacobians and Stability](../learn/jacobians.md) |
+| Where can I compare diagnostics interactively? | [Interactive Diagnostics Lab](../learn/interactive-diagnostics-lab.md) |
+| Which higher-level diagnostics use these functions? | [Diagnostics API](diagnostics.md) |

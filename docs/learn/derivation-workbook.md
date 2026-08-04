@@ -557,3 +557,11 @@ the workbook are collected in [Paper and References](../paper/references.md).
 Run the same sequence in
 [Equation-to-Code Walkthrough](../package-notebooks/08_equation_to_code_walkthrough.ipynb),
 where every derived quantity is evaluated in a separate cell.
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| Where are all transitions derived directly from implementation? | [Implementation Derivations](implementation-derivations.md) |
+| Can I execute the derivation cell by cell? | [Equation-to-Code Walkthrough](../package-notebooks/08_equation_to_code_walkthrough.ipynb) |
+| Which assumptions make the fixed point meaningful? | [Fixed Points](fixed-points.md) |

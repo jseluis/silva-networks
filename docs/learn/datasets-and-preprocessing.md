@@ -240,3 +240,11 @@ solver diagnostics. The public dataset links are listed under
 [Citation Rules for Reports](../paper/references.md#citation-rules-for-reports),
 and the end-to-end command is shown in
 [Dataset Quickstart](../examples/datasets-quickstart.md).
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| What are the basic batching contracts? | [Data Objects and Batching](../get-started/data-and-batching.md) |
+| Where is a dataset passed through SILVA? | [Dataset Quickstart](../examples/datasets-quickstart.md) |
+| Which loaders and adapters are public? | [Datasets API](../api/datasets.md) |

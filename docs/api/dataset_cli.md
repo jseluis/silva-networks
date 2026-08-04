@@ -59,3 +59,11 @@ For preprocessing equations and custom dataset adapters, continue with
 [Dataset Quickstart](../examples/datasets-quickstart.md).
 
 ::: silva_networks.dataset_cli
+
+## Where to Go Next
+
+| Question | Page |
+| --- | --- |
+| How should downloaded tensors be validated? | [Datasets and Preprocessing](../learn/datasets-and-preprocessing.md) |
+| Which dataset objects are returned? | [Datasets API](datasets.md) |
+| Which complete commands are available? | [CLI Guide](../cli.md) |
