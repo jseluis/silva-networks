@@ -38,6 +38,7 @@ REQUIRED_FILES = (
     "docs/javascripts/default-theme.js",
     "docs/api/public-api.md",
     "docs/api/families.md",
+    "docs/api/scientific.md",
     "docs/assets/papers/silva-networks-arxiv-2607.28989.pdf",
     "docs/assets/bib/silva-networks.bib",
     "docs/learn/solver-derivation-lab.md",
@@ -49,6 +50,7 @@ REQUIRED_FILES = (
     "docs/examples/spatial-cortex.md",
     "docs/examples/point-architecture-catalog.md",
     "docs/examples/full-cortex-operators.md",
+    "docs/examples/scientific-operators.md",
     "docs/overrides/main.html",
     "docs/learn/paper-family-adaptations.md",
     "docs/package-notebooks/11_cortex_hierarchy.ipynb",
@@ -82,6 +84,7 @@ REQUIRED_NAV_MARKERS = (
     "Spatial SILVA Cortex: examples/spatial-cortex.md",
     "Point Architecture Catalog: examples/point-architecture-catalog.md",
     "Full Cortex Operators: examples/full-cortex-operators.md",
+    "Scientific Operators: examples/scientific-operators.md",
     "Paper Family Adaptations: learn/paper-family-adaptations.md",
     "Cortex Hierarchy: package-notebooks/11_cortex_hierarchy.ipynb",
     "Paper Family Architectures: package-notebooks/12_paper_family_architectures.ipynb",
@@ -92,6 +95,7 @@ REQUIRED_NAV_MARKERS = (
     "Public API: api/public-api.md",
     "Family Selection: api/families.md",
     "Point Architectures: api/point_architectures.md",
+    "Scientific Operators: api/scientific.md",
     "Benchmark Cards: experiments/benchmark-cards.md",
 )
 

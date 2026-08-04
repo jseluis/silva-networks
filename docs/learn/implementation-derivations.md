@@ -21,6 +21,7 @@ when preparing a paper, README, model card, or experiment report.
 | dynamic kNN local terms | `TopKLocal`, `DynamicChannelLocal`, dataset kNN graph builders | Wang et al., [Dynamic Graph CNN](https://arxiv.org/abs/1801.07829) [[20]](../paper/references.md#ref-20){ .silva-cite }; SILVA for hidden-channel adaptation [[1]](../paper/references.md#ref-1){ .silva-cite } |
 | Jacobian penalty | `hutchinson_jacobian_norm`, `jacobian_regularization_loss` | Hutchinson, [1989](https://doi.org/10.1080/03610918908812806) [[14]](../paper/references.md#ref-14){ .silva-cite }; Bai et al., [Jacobian-regularized DEQ](https://arxiv.org/abs/2106.14342) [[6]](../paper/references.md#ref-6){ .silva-cite } |
 | implicit bridge | `SILVAFixedPointBlock`, `SILVAEulerFlowBlock`, `SILVAQuadraticOptimizationLayer`, `SILVAMultiscaleDEQBlock` | DEQ [[4]](../paper/references.md#ref-4){ .silva-cite }, Neural ODEs [[7]](../paper/references.md#ref-7){ .silva-cite }, OptNet [[8]](../paper/references.md#ref-8){ .silva-cite }, differentiable convex optimization layers [[9]](../paper/references.md#ref-9){ .silva-cite }, MDEQ [[5]](../paper/references.md#ref-5){ .silva-cite } |
+| scientific operators | `SILVAImplicitTimeStep`, `SILVAOperatorModel`, `SILVAFourierNeuralOperator`, finite-difference and residual helpers | Neural ODEs [[7]](../paper/references.md#ref-7){ .silva-cite }, FNO [[31]](../paper/references.md#ref-31){ .silva-cite }, neural operators [[32]](../paper/references.md#ref-32){ .silva-cite }, SILVA [[1]](../paper/references.md#ref-1){ .silva-cite } |
 | DEQ engine | `SILVADEQEngine`, `silva_deq`, `pack_state`, `SILVAVariationalDropout` | SILVA package [[2]](../paper/references.md#ref-2){ .silva-cite }, [TorchDEQ](https://github.com/locuslab/torchdeq) [[35]](../paper/references.md#ref-35){ .silva-cite }, DEQ [[4]](../paper/references.md#ref-4){ .silva-cite } |
 | SILVA DEQ flow | `SILVADEQFlow`, flow warp, all-pairs correlation | [RAFT](https://arxiv.org/abs/2003.12039) [[22]](../paper/references.md#ref-22){ .silva-cite }, [DEQ-Flow](https://openaccess.thecvf.com/content/CVPR2022/html/Bai_Deep_Equilibrium_Optical_Flow_Estimation_CVPR_2022_paper.html) [[23]](../paper/references.md#ref-23){ .silva-cite }, SILVA package [[2]](../paper/references.md#ref-2){ .silva-cite } |
 
@@ -969,6 +970,102 @@ finite trajectory.
 Use Neural ODEs when citing the continuous-depth model and the Deep Implicit
 Layers tutorial when citing this bridge in the implicit-layer context.
 
+### Implicit ODE/PDE and Operator Implementation
+
+`SILVAImplicitTimeStep` represents a backward-Euler step for a semidiscrete
+right-hand side \(R_h\):
+
+$$
+u^{n+1}
+=u^n+\Delta t\,R_h(u^{n+1},c).
+$$
+
+Its source-level transition is equivalent to
+
+```python
+field = rhs(state, context)
+proposal = previous + step_size * field
+return projector(proposal)
+```
+
+The implementation checks that `rhs` preserves the state shape, applies the
+projector on every transition evaluation, and calls `solve_equilibrium` with
+the module parameters and differentiable context tensors. Therefore
+`SolverConfig.backward_mode` has the same meaning as it does for other SILVA
+points.
+
+The numerical helpers expose the centered formulas directly. In one dimension,
+
+$$
+(D_hu)_i=\frac{u_{i+1}-u_{i-1}}{2h},
+\qquad
+(\Delta_hu)_i=\frac{u_{i-1}-2u_i+u_{i+1}}{h^2}.
+$$
+
+In two dimensions,
+
+$$
+(\Delta_hu)_{i,j}
+=\frac{u_{i+1,j}+u_{i-1,j}+u_{i,j+1}+u_{i,j-1}-4u_{i,j}}{h^2}.
+$$
+
+`SILVAReactionDiffusionRHS2D` computes
+
+$$
+R_h(u,s)=D\Delta_hu+r(u)+s,
+$$
+
+and `SILVABurgersRHS1D` computes
+
+$$
+R_h(u,s)=-uD_hu+\nu\Delta_hu+s.
+$$
+
+Both accept an optional state-shaped context and return the state shape.
+Boundary projection is separate through `SILVADirichletBoundary2D`, so the
+discretization and constraint can be tested independently.
+
+`SILVAOperatorModel` constructs the learned function map from existing
+abstractions:
+
+1. `Conv2d(in_channels, state_channels, 1)` lifts the sampled input;
+2. a built-in spatial point architecture or supplied module defines the
+   state-dependent field;
+3. `SILVACortexLayer` composes optional self, local, global, and interaction
+   fields and solves the equilibrium;
+4. a readout maps the equilibrium state to `out_channels`;
+5. an optional output transform applies a boundary mask or physical projection.
+
+The input and output contract is
+
+$$
+\mathbb R^{B\times C_{in}\times H\times W}
+\rightarrow
+\mathbb R^{B\times C_{out}\times H\times W}.
+$$
+
+`SILVAFourierNeuralOperator` selects the Fourier point architecture, whose
+state field is
+
+$$
+B_\theta(z)
+=s\left[\mathcal F_h^{-1}
+\left(R_\theta\mathcal F_hz\right)+Wz\right].
+$$
+
+The full `SILVAOperatorOutput` contains the decoded output, equilibrium state,
+and `SolverResult`. Physical diagnostics remain separate:
+
+$$
+r_{\mathrm{Poisson}}=-\Delta_h\widehat u-q,
+\qquad
+e_{\partial\Omega}
+=\operatorname{RMS}_{x\in\partial\Omega}(\widehat u(x)-g(x)).
+$$
+
+This separation prevents a low solver residual from being reported as evidence
+that the governing equation or boundary condition is satisfied.
+
 ### Quadratic Optimization Layer
 
 `QuadraticOptimizationLayer` forms
@@ -1114,6 +1211,9 @@ Jacobian-regularized DEQs for the DEQ stability-regularization objective.
 | `TanhFixedPointBlock` | vector DEQ solve | calls `fixed_point` and returns \(z^\star\) |
 | `TanhFixedPointClassifier` | DEQ representation plus readout | maps \(z^\star\) to logits |
 | `ExplicitEulerODEBlock` | finite explicit trajectory | returns \(h_K\), optionally with the trajectory |
+| `SILVAImplicitTimeStep` | backward-Euler ODE/PDE point | returns \(u^{n+1}\) or a `SolverResult` |
+| `SILVAOperatorModel` | learned sampled function map | returns a decoded field or `SILVAOperatorOutput` |
+| `SILVAFourierNeuralOperator` | Fourier field inside a SILVA point | reuses spectral parameters across compatible grid sizes |
 | `QuadraticOptimizationLayer` | implicit argmin / KKT equation | solves \(Az=b_\theta(x)\) by fixed-point iteration or exact solve |
 | `ToyMultiscaleDEQBlock` | coupled multiscale fixed point | solves \((z_\ell^\star,z_h^\star)\) jointly |
 | `jacobian_regularization_loss` | VJP-based stability penalty | estimates \(\|J_f\|_F^2\) |

@@ -5,6 +5,7 @@ Development commands:
 ```bash
 python -m pip install -e ".[dev,docs,examples]"
 pytest
+pytest --cov=silva_networks --cov-report=term-missing
 ruff check src tests examples scripts
 mkdocs build --strict
 ```
@@ -13,6 +14,8 @@ Contribution guidelines:
 
 - keep the public API typed and documented;
 - add tests for new solvers, layers, examples, and shape behavior;
+- keep branch coverage at or above the configured project threshold and test
+  every new public behavior, numerical invariant, and error contract;
 - keep examples CPU-first;
 - cite third-party papers and repositories through canonical links;
 - update the API reference when public symbols change.

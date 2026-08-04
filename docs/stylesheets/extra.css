@@ -647,6 +647,12 @@
   min-width: max-content;
 }
 
+.md-typeset .jupyter-wrapper mjx-container[jax="CHTML"][display="true"] {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
 .md-typeset .jp-RenderedImage img,
 .md-typeset .jp-OutputArea-output img,
 .md-typeset .output_png img {

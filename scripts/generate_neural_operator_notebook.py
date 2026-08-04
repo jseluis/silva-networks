@@ -126,9 +126,18 @@ import matplotlib.pyplot as plt
 from torch import nn
 
 from silva_networks import (
+    SILVABurgersRHS1D,
     SILVACortexLayer,
+    SILVADirichletBoundary2D,
     SILVAEulerFlowBlock,
+    SILVAFourierNeuralOperator,
+    SILVAImplicitTimeStep,
+    SILVAReactionDiffusionRHS2D,
     SolverConfig,
+    boundary_error_2d,
+    enforce_dirichlet_boundary_2d,
+    poisson_residual_2d,
+    relative_residual_norm,
     silva_point_architecture,
 )
 
@@ -798,7 +807,312 @@ fig.tight_layout()
         ),
         md(
             r"""
-## 12. What to Use Where
+## 12. Public Numerical Operators
+
+The earlier cells wrote the stencil explicitly so every index was visible. The
+public functions implement the same discrete objects and keep them independent
+from a learned model:
+
+$$
+r_{\mathrm{PDE}}=-\Delta_hu-q,
+\qquad
+\varepsilon_{\mathrm{PDE}}
+=\frac{\lVert r_{\mathrm{PDE}}\rVert_2}{\lVert q\rVert_2+\epsilon}.
+$$
+"""
+        ),
+        code(
+            """
+spacing = 1.0 / (solution.shape[-1] - 1)
+public_residual = poisson_residual_2d(
+    solution,
+    physical_source,
+    spacing=spacing,
+)
+public_relative_residual = relative_residual_norm(
+    public_residual,
+    physical_source[..., 1:-1, 1:-1],
+)
+
+stencil_discrepancy = (public_residual - target_pde_residual).abs().max()
+print("public Poisson residual:", f"{float(public_relative_residual):.3e}")
+print("maximum stencil implementation discrepancy:", f"{float(stencil_discrepancy):.3e}")
+print("zero-boundary error:", f"{float(boundary_error_2d(solution)):.3e}")
+assert float(stencil_discrepancy) < 2.0e-4
+"""
+        ),
+        md(
+            r"""
+## 13. Reaction-Diffusion as an Implicit SILVA Step
+
+For
+
+$$
+\frac{\partial u}{\partial t}
+=D\Delta u+\rho u(1-u)+s,
+$$
+
+backward Euler solves
+
+$$
+u^{n+1}
+=u^n+\Delta t\left[
+D\Delta_hu^{n+1}
++\rho u^{n+1}(1-u^{n+1})+s^{n+1}
+\right].
+$$
+
+`SILVAReactionDiffusionRHS2D` defines the bracketed field.
+`SILVAImplicitTimeStep` adds the previous state, scales by $\Delta t$, applies
+the boundary projector, and calls the package equilibrium solver.
+"""
+        ),
+        code(
+            """
+class LogisticReaction(nn.Module):
+    def __init__(self, rate=0.2):
+        super().__init__()
+        self.rate = float(rate)
+
+    def forward(self, state):
+        return self.rate * state * (1.0 - state)
+
+
+rd_size = 12
+rd_axis = torch.linspace(0.0, 1.0, rd_size)
+rd_y, rd_x = torch.meshgrid(rd_axis, rd_axis, indexing="ij")
+rd_previous = enforce_dirichlet_boundary_2d(
+    (0.25 * torch.sin(math.pi * rd_x) * torch.sin(math.pi * rd_y))[None, None]
+)
+rd_forcing = torch.zeros_like(rd_previous)
+
+rd_rhs = SILVAReactionDiffusionRHS2D(
+    diffusion=0.01,
+    reaction=LogisticReaction(0.2),
+    spacing=1.0 / (rd_size - 1),
+    boundary="dirichlet",
+)
+rd_step = SILVAImplicitTimeStep(
+    rd_rhs,
+    step_size=0.005,
+    projector=SILVADirichletBoundary2D(0.0),
+    config=SolverConfig(solver="picard", max_iter=40, tol=1e-7, alpha=0.8),
+)
+rd_result = rd_step(rd_previous, context=rd_forcing, return_result=True)
+
+print("reaction-diffusion state:", tuple(rd_result.z.shape))
+print("iterations:", rd_result.iterations)
+print("fixed-point residual:", f"{rd_result.residual:.3e}")
+print("boundary error:", f"{float(boundary_error_2d(rd_result.z)):.3e}")
+assert float(boundary_error_2d(rd_result.z)) < 1.0e-8
+"""
+        ),
+        md(
+            r"""
+## 14. Viscous Burgers Equation
+
+For the periodic one-dimensional equation
+
+$$
+\frac{\partial u}{\partial t}
++u\frac{\partial u}{\partial x}
+=\nu\frac{\partial^2u}{\partial x^2}+s,
+$$
+
+the package uses centered differences
+
+$$
+(D_hu)_i=\frac{u_{i+1}-u_{i-1}}{2h},
+\qquad
+(\Delta_hu)_i=\frac{u_{i-1}-2u_i+u_{i+1}}{h^2},
+$$
+
+and the implicit field $-uD_hu+\nu\Delta_hu+s$. This transparent stencil is
+useful for derivation and validation. More demanding flow regimes generally
+need a problem-specific flux and stabilization module.
+"""
+        ),
+        code(
+            """
+burgers_points = 48
+burgers_axis = torch.arange(burgers_points) / burgers_points
+burgers_previous = (0.35 * torch.sin(2.0 * math.pi * burgers_axis))[None, None]
+burgers_rhs = SILVABurgersRHS1D(
+    viscosity=0.01,
+    spacing=1.0 / burgers_points,
+    boundary="periodic",
+)
+burgers_step = SILVAImplicitTimeStep(
+    burgers_rhs,
+    step_size=0.001,
+    config=SolverConfig(solver="picard", max_iter=30, tol=1e-7, alpha=0.8),
+)
+burgers_result = burgers_step(burgers_previous, return_result=True)
+
+print("Burgers state:", tuple(burgers_result.z.shape))
+print("iterations:", burgers_result.iterations)
+print("fixed-point residual:", f"{burgers_result.residual:.3e}")
+assert torch.isfinite(burgers_result.z).all()
+"""
+        ),
+        md(
+            r"""
+## 15. Coefficient-to-Solution Learning
+
+Consider the variable-coefficient elliptic equation
+
+$$
+-\nabla\cdot(a(x,y)\nabla u(x,y))=q(x,y),
+\qquad u|_{\partial\Omega}=0.
+$$
+
+The operator input has two channels, $(a,q)$, and the output is $u$. We use a
+manufactured discrete dataset: choose $a$ and $u$, apply a conservative
+face-flux discretization, and define $q$ from that discrete equation. The
+resulting triplet satisfies the chosen grid equation by construction.
+"""
+        ),
+        code(
+            """
+def variable_coefficient_source(coefficient, field, spacing):
+    a_x = 0.5 * (coefficient[..., :, 1:] + coefficient[..., :, :-1])
+    a_y = 0.5 * (coefficient[..., 1:, :] + coefficient[..., :-1, :])
+    flux_x = a_x * (field[..., :, 1:] - field[..., :, :-1]) / spacing
+    flux_y = a_y * (field[..., 1:, :] - field[..., :-1, :]) / spacing
+    source_field = torch.zeros_like(field)
+    source_field[..., 1:-1, 1:-1] = -(
+        (flux_x[..., 1:-1, 1:] - flux_x[..., 1:-1, :-1]) / spacing
+        + (flux_y[..., 1:, 1:-1] - flux_y[..., :-1, 1:-1]) / spacing
+    )
+    return source_field
+
+
+def make_coefficient_operator_batch(samples=12, size=12, seed=157):
+    generator = torch.Generator().manual_seed(seed)
+    axis = torch.linspace(0.0, 1.0, size)
+    y, x = torch.meshgrid(axis, axis, indexing="ij")
+    amplitude = 0.2 + 0.6 * torch.rand(samples, 1, 1, 1, generator=generator)
+    variation = -0.35 + 0.7 * torch.rand(samples, 1, 1, 1, generator=generator)
+    coefficient = 1.0 + variation * torch.sin(2.0 * math.pi * x) * torch.sin(2.0 * math.pi * y)
+    solution_field = amplitude * torch.sin(math.pi * x) * torch.sin(math.pi * y)
+    spacing = 1.0 / (size - 1)
+    source_field = variable_coefficient_source(coefficient, solution_field, spacing)
+    source_scale = 40.0
+    problem = torch.cat([coefficient, source_field / source_scale], dim=1)
+    return problem, solution_field, source_field
+
+
+coefficient_problem, coefficient_solution, coefficient_source = make_coefficient_operator_batch()
+print("problem channels:", tuple(coefficient_problem.shape))
+print("solution field:", tuple(coefficient_solution.shape))
+print("physical source:", tuple(coefficient_source.shape))
+"""
+        ),
+        code(
+            """
+torch.manual_seed(158)
+coefficient_model = SILVAFourierNeuralOperator(
+    in_channels=2,
+    state_channels=4,
+    out_channels=1,
+    modes_height=4,
+    modes_width=4,
+    field_scale=0.05,
+    output_transform=SILVADirichletBoundary2D(0.0),
+    config=SolverConfig(solver="picard", max_iter=8, tol=1e-5, alpha=0.5),
+)
+coefficient_optimizer = torch.optim.Adam(coefficient_model.parameters(), lr=1.0e-2)
+coefficient_losses = []
+
+for step_index in range(30):
+    coefficient_optimizer.zero_grad()
+    coefficient_prediction = coefficient_model(coefficient_problem)
+    coefficient_loss = F.mse_loss(coefficient_prediction, coefficient_solution)
+    coefficient_loss.backward()
+    coefficient_optimizer.step()
+    coefficient_losses.append(float(coefficient_loss.detach()))
+
+print("initial coefficient-to-solution loss:", f"{coefficient_losses[0]:.4e}")
+print("final coefficient-to-solution loss:", f"{coefficient_losses[-1]:.4e}")
+assert coefficient_losses[-1] < coefficient_losses[0]
+"""
+        ),
+        code(
+            """
+fine_problem, fine_solution, _ = make_coefficient_operator_batch(samples=2, size=18, seed=159)
+with torch.no_grad():
+    coarse_output = coefficient_model(coefficient_problem[:2])
+    fine_output = coefficient_model(fine_problem)
+
+print("coarse output:", tuple(coarse_output.shape))
+print("fine output:", tuple(fine_output.shape))
+print("fine boundary error:", f"{float(boundary_error_2d(fine_output)):.3e}")
+assert fine_output.shape == fine_solution.shape
+"""
+        ),
+        md(
+            r"""
+The fine-grid call verifies that the same spectral parameters can be evaluated
+on another resolution. It does not establish resolution generalization. That
+requires a held-out fine-grid error and the variable-coefficient physical
+residual at the fine spacing.
+
+## 16. Irregular Domains as Graph PDEs
+
+For graph nodes and edges,
+
+$$
+(\Delta_Gz)_i=\sum_{j:(j,i)\in E}(z_j-z_i).
+$$
+
+An implicit graph-diffusion step puts $z^n$ in the stimulus and
+$\Delta tD\Delta_Gz^{n+1}$ in `local_terms`. Edge geometry or material data can
+enter the same local module through `edge_attr`.
+"""
+        ),
+        code(
+            """
+class GraphDiffusionField(nn.Module):
+    def __init__(self, scale):
+        super().__init__()
+        self.scale = float(scale)
+
+    def forward(self, state, edge_index):
+        source_nodes, target_nodes = edge_index
+        field = torch.zeros_like(state)
+        field.index_add_(0, target_nodes, state[source_nodes] - state[target_nodes])
+        return self.scale * field
+
+
+graph_nodes = 10
+forward_nodes = torch.arange(graph_nodes)
+next_nodes = torch.roll(forward_nodes, shifts=-1)
+graph_edges = torch.stack(
+    [
+        torch.cat([forward_nodes, next_nodes]),
+        torch.cat([next_nodes, forward_nodes]),
+    ]
+)
+graph_previous = torch.sin(2.0 * math.pi * forward_nodes / graph_nodes)[:, None]
+
+graph_step = SILVACortexLayer(
+    input_encoder=nn.Identity(),
+    local_terms=GraphDiffusionField(scale=0.1),
+    activation=lambda z: z,
+    output_activation=lambda z: z,
+    normalize=False,
+    config=SolverConfig(solver="picard", max_iter=30, tol=1e-7, alpha=0.8),
+)
+graph_result = graph_step(graph_previous, edge_index=graph_edges, return_result=True)
+
+print("graph state:", tuple(graph_result.z.shape))
+print("graph fixed-point residual:", f"{graph_result.residual:.3e}")
+assert graph_result.z.shape == graph_previous.shape
+"""
+        ),
+        md(
+            r"""
+## 17. What to Use Where
 
 | Goal | SILVA construction |
 | --- | --- |
@@ -809,6 +1123,10 @@ fig.tight_layout()
 | source-to-solution operator | lifting `input_encoder`, operator transition, equilibrium solver, physical readout |
 | irregular mesh | graph local field plus geometry or edge attributes |
 | nonperiodic boundary | mask, boundary channels, constrained output module, or geometry-specific basis |
+| reaction-diffusion | `SILVAReactionDiffusionRHS2D` inside `SILVAImplicitTimeStep` |
+| viscous Burgers | `SILVABurgersRHS1D` inside `SILVAImplicitTimeStep` |
+| coefficient-to-solution learning | coefficient and source input channels in `SILVAOperatorModel` or `SILVAFourierNeuralOperator` |
+| graph PDE | graph Laplacian, flux, or message module in `SILVACortexLayer.local_terms` |
 
 The Fourier field is one possible internal architecture. U-Net supplies
 multiscale local structure, graph operators support irregular domains,

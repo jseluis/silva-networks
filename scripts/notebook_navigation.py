@@ -91,8 +91,8 @@ NOTEBOOK_NEXT_STEPS: dict[str, tuple[tuple[str, str, str], ...]] = {
     ),
     "package_api/15_neural_operators_ode_pde.ipynb": (
         ("How do operators, ODEs, and PDEs connect to SILVA?", *_page("Neural Operators, ODEs, PDEs, and SILVA", "learn/neural-operators-ode-pde")),
-        ("Which internal mappings can define a spatial point?", *_page("Point Architecture Catalog", "learn/point-architecture-catalog")),
-        ("How is the Fourier mapping constructed through the API?", *_page("Point Architectures API", "api/point_architectures")),
+        ("Where do the compact ODE, PDE, Fourier, and graph cases run?", *_page("Scientific Operators Example", "examples/scientific-operators")),
+        ("Which numerical and learned scientific objects are public?", *_page("Scientific Operators API", "api/scientific")),
     ),
     "implicit_bridge/01_introduction_fixed_points.ipynb": (
         ("What does a fixed point mean operationally?", *_page("Fixed Points", "learn/fixed-points")),

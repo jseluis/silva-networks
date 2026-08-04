@@ -24,6 +24,11 @@ from .layers import (
 )
 from .optimization import silva_projected_qp_layer
 from .presets import SILVAGraphPresetNetwork, SILVAImageCortexClassifier
+from .scientific import (
+    silva_fourier_neural_operator,
+    silva_implicit_time_step,
+    silva_operator_model,
+)
 
 SILVAFamily = Literal[
     "silva_layer",
@@ -40,6 +45,9 @@ SILVAFamily = Literal[
     "implicit_graph",
     "implicit_neural_representation",
     "diffusion_equilibrium",
+    "scientific_operator",
+    "fourier_operator_equilibrium",
+    "implicit_time_step",
     "silva_deq_flow",
     "raft_deq_flow",
     "quadratic_optimization",
@@ -63,6 +71,9 @@ _FAMILY_DESCRIPTIONS: dict[str, str] = {
     "implicit_graph": "IGNN graph equilibrium with configurable adjacency normalization",
     "implicit_neural_representation": "coordinate-based SIREN/Fourier/Gabor equilibrium",
     "diffusion_equilibrium": "joint DDIM trajectory solved as a fixed point",
+    "scientific_operator": "source-to-field SILVA equilibrium with a selectable internal architecture",
+    "fourier_operator_equilibrium": "Fourier neural operator field inside a SILVA equilibrium point",
+    "implicit_time_step": "backward-Euler ODE or PDE step solved as a SILVA equilibrium",
     "silva_deq_flow": "SILVA-named optical-flow equilibrium layer",
     "raft_deq_flow": "coupled hidden-state/flow RAFT and DEQ-Flow architecture",
     "quadratic_optimization": "unconstrained quadratic optimization layer",
@@ -86,6 +97,13 @@ _FAMILY_ALIASES: dict[str, str] = {
     "ignn": "implicit_graph",
     "deq_inr": "implicit_neural_representation",
     "deq_ddim": "diffusion_equilibrium",
+    "silva_operator": "scientific_operator",
+    "neural_operator": "scientific_operator",
+    "fno": "fourier_operator_equilibrium",
+    "silva_fno": "fourier_operator_equilibrium",
+    "fno_equilibrium": "fourier_operator_equilibrium",
+    "backward_euler": "implicit_time_step",
+    "pde_time_step": "implicit_time_step",
     "deq_flow": "silva_deq_flow",
     "silva_flow_deq": "silva_deq_flow",
     "optical_flow_deq": "silva_deq_flow",
@@ -154,6 +172,12 @@ def silva_equilibrium_model(family: SILVAFamily | str, **kwargs: Any) -> Any:
         return SILVAImplicitNeuralRepresentation(**kwargs)
     if key == "diffusion_equilibrium":
         return SILVADiffusionEquilibrium(**kwargs)
+    if key == "scientific_operator":
+        return silva_operator_model(**kwargs)
+    if key == "fourier_operator_equilibrium":
+        return silva_fourier_neural_operator(**kwargs)
+    if key == "implicit_time_step":
+        return silva_implicit_time_step(**kwargs)
     if key == "silva_deq_flow":
         return silva_deq_flow(**kwargs)
     if key == "raft_deq_flow":

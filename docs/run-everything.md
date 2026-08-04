@@ -104,6 +104,7 @@ python examples/cortex_hierarchy.py
 python examples/spatial_cortex.py
 python examples/point_architecture_catalog.py
 python examples/full_cortex_operators.py
+python examples/scientific_operators.py
 python examples/stacked_architecture.py
 python examples/datasets_quickstart.py
 python examples/deq_engine_bridge.py
@@ -123,6 +124,7 @@ Use the example pages for explanations:
 | [Cortex Hierarchy](examples/cortex-hierarchy.md) | deep internal modules inside linked equilibrium points |
 | [Spatial SILVA Cortex](examples/spatial-cortex.md) | residual CNN and U-Net transition linked to a different vector point |
 | [Point Architecture Catalog](examples/point-architecture-catalog.md) | ten shape, residual, gradient, and tiny-data compatibility checks |
+| [Scientific Operators](examples/scientific-operators.md) | ODE trajectory, implicit diffusion, reaction-diffusion, Burgers, Fourier equilibrium operator, and graph PDE checks |
 | [Full Cortex Operators](examples/full-cortex-operators.md) | every configurable transition slot plus all 25 local, global, and self factory names |
 | [Stacked Architecture](examples/stacked-architecture.md) | multiple equilibrium layers with mixed solvers |
 | [Dataset Quickstart](examples/datasets-quickstart.md) | public data to `GraphTensorBatch` |
@@ -157,7 +159,7 @@ The package API track:
 | [Paper Family Architectures](package-notebooks/12_paper_family_architectures.ipynb) | sequence, multiscale, Jacobian, graph, INR, diffusion, and custom-transition cases |
 | [RAFT and DEQ-Flow](package-notebooks/13_raft_deq_flow.ipynb) | coupled hidden/flow state, exact implicit gradients, corrections, upsampling, and reuse |
 | [Point Architecture Catalog](package-notebooks/14_point_architecture_catalog.ipynb) | ten internal architectures plus composition inside one point and across linked points |
-| [Neural Operators, ODEs, and PDEs](package-notebooks/15_neural_operators_ode_pde.ipynb) | ODE trajectories, implicit PDE steps, Fourier fields inside SILVA, training, and separate numerical/physical diagnostics |
+| [Neural Operators, ODEs, and PDEs](package-notebooks/15_neural_operators_ode_pde.ipynb) | ODE trajectories, implicit PDE steps, reaction-diffusion, Burgers, variable-coefficient learning, Fourier fields, graph PDEs, and separate numerical/physical diagnostics |
 
 The implicit bridge track:
 
@@ -307,6 +309,12 @@ Run the full test suite:
 pytest
 ```
 
+Measure branch coverage and enforce the configured release floor:
+
+```bash
+pytest --cov=silva_networks --cov-report=term-missing
+```
+
 Run focused tests:
 
 ```bash
@@ -314,6 +322,7 @@ pytest tests/test_solvers.py
 pytest tests/test_layers.py
 pytest tests/test_datasets.py
 pytest tests/test_deq_engine_and_flow.py
+pytest tests/test_scientific.py
 pytest tests/test_implementation_coverage.py
 pytest tests/test_release_readiness.py
 pytest tests/test_training.py
@@ -332,7 +341,8 @@ RAFT/DEQ-Flow, and point-architecture notebooks. To run them directly:
 python scripts/run_notebook_smoke.py \
   docs/package-notebooks/12_paper_family_architectures.ipynb \
   docs/package-notebooks/13_raft_deq_flow.ipynb \
-  docs/package-notebooks/14_point_architecture_catalog.ipynb
+  docs/package-notebooks/14_point_architecture_catalog.ipynb \
+  docs/package-notebooks/15_neural_operators_ode_pde.ipynb
 ```
 
 List the default validation notebooks:

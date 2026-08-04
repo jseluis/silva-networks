@@ -1,7 +1,7 @@
 # Family Selection API
 
 `silva_networks.families` is the high-level factory surface for choosing a
-SILVA, DEQ, flow, diffusion, or optimization family by name. Use it when a
+SILVA, DEQ, scientific operator, flow, diffusion, or optimization family by name. Use it when a
 notebook, experiment config, or teaching example should select the model family
 without importing every concrete class directly.
 
@@ -12,7 +12,9 @@ ODEs [[7]](../paper/references.md#ref-7){ .silva-cite }, differentiable
 optimization [[8]](../paper/references.md#ref-8){ .silva-cite }
 [[9]](../paper/references.md#ref-9){ .silva-cite }, and optical-flow equilibria
 [[22]](../paper/references.md#ref-22){ .silva-cite }
-[[23]](../paper/references.md#ref-23){ .silva-cite }.
+[[23]](../paper/references.md#ref-23){ .silva-cite }. Scientific operator
+families connect to FNO [[31]](../paper/references.md#ref-31){ .silva-cite } and
+neural operators [[32]](../paper/references.md#ref-32){ .silva-cite }.
 
 The factory normalizes hyphenated names and compatibility aliases before
 dispatching to the package-native constructors. It does not choose dataset
@@ -26,7 +28,8 @@ z^\star=f_\theta(z^\star,x),
 $$
 
 but the state may be a matrix, image field, multiscale tuple, flow pair,
-diffusion trajectory, or constrained optimization variable.
+diffusion trajectory, sampled physical field, or constrained optimization
+variable.
 
 ## Canonical Families
 
@@ -46,6 +49,9 @@ diffusion trajectory, or constrained optimization variable.
 | `implicit_graph` | IGNN-style graph equilibrium |
 | `implicit_neural_representation` | coordinate-based implicit representation |
 | `diffusion_equilibrium` | joint DDIM trajectory equilibrium |
+| `scientific_operator` | selectable source-to-field SILVA operator |
+| `fourier_operator_equilibrium` | Fourier neural operator inside a SILVA equilibrium |
+| `implicit_time_step` | backward-Euler ODE or PDE step |
 | `silva_deq_flow` | SILVA-named optical-flow equilibrium |
 | `raft_deq_flow` | coupled RAFT/DEQ-Flow architecture |
 | `quadratic_optimization` | unconstrained quadratic optimization layer |
@@ -98,3 +104,4 @@ model = silva_equilibrium_model(
 | How should I choose among these families? | [Selecting Model Families](../learn/selecting-model-families.md) |
 | Where are several families executed? | [Paper Family Cases](../examples/paper-family-cases.md) |
 | Which classes implement the generalized cases? | [Generalized Cases API](cases.md) |
+| Which classes implement ODE, PDE, and learned operators? | [Scientific Operators API](scientific.md) |

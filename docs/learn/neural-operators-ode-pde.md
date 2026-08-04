@@ -215,6 +215,102 @@ $$
 
 That comparison checks the numerical construction independently of training.
 
+### General Semidiscrete Form
+
+After spatial discretization, many PDEs become an ODE system
+
+$$
+\frac{d\mathbf u}{dt}=R_h(\mathbf u,\mathbf c),
+$$
+
+where $\mathbf u$ contains sampled field values and $\mathbf c$ contains
+coefficients, forcing, geometry, or boundary data. Backward Euler defines
+
+$$
+T(\mathbf z;\mathbf u^n,\mathbf c)
+=
+\mathbf u^n+\Delta t\,R_h(\mathbf z,\mathbf c),
+\qquad
+\mathbf u^{n+1}=T(\mathbf u^{n+1};\mathbf u^n,\mathbf c).
+$$
+
+The transition Jacobian is
+
+$$
+J_T(\mathbf z)=\Delta t\,J_{R_h}(\mathbf z).
+$$
+
+A sufficient local contraction condition is
+
+$$
+\Delta t\,\lVert J_{R_h}(\mathbf u^{n+1})\rVert<1.
+$$
+
+This is a condition on the chosen fixed-point iteration, not on the
+backward-Euler method's classical stability region. If the undamped map is not
+contractive enough, damping changes the executed transition to
+
+$$
+T_\alpha(\mathbf z)
+=(1-\alpha)\mathbf z+\alpha T(\mathbf z),
+\qquad
+J_{T_\alpha}=(1-\alpha)I+\alpha J_T.
+$$
+
+Anderson or Broyden acceleration can improve a difficult solve, but the
+residual and convergence flag must still be checked.
+
+### Public Implicit-Step API
+
+The package keeps the right-hand side independent from the solver:
+
+```python
+from torch import nn
+from silva_networks import (
+    SILVADirichletBoundary2D,
+    SILVAImplicitTimeStep,
+    SILVAReactionDiffusionRHS2D,
+    SolverConfig,
+)
+
+
+class LogisticReaction(nn.Module):
+    def forward(self, u):
+        return 0.2 * u * (1.0 - u)
+
+
+rhs = SILVAReactionDiffusionRHS2D(
+    diffusion=0.01,
+    reaction=LogisticReaction(),
+    spacing=1.0 / 31.0,
+    boundary="dirichlet",
+)
+step = SILVAImplicitTimeStep(
+    rhs,
+    step_size=0.005,
+    projector=SILVADirichletBoundary2D(0.0),
+    config=SolverConfig(max_iter=40, tol=1e-6, alpha=0.8),
+)
+
+result = step(previous_field, context=forcing, return_result=True)
+next_field = result.z
+```
+
+The shape contract is
+
+$$
+R_h:\mathbb R^{B\times C\times H\times W}
+\times\mathbb R^{B\times C\times H\times W}
+\rightarrow\mathbb R^{B\times C\times H\times W}.
+$$
+
+`context` is optional, but when supplied it must have the state shape for the
+built-in reaction-diffusion and Burgers fields. A custom right-hand side may
+encode parameters in an `nn.Module` or use a state-shaped context field.
+When damping is active, initialize the state on the constraint set as well as
+projecting the transition; the damped update retains a fraction of the current
+iterate.
+
 ## Neural Solution Operators
 
 Instead of solving one right-hand side $q$, operator learning fits a map
@@ -382,6 +478,264 @@ then reports two distinct diagnostics:
 
 Neither residual replaces supervised field error. They answer different
 questions and should be reported separately.
+
+## Worked Scientific Constructions
+
+### Reaction-Diffusion
+
+For
+
+$$
+\frac{\partial u}{\partial t}
+=D\Delta u+\rho u(1-u)+s,
+$$
+
+the implicit update is
+
+$$
+u^{n+1}
+=u^n
++\Delta t\,D\Delta_hu^{n+1}
++\Delta t\,\rho u^{n+1}(1-u^{n+1})
++\Delta t\,s^{n+1}.
+$$
+
+The SILVA roles are therefore
+
+$$
+S=u^n+\Delta t\,s^{n+1},
+\qquad
+H(z)=\Delta t\,\rho z(1-z),
+\qquad
+L(z)=\Delta t\,D\Delta_hz.
+$$
+
+The built-in `SILVAReactionDiffusionRHS2D` combines the physical right-hand
+side, while `SILVAImplicitTimeStep` supplies $u^n$, multiplies by $\Delta t$,
+projects boundaries, and solves the equilibrium. A learned reaction module can
+replace the analytic law without changing the time-step abstraction.
+
+### Viscous Burgers Equation
+
+For a periodic one-dimensional field,
+
+$$
+\frac{\partial u}{\partial t}
++u\frac{\partial u}{\partial x}
+=\nu\frac{\partial^2u}{\partial x^2}+s,
+$$
+
+the centered differences are
+
+$$
+(D_hu)_i=\frac{u_{i+1}-u_{i-1}}{2h},
+\qquad
+(\Delta_hu)_i=\frac{u_{i-1}-2u_i+u_{i+1}}{h^2}.
+$$
+
+Backward Euler gives
+
+$$
+u_i^{n+1}
+=u_i^n+\Delta t\left[
+-u_i^{n+1}(D_hu^{n+1})_i
++\nu(\Delta_hu^{n+1})_i+s_i^{n+1}
+\right].
+$$
+
+The nonlinear advection and local diffusion are both state-shaped interaction
+fields. The package implementation is:
+
+```python
+from silva_networks import SILVABurgersRHS1D, SILVAImplicitTimeStep
+
+rhs = SILVABurgersRHS1D(
+    viscosity=0.01,
+    spacing=1.0 / number_of_points,
+    boundary="periodic",
+)
+step = SILVAImplicitTimeStep(rhs, step_size=0.001, config=solver_config)
+next_line = step(previous_line)
+```
+
+Centered advection is intentionally transparent for teaching and compact
+checks. High-Reynolds-number simulations generally need a flux formulation,
+stabilization, adaptive stepping, or a problem-specific numerical method. Such
+a discretization can be supplied as a custom right-hand-side module.
+
+### Variable-Coefficient Elliptic Operator
+
+Consider
+
+$$
+-\nabla\cdot\left(a(x)\nabla u(x)\right)=q(x),
+\qquad
+u|_{\partial\Omega}=g.
+$$
+
+The learned operator has the form
+
+$$
+\mathcal G_\theta:(a,q,g,\Omega)\mapsto u.
+$$
+
+On a fixed rectangular domain, one practical tensor representation is
+
+```text
+channel 0: coefficient a(x)
+channel 1: source q(x)
+channel 2: boundary values g(x), zero away from the boundary
+channel 3: boundary or domain mask
+channel 4: x coordinate
+channel 5: y coordinate
+```
+
+Not every channel is required for every problem. The contract is that all
+channels share the sampled spatial dimensions and the model's `in_channels`
+matches their count. `SILVAOperatorModel` lifts these fields into the recurrent
+state. Its internal architecture may be Fourier, U-Net, residual convolution,
+or another shape-preserving field.
+
+```python
+from silva_networks import SILVAOperatorModel
+
+model = SILVAOperatorModel(
+    in_channels=6,
+    state_channels=16,
+    out_channels=1,
+    architecture="unet",
+    architecture_kwargs={"base_channels": 24},
+    config=solver_config,
+    output_transform=boundary_transform,
+)
+prediction = model(problem_channels)
+```
+
+A physical residual for this problem must discretize the flux
+$a\nabla u$ before its divergence. The constant-coefficient Poisson helper is
+not a substitute for that variable-coefficient residual.
+
+### Public Fourier Equilibrium Operator
+
+The dedicated constructor provides the complete lift, equilibrium point, and
+readout:
+
+```python
+from silva_networks import SILVAFourierNeuralOperator, SolverConfig
+
+model = SILVAFourierNeuralOperator(
+    in_channels=2,
+    state_channels=12,
+    out_channels=1,
+    modes_height=6,
+    modes_width=6,
+    field_scale=0.05,
+    config=SolverConfig(
+        solver="anderson",
+        max_iter=24,
+        tol=1e-5,
+        alpha=0.35,
+        history=4,
+    ),
+)
+
+result = model(coefficient_and_source, return_result=True)
+solution = result.output
+state = result.state
+solver_result = result.solver_result
+```
+
+The architecture reuses its spectral parameters at another grid resolution:
+
+```python
+coarse = model(coarse_problem)
+fine = model(fine_problem)
+```
+
+This ability to evaluate does not establish resolution generalization. That
+claim requires held-out fine-grid targets, physical residuals computed at the
+fine spacing, and a comparison against an appropriate baseline.
+
+## Irregular Domains and Graph PDEs
+
+For nodes with edge set $E$, one unweighted graph Laplacian is
+
+$$
+(\Delta_Gz)_i
+=
+\sum_{j:(j,i)\in E}(z_j-z_i).
+$$
+
+An implicit graph-diffusion step is
+
+$$
+z_i^{n+1}
+=z_i^n+\Delta t\,D(\Delta_Gz^{n+1})_i.
+$$
+
+This maps directly into a `SILVACortexLayer`: `input_encoder` supplies $z^n$,
+and a graph module in `local_terms` computes the edge exchange. The module can
+accept `edge_index` and `edge_attr`, so geometric distances, face areas,
+conductivities, or learned edge weights can participate in the discretization.
+
+```python
+import torch
+from torch import nn
+from silva_networks import SILVACortexLayer, SolverConfig
+
+
+class GraphLaplacian(nn.Module):
+    def __init__(self, scale):
+        super().__init__()
+        self.scale = scale
+
+    def forward(self, z, edge_index):
+        source, target = edge_index
+        field = torch.zeros_like(z)
+        field.index_add_(0, target, z[source] - z[target])
+        return self.scale * field
+
+
+point = SILVACortexLayer(
+    input_encoder=nn.Identity(),
+    local_terms=GraphLaplacian(scale=delta_t * diffusivity),
+    activation=lambda z: z,
+    output_activation=lambda z: z,
+    normalize=False,
+    config=SolverConfig(max_iter=40, tol=1e-6, alpha=0.8),
+)
+next_nodes = point(previous_nodes, edge_index=edge_index)
+```
+
+For a finite-element or finite-volume study, the local module should implement
+the chosen mass, stiffness, or flux discretization rather than treating the
+unweighted graph Laplacian as a universal physical model.
+
+## How to Make a Scientific Model Work
+
+1. **Write the mathematical problem.** State the domain, unknown field,
+   governing equation, initial data, boundary conditions, and desired output.
+2. **Choose the state.** Record the exact tensor layout and units of every
+   channel. For an irregular domain, record node and edge semantics.
+3. **Choose the construction.** Use explicit flow for a finite trajectory,
+   `SILVAImplicitTimeStep` for an implicit numerical step, or
+   `SILVAOperatorModel` for a learned map over a family of problems.
+4. **Discretize independently.** Check derivatives and physical residuals on an
+   analytic field before adding a learned model.
+5. **Assign SILVA roles.** Put known or encoded inputs in the stimulus, local
+   stencils or graph fluxes in local fields, pointwise laws in self fields, and
+   nonlocal corrections in global or state-network fields.
+6. **Check one forward solve.** Verify shape, dtype, device, finite values,
+   residual decrease, iteration count, and boundary behavior.
+7. **Check gradients.** Differentiate a scalar task loss with respect to input
+   fields and trainable parameters using the selected backward mode.
+8. **Train on a small deterministic task.** Keep train and held-out problems
+   separate and compare against an analytic or direct numerical solution.
+9. **Evaluate the scientific claim.** Report task error, fixed-point residual,
+   physical residual, boundary error, solver cost, and transfer to another
+   grid, mesh, coefficient range, or time horizon as applicable.
+10. **Scale only after the checks pass.** Larger data and architectures cannot
+    repair a mismatched equation, tensor contract, or boundary condition.
 
 ## What Changes Across Problem Types
 

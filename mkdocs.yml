@@ -164,6 +164,7 @@ nav:
       - Layers: api/layers.md
       - Architectures: api/architectures.md
       - Point Architectures: api/point_architectures.md
+      - Scientific Operators: api/scientific.md
       - Implicit Bridge: api/implicit.md
       - DEQ Engine: api/deq-engine.md
       - Optical Flow: api/flow.md
@@ -195,6 +196,7 @@ nav:
       - Spatial SILVA Cortex: examples/spatial-cortex.md
       - Point Architecture Catalog: examples/point-architecture-catalog.md
       - Full Cortex Operators: examples/full-cortex-operators.md
+      - Scientific Operators: examples/scientific-operators.md
       - Optical Flow SILVA: examples/optical-flow-silva.md
       - Constrained Optimization: examples/constrained-optimization.md
       - Stacked Architecture: examples/stacked-architecture.md

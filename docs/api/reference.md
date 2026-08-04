@@ -21,6 +21,7 @@ inputs, outputs, and source links.
 | [Layers](layers.md) | `SILVALayer`, `SILVAGraphLayer`, `silva_generalized_layer`, `silva_deq_reduction_layer`, global/local/self operators |
 | [Architectures](architectures.md) | stacks, cortex hierarchies, graph networks, image classifiers, pooling, readout heads |
 | [Point Architectures](point_architectures.md) | ten shape-preserving vector, token, convolutional, U-Net, attention, and spectral fields |
+| [Scientific Operators](scientific.md) | finite differences, PDE residuals, boundaries, implicit time steps, reaction-diffusion, Burgers, and Fourier equilibrium operators |
 | [Implicit Bridge](implicit.md) | SILVA-named DEQ transition, fixed-point classifier, Euler flow, quadratic optimization, MDEQ bridge |
 | [DEQ Engine](deq-engine.md) | general single-state and multi-state SILVA DEQ engine, variational dropout, state packing |
 | [Optical Flow](flow.md) | RAFT-style correlation, warping, DEQ-flow fixed point, synthetic flow data |
@@ -42,6 +43,7 @@ inputs, outputs, and source links.
 | Generic SILVA layer | `SILVALayer`, `silva_generalized_layer`, `make_local_operator`, `make_global_operator`, `make_self_operator` |
 | Cortex hierarchy | `SILVACortexLayer`, `SILVACortexNetwork`, `SILVAImageCortexClassifier`, `silva_cortex_layer`, `silva_cortex_network` |
 | Internal point architectures | `available_silva_point_architectures`, `silva_point_architecture`, and ten `SILVA...PointArchitecture` modules |
+| ODE, PDE, and learned operators | `SILVAImplicitTimeStep`, `SILVAOperatorModel`, `SILVAFourierNeuralOperator`, numerical derivatives, PDE and boundary residuals |
 | SILVA reductions to baseline implicit models | `silva_deq_reduction_layer`, `silva_message_passing_reduction_layer`, `SILVAFixedPointBlock`, `SILVADEQEngine` |
 | Graph node or graph prediction | `SILVAGraphLayer`, `SILVAGraphNetwork`, `SILVAGraphPresetNetwork`, `pool_entities` |
 | Vision vectors | `SILVAVisionVectorLayer`, `SILVAVisionVectorClassifier`, `DynamicChannelLocal`, `ChannelSelfAttentionGlobal` |

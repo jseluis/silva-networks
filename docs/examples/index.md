@@ -18,6 +18,7 @@ python examples/add_layers_on_top.py
 python examples/cortex_hierarchy.py
 python examples/spatial_cortex.py
 python examples/point_architecture_catalog.py
+python examples/scientific_operators.py
 python examples/optical_flow_silva.py
 python examples/constrained_optimization.py
 python examples/stacked_architecture.py
@@ -40,6 +41,7 @@ python examples/raft_deq_flow.py
 | [Spatial SILVA Cortex](spatial-cortex.md) | `SILVACortexLayer`, `silva_equilibrium_model` | residual CNN and U-Net inside one point linked to a different vector point |
 | [Point Architecture Catalog](point-architecture-catalog.md) | point architecture registry and `SILVACortexLayer` | ten shape-preserving vector, token, spatial, gradient, and tiny-data checks |
 | [Full Cortex Operators](full-cortex-operators.md) | every `SILVACortexLayer` slot and all 25 branch factory names | internal sequence, self, local, global, custom, output, normalization, solver, shapes, and gradients |
+| [Scientific Operators](scientific-operators.md) | ODE flow, implicit PDE steps, reaction-diffusion, Burgers, Fourier operators, graph PDEs | analytic errors, fixed-point residuals, boundaries, gradients, and resolution changes |
 | [Optical Flow SILVA](optical-flow-silva.md) | `SILVADEQFlow`, RAFT-style correlation helpers | synthetic flow fixed point, EPE, smoothness, gradients |
 | [Constrained Optimization](constrained-optimization.md) | `SILVAProjectedQPLayer`, `silva_projected_qp_layer` | projected-QP fixed point, simplex constraints, gradients |
 | [Stacked Architecture](stacked-architecture.md) | `SILVAGraphNetwork`, mixed solvers | multi-layer equilibrium stack on a selected device |

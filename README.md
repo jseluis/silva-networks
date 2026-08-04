@@ -295,6 +295,28 @@ function-space connection is developed in
 implicit PDE stepping, Fourier operators inside SILVA, and separate solver and
 physical residuals.
 
+Build a reusable learned solution operator directly:
+
+```python
+import torch
+from silva_networks import SILVAFourierNeuralOperator, SolverConfig
+
+operator = SILVAFourierNeuralOperator(
+    in_channels=2,
+    state_channels=8,
+    out_channels=1,
+    modes_height=4,
+    modes_width=4,
+    config=SolverConfig(max_iter=16, alpha=0.4),
+)
+result = operator(torch.randn(2, 2, 24, 24), return_result=True)
+```
+
+The two input channels may encode a coefficient and source field. The same API
+also provides finite-difference derivatives, Poisson and boundary residuals,
+implicit ODE/PDE time steps, reaction-diffusion, and viscous Burgers fields.
+See `examples/scientific_operators.py` and `docs/api/scientific.md`.
+
 Use the family selector when you want a single choice point:
 
 ```python
@@ -329,8 +351,9 @@ vector, image pixel-grid, and molecular graph adapters.
 
 - `src/silva_networks/`: PyTorch package with solvers, Jacobian diagnostics,
   SILVA layers, cortex hierarchies, ten internal point architectures, stackable
-  architectures, DEQ engine utilities, optical-flow modules, constrained
-  optimization layers, dataset helpers, and device helpers.
+  architectures, scientific ODE/PDE and operator modules, DEQ engine utilities,
+  optical-flow modules, constrained optimization layers, dataset helpers, and
+  device helpers.
 - `docs/`: Material for MkDocs documentation site, including the case atlas,
   derivation-first math pages, API maps, examples, and references.
 - Companion book and solutions manual: planned long-form learning assets.
@@ -405,7 +428,10 @@ from silva_networks import (
     SILVAFixedPointBlock,
     SILVAFixedPointClassifier,
     SILVAImplicitTransition,
+    SILVAImplicitTimeStep,
     SILVAMultiscaleDEQBlock,
+    SILVAOperatorModel,
+    SILVAFourierNeuralOperator,
     SILVAProjectedQPLayer,
     SILVAQuadraticOptimizationLayer,
     SILVAVariationalDropout,
@@ -422,9 +448,12 @@ from silva_networks import (
     silva_fixed_point_classifier,
     silva_generalized_layer,
     silva_implicit_transition,
+    silva_implicit_time_step,
     silva_jacobian_regularization_loss,
     silva_message_passing_reduction_layer,
     silva_multiscale_deq_block,
+    silva_operator_model,
+    silva_fourier_neural_operator,
     silva_quadratic_optimization_layer,
 )
 ```
@@ -502,6 +531,27 @@ schedule, pretrained components, and evaluation protocol.
 Start with `docs/learn/paper-family-adaptations.md`,
 `notebooks/package_api/12_paper_family_architectures.ipynb`, and
 `notebooks/package_api/13_raft_deq_flow.ipynb`.
+
+## Scientific Operators, ODEs, and PDEs
+
+Scientific fields are supported through separate, composable layers:
+
+- `SILVAEulerFlowBlock` computes a finite explicit ODE trajectory;
+- `SILVAImplicitTimeStep` solves one backward-Euler ODE or PDE step;
+- `SILVAReactionDiffusionRHS2D` and `SILVABurgersRHS1D` provide checked
+  nonlinear right-hand sides;
+- `SILVAOperatorModel` learns a sampled function-to-function map with any
+  compatible spatial point architecture;
+- `SILVAFourierNeuralOperator` places the built-in Fourier field inside that
+  equilibrium operator;
+- finite-difference, boundary, Poisson-residual, and relative-residual helpers
+  keep the physical diagnostics independent from the solver residual.
+
+The full derivation and trained tiny example are in
+`docs/learn/neural-operators-ode-pde.md` and
+`notebooks/package_api/15_neural_operators_ode_pde.ipynb`. The compact script
+`examples/scientific_operators.py` also covers graph diffusion on irregular
+connectivity and reuse of one Fourier model across grid resolutions.
 
 ## Public Asset Policy
 

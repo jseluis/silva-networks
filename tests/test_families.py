@@ -10,9 +10,11 @@ from silva_networks import (
     SILVACortexNetwork,
     SILVADEQFlow,
     SILVADiffusionEquilibrium,
+    SILVAFourierNeuralOperator,
     SILVAImageCortexClassifier,
     SILVAImplicitGraphNetwork,
     SILVAImplicitNeuralRepresentation,
+    SILVAImplicitTimeStep,
     SILVAMultiscaleDEQ,
     SILVAOpticalFlowDEQ,
     SILVAProjectedQPLayer,
@@ -45,9 +47,13 @@ def test_family_registry_lists_selectable_models() -> None:
     assert "implicit_neural_representation" in families
     assert "diffusion_equilibrium" in families
     assert "raft_deq_flow" in families
+    assert "scientific_operator" in families
+    assert "fourier_operator_equilibrium" in families
+    assert "implicit_time_step" in families
     assert "DEQ reduction" in silva_family_description("compact-deq")
     assert "optical-flow" in silva_family_description("optical_flow_deq")
     assert "cortex" in silva_family_description("visual_cortex")
+    assert "Fourier neural operator" in silva_family_description("fno")
 
 
 def test_family_factory_builds_reduced_deq_and_message_passing_deq() -> None:
@@ -198,3 +204,35 @@ def test_family_factory_builds_generalized_paper_cases() -> None:
     assert isinstance(inr, SILVAImplicitNeuralRepresentation)
     assert isinstance(diffusion, SILVADiffusionEquilibrium)
     assert isinstance(flow, SILVARAFTDEQ)
+
+
+def test_family_factory_builds_scientific_models() -> None:
+    class LinearDecay(nn.Module):
+        def forward(
+            self,
+            state: torch.Tensor,
+            context: torch.Tensor | None = None,
+        ) -> torch.Tensor:
+            return -state if context is None else -state + context
+
+    config = SolverConfig(max_iter=3, alpha=0.5)
+    operator = silva_equilibrium_model(
+        "fno",
+        in_channels=1,
+        state_channels=3,
+        out_channels=1,
+        modes_height=2,
+        modes_width=2,
+        config=config,
+    )
+    time_step = silva_equilibrium_model(
+        "backward_euler",
+        rhs=LinearDecay(),
+        step_size=0.1,
+        config=config,
+    )
+
+    assert isinstance(operator, SILVAFourierNeuralOperator)
+    assert operator(torch.randn(2, 1, 6, 8)).shape == (2, 1, 6, 8)
+    assert isinstance(time_step, SILVAImplicitTimeStep)
+    assert time_step(torch.randn(2, 1, 8)).shape == (2, 1, 8)

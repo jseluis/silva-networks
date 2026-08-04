@@ -243,13 +243,18 @@ def test_expanded_notebooks_are_synchronized_and_substantive() -> None:
             ),
         ),
         "15_neural_operators_ode_pde.ipynb": (
-            30,
+            44,
             (
                 "One Implicit PDE Step as One SILVA Point",
                 "PeriodicDiffusionField",
                 "poisson_residual",
                 "fourier_operator",
                 "fixed-point residual",
+                "Reaction-Diffusion as an Implicit SILVA Step",
+                "Viscous Burgers Equation",
+                "Coefficient-to-Solution Learning",
+                "SILVAFourierNeuralOperator",
+                "Irregular Domains as Graph PDEs",
             ),
         ),
     }

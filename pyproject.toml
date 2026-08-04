@@ -78,6 +78,7 @@ dev = [
   "nbconvert>=7.16",
   "nbformat>=5.9",
   "pytest>=7.4",
+  "pytest-cov>=5.0",
   "ruff>=0.5",
   "tomli>=2.0; python_version < '3.11'",
   "twine>=5.0",
@@ -106,6 +107,15 @@ silva_networks = ["py.typed", "configs/*.json"]
 testpaths = ["tests"]
 pythonpath = ["src", "."]
 addopts = "-q"
+
+[tool.coverage.run]
+branch = true
+source = ["silva_networks"]
+
+[tool.coverage.report]
+fail_under = 75
+show_missing = true
+skip_covered = true
 
 [tool.ruff]
 line-length = 100

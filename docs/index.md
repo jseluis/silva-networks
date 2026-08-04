@@ -13,8 +13,9 @@ hide:
 <div markdown>
 <div class="silva-hero__title" role="heading" aria-level="1">SILVA Networks</div>
 
-Structured PyTorch equilibrium layers for stimulus, local interaction, global
-context, solver dynamics, diagnostics, and readout heads.
+Structured PyTorch equilibrium layers for graph, sequence, image, operator,
+ODE/PDE, diffusion, flow, and optimization models with explicit interaction
+branches, solvers, diagnostics, and readouts.
 
 <div class="silva-metrics" markdown>
 <div class="silva-metric" markdown>
@@ -22,8 +23,8 @@ context, solver dynamics, diagnostics, and readout heads.
 <span>Picard, Anderson, Broyden, GMRES diagnostics</span>
 </div>
 <div class="silva-metric" markdown>
-<strong>Case Atlas</strong>
-<span>Graph, vision, molecules, datasets, custom operators</span>
+<strong>21 Model Families</strong>
+<span>SILVA, DEQ, scientific operators, flow, diffusion, optimization</span>
 </div>
 <div class="silva-metric" markdown>
 <strong>Derivations</strong>
@@ -51,7 +52,7 @@ context, solver dynamics, diagnostics, and readout heads.
 </a>
 <a class="silva-action" href="learn/case-atlas/" markdown>
 <strong>Choose a case</strong>
-<span>Graph, vision, molecule, custom</span>
+<span>Graph, vision, sequence, scientific, molecule, custom</span>
 </a>
 <a class="silva-action" href="learn/derivation-workbook/" markdown>
 <strong>Derive step by step</strong>
@@ -126,6 +127,43 @@ operators, then solves their combined field until the residual approaches an
 equilibrium state for readout.
 </figcaption>
 </figure>
+
+## Scientific and Equilibrium Models
+
+SILVA is not limited to one graph or image architecture. The recurrent state
+can be a vector, token sequence, multiresolution tuple, coordinate field,
+sampled physical field, flow pair, diffusion trajectory, or optimization
+variable. The package provides 21 selectable model families and ten internal
+point architectures while retaining one numerical contract:
+
+$$
+z^\star=F_\theta(z^\star;x),
+\qquad
+r(z^\star)=F_\theta(z^\star;x)-z^\star.
+$$
+
+The scientific path distinguishes three constructions that are often discussed
+together but answer different questions. A Neural ODE
+[[7]](paper/references.md#ref-7){ .silva-cite } follows a finite-time
+trajectory. An implicit ODE or PDE step solves the unknown next state as a
+fixed point. A neural operator learns a map between functions; the Fourier
+Neural Operator (FNO) [[31]](paper/references.md#ref-31){ .silva-cite } is one
+possible internal field, while broader neural-operator theory is described in
+[[32]](paper/references.md#ref-32){ .silva-cite }.
+
+| Construction | SILVA state and transition | Public entry point | Full treatment |
+| --- | --- | --- | --- |
+| ODE trajectory | repeated explicit state update | `SILVAEulerFlowBlock` | [ODE/PDE tutorial](learn/neural-operators-ode-pde.md#ode-to-repeated-transition) |
+| implicit ODE/PDE step | next time slice is the equilibrium state | `SILVAImplicitTimeStep` | [Implicit time stepping](learn/neural-operators-ode-pde.md#implicit-time-stepping-is-a-silva-point) |
+| source-to-solution operator | lifted input function drives a learned equilibrium field | `SILVAOperatorModel` | [Neural solution operators](learn/neural-operators-ode-pde.md#neural-solution-operators) |
+| Fourier equilibrium operator | spectral and local fields act inside one SILVA point | `SILVAFourierNeuralOperator` | [FNO derivation](learn/neural-operators-ode-pde.md#fourier-neural-operator-derivation) |
+| reaction-diffusion and Burgers | known finite-difference field inside backward Euler | scientific right-hand-side modules | [Worked equations](learn/neural-operators-ode-pde.md#worked-scientific-constructions) |
+| irregular graph PDE | graph Laplacian or message field in `local_terms` | `SILVACortexLayer` | [Graph discretization](learn/neural-operators-ode-pde.md#irregular-domains-and-graph-pdes) |
+
+Use the [Scientific Operators API](api/scientific.md) for signatures, the
+[complete example](examples/scientific-operators.md) for a compact run, and the
+[executable notebook](package-notebooks/15_neural_operators_ode_pde.ipynb) for
+derivations, training, and numerical diagnostics.
 
 The package is meant to be read, imported, extended, and tested. It contains
 reference SILVA presets, generic custom layers, fixed-point solvers,
@@ -347,6 +385,33 @@ model = SILVAGraphNetwork(
 logits = model(x, edge_index=edge_index)
 ```
 
+## Scientific Quick Example
+
+This model receives a coefficient field and a source field, solves a Fourier
+architecture inside one SILVA equilibrium point, and decodes a solution field:
+
+```python
+import torch
+from silva_networks import SILVAFourierNeuralOperator, SolverConfig
+
+model = SILVAFourierNeuralOperator(
+    in_channels=2,
+    state_channels=16,
+    out_channels=1,
+    modes_height=6,
+    modes_width=6,
+    config=SolverConfig(solver="anderson", max_iter=20, alpha=0.4),
+)
+
+problem = torch.randn(4, 2, 32, 32)
+result = model(problem, return_result=True)
+prediction = result.output
+print(prediction.shape, result.solver_result.residual)
+```
+
+For a PDE study, report the task error, fixed-point residual, discretized PDE
+residual, boundary error, and resolution or mesh transfer separately.
+
 ## Package Areas
 
 | Area | What it contains |
@@ -355,9 +420,12 @@ logits = model(x, edge_index=edge_index)
 | [Layers](api/layers.md) | stimulus, local, global, self, graph, image, DEQ wrappers |
 | [Architectures](api/architectures.md) | stacks, heterogeneous SILVA cortex points, graph/image models, readouts |
 | [Point Architectures](api/point_architectures.md) | ten shape-preserving MLP, attention, convolutional, U-Net, spectral, and token-mixing fields |
+| [Scientific Operators](api/scientific.md) | finite differences, physical residuals, implicit steps, reaction-diffusion, Burgers, and Fourier equilibrium operators |
 | [Implicit Bridge](api/implicit.md) | tutorial DEQ, ODE, optimization, MDEQ, Jacobian-regularization modules |
 | [DEQ Engine](api/deq-engine.md) | TorchDEQ-style single-state and multi-state engine helpers |
 | [Optical Flow](api/flow.md) | RAFT/DEQ-Flow-style package-native optical-flow utilities |
+| [Generalized Cases](api/cases.md) | sequence, multiscale vision, implicit graph, coordinate representation, and diffusion equilibria |
+| [Family Selection](api/families.md) | 21 canonical constructors and compatibility aliases through one configuration surface |
 | [Optimization](api/optimization.md) | projected constrained QP layers and optional CVXPYlayers bridge |
 | [SILVA Presets](api/presets.md) | graph/node, vector vision, convolutional vision, molecular presets |
 | [Datasets](api/datasets.md) | public loaders, adapters, `GraphTensorBatch`, validation |
@@ -381,6 +449,8 @@ logits = model(x, edge_index=edge_index)
 | [Family Selector and Projected QP](package-notebooks/09_family_selector_and_projected_qp.ipynb) | SILVA-style family names, projected constraints, flow alias, gradients |
 | [Training Helpers Validation](package-notebooks/10_training_helpers_smoke.ipynb) | supervised fit/evaluate, checkpoint, resume, device movement |
 | [Cortex Hierarchy](package-notebooks/11_cortex_hierarchy.ipynb) | deep MLP, residual CNN, and U-Net transitions inside linked SILVA points |
+| [Paper Family Architectures](package-notebooks/12_paper_family_architectures.ipynb) | sequence DEQ, MDEQ, IGNN, implicit representations, diffusion, and custom transitions |
+| [RAFT and DEQ-Flow](package-notebooks/13_raft_deq_flow.ipynb) | coupled flow state, corrections, implicit gradients, upsampling, and state reuse |
 | [Point Architecture Catalog](package-notebooks/14_point_architecture_catalog.ipynb) | all ten internal architectures, tensor contracts, gradients, residuals, and point composition |
 | [Neural Operators, ODEs, and PDEs](package-notebooks/15_neural_operators_ode_pde.ipynb) | ODE flow, implicit PDE steps, Fourier operators inside SILVA, training, and residual diagnostics |
 | [Fixed Points as Layers](implicit-bridge-notebooks/01_introduction_fixed_points.ipynb) | implicit-layer introduction through package solvers |
@@ -401,6 +471,7 @@ logits = model(x, edge_index=edge_index)
 - [Runnable examples](examples/index.md)
 - [Public experiments](experiments/index.md)
 - [Dataset preprocessing](learn/datasets-and-preprocessing.md)
+- [Scientific operators, ODEs, and PDEs](learn/neural-operators-ode-pde.md)
 - [Case atlas](learn/case-atlas.md)
 - [Mathematical foundations](learn/mathematical-foundations.md)
 - [API reference](api/reference.md)

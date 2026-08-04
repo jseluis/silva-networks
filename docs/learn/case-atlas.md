@@ -30,8 +30,12 @@ For a full method-to-paper audit, see
 | Diagnostics and failure modes | Implemented | `residual_curve`, `stability_report`, `solve_with_energy` | transition `f`, state `z`, optional energy |
 | General DEQ engine | Implemented | `SILVADEQEngine`, `silva_deq`, `pack_state`, `unpack_state` | tensor, tuple, or list state |
 | SILVA DEQ flow | Implemented | `SILVADEQFlow`, `silva_deq_flow`, `silva_flow_warp`, `silva_all_pairs_correlation` | image pair, flow field, validity mask |
+| ODE trajectories and implicit time steps | Implemented | `SILVAEulerFlowBlock`, `SILVAImplicitTimeStep` | vector or sampled field, optional context |
+| PDE fields and residuals | Implemented | finite-difference operators, `SILVAReactionDiffusionRHS2D`, `SILVABurgersRHS1D`, `poisson_residual_2d` | 1D or 2D sampled fields |
+| Learned solution operators | Implemented | `SILVAOperatorModel`, `SILVAFourierNeuralOperator` | source, coefficient, coordinate, boundary, or initial-condition channels |
+| Irregular graph PDEs | Implemented through public composition | `SILVACortexLayer` with a graph local field | node state, `edge_index`, optional geometry in `edge_attr` |
 | Path sums and interaction histories | Documented and notebook-facing | solvers, Jacobian helpers, examples | linearized transitions |
-| PDE, homotopy, diffusion, scientific, distributional, algorithmic, quantum cases | Book extension material | notebooks and user-defined `DEQLayer`/`SILVALayer` | custom states and residuals |
+| Homotopy, distributional, algorithmic, and quantum cases | Book extension material | notebooks and user-defined `DEQLayer`/`SILVALayer` | custom states and residuals |
 
 ## Citation Map by Case
 
@@ -47,6 +51,7 @@ For a full method-to-paper audit, see
 | Dataset adaptation | dataset source; SILVA package for the adapter; Dynamic Graph CNN when reporting kNN graph construction as a dynamic graph method |
 | Jacobian regularization / stability | Hutchinson trace estimator; [Jacobian-regularized DEQ](https://arxiv.org/abs/2106.14342); DEQ/implicit-layer sources |
 | ODE / optimization / MDEQ bridge | [Neural ODEs](https://arxiv.org/abs/1806.07366), [OptNet](https://arxiv.org/abs/1703.00443), [Differentiable Convex Optimization Layers](https://arxiv.org/abs/1910.12430), [MDEQ](https://arxiv.org/abs/2006.08656), as applicable |
+| Neural operators and PDE learning | [Fourier Neural Operator](https://arxiv.org/abs/2010.08895); [Neural Operator](https://www.jmlr.org/papers/v24/21-1524.html); SILVA for the structured equilibrium construction |
 | General DEQ engine | SILVA package; [TorchDEQ](https://github.com/locuslab/torchdeq); DEQ |
 | Optical flow DEQ | [RAFT](https://arxiv.org/abs/2003.12039); [Deep Equilibrium Optical Flow Estimation](https://openaccess.thecvf.com/content/CVPR2022/html/Bai_Deep_Equilibrium_Optical_Flow_Estimation_CVPR_2022_paper.html); SILVA package |
 
@@ -514,6 +519,53 @@ Pixel graph images use grid neighbors. Molecules preserve bond edges. PyG-like
 objects are represented as `GraphTensorBatch` values without requiring PyTorch
 Geometric as a package dependency.
 
+## Scientific ODE, PDE, and Operator Cases
+
+The scientific surface separates finite trajectories, implicit numerical
+steps, and learned function maps:
+
+| Goal | Equation | Main API |
+| --- | --- | --- |
+| finite ODE trajectory | \(h_{k+1}=h_k+\Delta t\,v(h_k,t_k,x)\) | `SILVAEulerFlowBlock` |
+| implicit ODE/PDE step | \(u^{n+1}=u^n+\Delta t\,R_h(u^{n+1},c)\) | `SILVAImplicitTimeStep` |
+| learned solution operator | \(\widehat u=\mathcal G_\theta(a,q,g,\Omega)\) | `SILVAOperatorModel` |
+| Fourier equilibrium operator | \(z^\star=\Psi[R_\phi(a)+B_{\mathrm{FNO}}(z^\star)+\cdots]\) | `SILVAFourierNeuralOperator` |
+| irregular graph PDE | \(z_i^{n+1}=z_i^n+\Delta t D\sum_{j\to i}(z_j^{n+1}-z_i^{n+1})\) | graph module in `SILVACortexLayer.local_terms` |
+
+For a semidiscrete right-hand side \(R_h\), backward Euler defines the
+fixed-point map
+
+$$
+T(z)=u^n+\Delta t\,R_h(z,c).
+$$
+
+`SILVAImplicitTimeStep` sends this map through `solve_equilibrium`, so the
+configured forward and backward modes, residual tracking, and convergence flag
+remain available. Built-in fields cover reaction-diffusion and viscous Burgers;
+custom `nn.Module` fields can implement another discretization while preserving
+the `(state, context) -> state-shaped field` contract.
+
+For source-to-solution learning, the sampled tensor contract is
+
+$$
+a\in\mathbb R^{B\times C_{in}\times H\times W},
+\quad
+z^\star\in\mathbb R^{B\times C_z\times H\times W},
+\quad
+\widehat u\in\mathbb R^{B\times C_{out}\times H\times W}.
+$$
+
+Input channels can represent coefficients, forcing, coordinates, masks,
+initial data, or boundary values. The operator model lifts them, solves one
+SILVA point, and applies a readout. Use the scientific residual helpers to
+check derivatives, Poisson residuals, and boundaries independently from the
+fixed-point residual.
+
+Validation evidence should include task or field error, solver residual,
+physical residual, boundary error, iteration count, gradients, and resolution
+or mesh transfer when those claims are made. The complete derivations are in
+[Neural Operators, ODEs, PDEs, and SILVA](neural-operators-ode-pde.md).
+
 ## Path-Sum and Linear Response Case
 
 Near an equilibrium, write the damped linearized update as
@@ -573,12 +625,12 @@ advertised as prebuilt classes unless a public API exists.
 
 | Book route | Fixed-point form | Package entry point |
 | --- | --- | --- |
-| Neural operators and PDEs | \(u^\star=\mathcal T_\theta(u^\star, a)\) | custom `DEQLayer` |
+| Extended neural operators and PDEs | multi-point, geometry-specific, or custom-basis operator equilibria | `SILVAOperatorModel`, `SILVAImplicitTimeStep`, or custom `DEQLayer` |
 | Homotopy and continuation | \(F(z^\star(t),t)=0\) | continuation loop around `fixed_point` |
 | TorchDEQ and DeltaDEQ engineering | solver interface and heterogeneous convergence | compare against `SolverConfig` and solver traces |
 | Certified and Lipschitz DEQs | \(\|(I-J_f)^{-1}\|\) sensitivity bounds | `jvp`, `vjp`, spectral diagnostics |
 | Score and diffusion equilibria | \(s^\star=f_\theta(s^\star,x,t)\) | custom transition |
-| Scientific self-consistency | \(H^\star=\mathcal H_\theta(H^\star,x)\) | custom transition plus diagnostics |
+| Extended scientific self-consistency | \(H^\star=\mathcal H_\theta(H^\star,x)\) beyond the built-in field cases | scientific APIs or custom transition plus diagnostics |
 | Recent theory and finite-solve bias | \(z_K-z^\star\) and local claims | residual curves and stability reports |
 | Distributional DEQs | empirical measure or particle fixed point | `SILVALayer` with permutation-equivariant branches |
 | Algorithmic and quantum reasoning | Bellman or circuit self-consistency | custom `DEQLayer` |

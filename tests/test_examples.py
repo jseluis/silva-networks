@@ -18,6 +18,7 @@ def test_examples_import_and_run() -> None:
         "cortex_hierarchy.py",
         "spatial_cortex.py",
         "point_architecture_catalog.py",
+        "scientific_operators.py",
         "optical_flow_silva.py",
         "constrained_optimization.py",
         "stacked_architecture.py",

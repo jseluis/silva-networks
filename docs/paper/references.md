@@ -165,6 +165,7 @@ continued reading.
 | SILVA DEQ flow | `SILVADEQFlow`, `silva_deq_flow`, all-pairs correlation, flow warping | RAFT, DEQ-Flow, SILVA |
 | sequence and multiscale cases | `SILVASequenceDEQ`, `SILVAMultiscaleDEQ` and task heads | DEQ, MDEQ, SILVA |
 | graph, INR, and diffusion cases | `SILVAImplicitGraphNetwork`, `SILVAImplicitNeuralRepresentation`, `SILVADiffusionEquilibrium` | IGNN, DEQ-INR, DEQ-DDIM, SILVA |
+| scientific operators and implicit PDE steps | `SILVAOperatorModel`, `SILVAFourierNeuralOperator`, `SILVAImplicitTimeStep`, scientific residual helpers | Neural ODEs, FNO, neural operators, SILVA |
 | coupled RAFT/DEQ-Flow | `SILVARAFTDEQ`, correlation pyramid, update block, correction loss | RAFT, DEQ-Flow, SILVA |
 
 ## Equilibrium and Implicit Layers

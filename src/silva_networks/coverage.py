@@ -114,6 +114,26 @@ _IMPLEMENTATION_CASES: tuple[SILVAImplementationCase, ...] = (
         ),
     ),
     SILVAImplementationCase(
+        key="scientific_operators",
+        public_objects=(
+            "SILVAOperatorModel",
+            "SILVAFourierNeuralOperator",
+            "SILVAImplicitTimeStep",
+            "SILVAReactionDiffusionRHS2D",
+            "SILVABurgersRHS1D",
+            "finite_difference_laplacian_2d",
+            "poisson_residual_2d",
+        ),
+        tutorial="docs/learn/neural-operators-ode-pde.md",
+        notebooks=("docs/package-notebooks/15_neural_operators_ode_pde.ipynb",),
+        smoke_tests=("tests/test_scientific.py",),
+        examples=("examples/scientific_operators.py",),
+        scope=(
+            "ODE flow, implicit ODE/PDE steps, reaction-diffusion, Burgers, "
+            "Poisson diagnostics, Fourier equilibrium operators, and graph PDEs."
+        ),
+    ),
+    SILVAImplementationCase(
         key="presets",
         public_objects=("SILVAGraphPresetNetwork", "SILVAVisionVectorClassifier", "SILVAMolecularRegressor"),
         tutorial="docs/api/presets.md",

@@ -96,6 +96,7 @@ PY
 
 run "$PYTHON" examples/scalar_deq.py
 run "$PYTHON" examples/stacked_architecture.py
+run "$PYTHON" examples/scientific_operators.py
 
 run "${SILVA_EXPERIMENT[@]}" \
   --config solver_sweep \
@@ -112,6 +113,7 @@ run "${SILVA_EXPERIMENT[@]}" \
 run "$PYTHON" -m pytest \
   tests/test_solvers.py \
   tests/test_layers.py \
+  tests/test_scientific.py \
   tests/test_datasets.py \
   tests/test_public_experiments.py \
   -q -ra

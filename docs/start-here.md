@@ -14,10 +14,11 @@ This path goes from first principles to a usable PyTorch model.
    external methods to SILVA APIs and citations.
 6. Open [Paper Family Adaptations](learn/paper-family-adaptations.md) for the
    DEQ, MDEQ, Jacobian, TorchDEQ, IGNN, INR, diffusion, RAFT, and DEQ-Flow map.
-7. Open [Introduction by Example](get-started/introduction-by-example.md).
-8. Read [Data Objects and Batching](get-started/data-and-batching.md).
-9. Run `python examples/scalar_deq.py`.
-10. Run `python examples/graph_silva.py`.
+7. Read [Neural Operators, ODEs, PDEs, and SILVA](learn/neural-operators-ode-pde.md)
+   when the state is a dynamical or spatial field.
+8. Open [Introduction by Example](get-started/introduction-by-example.md).
+9. Read [Data Objects and Batching](get-started/data-and-batching.md).
+10. Run `python examples/scalar_deq.py` and `python examples/graph_silva.py`.
 
 The main equation is
 
@@ -45,6 +46,7 @@ $$
 | SILVA operators | [SILVA Operators](learn/silva-operators.md) | vary Figure 1 branches and ablations |
 | Cortex hierarchy | [Cortex Hierarchies](learn/cortex-hierarchy.md) | build linked SILVA points with independently configured MLP, convolutional, U-Net, attention, or graph internals |
 | Internal architecture selection | [Point Architecture Catalog](learn/point-architecture-catalog.md) | choose among ten vector, token, and spatial fields and compose them inside or across points |
+| Scientific models | [Neural Operators, ODEs, PDEs, and SILVA](learn/neural-operators-ode-pde.md) | derive explicit flow, implicit time stepping, PDE residuals, FNO fields, and graph discretizations |
 | Stability | [Jacobians and Stability](learn/jacobians.md) | compute Jacobians, products, spectral-radius diagnostics |
 | Dataset adaptation | [Datasets and Preprocessing](learn/datasets-and-preprocessing.md) | convert public or private data into the engine |
 
@@ -57,6 +59,7 @@ $$
 | Pick a layer | [Layers API](api/layers.md) |
 | Build cortex hierarchies | [Architectures API](api/architectures.md) |
 | Choose an internal point architecture | [Point Architectures API](api/point_architectures.md) |
+| Build ODE, PDE, or learned operator models | [Scientific Operators API](api/scientific.md) |
 | Pick a model family | [Selecting Model Families](learn/selecting-model-families.md) |
 | Use reference presets | [SILVA Presets API](api/presets.md) |
 | Use the DEQ engine | [DEQ Engine API](api/deq-engine.md) |

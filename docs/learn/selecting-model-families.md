@@ -53,7 +53,16 @@ print(available_silva_families())
 | `"compact_deq"` | affine-tanh DEQ reduction |
 | `"message_passing_deq"` | local graph/message-passing DEQ reduction |
 | `"mdeq"` | compact multiscale DEQ bridge block |
-| `"silva_deq_flow"` | SILVA-named RAFT/DEQ-Flow-style flow fixed point |
+| `"multiscale_vision_deq"` | simultaneous multiresolution vision equilibrium |
+| `"sequence_deq"` | relative-attention or trellis sequence equilibrium |
+| `"implicit_graph"` | graph equilibrium with configurable adjacency normalization |
+| `"implicit_neural_representation"` | coordinate-based SIREN, Fourier, or Gabor equilibrium |
+| `"diffusion_equilibrium"` | joint selected denoising trajectory equilibrium |
+| `"scientific_operator"` | source-to-field SILVA point with a selectable internal architecture |
+| `"fourier_operator_equilibrium"` | Fourier neural operator field inside a SILVA point |
+| `"implicit_time_step"` | backward-Euler ODE or PDE step solved as an equilibrium |
+| `"silva_deq_flow"` | compact package-native optical-flow equilibrium |
+| `"raft_deq_flow"` | coupled hidden-state and flow RAFT/DEQ-Flow equilibrium |
 | `"quadratic_optimization"` | unconstrained quadratic optimization layer |
 | `"silva_projected_qp"` | SILVA-named projected constrained quadratic layer |
 
@@ -176,6 +185,96 @@ image_cortex = silva_equilibrium_model(
 )
 ```
 
+## Generalized Sequence, Vision, Graph, Coordinate, and Diffusion Families
+
+The generalized cases keep the fixed-point contract while changing the state
+space and transition. Their primary derivations and citations are collected in
+[Paper Family Adaptations](paper-family-adaptations.md).
+
+| Family | Equilibrium state | Required constructor information | Principal diagnostic |
+| --- | --- | --- | --- |
+| `multiscale_vision_deq` | tuple of feature maps at several resolutions | input channels, per-scale channels, multiscale transition settings | packed residual plus per-scale shapes |
+| `sequence_deq` | `(batch, tokens, dim)` | state width, vocabulary or features, attention/trellis settings | token-state residual and masking behavior |
+| `implicit_graph` | `(nodes, state_dim)` | feature dimensions, edges at call time, adjacency normalization | graph-state residual and edge normalization |
+| `implicit_neural_representation` | `(batch, queries, state_dim)` | coordinate width, state width, output width, coordinate injection | field error and coordinate derivatives |
+| `diffusion_equilibrium` | stacked selected denoising states | denoiser, cumulative noise schedule, selected timesteps | trajectory residual and final output |
+| `raft_deq_flow` | coupled hidden representation and flow | encoder, correlation, update, solver, upsampling settings | endpoint error, flow residual, correction loss |
+
+For example, an implicit coordinate representation solves
+
+$$
+z^\star(q)=F_\theta(z^\star(q),\gamma(q)),
+\qquad
+\widehat u(q)=R_\omega(z^\star(q)),
+$$
+
+where $q$ contains coordinates and $\gamma$ is a sine, Fourier, or Gabor
+injection. This differs from a grid operator: the query coordinates are inputs,
+and spatial derivatives are obtained by differentiating with respect to those
+coordinates.
+
+## Scientific Operator Families
+
+Three canonical families expose ODE/PDE and function-space constructions:
+
+```python
+from silva_networks import SolverConfig, silva_equilibrium_model
+
+operator = silva_equilibrium_model(
+    "scientific_operator",
+    in_channels=2,
+    state_channels=8,
+    out_channels=1,
+    architecture="unet",
+    architecture_kwargs={"base_channels": 12},
+    config=SolverConfig(max_iter=16, alpha=0.35),
+)
+
+fno = silva_equilibrium_model(
+    "fourier_operator_equilibrium",
+    in_channels=2,
+    state_channels=8,
+    out_channels=1,
+    modes_height=4,
+    modes_width=4,
+)
+```
+
+Both models implement a sampled function map
+
+$$
+(a,q)\mapsto \widehat u,
+$$
+
+but their recurrent fields differ. The generic model may use U-Net,
+convolutional, or another shape-preserving spatial module. The Fourier family
+uses retained spectral modes plus a local projection. FNO
+[[31]](../paper/references.md#ref-31){ .silva-cite } and neural-operator theory
+[[32]](../paper/references.md#ref-32){ .silva-cite } motivate the function-space
+architecture; SILVA [[1]](../paper/references.md#ref-1){ .silva-cite } supplies
+the structured equilibrium composition.
+
+The implicit-time-step family instead requires a right-hand side and step size:
+
+$$
+u^{n+1}=u^n+\Delta t\,R(u^{n+1},c).
+$$
+
+```python
+step = silva_equilibrium_model(
+    "implicit_time_step",
+    rhs=physical_or_learned_rhs,
+    step_size=0.005,
+    config=SolverConfig(max_iter=40, tol=1e-6, alpha=0.8),
+)
+next_state = step(previous_state, context=forcing)
+```
+
+The right-hand side must accept `(state, context)` and return the state shape.
+Use a projector when every solver evaluation must obey a boundary or state
+constraint. The [scientific tutorial](neural-operators-ode-pde.md) derives the
+reaction-diffusion, Burgers, Poisson, Fourier, and graph cases in full.
+
 ## Optimization Families
 
 The unconstrained quadratic bridge solves
@@ -211,6 +310,8 @@ families below:
 | DEQ | `compact_deq`, `SILVADEQEngine`, `silva_deq` |
 | MDEQ | `mdeq`, `SILVAMultiscaleDEQBlock` |
 | TorchDEQ | `SILVADEQEngine`, variational dropout, multi-state packing |
+| FNO / neural operators | `scientific_operator`, `fourier_operator_equilibrium`, `SILVAOperatorModel` |
+| ODE / PDE implicit stepping | `implicit_time_step`, numerical derivative and residual helpers |
 | RAFT / DEQ-Flow | `silva_deq_flow`, correlation, warping, fixed-point flow |
 | OptNet / CVXPYlayers | `silva_projected_qp` plus optional `silva_cvxpy_layer` bridge |
 
