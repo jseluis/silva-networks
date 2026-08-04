@@ -200,3 +200,11 @@ print(result.residuals)
 The residuals should decrease until the tolerance or iteration budget stops the
 solve.
 
+Check `result.converged`, `result.iterations`, and `result.info["termination"]`
+alongside the curve. When comparing methods, keep the transition, initial
+state, tolerance definition, and numerical precision fixed.
+
+Primary sources for Anderson acceleration, Broyden updates, and GMRES are
+listed in [Solvers and Linear Algebra](../paper/references.md#solvers-and-linear-algebra).
+The executable comparison is in
+[Solvers and Jacobians](../package-notebooks/02_solvers_and_jacobians.ipynb).

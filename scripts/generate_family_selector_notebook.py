@@ -110,7 +110,7 @@ NB = notebook(
     [
         md(
             r"""
-# Family Selector and Projected QP Smoke Tutorial
+# Family Selector and Projected QP Validation Tutorial
 
 This notebook checks two package design promises:
 
@@ -266,7 +266,7 @@ $$
 C=\{z:A_{\rm eq}z=b_{\rm eq}\}.
 $$
 
-The smoke checks below verify the constraints directly from the returned
+The validation checks below verify the constraints directly from the returned
 states.
 """
         ),
@@ -301,7 +301,7 @@ print((z_affine @ Aeq.T).detach().cpu().round(decimals=6).tolist())
         ),
         md(
             r"""
-## Flow Family Smoke Check
+## Flow Family Validation Check
 
 The flow model has a different state shape, but the same solver pattern:
 

@@ -302,7 +302,7 @@ torch.allclose(first, second), torch.allclose(first, third)
 
 RAFT introduced all-pairs correlation and recurrent flow refinement. DEQ-Flow
 casts optical flow as a fixed-point solve. The SILVA package version is compact
-and designed for tutorials and smoke tests:
+and designed for tutorials and compact validation runs:
 
 $$
 u^\star=T_\theta(u^\star,I_1,I_2).
@@ -438,7 +438,7 @@ plt.tight_layout()
                 r"""
 ## One Training Step
 
-The model is an ordinary PyTorch module. A supervised smoke loss can combine
+The model is an ordinary PyTorch module. A supervised validation loss can combine
 endpoint error and smoothness.
 """
             ),

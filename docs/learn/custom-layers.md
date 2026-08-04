@@ -78,3 +78,31 @@ model = SILVAGraphNetwork(
 
 Solver settings can be shared across layers or supplied as one `SolverConfig`
 per layer.
+
+## Verify a New Branch
+
+A successful forward pass is only the first check. Evaluate the branch inside
+the complete transition and verify shape preservation, finite gradients, and
+fixed-point behavior:
+
+```python
+x = torch.randn(12, 8)
+result = layer(x, return_result=True)
+loss = result.z.square().mean()
+loss.backward()
+
+assert result.z.shape == (12, 32)
+assert torch.isfinite(result.z).all()
+assert any(p.grad is not None for p in layer.local.parameters())
+print(result.converged, result.residuals)
+```
+
+If the residual grows, first reduce the custom branch scale or solver damping;
+then inspect the damped spectral radius. A shape-preserving module is eligible
+for a SILVA point, but stability depends on the Jacobian of the combined
+stimulus, self, local, global, and output mappings.
+
+The [Full Cortex Operator Example](../examples/full-cortex-operators.md) runs
+every configurable branch slot together. Source lineages for graph, attention,
+and set operators are collected in
+[Graphs, Attention, and Messages](../paper/references.md#graphs-attention-and-messages).

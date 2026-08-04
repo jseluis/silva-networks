@@ -28,6 +28,18 @@ The finite solver output is accepted only through evidence:
 - local Jacobian diagnostics;
 - task metric or experiment result.
 
+The transition must preserve the complete state contract:
+
+$$
+f_\theta:\mathbb R^{d_1\times\cdots\times d_r}
+\rightarrow
+\mathbb R^{d_1\times\cdots\times d_r}.
+$$
+
+Its output must also share the input state's floating dtype and device. These
+checks apply equally to a scalar, node matrix, image tensor, or packed
+multi-state vector.
+
 ## Residual View
 
 The finite solver does not need to prove exact equality. It records evidence
@@ -103,3 +115,8 @@ $$
 | How are all cases organized? | [Case Atlas](case-atlas.md) |
 | How do solvers differ? | [Solvers](../api/solvers.md) |
 | How do implicit gradients appear? | [Mathematical Foundations](mathematical-foundations.md#implicit-differentiation) |
+
+The underlying equilibrium and implicit-layer sources are listed in
+[Equilibrium and Implicit Layers](../paper/references.md#equilibrium-and-implicit-layers).
+The [Scalar Equilibrium](../examples/scalar-deq.md) example checks the solver,
+Jacobian, and spectral radius against a closed-form fixed point.

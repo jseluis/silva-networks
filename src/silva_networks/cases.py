@@ -1,9 +1,9 @@
 r"""Generalized SILVA case architectures adapted from the DEQ literature.
 
-These implementations are package-native and expose the architectural controls
-needed to construct sequence DEQs, multiscale vision DEQs, implicit graph
-networks, implicit neural representations, and joint diffusion equilibria. They
-do not embed paper datasets, private experiment recipes, or expected metrics.
+These implementations expose the architectural controls needed to construct
+sequence DEQs, multiscale vision DEQs, implicit graph networks, implicit neural
+representations, and joint diffusion equilibria. Each case provides a compact
+reference configuration that can be extended for a target dataset and protocol.
 
 References:
     - Bai, Kolter, and Koltun, "Deep Equilibrium Models", NeurIPS 2019.

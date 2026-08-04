@@ -1,9 +1,7 @@
-"""SILVA optical-flow modules inspired by RAFT and DEQ-Flow.
+"""SILVA optical-flow modules based on equilibrium flow refinement.
 
-The implementation in this module is package-native and compact. It does not
-copy code from RAFT or DEQ-Flow. It ports the main ideas into the SILVA package:
-all-pairs correlation, recurrent flow refinement, and fixed-point solving of a
-flow field.
+This module combines all-pairs correlation, recurrent flow refinement, and
+fixed-point solution of a flow field through the SILVA transition interface.
 
 References:
     - Silva, "SILVA Networks as Structured Implicit Layers and Vector
@@ -1051,7 +1049,7 @@ def _flow_norm(
 
 
 class SILVAFlowFeatureEncoder(nn.Module):
-    """Small feature encoder for SILVA optical-flow smoke experiments."""
+    """Small feature encoder for SILVA optical-flow validation experiments."""
 
     def __init__(self, in_channels: int = 1, feature_dim: int = 8):
         super().__init__()

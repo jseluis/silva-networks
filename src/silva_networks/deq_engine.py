@@ -47,7 +47,7 @@ class SILVADEQConfig:
         backward_solver: Linear/fixed-point method for exact implicit adjoints.
         forward_max_iter: Maximum forward solver iterations.
         backward_max_iter: Maximum backward linear-solver iterations used by
-            external adjoint helpers.
+            the implicit adjoint.
         forward_tol: Forward residual tolerance.
         backward_tol: Backward residual tolerance.
         backward_stop_mode: Absolute or relative backward residual criterion.

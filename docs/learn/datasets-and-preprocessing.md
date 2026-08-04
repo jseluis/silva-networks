@@ -208,3 +208,35 @@ The matching notebook is:
 ```text
 notebooks/package_api/03_datasets_to_silva.ipynb
 ```
+
+## Validate Before Solving
+
+Preprocessing changes the transition itself because local and global branches
+read the graph and batch structures. Before training, check:
+
+```python
+graph.validate()
+assert torch.isfinite(graph.x).all()
+assert graph.edge_index.min() >= 0
+assert graph.edge_index.max() < graph.x.shape[0]
+```
+
+Then run one equilibrium and retain its evidence:
+
+```python
+result = layer(
+    graph.x,
+    edge_index=graph.edge_index,
+    edge_attr=graph.edge_attr,
+    batch=graph.batch,
+    return_result=True,
+)
+print(result.z.shape, result.converged, result.residual)
+```
+
+Report the feature normalization, graph construction rule, number of entities
+and edges, split policy, missing-value handling, and dataset version alongside
+solver diagnostics. The public dataset links are listed under
+[Citation Rules for Reports](../paper/references.md#citation-rules-for-reports),
+and the end-to-end command is shown in
+[Dataset Quickstart](../examples/datasets-quickstart.md).

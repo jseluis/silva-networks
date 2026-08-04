@@ -71,6 +71,15 @@ batch = move_to_device(batch, device)
 model = model.to(device)
 ```
 
-This is the same path used for CPU, CUDA, and MPS smoke tests. The printed
+This is the same path used for CPU, CUDA, and MPS validation. The printed
 `solvers` list confirms that every equilibrium layer used its configured
 solver.
+
+The input has shape `(entities, 6)`. The three solved states have hidden widths
+`16`, `16`, and `12`; mean pooling then produces one `(graphs, 12)` matrix for
+the classifier. Inspect all three residual trajectories and convergence flags,
+because the final loss does not establish convergence of an earlier point.
+
+See [Stacking, Solvers, and Devices](../learn/stacking-and-devices.md) for the
+full contract and [Solvers and Linear Algebra](../paper/references.md#solvers-and-linear-algebra)
+for the numerical-method sources.

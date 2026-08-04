@@ -1,7 +1,7 @@
 # Results
 
 This page records small, reproducible checks for the public package paths. The
-numbers below are smoke results, not benchmark claims. They answer a narrower
+numbers below are small-scale validation results, not benchmark claims. They answer a narrower
 question: does the package load the dataset, build the SILVA tensors, solve the
 equilibrium system, backpropagate through the layer, and report residuals?
 
@@ -13,7 +13,7 @@ silva-experiment \
   --output-dir outputs
 ```
 
-For a supervised classification smoke, the reported accuracy is
+For a supervised classification validation run, the reported accuracy is
 
 \[
 \operatorname{acc}
@@ -47,7 +47,7 @@ gradient, and optimizer.
 
 These runs use UCI datasets downloaded through the package registry. When a
 classification config uses a small subset, the subset is stratified so the
-smoke does not accidentally select only one class.
+validation subset does not accidentally select only one class.
 
 | Config | Dataset | Samples | Features | Classes | Loss trace | Accuracy | Solver residuals |
 | --- | ---: | ---: | ---: | ---: | --- | ---: | --- |
@@ -90,13 +90,13 @@ For CIFAR10, the raw tensor has shape
 x \in \mathbb{R}^{B\times 3\times 32\times 32}.
 \]
 
-The vector smoke flattens each image,
+The vector validation run flattens each image,
 
 \[
 u_i = \operatorname{vec}(x_i) \in \mathbb{R}^{3072},
 \]
 
-then applies a SILVA vector classifier. The cortex smoke keeps the image
+then applies a SILVA vector classifier. The cortex validation run keeps the image
 structure, first computes a convolutional retinal embedding, and then solves
 linked equilibrium points:
 
@@ -122,7 +122,7 @@ silva-experiment \
   --output-dir outputs
 ```
 
-Measured CIFAR10 CPU smoke results from the public configs:
+Measured CIFAR10 CPU validation results from the public configs:
 
 | Config | Preset | Samples | Image shape | Output shape | State shape | Loss | Accuracy | Solver residuals |
 | --- | --- | ---: | --- | --- | --- | ---: | ---: | --- |
@@ -168,7 +168,7 @@ contract. Each row includes a backward pass and one optimizer update.
 
 All ten fields preserve the input-state shape, produce finite outputs, receive
 nonzero parameter gradients, and reduce the residual after the second damped
-step. Parameter counts describe the compact smoke configurations, not canonical
+step. Parameter counts describe the compact validation configurations, not canonical
 model sizes or an accuracy ranking.
 
 Reproduce the table with:
@@ -183,8 +183,8 @@ and across linked points.
 
 ## Interpreting These Numbers
 
-Smoke metrics are useful for implementation fidelity, but they are intentionally
+Validation metrics are useful for implementation fidelity, but they are intentionally
 small. They verify tensor shapes, solver integration, gradients, and dataset
 preprocessing. Full experiment reproduction should be reported separately with
-the exact private configs, seeds, splits, training budgets, hardware, and saved
+the exact configs, seeds, splits, training budgets, hardware, and saved
 artifacts used for the article-scale runs.

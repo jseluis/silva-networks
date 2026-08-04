@@ -29,6 +29,19 @@ its own `SolverConfig`, so a stable Picard block, an accelerated Anderson block,
 and a small Broyden block can live in the same architecture. Each config can
 also choose `backward_mode="unrolled"` or `backward_mode="implicit"`.
 
+For a stack of \(m\) points, the equations are
+
+$$
+z_1^\star=f_{\theta_1}(z_1^\star,x),
+\qquad
+z_\ell^\star=f_{\theta_\ell}(z_\ell^\star,z_{\ell-1}^\star),
+\quad 2\le\ell\le m.
+$$
+
+These are \(m\) separate fixed points connected by explicit links. Adding
+modules to `state_network` instead adds depth inside one repeated transition;
+it does not create more equilibrium points.
+
 For SILVA cortex hierarchies where a single equilibrium point also
 contains a deep internal transition network, use
 [Cortex Hierarchies](cortex-hierarchy.md). That API keeps the same solver and
@@ -104,3 +117,20 @@ batch = move_to_device(batch, device)
 Every internal zero tensor, identity matrix, aggregation buffer, and solver
 workspace follows the device and dtype of the input state. The same model code
 runs on CPU, CUDA, or MPS when the corresponding PyTorch backend is available.
+
+## Inspect Every Point
+
+```python
+result = model(x, edge_index=edge_index, batch=batch, return_result=True)
+
+for index, solve in enumerate(result.solver_results):
+    print(index, solve.solver, solve.iterations, solve.converged, solve.residual)
+```
+
+Validate each point independently. A small final-layer residual does not prove
+that an earlier state converged, and a device check should include features,
+edges, batch ids, targets, model parameters, and every returned state.
+
+The runnable construction is in [Stacked Architecture](../examples/stacked-architecture.md).
+Solver sources are collected in
+[Solvers and Linear Algebra](../paper/references.md#solvers-and-linear-algebra).

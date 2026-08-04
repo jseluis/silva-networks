@@ -17,5 +17,6 @@ recursive-include examples *.py
 recursive-include experiments/public *.py
 recursive-include experiments/public/configs *.json
 include scripts/smoke_test.sh
+include scripts/documentation_audit.py
 recursive-include src/silva_networks/configs *.json
 include src/silva_networks/cases.py

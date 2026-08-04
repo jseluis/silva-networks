@@ -106,7 +106,7 @@ NB = notebook(
     [
         md(
             r"""
-# Training Helpers Smoke Tutorial
+# Training Helpers Validation Tutorial
 
 This notebook checks the optional supervised training helpers:
 
@@ -185,7 +185,7 @@ requested device.
         code(
             """
 with tempfile.TemporaryDirectory() as tmp:
-    checkpoint = Path(tmp) / "smoke.pt"
+    checkpoint = Path(tmp) / "training.pt"
     result = fit_supervised(
         model,
         loader,

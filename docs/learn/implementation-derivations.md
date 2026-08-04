@@ -1195,7 +1195,7 @@ different stochastic transition at every fixed-point iteration.
 
 ## Optical Flow Formula Map
 
-The `silva_networks.flow` module is a compact RAFT/DEQ-Flow-inspired smoke-test
+The `silva_networks.flow` module is a compact RAFT/DEQ-Flow-inspired validation
 case implemented with SILVA solvers.
 
 For a pixel

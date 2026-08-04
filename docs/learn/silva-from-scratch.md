@@ -310,3 +310,9 @@ z^\star=f_\theta(z^\star,x),
 $$
 
 For the full case list, see the [Case Atlas](case-atlas.md).
+
+Primary sources for the SILVA field, equilibrium layers, graph messages,
+attention, and set aggregation are collected in
+[Paper and References](../paper/references.md). The
+[Equation-to-Code Walkthrough](../package-notebooks/08_equation_to_code_walkthrough.ipynb)
+executes the scalar-to-graph construction in separate cells.

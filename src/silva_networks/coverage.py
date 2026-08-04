@@ -1,8 +1,8 @@
-"""Implementation coverage registry for tutorials, notebooks, and smoke tests.
+"""Implementation coverage registry for tutorials, notebooks, and validation tests.
 
 The registry is documentation-facing: it records which public implementation
 families are represented by a tutorial, an executable notebook, and at least one
-smoke test or example. It keeps release checks explicit as the package grows.
+validation test or example. It keeps release checks explicit as the package grows.
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ class SILVAImplementationCase:
         public_objects: Importable classes or functions that define the public API.
         tutorial: Documentation page explaining the implementation.
         notebooks: Notebook paths that exercise the implementation.
-        smoke_tests: Test paths that check the implementation.
+        smoke_tests: Validation-test paths that check the implementation.
         examples: Optional runnable example scripts.
         scope: Short statement of what the implementation claims.
     """

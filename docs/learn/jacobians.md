@@ -175,7 +175,7 @@ For a new SILVA branch:
 2. Compare `J @ v` with `jvp`.
 3. Compare `J.T @ v` with `vjp`.
 4. Estimate \(\rho(J_f)\) and \(\rho(J_{T_\alpha})\).
-5. Train a CPU smoke case before running larger GPU experiments.
+5. Train a small CPU validation case before running larger device experiments.
 
 The notebook [Solvers and Jacobians](../package-notebooks/02_solvers_and_jacobians.ipynb)
 executes this pattern with a small transition map.
@@ -210,3 +210,7 @@ This is the estimator behind `hutchinson_jacobian_norm`.
 | \(\rho(J_{T_\alpha})<1\) | local linear stability near the state | global contraction |
 | low Hutchinson norm | smaller sampled Jacobian energy | exact spectral bound |
 | finite-difference agreement | local autograd sanity check | full training correctness |
+
+The Jacobian-regularized equilibrium source and Hutchinson estimator source are
+listed in [Equilibrium and Implicit Layers](../paper/references.md#equilibrium-and-implicit-layers)
+and [Solvers and Linear Algebra](../paper/references.md#solvers-and-linear-algebra).

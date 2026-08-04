@@ -1,9 +1,9 @@
 # Optical Flow API
 
 The optical-flow module has two public levels. `SILVADEQFlow` is a compact
-flow-only equilibrium for quick custom experiments. `SILVARAFTDEQ` is the full
-package-native coupled hidden-state/flow case adapted from the material RAFT
-and DEQ-Flow architecture. Neither copies upstream code.
+flow-only equilibrium for quick custom experiments. `SILVARAFTDEQ` is the
+coupled hidden-state/flow case connecting SILVA fixed points with RAFT
+correlation and DEQ-Flow equilibrium framing.
 
 For the source-to-package derivation and scope notes, see
 [Method Adaptation Atlas](../learn/method-adaptation-atlas.md).
@@ -105,6 +105,28 @@ $$
 \right).
 $$
 
+## Minimal Run
+
+```python
+from silva_networks import SolverConfig, make_silva_translation_flow_batch, silva_deq_flow
+
+batch = make_silva_translation_flow_batch(height=16, width=16, shift=(1.0, 0.0))
+model = silva_deq_flow(
+    in_channels=1,
+    feature_dim=8,
+    hidden_dim=12,
+    config=SolverConfig(solver="anderson", max_iter=12, alpha=0.5),
+)
+result = model(batch.image1, batch.image2, return_result=True)
+
+assert result.flow.shape == batch.flow.shape
+print(result.solver_result.converged, result.solver_result.residual)
+```
+
+Images have shape `(batch, channels, height, width)` and flow has shape
+`(batch, 2, height, width)`. Report endpoint error only after checking the
+fixed-point residual and valid-pixel mask.
+
 ## Citation Map
 
 | Object family | Cite |
@@ -140,7 +162,7 @@ $$
 | `silva_raft_deq` | coupled architecture factory |
 | `SILVAOpticalFlowDEQ` | compatibility name for the same estimator family |
 | `silva_optical_flow_deq` | compatibility factory |
-| `make_silva_translation_flow_batch` | synthetic translation batch for smoke tests |
+| `make_silva_translation_flow_batch` | synthetic translation batch for validation |
 | `silva_endpoint_error` | endpoint error metric |
 | `silva_flow_smoothness_loss` | first-order smoothness penalty |
 

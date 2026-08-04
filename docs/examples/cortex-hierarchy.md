@@ -64,3 +64,9 @@ model = SILVACortexNetwork(
 
 Use [Cortex Hierarchies](../learn/cortex-hierarchy.md) for the derivation and
 the image-cortex preset.
+
+For each point, inspect its own state shape, residual trajectory, convergence
+flag, and parameter gradients. The five-iteration settings make this a compact
+architecture validation; they are not evidence that both points meet a strict
+equilibrium tolerance. Architecture sources are listed in
+[Point Architecture Sources](../paper/references.md#point-architecture-sources).

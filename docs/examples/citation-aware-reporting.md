@@ -73,3 +73,7 @@ Then attach the citations selected above. The full package-wide mapping is in
 | global branch | mean, gated mean, top-k attention, channel attention, custom |
 | diagnostics | residuals, energy trace, spectral radius, Jacobian norm |
 | dataset citation | dataset source and preprocessing choices |
+
+The exact article, software, solver, graph, attention, and dataset links are in
+[Paper and References](../paper/references.md). Report tensor layouts with the
+table above when the state is not an ordinary `(batch, features)` matrix.

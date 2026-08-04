@@ -31,7 +31,7 @@ python -m pip install -r requirements-optimization.txt
 python -m pip install -r requirements-all.txt
 ```
 
-The default smoke needs the runtime package, examples, and pytest. The docs,
+The default validation needs the runtime package, examples, and pytest. The docs,
 notebook, build, vision, and optimization flags need their matching extras or
 requirements files.
 
@@ -52,9 +52,9 @@ The repository keeps compatibility scripts under `experiments/public/`, so a
 local checkout can use either form. The examples below use the installed
 commands.
 
-## Smoke Test Script
+## Validation Script
 
-Run the default CPU smoke:
+Run the default CPU validation:
 
 ```bash
 bash scripts/smoke_test.sh
@@ -69,7 +69,7 @@ The default script avoids large downloads and checks:
 | config runner | `solver_sweep`, `graph_silva_smoke` |
 | focused tests | solvers, layers, datasets, public experiment helpers |
 
-Optional flags extend the smoke:
+Optional flags extend the validation:
 
 ```bash
 bash scripts/smoke_test.sh --with-docs
@@ -83,7 +83,7 @@ bash scripts/smoke_test.sh --all-local
 `--all-local` runs docs, notebooks, package build, and optimization tests. It
 does not run the real TorchVision dataset suite and does not require CUDA.
 
-`--with-vision` runs a small CIFAR10 vector smoke. It may download CIFAR10 the
+`--with-vision` runs a small CIFAR10 vector validation. It may download CIFAR10 the
 first time and then reuse the local `data/` cache.
 
 Use a specific Python executable:
@@ -92,7 +92,7 @@ Use a specific Python executable:
 PYTHON=.venv/bin/python bash scripts/smoke_test.sh --with-docs
 ```
 
-Write smoke outputs somewhere else:
+Write validation outputs somewhere else:
 
 ```bash
 SILVA_SMOKE_OUTPUT_DIR=/tmp/silva-smoke \
@@ -123,7 +123,7 @@ The output is JSON:
 
 Each config has a `kind` field. The runner dispatches that field to a package
 case such as a solver sweep, graph classification, tabular dataset case,
-TorchVision image case, molecular smoke, or custom operator experiment.
+TorchVision image case, molecular validation, or custom operator experiment.
 
 ## Show A Config
 

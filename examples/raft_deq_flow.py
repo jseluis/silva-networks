@@ -53,6 +53,8 @@ def main() -> None:
     reused = model(batch.image1, batch.image2, cached_state=result.cached_state)
     print("flow", tuple(result.flow.shape))
     print("correction states", len(result.flow_sequence or []))
+    print("solver residual", result.solver_result.residual)
+    print("converged", result.solver_result.converged)
     print("loss", float(loss.detach()))
     print("reused", tuple(reused.shape))
 

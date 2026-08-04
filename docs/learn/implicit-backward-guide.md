@@ -55,22 +55,40 @@ I-J_{T_\alpha}(z^\star)^\top
 I-\left((1-\alpha)I+\alpha J_f(z^\star)\right)^\top.
 $$
 
-## What The Public Engine Does Today
+## Three Gradient Modes
 
-`SILVADEQEngine` uses package fixed-point solvers in the forward pass. Its
-`backward_solver` configuration field is reserved for implicit-adjoint
-diagnostics and future custom-autograd integration.
+`SolverConfig.backward_mode` selects the gradient estimator independently of
+the forward solver:
 
-The current public training behavior is:
+| Mode | Forward graph | Backward calculation |
+| --- | --- | --- |
+| `"unrolled"` | retains differentiable finite solver operations | ordinary reverse differentiation through the retained trajectory |
+| `"implicit"` | solves under `no_grad` | custom backward solves \((I-J_{T_\alpha}^\top)u=g\) and applies the adjoint to tracked parameters and inputs |
+| `"phantom"` | solves under `no_grad` | differentiates through `phantom_steps` damped transitions from the detached numerical state |
 
-1. Solve the equilibrium with the selected finite solver.
-2. Reconstruct the state structure if it was packed.
-3. Optionally run one differentiable transition, controlled by `reengage`.
-4. Let ordinary PyTorch autograd differentiate through the differentiable
-   transition that remains connected to the graph.
+The exact implicit path is active in `solve_equilibrium`; it is not only a
+diagnostic helper. Package layers pass their trainable parameters through
+`params` and differentiable non-state inputs through `tensors`, then the custom
+backward returns the corresponding sensitivities.
 
-This is intentionally honest. It is a practical package-native training path,
-not a claim of memory-constant custom implicit backward for every module.
+```python
+from silva_networks import SolverConfig
+
+config = SolverConfig(
+    solver="anderson",
+    max_iter=30,
+    tol=1e-5,
+    backward_mode="implicit",
+    backward_solver="gmres",
+    backward_max_iter=40,
+    backward_tol=1e-7,
+)
+```
+
+After `loss.backward()`, the solver result records `backward_solver`,
+`backward_iterations`, `backward_residual`, and `backward_converged` in
+`result.info`. Those values describe the linear adjoint solve and should be
+reported separately from the forward fixed-point residual.
 
 ## When To Use `implicit_adjoint_solve`
 
@@ -105,12 +123,11 @@ print(adjoint.x, adjoint.residuals)
 
 The helper uses VJP-backed GMRES and does not materialize the full Jacobian.
 
-## What A Full Custom Backward Would Add
+## What Implicit Mode Executes
 
-A memory-constant DEQ backward would wrap the solve in a custom autograd
-function:
+The custom backward follows these steps:
 
-| Step | Custom-backward responsibility |
+| Step | Responsibility |
 | --- | --- |
 | Forward | Solve \(z^\star=f_\theta(z^\star,x)\) without storing the whole trajectory |
 | Backward | Recompute \(f_\theta(z^\star,x)\) under grad tracking |
@@ -118,15 +135,29 @@ function:
 | Parameter grads | Call `torch.autograd.grad(f_theta, parameters, grad_outputs=u)` |
 | Input grads | Call `torch.autograd.grad(f_theta, x, grad_outputs=u)` |
 
-That path is compatible with the math already exposed by the package, but it is
-not what `SILVADEQEngine` claims today.
+The implementation uses the damped transition Jacobian, so the gradient passed
+to transition parameters carries the corresponding factor \(\alpha\). The
+state can be a tensor or a packed tuple/list; packed multi-state systems are
+treated as one coupled vector during both solves.
 
 ## Practical Guidance
 
 | Use case | Recommended path |
 | --- | --- |
-| Training package examples | Use the default reengage path |
+| Small, shallow validation where trajectory memory is acceptable | Use `backward_mode="unrolled"` |
+| Equilibrium training with a matrix-free exact adjoint | Use `backward_mode="implicit"` and inspect backward residuals |
+| Short approximate gradient from the solved state | Use `backward_mode="phantom"` and report steps/tau |
 | Comparing solver residuals | Use `return_result=True` and inspect `SolverResult` |
 | Checking implicit-gradient conditioning | Use `implicit_adjoint_solve` and GMRES residuals |
 | Proving stability | Use `stability_report` and spectral radius diagnostics |
-| Building a custom memory-constant layer | Start from this guide and implement a custom autograd wrapper |
+
+## Tensor Contract and Sources
+
+The forward transition, its state input, and its output must have identical
+shape, dtype, and device. The adjoint right-hand side \(g\), solution \(u\),
+and Jacobian-vector products use that same state contract.
+
+See [Solvers](../api/solvers.md) for every configuration field and
+[Equilibrium and Implicit Layers](../paper/references.md#equilibrium-and-implicit-layers)
+for the implicit-function and DEQ sources. GMRES is listed under
+[Solvers and Linear Algebra](../paper/references.md#solvers-and-linear-algebra).

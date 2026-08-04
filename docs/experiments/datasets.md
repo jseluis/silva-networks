@@ -85,7 +85,7 @@ The tabular configs perform:
 1. download the configured public dataset;
 2. parse numeric and categorical columns;
 3. standardize features;
-4. take a stratified smoke subset when `max_samples` is smaller than the dataset;
+4. take a stratified validation subset when `max_samples` is smaller than the dataset;
 5. construct a kNN graph in feature space;
 6. train a node-level `SILVAGraphNetwork`;
 7. write metrics to JSON.
@@ -93,7 +93,7 @@ The tabular configs perform:
 The TorchVision configs perform:
 
 1. download the configured image dataset through TorchVision;
-2. take a small public smoke subset;
+2. take a small public validation subset;
 3. optionally resize or standardize the image batch;
 4. choose `preset="vector"`, `preset="conv"`, or `preset="cortex"`;
 5. run the SILVA solver stack;

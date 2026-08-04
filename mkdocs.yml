@@ -137,7 +137,7 @@ nav:
       - Research Citation Audit: package-notebooks/07_research_citation_audit.ipynb
       - Equation-to-Code Walkthrough: package-notebooks/08_equation_to_code_walkthrough.ipynb
       - Family Selector and Projected QP: package-notebooks/09_family_selector_and_projected_qp.ipynb
-      - Training Helpers Smoke: package-notebooks/10_training_helpers_smoke.ipynb
+      - Training Helpers Validation: package-notebooks/10_training_helpers_smoke.ipynb
       - Cortex Hierarchy: package-notebooks/11_cortex_hierarchy.ipynb
       - Paper Family Architectures: package-notebooks/12_paper_family_architectures.ipynb
       - RAFT and DEQ-Flow: package-notebooks/13_raft_deq_flow.ipynb

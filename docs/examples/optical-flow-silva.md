@@ -132,3 +132,6 @@ map.
 Cite SILVA for this package-native implementation, RAFT for all-pairs
 correlation and recurrent refinement lineage, and DEQ-Flow when discussing the
 equilibrium optical-flow framing.
+
+Direct source links are collected in
+[DEQ Engines and Optical Flow](../paper/references.md#deq-engines-and-optical-flow).

@@ -98,7 +98,7 @@ repository, then cite the relevant building blocks only as background:
 | hidden-channel dynamic kNN for vector vision | adapts dynamic-neighborhood graph ideas to channels inside a sample |
 | quadratic interaction energy | diagnostic proxy for state/field alignment; not a theorem of global Lyapunov stability by itself |
 | graph, vision, convolutional, and molecular SILVA presets | package-level reference configurations and tensor contracts |
-| package-native implicit bridge notebooks | original tutorials that re-express DEQ, ODE, optimization, MDEQ, and Jacobian regularization through `silva_networks` APIs |
+| package implicit bridge notebooks | tutorials that express DEQ, ODE, optimization, MDEQ, and Jacobian regularization through `silva_networks` APIs |
 | method adaptation atlas | source-by-source translation from external implicit-layer, DEQ, ODE, optimization, and optical-flow methods into package equations, APIs, and scope notes |
 | package-native DEQ engine | TorchDEQ-style convenience interface implemented through SILVA solvers and state packing |
 | package-native optical-flow DEQ | compact RAFT/DEQ-Flow-inspired implementation using SILVA solvers |
@@ -134,7 +134,7 @@ For an implicit bridge optimization experiment, cite:
 4. Deep Equilibrium Models if the optimization layer is solved through the
    package fixed-point solver.
 
-For an optical-flow DEQ smoke experiment, cite:
+For an optical-flow DEQ validation experiment, cite:
 
 1. SILVA package for the package-native implementation.
 2. RAFT for all-pairs correlation and recurrent flow refinement lineage.

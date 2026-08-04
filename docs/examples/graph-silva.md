@@ -34,3 +34,9 @@ loss.backward()
 The printed `state_shape` confirms the hidden representation, `loss` confirms
 gradient flow, and `spectral_radius` gives a local stability diagnostic for the
 solved state.
+
+The compact ring has state shape `(8, 12)`. Inspect the fixed-point residual
+before using the task loss as evidence, and compare the spectral radius under
+the same damping used by the solver. Graph, attention, and message-passing
+sources are listed in
+[Graphs, Attention, and Messages](../paper/references.md#graphs-attention-and-messages).

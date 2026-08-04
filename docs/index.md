@@ -47,7 +47,7 @@ context, solver dynamics, diagnostics, and readout heads.
 </a>
 <a class="silva-action" href="cli/" markdown>
 <strong>Use the CLI</strong>
-<span>Smoke test, configs, data, outputs</span>
+<span>Validation, configs, data, outputs</span>
 </a>
 <a class="silva-action" href="learn/case-atlas/" markdown>
 <strong>Choose a case</strong>
@@ -75,7 +75,7 @@ context, solver dynamics, diagnostics, and readout heads.
 </a>
 <a class="silva-action" href="experiments/benchmark-cards/" markdown>
 <strong>Read benchmarks</strong>
-<span>Public smoke metrics and cards</span>
+<span>Public validation metrics and cards</span>
 </a>
 <a class="silva-action" href="results/" markdown>
 <strong>Check results</strong>
@@ -217,14 +217,14 @@ source-by-source equation and citation map.
 [Equation and PDF Audit](equation-and-pdf-audit.md) and
 [Release Readiness](release-readiness.md) record article citation status,
 BibTeX coverage, companion-material availability, implementation coverage,
-notebook smoke checks, and packaging commands.
+notebook validation checks, and packaging commands.
 </div>
 <div class="silva-card" markdown>
 ### Inspect Benchmarks
 
-[Benchmark Cards](experiments/benchmark-cards.md) summarize checked smoke
-metrics from the public experiment JSON outputs without turning them into
-leaderboard claims.
+[Benchmark Cards](experiments/benchmark-cards.md) summarize checked small-scale
+validation metrics from the public experiment JSON outputs without turning
+them into leaderboard claims.
 </div>
 <div class="silva-card" markdown>
 ### Pick a Case
@@ -373,7 +373,7 @@ logits = model(x, edge_index=edge_index)
 | [Research Citation Audit](package-notebooks/07_research_citation_audit.ipynb) | solver/operator choices mapped to citation checklists |
 | [Equation-to-Code Walkthrough](package-notebooks/08_equation_to_code_walkthrough.ipynb) | scalar fixed points, graph tensors, SILVA model, diagnostics |
 | [Family Selector and Projected QP](package-notebooks/09_family_selector_and_projected_qp.ipynb) | SILVA-style family names, projected constraints, flow alias, gradients |
-| [Training Helpers Smoke](package-notebooks/10_training_helpers_smoke.ipynb) | supervised fit/evaluate, checkpoint, resume, device movement |
+| [Training Helpers Validation](package-notebooks/10_training_helpers_smoke.ipynb) | supervised fit/evaluate, checkpoint, resume, device movement |
 | [Cortex Hierarchy](package-notebooks/11_cortex_hierarchy.ipynb) | deep MLP, residual CNN, and U-Net transitions inside linked SILVA points |
 | [Point Architecture Catalog](package-notebooks/14_point_architecture_catalog.ipynb) | all ten internal architectures, tensor contracts, gradients, residuals, and point composition |
 | [Neural Operators, ODEs, and PDEs](package-notebooks/15_neural_operators_ode_pde.ipynb) | ODE flow, implicit PDE steps, Fourier operators inside SILVA, training, and residual diagnostics |
@@ -381,7 +381,7 @@ logits = model(x, edge_index=edge_index)
 | [DEQ and SILVA](implicit-bridge-notebooks/04_deq_and_silva.ipynb) | DEQ baseline and configurable SILVA graph model in one API |
 | [SILVA DEQ Engine](implicit-bridge-notebooks/07_silva_deq_engine_torchdeq_bridge.ipynb) | single-state, multi-state, and variational-dropout fixed-point systems |
 | [SILVA Optical Flow](implicit-bridge-notebooks/08_silva_optical_flow_deq_raft_bridge.ipynb) | RAFT-style correlation and DEQ-Flow-style flow equilibrium |
-| [Method Adaptation Atlas](implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb) | source-to-SILVA derivations, scope notes, and smoke checks |
+| [Method Adaptation Atlas](implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb) | source-to-SILVA derivations, scope notes, and validation checks |
 
 ## Learning Assets
 
@@ -399,6 +399,6 @@ logits = model(x, edge_index=edge_index)
 - [Mathematical foundations](learn/mathematical-foundations.md)
 - [API reference](api/reference.md)
 
-!!! note "Public release policy"
-    The repository links to external papers and upstream repositories instead of
-    vendoring third-party PDFs or source trees.
+!!! note "Citation policy"
+    Method pages link each external result to its primary paper or repository.
+    The local article asset is the SILVA companion paper.

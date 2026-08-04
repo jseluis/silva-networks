@@ -44,3 +44,9 @@ logits = model(graph.x, edge_index=graph.edge_index)
 
 The same recipe works for custom tables after replacing the loader with a
 tensor, NumPy array, pandas frame, or user-defined feature matrix.
+
+The script reports feature and edge shapes, class balance, losses, and accuracy.
+Before interpreting the task metric, verify `graph.validate()`, finite
+standardized features, valid edge bounds, and the residual of every SILVA
+equilibrium layer. Dataset sources and reporting rules are listed in
+[Paper and References](../paper/references.md#citation-rules-for-reports).

@@ -1,6 +1,6 @@
 # Examples
 
-The examples are CPU-first smoke runs for the public package API. They are not
+The examples are compact CPU-first validations of the public package API. They are not
 benchmark scripts; they are compact checks that show how to assemble a SILVA
 equilibrium, train it, inspect residuals, and move the same pattern to a larger
 experiment.

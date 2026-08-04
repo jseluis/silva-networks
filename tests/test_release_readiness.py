@@ -27,6 +27,27 @@ def test_release_audit_passes() -> None:
     assert report["errors"] == []
 
 
+def test_documentation_audit_passes() -> None:
+    result = subprocess.run(
+        [sys.executable, "scripts/documentation_audit.py", "--json"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    report = json.loads(result.stdout)
+    assert report == {"errors": [], "warnings": []}
+
+
+def test_download_button_is_limited_to_notebooks() -> None:
+    override = (ROOT / "docs/overrides/main.html").read_text(encoding="utf-8")
+    assert "page.nb_url" in override
+    assert "Download notebook" in override
+    assert "Download page source" not in override
+    assert "_sources/" not in override
+
+
 def test_bibtex_contains_silva_article_and_related_sources() -> None:
     bibtex = (ROOT / "docs/assets/bib/silva-networks.bib").read_text(encoding="utf-8")
     for key in [

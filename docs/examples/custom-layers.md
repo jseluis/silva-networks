@@ -56,3 +56,15 @@ $$
 
 This is the standard pattern for adding task-specific heads, extra encoders, or
 domain-specific preprocessing around the equilibrium core.
+
+Both extension points preserve the state contract
+
+$$
+B_\psi:\mathbb R^{N\times d}\rightarrow\mathbb R^{N\times d}.
+$$
+
+Run with `return_result=True` and check the output shape, convergence flag,
+residual trajectory, and gradients on the custom module. The complete branch
+validation pattern is in [Custom Layers](../learn/custom-layers.md), with
+operator sources under
+[Graphs, Attention, and Messages](../paper/references.md#graphs-attention-and-messages).

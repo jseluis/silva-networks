@@ -205,6 +205,18 @@ families below:
 | RAFT / DEQ-Flow | `silva_deq_flow`, correlation, warping, fixed-point flow |
 | OptNet / CVXPYlayers | `silva_projected_qp` plus optional `silva_cvxpy_layer` bridge |
 
-This keeps the public package installable, testable, and legally clean while
-still giving users the knobs needed to reproduce reduced baselines or extend
-the full SILVA architecture.
+The selector keeps one explicit construction surface while preserving the
+state, transition, and solver controls needed for reduced baselines and full
+SILVA architectures.
+
+## Validate the Choice
+
+After constructing a family, record the state layout, transition equation,
+forward residual, convergence flag, gradient mode, backward residual when
+implicit differentiation is used, and task metric. A shared family name does
+not imply shared tensor shapes or identical solver conditioning.
+
+The complete method map and primary sources are in
+[Paper Families as SILVA Configurations](paper-family-adaptations.md) and
+[Paper and References](../paper/references.md). Runnable family instances are
+provided in [Paper Family Cases](../examples/paper-family-cases.md).

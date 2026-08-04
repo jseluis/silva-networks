@@ -203,4 +203,12 @@ Categorical atom and bond tensors can be passed directly to
 `SILVAMolecularRegressor`. Continuous atom and bond features use
 `atom_feature_dim` and `bond_feature_dim` in the model constructor.
 
+Call `GraphTensorBatch.validate()` before a solve, then report feature
+normalization, graph construction, entity and edge counts, split policy, and
+dataset version with the model's residual diagnostics. The full preparation
+and reporting path is in
+[Datasets and Preprocessing](../learn/datasets-and-preprocessing.md), with
+dataset sources under
+[Citation Rules for Reports](../paper/references.md#citation-rules-for-reports).
+
 ::: silva_networks.datasets

@@ -1,14 +1,24 @@
 # Training
 
-The training helpers are optional convenience utilities. They do not encode
-private paper configurations, dataset splits, or expected benchmark metrics. Use
-them when you want the package to handle routine supervised training chores
-around a model you constructed yourself.
+The training helpers are optional convenience utilities for routine supervised
+training around a model you constructed yourself. Dataset splits, optimization
+schedules, and expected benchmark metrics remain explicit experiment choices.
 
 Solver and backward choices belong to the model configuration. For example,
 `SolverConfig(backward_mode="unrolled")` differentiates through finite solver
 steps, while `SolverConfig(backward_mode="implicit", backward_solver="gmres")`
 uses the package DEQ/SILVA adjoint path.
+
+For supervised data \((x_i,y_i)\), the helper minimizes a batch objective
+
+$$
+\mathcal L(\theta,\phi)
+=
+\frac{1}{B}\sum_{i=1}^{B}
+\ell\left(R_\phi(z_i^\star),y_i\right),
+\qquad
+z_i^\star=f_\theta(z_i^\star,x_i).
+$$
 
 ## Two Usage Modes
 
@@ -80,5 +90,12 @@ Pass a custom optimizer, scheduler, loss, metric, and epoch hook directly to
 `fit_supervised`. For tasks with paper-specific multi-term objectives, such as
 indexed DEQ-Flow corrections, an ordinary PyTorch loop remains the full-control
 route around the same package model.
+
+Training metrics and equilibrium diagnostics answer different questions.
+Record loss or accuracy from `fit_supervised`, and request structured model
+results in a custom `step_fn` when residuals, convergence flags, or backward
+linear-solve diagnostics must be retained. The reporting checklist and method
+sources are in [Citation-Aware Reporting](../examples/citation-aware-reporting.md)
+and [Paper and References](../paper/references.md).
 
 ::: silva_networks.training

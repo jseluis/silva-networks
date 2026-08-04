@@ -29,3 +29,11 @@ $$
 
 The printed `iterations` and `final_residual` are the first checks for image
 equilibria before moving to larger datasets.
+
+The residual measures the complete NCHW transition, not one pixel or channel.
+Check the convergence flag and retain the residual trajectory before increasing
+image size or hidden width. Continue with
+[Neural Operators, ODEs, PDEs, and SILVA](../learn/neural-operators-ode-pde.md)
+for spatial operator derivations and
+[Point Architecture Sources](../paper/references.md#point-architecture-sources)
+for convolutional and U-Net references.

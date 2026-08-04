@@ -53,7 +53,7 @@ model = silva_equilibrium_model(
 )
 ```
 
-The smoke training performs four full-batch optimizer steps, verifies gradients
+The compact training performs four full-batch optimizer steps, verifies gradients
 through both equilibrium points, and reports the state shapes, solvers, loss,
 and classification accuracy.
 
@@ -70,3 +70,8 @@ its final result:
 `GroupNorm` is used for the spatial point. Random masks and mutable running
 statistics should be controlled because the solver evaluates the same
 transition repeatedly.
+
+Inspect residuals and convergence separately for the spatial and vector points;
+the classification loss alone cannot show whether either fixed point was
+solved. U-Net, residual, and other internal architecture sources are listed in
+[Point Architecture Sources](../paper/references.md#point-architecture-sources).

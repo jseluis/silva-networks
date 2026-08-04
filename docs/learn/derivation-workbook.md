@@ -549,3 +549,11 @@ Use this table when turning a derivation into an experiment.
 6. Check \(\|f(z^\star,x)-z^\star\|_2\).
 7. Read out \(\hat y=R_\phi(z^\star)\).
 8. Report tensor shapes, solver settings, diagnostics, data, and citations.
+
+## Sources and Executable Continuation
+
+The fixed-point, solver, graph, attention, and SILVA sources used throughout
+the workbook are collected in [Paper and References](../paper/references.md).
+Run the same sequence in
+[Equation-to-Code Walkthrough](../package-notebooks/08_equation_to_code_walkthrough.ipynb),
+where every derived quantity is evaluated in a separate cell.

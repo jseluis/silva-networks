@@ -121,5 +121,14 @@ which discourages high-gain transitions near the current state.
 | Residual oscillates | lower `alpha`, increase Anderson `ridge`, or try Picard |
 | Residual drops then stalls | increase `max_iter`, check state scale, inspect Jacobian radius |
 | Spectral radius above one | lower damping or regularize the transition |
-| Graph smoke metric changes sharply with `k` | compare local/global ablations and graph density |
+| Graph validation metric changes sharply with `k` | compare local/global ablations and graph density |
 | Gradient norms explode | add Jacobian penalty or reduce state-weight scale |
+
+Repeat each comparison with the same random seed, input tensor, transition
+parameters, and stopping rule. Solver changes should be compared at matched
+residual tolerance, not only at matched iteration count.
+
+The derivations behind these cells are in [Jacobians and Stability](jacobians.md)
+and [Solver Derivation Lab](solver-derivation-lab.md). Primary sources are
+listed under [Solvers and Linear Algebra](../paper/references.md#solvers-and-linear-algebra)
+and [Equilibrium and Implicit Layers](../paper/references.md#equilibrium-and-implicit-layers).

@@ -28,7 +28,7 @@ dataset adapters, and extension points work together.
 | [Research Citation Audit](package-notebooks/07_research_citation_audit.ipynb) | `notebooks/package_api/07_research_citation_audit.ipynb` | turns solver/operator choices into a citation checklist |
 | [Equation-to-Code Walkthrough](package-notebooks/08_equation_to_code_walkthrough.ipynb) | `notebooks/package_api/08_equation_to_code_walkthrough.ipynb` | derives SILVA reductions, runs the matching package APIs, and plots residuals |
 | [Family Selector and Projected QP](package-notebooks/09_family_selector_and_projected_qp.ipynb) | `notebooks/package_api/09_family_selector_and_projected_qp.ipynb` | checks SILVA-style family names, projected constraints, flow aliases, residuals, and gradients |
-| [Training Helpers Smoke](package-notebooks/10_training_helpers_smoke.ipynb) | `notebooks/package_api/10_training_helpers_smoke.ipynb` | checks `fit_supervised`, `evaluate`, device movement, checkpointing, and resume |
+| [Training Helpers Validation](package-notebooks/10_training_helpers_smoke.ipynb) | `notebooks/package_api/10_training_helpers_smoke.ipynb` | checks `fit_supervised`, `evaluate`, device movement, checkpointing, and resume |
 | [Cortex Hierarchy](package-notebooks/11_cortex_hierarchy.ipynb) | `notebooks/package_api/11_cortex_hierarchy.ipynb` | builds heterogeneous linked points with MLP, CNN, and U-Net internals on vector and spatial states |
 | [Paper Family Architectures](package-notebooks/12_paper_family_architectures.ipynb) | `notebooks/package_api/12_paper_family_architectures.ipynb` | runs sequence DEQ, MDEQ, Jacobian regularization, IGNN, INR, diffusion, and a custom transition |
 | [RAFT and DEQ-Flow](package-notebooks/13_raft_deq_flow.ipynb) | `notebooks/package_api/13_raft_deq_flow.ipynb` | runs the coupled hidden/flow equilibrium, exact implicit gradients, sparse corrections, learned upsampling, and reuse |
@@ -39,8 +39,8 @@ dataset adapters, and extension points work together.
 
 These notebooks adapt the Deep Implicit Layers tutorial themes, DEQ baselines,
 MDEQ ideas, and Jacobian regularization into the public `silva_networks` API.
-They are original package tutorials that cite the upstream material and run
-small CPU/GPU smoke experiments.
+They cite the primary material and run compact validation experiments on the
+selected device.
 
 | Rendered page | Source notebook | Main result |
 | --- | --- | --- |
@@ -52,7 +52,7 @@ small CPU/GPU smoke experiments.
 | [MDEQ and Jacobian Regularization](implicit-bridge-notebooks/06_mdeq_jacobian_regularization.ipynb) | `notebooks/implicit_bridge/06_mdeq_jacobian_regularization.ipynb` | solves a toy multiscale equilibrium and adds a Hutchinson Jacobian penalty |
 | [SILVA DEQ Engine](implicit-bridge-notebooks/07_silva_deq_engine_torchdeq_bridge.ipynb) | `notebooks/implicit_bridge/07_silva_deq_engine_torchdeq_bridge.ipynb` | solves single-state and multi-state systems with a TorchDEQ-style package API |
 | [SILVA Optical Flow](implicit-bridge-notebooks/08_silva_optical_flow_deq_raft_bridge.ipynb) | `notebooks/implicit_bridge/08_silva_optical_flow_deq_raft_bridge.ipynb` | runs RAFT-style correlation and a DEQ-Flow-style optical-flow fixed point |
-| [Method Adaptation Atlas](implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb) | `notebooks/implicit_bridge/09_method_adaptation_atlas.ipynb` | translates external methods into SILVA equations, package APIs, scope notes, and smoke checks |
+| [Method Adaptation Atlas](implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb) | `notebooks/implicit_bridge/09_method_adaptation_atlas.ipynb` | translates external methods into SILVA equations, package APIs, scope notes, and validation checks |
 
 ## What a Notebook Cell Is Computing
 
@@ -89,7 +89,7 @@ before a model call.
 
 ## Local Jupyter
 
-For a quick release smoke check, run:
+For a quick release validation, run:
 
 ```bash
 python scripts/run_notebook_smoke.py --timeout 180

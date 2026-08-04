@@ -64,6 +64,41 @@ $$
 The mask is reset with `reset_silva_deq(model)` before a new solve or training
 step.
 
+## Multi-State Run
+
+```python
+import torch
+from silva_networks import SILVADEQConfig, silva_deq
+
+x = torch.randn(2, 4)
+initial = (torch.zeros(2, 6), torch.zeros(2, 3))
+left_input = torch.nn.Linear(4, 6)
+right_link = torch.nn.Linear(6, 3)
+
+def transition(state):
+    left, right = state
+    return (
+        torch.tanh(left_input(x) + 0.2 * left),
+        torch.tanh(right_link(left) + 0.2 * right),
+    )
+
+result = silva_deq(
+    transition,
+    initial,
+    config=SILVADEQConfig(forward_max_iter=20, forward_tol=1e-6),
+    params=(*left_input.parameters(), *right_link.parameters()),
+    tensors=(x,),
+    return_result=True,
+)
+
+assert result.state[0].shape == (2, 6)
+assert result.state[1].shape == (2, 3)
+print(result.solver_result.converged, result.solver_result.residual)
+```
+
+Tuple and list states are packed as one coupled vector, so their solver
+configuration must use `anderson_batch_dims=0`.
+
 ## Citation Map
 
 | Object family | Cite |

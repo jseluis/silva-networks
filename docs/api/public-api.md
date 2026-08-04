@@ -17,4 +17,31 @@ The public contract is the package `__all__` list. Every name documented here
 is importable from `silva_networks`, and every role-specific API page documents
 the source module behind that name.
 
+## Recommended Import Style
+
+Explicit imports make model definitions and experiment records easier to read:
+
+```python
+from silva_networks import SILVACortexLayer, SolverConfig, stability_report
+```
+
+The wildcard form above demonstrates export completeness; application code
+should normally name the objects it uses.
+
+## Route by Task
+
+| Goal | Start with |
+| --- | --- |
+| solve and inspect a fixed point | [Solvers](solvers.md), [Diagnostics](diagnostics.md) |
+| construct one structured equilibrium | [Layers](layers.md) |
+| link several equilibrium points | [Architectures](architectures.md) |
+| choose an internal point mapping | [Point Architectures](point_architectures.md) |
+| adapt tables, images, or graphs | [Datasets](datasets.md) |
+| train and evaluate | [Training](training.md) |
+| reproduce a packaged run | [Public Experiments](public_experiments.md) |
+
+Every equilibrium-facing route ultimately evaluates
+\(z^\star=f_\theta(z^\star,x)\); the role-specific pages explain how the state,
+transition, solver result, and diagnostics are represented for that task.
+
 ::: silva_networks

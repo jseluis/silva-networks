@@ -44,14 +44,15 @@ python -m pip install "silva-networks[optimization]"
 python -m pip install "silva-networks[dev]"
 ```
 
-The `benchmarks` extra installs common dataset and benchmark utilities for user
-reproduction scripts. It does not install or encode private experiment configs.
+The `benchmarks` extra installs common dataset and benchmark utilities for
+experiment scripts. Study-specific schedules and settings remain in the
+selected experiment configuration.
 The `optimization` extra is needed only for the optional CVXPYlayers bridge.
 The package-native projected quadratic layers are included in the core install.
 
-## Smoke-Test Requirements
+## Validation Requirements
 
-The default shell smoke uses the package runtime, example dependencies, and
+The default validation script uses the package runtime, example dependencies, and
 pytest:
 
 ```bash
@@ -64,9 +65,9 @@ After installation, the public command-line entry points are
 `silva-download-datasets` for listing or downloading package-supported public
 datasets.
 
-Extra smoke flags require matching extras:
+Additional validation flags require matching extras:
 
-| Smoke flag | Install |
+| Validation flag | Install |
 | --- | --- |
 | `--with-docs` | `python -m pip install -e ".[docs]"` |
 | `--with-notebooks` | `python -m pip install -e ".[notebooks]"` |

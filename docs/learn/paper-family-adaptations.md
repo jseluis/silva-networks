@@ -4,10 +4,10 @@ SILVA is the common architecture grammar in this package. A paper case is not
 a separate engine: it is a choice of state, stimulus, local/global operators,
 transition architecture, solver, gradient estimator, and readout.
 
-The package deliberately does not ship the original papers' complete dataset
-recipes, command lines, checkpoints, or claimed metrics. It does ship the
-operators needed to construct those experiments after the user reads the paper
-and enters its dimensions, schedule, data split, optimizer, and solver budget.
+Paper-level experiments require the dimensions, schedule, data split,
+optimizer, solver budget, and evaluation protocol specified by the selected
+study. The package exposes the operators and numerical controls needed to
+express those settings.
 
 ## Capability Matrix
 
@@ -23,7 +23,7 @@ and enters its dimensions, schedule, data split, optimizer, and solver budget.
 | [DEQ-DDIM](https://arxiv.org/abs/2210.12867) | the complete selected DDIM trajectory as a triangular fixed point | `SILVADiffusionEquilibrium` | pretrained/user denoiser, cumulative alpha schedule, descending timesteps, eta and fixed step noise |
 | [RAFT](https://arxiv.org/abs/2003.12039) and [DEQ-Flow](https://arxiv.org/abs/2204.08442) | RAFT residual encoders, all-pairs correlation pyramid, local lookup, material motion-encoder widths, separated ConvGRU, flow head, scaled convex upsampling, coupled hidden/flow equilibrium, reuse and sparse correction | `SILVARAFTDEQ`, `SILVARAFTEncoder`, `SILVACorrelationPyramid`, `SILVARAFTUpdateBlock` | encoder architecture/blocks/stride/dropout, correlation levels/radius, hidden/context/motion widths, GMA switch, solver, correction indices and loss |
 
-The original implementations remain the source for paper-specific recipes:
+Use the cited implementations for paper-specific recipes:
 [locuslab/deq](https://github.com/locuslab/deq),
 [locuslab/torchdeq](https://github.com/locuslab/torchdeq),
 [locuslab/deq-flow](https://github.com/locuslab/deq-flow), and
@@ -197,7 +197,7 @@ motion branch widths, mask scaling, and custom `feature_encoder_module`,
 `context_encoder_module`, and `update_block` injection points. Those hooks let
 users replace a material component without replacing the equilibrium engine.
 
-## What Smoke Tests Establish
+## What Validation Tests Establish
 
 The tests check tensor contracts, finite outputs and gradients, exact-implicit
 autograd paths, solver behavior, multiscale coupling, relative attention,

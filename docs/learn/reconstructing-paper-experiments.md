@@ -1,10 +1,8 @@
 # Reconstructing Paper Experiments
 
-The package does not ship private experiment configurations, checkpoints,
-leaderboards, or article-specific run scripts. It ships the public engine pieces
-needed to reconstruct those runs from a paper: model families, operator choices,
-solver controls, backward-mode controls, dataset tensor contracts, metrics, and
-training helpers.
+This guide maps a study specification onto the public engine: model families,
+operator choices, solver controls, gradient modes, dataset tensor contracts,
+metrics, and training helpers.
 
 ## Choose the Model Family
 
@@ -80,7 +78,7 @@ classification/regression metrics.
 
 ## Controls to Match a Paper
 
-The following controls are package-level, not private configs:
+The following controls are part of the public configuration surface:
 
 | Role | Public controls |
 | --- | --- |
@@ -105,6 +103,33 @@ To reproduce an article, read the article for the dataset split, feature
 preprocessing, dimensions, alphas, solver budgets, optimizer, scheduler, seed
 policy, and metrics. Then express those choices through the public package API.
 
-The package tests include small graph, vision, and molecular smoke runs for both
-finite-solver and implicit-adjoint training paths. They are release gates for
-capability, not substitutes for week-long benchmark reruns.
+The package tests include small graph, vision, and molecular validation runs for
+both finite-solver and implicit-adjoint training paths. They establish API and
+numerical behavior, not the metrics of a long training study.
+
+## Experiment Equation and Evidence
+
+Write the configured model as
+
+$$
+\hat y
+=
+R_\phi(z_m^\star),
+\qquad
+z_\ell^\star
+=
+f_{\theta_\ell}(z_\ell^\star,h_{\ell-1}),
+\qquad
+h_{\ell}=Q_\ell(z_\ell^\star).
+$$
+
+For each point \(\ell\), retain the solver name, damping, tolerance, iteration
+budget, convergence flag, and residual. For implicit gradients, also retain the
+backward solver, iterations, tolerance, and residual. Pair that numerical
+record with data splits, preprocessing, seeds, parameter count, optimizer,
+schedule, task metrics, and the exact package version.
+
+Use [Citation-Aware Reporting](../examples/citation-aware-reporting.md) for the
+methods table and [Paper and References](../paper/references.md) for primary
+sources. The [Public Experiments](../api/public_experiments.md) page shows how
+to serialize compact runs with the same controls.

@@ -73,5 +73,5 @@ family with a code target, tutorial target, notebook target, and test target.
    concrete solver updates used by the package.
 4. Use [Implementation Derivations](learn/implementation-derivations.md) to map
    the symbolic SILVA field into package classes.
-5. Run [Run Everything](run-everything.md) to execute tests, notebook smoke
+5. Run [Run Everything](run-everything.md) to execute tests, notebook validation
    checks, release checks, and docs builds.

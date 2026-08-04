@@ -50,6 +50,33 @@ $$
 
 with Hutchinson VJP probes.
 
+## Minimal Fixed-Point Block
+
+```python
+import torch
+from silva_networks import SolverConfig, silva_fixed_point_block
+
+block = silva_fixed_point_block(
+    in_dim=5,
+    state_dim=12,
+    config=SolverConfig(
+        solver="anderson",
+        max_iter=25,
+        backward_mode="implicit",
+        backward_solver="gmres",
+    ),
+)
+x = torch.randn(8, 5)
+result = block(x, return_result=True)
+
+assert result.z.shape == (8, 12)
+print(result.converged, result.residual)
+```
+
+The output state must preserve `(batch, hidden_dim)` across transition calls.
+After a backward pass in implicit mode, inspect the backward residual recorded
+in `result.info` as well as the forward residual.
+
 ## Citation Map
 
 | Object family | Cite |

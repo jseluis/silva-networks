@@ -415,3 +415,16 @@ Use the fixed-point residual to decide whether the solve finished, the damped
 spectral radius to inspect local stability, the tensor contract to validate
 dataset conversion, and the operator tables to explain what a model is allowed
 to claim.
+
+```python
+import torch
+from silva_networks import SolverConfig, fixed_point, stability_report
+
+W = torch.tensor([[0.2, 0.1], [0.0, 0.3]])
+b = torch.tensor([0.1, -0.2])
+f = lambda z: torch.tanh(W @ z + b)
+
+result = fixed_point(f, torch.zeros(2), SolverConfig(max_iter=30, tol=1e-7))
+report = stability_report(f, result.z, samples=4, iters=12)
+print(result.z.shape, result.residual, report.spectral_radius)
+```

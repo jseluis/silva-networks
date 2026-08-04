@@ -19,7 +19,7 @@ Use this page when you want to answer three questions:
 | Keep code package-native | Examples import `silva_networks`; third-party repositories are cited as references. |
 | Separate lineage from equivalence | A compact package module may be inspired by a method without being a full reproduction of that method. |
 | Derive before using | Each adaptation starts from the equation, defines the residual, then names the solver/API call. |
-| Make scope visible | Smoke-test implementations are labeled as compact teaching and testing modules. |
+| Make scope visible | Compact implementations are labeled as teaching and validation modules. |
 
 !!! warning "Scope finding"
     `SILVAQuadraticOptimizationLayer` is the compact unconstrained quadratic
@@ -470,7 +470,7 @@ $$
 z^\star=A^{-1}b_\theta(x).
 $$
 
-The fixed-point map used for the package smoke test is one gradient-descent
+The fixed-point map used for the package validation is one gradient-descent
 step:
 
 $$

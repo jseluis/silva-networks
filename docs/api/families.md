@@ -10,6 +10,15 @@ dispatching to the package-native constructors. It does not choose dataset
 splits, optimizer schedules, checkpoint recipes, or paper-specific metric
 claims.
 
+Every equilibrium family still defines
+
+$$
+z^\star=f_\theta(z^\star,x),
+$$
+
+but the state may be a matrix, image field, multiscale tuple, flow pair,
+diffusion trajectory, or constrained optimization variable.
+
 ## Canonical Families
 
 | Family | Constructor target |
@@ -48,6 +57,15 @@ model = silva_equilibrium_model(
     solver_configs=SolverConfig(solver="anderson", max_iter=20),
 )
 ```
+
+Use `return_result=True` when the selected family supports structured results,
+then inspect the state shape, solver residual, convergence flag, and gradient
+mode before comparing task metrics. Constructor signatures remain family
+specific; `silva_family_description(name)` summarizes the intended state and
+use before dispatch.
+
+Full reductions and source links are in
+[Selecting Model Families](../learn/selecting-model-families.md).
 
 For heterogeneous SILVA equilibrium points:
 

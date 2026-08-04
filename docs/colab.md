@@ -83,7 +83,7 @@ The same tutorials are rendered in the docs under [Notebooks](notebooks.md).
 The top-level package track includes quickstart, solvers and Jacobians,
 datasets, public experiments, custom operators, operator options, citation
 audit, the equation-to-code walkthrough, family-selector/projected-QP and
-training-helper smoke tutorials, the cortex hierarchy, generalized architecture
+training-helper validation tutorials, the cortex hierarchy, generalized architecture
 cases, RAFT/DEQ-Flow, and the ten-entry point architecture catalog.
 The final package notebook derives ODE flow, implicit PDE time stepping,
 Poisson diagnostics, Fourier operators, and their placement inside a SILVA
@@ -103,7 +103,7 @@ them with SILVA operators:
 7. TorchDEQ-style single-state and multi-state SILVA DEQ systems;
 8. RAFT/DEQ-Flow-style optical-flow fixed points;
 9. method adaptation atlas for source-to-SILVA equations, scope notes, and
-   compact smoke checks.
+   compact validation checks.
 
 Each notebook starts with a setup cell that looks for `/content/silva-networks`
 first. If the folder is not present and the repository is public, the same cell

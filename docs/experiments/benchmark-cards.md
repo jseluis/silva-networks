@@ -1,11 +1,11 @@
 # Benchmark Cards
 
-These cards summarize the public smoke metrics stored in
+These cards summarize the public small-scale validation metrics stored in
 `experiments/public/outputs`. They are not leaderboard claims. They are compact
 reproducibility cards for package behavior, tensor contracts, solver residuals,
 and example coverage.
 
-The measured public smoke summaries are also collected in [Results](../results.md).
+The measured public validation summaries are also collected in [Results](../results.md).
 
 ## How To Reproduce
 
@@ -28,10 +28,10 @@ pytest tests/test_public_experiments.py
 | --- | --- | --- | --- | --- |
 | `graph_silva_smoke` | CPU | graph classification | accuracy `1.0000` | `1.0055`, `0.6067` |
 | `iris_tabular_silva` | CPU | UCI Iris node classification | accuracy `0.8333` | `1.8182`, `0.1265` |
-| `molecular_smoke` | CPU | molecular regression smoke | MAE `0.0644` | `4.9945`, `7.1137` |
+| `molecular_smoke` | CPU | molecular regression validation | MAE `0.0644` | `4.9945`, `7.1137` |
 | `custom_operator_experiment` | CPU | custom local operator | accuracy `0.7500` | `3.3509`, `3.6641`, `2.8922` |
 | `fully_configurable_graph` | CPU | graph classification | accuracy `0.6667` | `2.8020`, `2.8972`, `4.6459` |
-| `vision_channels_smoke` | CPU | vision smoke | accuracy `0.5000` | output shape check only |
+| `vision_channels_smoke` | CPU | vision validation | accuracy `0.5000` | output shape check only |
 
 ## Dataset Cards
 
@@ -44,7 +44,7 @@ locally before release.
 | `tabular_dataset_suite` | UCI tabular | stratified kNN graph to `SILVAGraphNetwork` | accuracy and residuals per dataset |
 | `cifar10_vector_smoke` | TorchVision CIFAR10 | flattened image to vector SILVA classifier | accuracy `0.1667`, residual `3.8260` |
 | `cifar10_cortex_smoke` | TorchVision CIFAR10 | convolutional retina to cortex SILVA hierarchy | accuracy `0.1250`, residuals `8.8553`, `5.9625` |
-| `torchvision_dataset_suite` | TorchVision images | vector preset across MNIST-family, CIFAR, and SVHN | opt-in multi-dataset smoke |
+| `torchvision_dataset_suite` | TorchVision images | vector preset across MNIST-family, CIFAR, and SVHN | opt-in multi-dataset validation |
 
 ## Solver Sweep
 
@@ -89,9 +89,9 @@ Graph-operator options:
 For each card, ask:
 
 1. Does the tensor contract match the intended case?
-2. Did the solver residual move into a reasonable range for the smoke budget?
+2. Did the solver residual move into a reasonable range for the validation budget?
 3. Does the example run on CPU without optional production dependencies?
-4. Is the reported metric used only as a smoke metric unless a full benchmark
+4. Is the reported metric identified as a small-scale validation metric unless a full benchmark
    protocol is documented?
 
 ## Citation Rule

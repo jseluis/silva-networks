@@ -6,9 +6,9 @@ This page connects three practical ideas to SILVA:
 - RAFT-style all-pairs correlation and recurrent flow refinement;
 - DEQ-Flow-style fixed-point optical-flow estimation.
 
-The package implementation is original and MIT-compatible. Upstream
-repositories and papers are cited as method references. This matters because
-DEQ-Flow is distributed under AGPL-3.0, while this package is MIT.
+The equations and package objects below are paired with their primary method
+sources so readers can distinguish the SILVA transition, the equilibrium
+engine, the correlation construction, and the optical-flow objective.
 
 The connection to SILVA is structural. A standard SILVA graph layer writes
 
@@ -236,7 +236,7 @@ result = model(image1, image2, return_result=True)
 flow = result.flow
 ```
 
-## Synthetic Smoke Data
+## Synthetic Translation Data
 
 Large optical-flow datasets such as FlyingChairs, FlyingThings3D, Sintel, KITTI,
 and HD1K have their own licenses, storage needs, and preprocessing scripts. The

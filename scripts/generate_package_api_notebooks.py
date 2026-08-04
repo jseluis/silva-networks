@@ -511,7 +511,7 @@ metrics
             ),
             md(
                 r"""
-Graph smoke experiments use the same loss as a normal PyTorch classifier:
+Graph validation experiments use the same loss as a normal PyTorch classifier:
 
 $$
 \mathcal L(\theta,\phi)

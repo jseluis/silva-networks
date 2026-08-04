@@ -1,9 +1,16 @@
 # Coverage Registry
 
-The coverage registry records which public implementation families have a
-tutorial page, rendered notebook, smoke test, and runnable example. It is used
-by `tests/test_implementation_coverage.py`, so documentation gaps become test
-failures.
+The coverage registry connects each public SILVA implementation family to its
+derivation, executable notebook, validation tests, and runnable examples. It
+lets readers move from an imported object to the exact learning and verification
+material that supports it.
+
+```python
+from silva_networks import implementation_cases
+
+for case in implementation_cases():
+    print(case.key, case.tutorial, case.notebooks, case.examples)
+```
 
 ## What the Registry Checks
 
@@ -13,13 +20,32 @@ failures.
 | `public_objects` | importable package objects |
 | `tutorial` | documentation page explaining the equations and usage |
 | `notebooks` | executable notebooks that exercise the implementation |
-| `smoke_tests` | test files that check shape, residual, gradient, or constraint behavior |
+| `smoke_tests` | validation files that check shape, residual, gradient, or constraint behavior |
 | `examples` | runnable scripts when a compact public example exists |
 | `scope` | concise claim about what the implementation covers |
 
-The registry does not replace unit tests. It protects the learning suite: new
-public implementations should arrive with documentation, notebooks, and smoke
-coverage.
+The registry does not claim that one short run reproduces a paper result. Its
+scope is traceability: every listed public family has a reader-facing
+derivation, executable use, and focused behavioral checks.
+
+## Finding Material for One Object
+
+```python
+from silva_networks import implementation_cases
+
+target = "SILVACortexLayer"
+case = next(c for c in implementation_cases() if target in c.public_objects)
+
+print("derivation:", case.tutorial)
+print("notebooks:", *case.notebooks)
+print("examples:", *case.examples)
+print("validated by:", *case.smoke_tests)
+```
+
+The registry itself is validated during release checks: referenced paths must
+exist and every `public_objects` entry must be importable from the package root.
+The [API Overview](reference.md) provides a role-based route through the same
+surface.
 
 ## API Docs
 

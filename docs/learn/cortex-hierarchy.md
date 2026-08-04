@@ -299,7 +299,7 @@ the SILVA operator form.
 
 ## Tests and Examples
 
-The public smoke example is
+The public validation example is
 `examples/cortex_hierarchy.py`.
 
 The tests in `tests/test_architectures.py` verify:
@@ -312,3 +312,9 @@ The tests in `tests/test_architectures.py` verify:
 | solvers | Picard and Anderson can coexist in one hierarchy |
 | image preset | convolutional stem plus two cortex points |
 | gradients | classifier loss reaches the stem and internal modules |
+
+The [Point Architecture Catalog](point-architecture-catalog.md) derives the ten
+built-in internal mappings, while the
+[Full Cortex Operator Example](../examples/full-cortex-operators.md) executes
+every branch family. Primary architecture sources are listed in
+[Point Architecture Sources](../paper/references.md#point-architecture-sources).

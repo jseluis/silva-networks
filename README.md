@@ -69,9 +69,9 @@ python -m pip install silva-networks
 python -c "import silva_networks; print(silva_networks.__version__)"
 ```
 
-## CLI Smoke Test
+## CLI Validation
 
-After installing the development extras, run the CPU-first package smoke:
+After installing the development extras, run the CPU-first package validation:
 
 ```bash
 bash scripts/smoke_test.sh
@@ -87,7 +87,7 @@ bash scripts/smoke_test.sh --with-optimization
 bash scripts/smoke_test.sh --with-vision
 ```
 
-The default smoke avoids CUDA and large image downloads. Use `--with-vision`
+The default validation avoids CUDA and large image downloads. Use `--with-vision`
 for a small CIFAR10 check and run the full TorchVision suite only when the
 image archives can be cached locally.
 
@@ -345,7 +345,7 @@ vector, image pixel-grid, and molecular graph adapters.
 - `tests/`: package, docs, notebook, and example checks.
 - `tests_extended/`: optional extended validation checks, run explicitly.
 - `src/silva_networks/coverage.py`: implementation families mapped to their
-  docs, notebooks, examples, and smoke tests.
+  docs, notebooks, examples, and validation tests.
 
 ## Datasets and Public Experiments
 
@@ -505,7 +505,7 @@ Start with `docs/learn/paper-family-adaptations.md`,
 
 ## Public Asset Policy
 
-The public repository includes original tutorial assets created for this suite.
+The public repository includes the complete tutorial and notebook suite.
 The companion book and solutions manual are planned learning assets and are
 listed with the learning materials. Third-party papers, upstream repositories,
 and external tutorials are cited and linked as references.

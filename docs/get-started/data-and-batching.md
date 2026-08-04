@@ -184,3 +184,15 @@ def make_silva_batch(raw):
 
 After this conversion, solvers, SILVA layers, Jacobian diagnostics, GPU device
 movement, and readout heads are shared across domains.
+
+## Batch Validation Checklist
+
+Before a solve, verify that entity counts agree, edge indices are in range,
+floating tensors are finite, and all tensors used in one transition share a
+device. After the solve, verify that the state keeps its declared layout and
+inspect `converged` together with the final residual.
+
+The equations behind standardization and graph construction are developed in
+[Datasets and Preprocessing](../learn/datasets-and-preprocessing.md). Dataset
+sources and reporting rules are collected in
+[Paper and References](../paper/references.md#citation-rules-for-reports).

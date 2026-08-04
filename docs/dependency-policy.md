@@ -80,9 +80,9 @@ python -m pip install -r requirements-benchmarks.txt
 ```
 
 This group contains common data and benchmark packages such as TorchVision,
-PyTorch Geometric, scikit-learn, pandas, and tqdm. It is for user-authored
-reproduction scripts and public benchmark adapters, not for private paper
-configuration files or checkpoint bundles.
+PyTorch Geometric, scikit-learn, pandas, and tqdm. It supports experiment
+scripts and public benchmark adapters; study-specific settings remain in the
+experiment configuration.
 
 Full development:
 

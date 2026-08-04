@@ -143,12 +143,10 @@ Repository citation metadata is available in `CITATION.cff`.
 - [FlowNet: Learning Optical Flow with Convolutional Networks](https://arxiv.org/abs/1504.06852), Dosovitskiy et al., ICCV 2015.
 
 The package bridge notebooks in `notebooks/implicit_bridge/` and the
-[Method Adaptation Atlas](../learn/method-adaptation-atlas.md) are original
-package-native adaptations of these ideas. They cite the upstream tutorial,
-Colabs, papers, and repositories, and they run through `silva_networks` APIs.
-External tutorials, repositories, and third-party papers are cited as method
-references. The SILVA article PDF is included locally because it is the
-package's own companion paper.
+[Method Adaptation Atlas](../learn/method-adaptation-atlas.md) connect these
+methods to SILVA equations and public `silva_networks` APIs. Each method is
+paired with its primary paper or repository. The SILVA article PDF is included
+with the documentation as the package's companion paper.
 
 The optical-flow implementation in `silva_networks.flow` is also package-native.
 It expresses all-pairs correlation, recurrent update fields, local correlation

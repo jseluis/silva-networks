@@ -14,7 +14,7 @@ The output reports:
 | Field | Meaning |
 | --- | --- |
 | architecture | stable factory name |
-| parameters | trainable parameters in the compact smoke configuration |
+| parameters | trainable parameters in the compact validation configuration |
 | loss | finite two-class loss on the corresponding tiny batch |
 | residual start/end | fixed-point residual before and after the second damped step |
 | gradient norm | norm of gradients reaching the internal architecture |
@@ -41,3 +41,15 @@ for implementation-level derivations of all ten modules, a fully populated
 point, multi-module points, linked heterogeneous points, tiny training, and
 solver-scale diagnostics. The [Full Cortex Operator Example](full-cortex-operators.md)
 shows every configurable branch in one runnable construction.
+
+Every architecture fills the state-network term in
+
+$$
+z^\star
+=
+\Phi\{S_\theta(x)+A_\theta(z^\star)+H_\theta(z^\star)
++L_\theta(z^\star)+G_\theta(z^\star)\}.
+$$
+
+Primary publications for all ten internal mappings are listed in
+[Point Architecture Sources](../paper/references.md#point-architecture-sources).

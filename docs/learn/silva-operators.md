@@ -260,3 +260,24 @@ model = SILVAGraphNetwork(
 
 The resulting model still computes a SILVA equilibrium. The local, global, and
 self terms are simply user-defined functions inside the interaction field.
+
+## Compare Operators Fairly
+
+Record more than the task loss when changing a branch:
+
+```python
+result = model(x, edge_index=edge_index, batch=batch, return_result=True)
+for layer_index, solve in enumerate(result.solver_results):
+    print(layer_index, solve.iterations, solve.converged, solve.residual)
+```
+
+Use the same input split, hidden widths, solver tolerance, and optimization
+budget for an ablation. Report each active \(S,H,L,G\) branch, per-point
+damping, residual trajectory, gradient norm, and a local Jacobian diagnostic.
+This separates a change in representation quality from a transition that was
+simply easier or harder to solve.
+
+Operator lineages are collected under
+[Graphs, Attention, and Messages](../paper/references.md#graphs-attention-and-messages),
+with the SILVA article and software citations at the top of
+[Paper and References](../paper/references.md).

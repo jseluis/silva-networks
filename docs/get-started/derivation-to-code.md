@@ -266,3 +266,16 @@ class MyGlobal(torch.nn.Module):
 ```
 
 The solver, gradients, diagnostics, and device behavior stay the same.
+
+## Verify the Translation
+
+For every equation-to-code step, check four invariants:
+
+1. each active branch returns the declared state shape;
+2. the composed transition preserves shape, dtype, and device;
+3. the solver residual is computed from the same transition used in training;
+4. gradients reach every trainable branch that contributes to the loss.
+
+The complete source lineage is organized in
+[Implementation Derivations](../learn/implementation-derivations.md), with
+primary method links in [Paper and References](../paper/references.md).

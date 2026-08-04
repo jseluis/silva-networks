@@ -11,6 +11,8 @@ import sys
 from html.parser import HTMLParser
 from pathlib import Path
 
+from documentation_audit import run_documentation_audit
+
 try:
     import tomllib
 except ModuleNotFoundError:  # Python 3.10
@@ -137,6 +139,9 @@ def run_audit(root: Path = ROOT) -> dict[str, list[str]]:
     _check_coverage_registry(root, errors)
     _check_companion_asset_policy(root, errors, warnings)
     _check_docs_rendering_assets(root, errors)
+    documentation_report = run_documentation_audit(root)
+    errors.extend(documentation_report["errors"])
+    warnings.extend(documentation_report["warnings"])
 
     return {"errors": errors, "warnings": warnings}
 

@@ -18,26 +18,26 @@ broken package builds before a public release.
 | License | MIT |
 | Book and solutions manual | Planned long-form learning assets |
 | Implementation registry | `silva_networks.coverage.implementation_cases()` |
-| Cortex hierarchy | vector and spatial `SILVACortexLayer` transitions, heterogeneous `SILVACortexNetwork` points, and `SILVAImageCortexClassifier` documented and smoke-tested |
+| Cortex hierarchy | vector and spatial `SILVACortexLayer` transitions, heterogeneous `SILVACortexNetwork` points, and `SILVAImageCortexClassifier` documented and validated |
 | Point architecture catalog | ten vector, token, and spatial modules with shape, gradient, fixed-point, tiny-data, example, and notebook checks |
-| Generalized cases | sequence, multiscale vision, Jacobian, IGNN, INR, diffusion, and coupled RAFT/DEQ-Flow APIs documented and smoke-tested |
+| Generalized cases | sequence, multiscale vision, Jacobian, IGNN, INR, diffusion, and coupled RAFT/DEQ-Flow APIs documented and validated |
 | Public datasets | UCI tabular loaders plus TorchVision adapters for MNIST, FashionMNIST, KMNIST, EMNIST, CIFAR10, CIFAR100, and SVHN |
-| Public results | [Results](results.md) records measured smoke metrics, tensor shapes, residuals, and reproduction commands |
+| Public results | [Results](results.md) records measured validation metrics, tensor shapes, residuals, and reproduction commands |
 | CLI workflow | [CLI Guide](cli.md), `silva-experiment`, `silva-download-datasets`, `scripts/smoke_test.sh`, config listing, config display, device override, and dotted `--set` overrides |
 | Release audit script | `scripts/release_audit.py` |
-| Notebook smoke script | `scripts/run_notebook_smoke.py` |
+| Notebook validation script | `scripts/run_notebook_smoke.py` |
 
 ## Release Checklist
 
 | Check | Command | Must pass |
 | --- | --- | --- |
 | Release audit | `python scripts/release_audit.py` | yes |
-| CLI smoke | `bash scripts/smoke_test.sh` | yes |
+| CLI validation | `bash scripts/smoke_test.sh` | yes |
 | Python lint | `ruff check src tests examples scripts` | yes |
 | Unit tests | `pytest` | yes |
 | Strict docs build | `mkdocs build --strict` | yes |
-| Public results page | `silva-experiment --config <config> --output-dir outputs` | yes for published smoke rows |
-| Notebook smoke | `python scripts/run_notebook_smoke.py --timeout 180` | yes for selected quick notebooks |
+| Public results page | `silva-experiment --config <config> --output-dir outputs` | yes for published validation rows |
+| Notebook validation | `python scripts/run_notebook_smoke.py --timeout 180` | yes for selected quick notebooks |
 | Package build | `python -m build` | yes |
 | Distribution metadata | `twine check dist/*` | yes |
 | PyPI trusted publisher | PyPI publisher for `jseluis/silva-networks`, workflow `release.yml`, environment `pypi` | yes |
@@ -106,6 +106,6 @@ Validation:
 | Isolated package build cannot download build requirements | Use `python -m build --no-isolation` in a prepared local virtualenv, or run the isolated build where package indexes are reachable. |
 | Vision extras may be absent | Install `.[vision]` only when running torchvision-specific examples. |
 | Vision dataset downloads are larger than tabular downloads | CIFAR and the full TorchVision suite are opt-in public checks; cache them under `data/` and keep generated data out of commits. |
-| CUDA validation is hardware-dependent | Required CUDA checks should run on a CUDA machine; CPU CI and local smoke do not replace that hardware validation. |
+| CUDA validation is hardware-dependent | Required CUDA checks should run on a CUDA machine; CPU checks do not replace that hardware validation. |
 | Full real TorchVision suite is opt-in | The package tests the runner route and real CIFAR10 smokes locally; the complete real image suite should run where dataset archives can be cached. |
 | Optimization extras may be absent | Install `.[optimization]` only for CVXPYlayers experiments. |

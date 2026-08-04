@@ -5,8 +5,8 @@ designed to exercise the same package surfaces used by larger SILVA studies:
 solvers, Jacobians, local/global branches, stacked architectures, preprocessing,
 and device placement.
 
-Large private reproduction scripts, private training schedules, private result
-tables, and large cached datasets are not distributed in this public suite.
+Long training schedules, large result tables, and cached datasets are outside
+the compact package experiment suite.
 
 ## Run a Config
 

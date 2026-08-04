@@ -106,4 +106,9 @@ grad_theta = np_implicit_gradient(J, grad_z, df_dtheta)
 This is the explicit small-matrix version of the adjoint system used by the
 PyTorch diagnostics.
 
+The corresponding equilibrium, implicit-function, and numerical-method sources
+are listed in [Paper and References](../paper/references.md). Use
+[Mathematical Foundations](../learn/mathematical-foundations.md) for the full
+derivations and tensor notation.
+
 ::: silva_networks.educational

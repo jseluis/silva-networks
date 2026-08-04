@@ -91,7 +91,7 @@ def architecture_notebook() -> dict:
 
                 This notebook checks the package mechanisms used to construct DEQ,
                 MDEQ, Jacobian-regularized, IGNN, implicit-representation, and
-                diffusion cases. It is a CPU smoke tutorial, not a claim that the
+                diffusion cases. It is a CPU validation tutorial, not a claim that the
                 source papers' datasets, schedules, checkpoints, or metrics were run.
 
                 All cases share
@@ -422,7 +422,7 @@ def raft_notebook() -> dict:
                 """
                 ## Reproduction Boundary and Citations
 
-                This smoke run validates the coupled state, correlation/GRU update,
+                This compact run validates the coupled state, correlation/GRU update,
                 learned upsampling, correction loss, implicit backward path, and
                 reuse contract. Paper metrics require the source dataset mixtures,
                 augmentations, schedules, evaluation code, resolution, and model

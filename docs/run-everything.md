@@ -31,7 +31,7 @@ cd /path/to/silva-networks
 </div>
 <div class="silva-run-card" markdown>
 <strong>Validate</strong>
-<span>Run release audit, tests, notebook smoke, tensor checks, and residual diagnostics.</span>
+<span>Run release audit, tests, notebook validation, tensor checks, and residual diagnostics.</span>
 </div>
 <div class="silva-run-card" markdown>
 <strong>Build Docs</strong>
@@ -63,7 +63,7 @@ python -c "import silva_networks as sn; print(sn.__version__)"
 
 The notebook-free command path is collected in [CLI Guide](cli.md).
 
-Run the default CPU smoke:
+Run the default CPU validation:
 
 ```bash
 bash scripts/smoke_test.sh
@@ -127,7 +127,7 @@ Use the example pages for explanations:
 | [Stacked Architecture](examples/stacked-architecture.md) | multiple equilibrium layers with mixed solvers |
 | [Dataset Quickstart](examples/datasets-quickstart.md) | public data to `GraphTensorBatch` |
 | [DEQ Engine Bridge](examples/deq-engine-bridge.md) | arbitrary single-state and multi-state fixed-point systems |
-| [Optical Flow SILVA](examples/optical-flow-silva.md) | synthetic RAFT/DEQ-Flow-style fixed-point flow smoke |
+| [Optical Flow SILVA](examples/optical-flow-silva.md) | synthetic fixed-point flow validation |
 | [Constrained Optimization](examples/constrained-optimization.md) | projected simplex QP solve through the family selector |
 | [Citation-Aware Reporting](examples/citation-aware-reporting.md) | methods paragraph and citation checklist |
 
@@ -151,8 +151,8 @@ The package API track:
 | [SILVA Operator Options](package-notebooks/06_silva_operator_options.ipynb) | branch choices and diagnostics |
 | [Research Citation Audit](package-notebooks/07_research_citation_audit.ipynb) | citation checklist |
 | [Equation-to-Code Walkthrough](package-notebooks/08_equation_to_code_walkthrough.ipynb) | derivation, code, data, diagnostics in one path |
-| [Family Selector and Projected QP](package-notebooks/09_family_selector_and_projected_qp.ipynb) | SILVA-style family selection, constraints, residuals, gradients, and flow smoke |
-| [Training Helpers Smoke](package-notebooks/10_training_helpers_smoke.ipynb) | fit/evaluate helper smoke, checkpointing, resume, device routing |
+| [Family Selector and Projected QP](package-notebooks/09_family_selector_and_projected_qp.ipynb) | SILVA family selection, constraints, residuals, gradients, and flow validation |
+| [Training Helpers Validation](package-notebooks/10_training_helpers_smoke.ipynb) | fit/evaluate helper validation, checkpointing, resume, device routing |
 | [Cortex Hierarchy](package-notebooks/11_cortex_hierarchy.ipynb) | linked cortex points, MLP/CNN/U-Net internals, tiny spatial data, residuals, and gradients |
 | [Paper Family Architectures](package-notebooks/12_paper_family_architectures.ipynb) | sequence, multiscale, Jacobian, graph, INR, diffusion, and custom-transition cases |
 | [RAFT and DEQ-Flow](package-notebooks/13_raft_deq_flow.ipynb) | coupled hidden/flow state, exact implicit gradients, corrections, upsampling, and reuse |
@@ -171,7 +171,7 @@ The implicit bridge track:
 | [MDEQ and Jacobian Regularization](implicit-bridge-notebooks/06_mdeq_jacobian_regularization.ipynb) | multiscale state and Hutchinson penalty |
 | [SILVA DEQ Engine](implicit-bridge-notebooks/07_silva_deq_engine_torchdeq_bridge.ipynb) | TorchDEQ-style single-state and multi-state systems |
 | [SILVA Optical Flow](implicit-bridge-notebooks/08_silva_optical_flow_deq_raft_bridge.ipynb) | RAFT-style correlation and DEQ-Flow-style flow fixed point |
-| [Method Adaptation Atlas](implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb) | source-to-SILVA translation, citation rules, and compact smoke checks |
+| [Method Adaptation Atlas](implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb) | source-to-SILVA translation, citation rules, and compact validation checks |
 
 ## Available Data
 
@@ -289,7 +289,7 @@ The most common errors are:
 | `batch` missing for multiple graphs | create graph id per entity |
 | model and tensors on different devices | use `graph.to(device)` and `model.to(device)` |
 
-Public classification configs use stratified smoke subsets when `max_samples`
+Public classification configs use stratified validation subsets when `max_samples`
 is smaller than the full dataset, so ordered public files still expose every
 class represented in the subset.
 
@@ -319,13 +319,13 @@ pytest tests/test_release_readiness.py
 pytest tests/test_training.py
 ```
 
-Run the quick notebook smoke set:
+Run the quick notebook validation set:
 
 ```bash
 python scripts/run_notebook_smoke.py --timeout 180
 ```
 
-The default release smoke includes the generalized paper-family, coupled
+The default release validation includes the generalized paper-family, coupled
 RAFT/DEQ-Flow, and point-architecture notebooks. To run them directly:
 
 ```bash
@@ -335,7 +335,7 @@ python scripts/run_notebook_smoke.py \
   docs/package-notebooks/14_point_architecture_catalog.ipynb
 ```
 
-List the default smoke notebooks:
+List the default validation notebooks:
 
 ```bash
 python scripts/run_notebook_smoke.py --list

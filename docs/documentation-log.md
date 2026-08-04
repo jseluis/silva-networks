@@ -57,8 +57,8 @@ self/damping rings, solver states, and convergence to an attractor.
 <div class="silva-doclog__body" markdown>
 ## Generalized Architecture Pass
 
-Added package-native, parameter-driven architecture cases without embedding
-private experiment recipes or claimed paper metrics.
+Added parameter-driven architecture cases with explicit study-level scope and
+without claimed paper metrics.
 
 | Area | Change |
 | --- | --- |
@@ -67,7 +67,7 @@ private experiment recipes or claimed paper metrics.
 | API | Added public API and family-selection API pages, then hardened the API audit so every source module has a generated reference page. |
 | Training/data | Hardened checkpoint resume, RNG/scheduler state, hooks, custom metrics, and leakage-free preprocessing statistics. |
 | Learning | Added [Paper Family Adaptations](learn/paper-family-adaptations.md), two executable notebooks, examples, equations, and citation mappings. |
-| Tests | Added exact-gradient and architecture smoke coverage; these validate mechanisms, not paper benchmark numbers. |
+| Tests | Added exact-gradient and architecture validation coverage; these validate mechanisms, not paper benchmark numbers. |
 </div>
 </div>
 
@@ -92,7 +92,7 @@ arXiv:2607.28989.
 | Cortex hierarchy | Added [Cortex Hierarchies](learn/cortex-hierarchy.md), [Cortex Hierarchy example](examples/cortex-hierarchy.md), and [Cortex Hierarchy notebook](package-notebooks/11_cortex_hierarchy.ipynb). |
 | Companion assets | Added the book and solutions manual roadmap and kept public links on package-native learning paths. |
 | Tooling | Added `scripts/release_audit.py`, `scripts/run_notebook_smoke.py`, and release-readiness tests. |
-| CI | Wired release audit, notebook smoke, docs build, package build, and metadata checks into CI. |
+| CI | Wired release audit, notebook validation, docs build, package build, and metadata checks into CI. |
 
 Validation target:
 
@@ -122,7 +122,7 @@ public names for adapted modules.
 | --- | --- |
 | Names | Added `SILVADEQFlow`, `silva_deq_flow`, `SILVAProjectedQPLayer`, and `silva_projected_qp_layer` as preferred public names. |
 | Compatibility | Kept `SILVAOpticalFlowDEQ`, `silva_optical_flow_deq`, `SILVAConstrainedQuadraticLayer`, and `silva_constrained_quadratic_layer` available as compatibility names. |
-| Notebooks | Added [Family Selector and Projected QP](package-notebooks/09_family_selector_and_projected_qp.ipynb) and [Training Helpers Smoke](package-notebooks/10_training_helpers_smoke.ipynb). |
+| Notebooks | Added [Family Selector and Projected QP](package-notebooks/09_family_selector_and_projected_qp.ipynb) and [Training Helpers Validation](package-notebooks/10_training_helpers_smoke.ipynb). |
 | API | Added [Coverage Registry](api/coverage.md) and wired it into tests. |
 | Tests | Added `tests/test_implementation_coverage.py` to check public objects, docs, notebooks, examples, and `__all__`. |
 
@@ -143,14 +143,14 @@ mkdocs build --strict
 <div class="silva-doclog__body" markdown>
 ## Source-to-SILVA Adaptation Pass
 
-Added a professional method adaptation layer that translates external implicit
+Added a method adaptation layer that translates external implicit
 layer, DEQ, ODE, optimization, and optical-flow references into SILVA-native
 equations, APIs, scope notes, notebooks, and citation rules.
 
 | Area | Change |
 | --- | --- |
 | Learning page | Added [Method Adaptation Atlas](learn/method-adaptation-atlas.md) with source-to-package derivations and scope findings. |
-| Notebook | Added [Method Adaptation Atlas](implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb) with compact package smoke checks. |
+| Notebook | Added [Method Adaptation Atlas](implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb) with compact package validation checks. |
 | Navigation | Wired the atlas into Learn, Notebooks, Run Everything, Colab, and the home page. |
 | Citation scope | Documented the optimization routes separately: tutorial quadratic bridge, package-native constrained QP, and optional CVXPYlayers wrapper. |
 | Date metadata | Added page-specific update notes for the atlas and newer bridge notebooks. |
