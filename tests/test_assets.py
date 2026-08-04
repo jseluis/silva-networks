@@ -280,6 +280,42 @@ def test_expanded_notebooks_are_synchronized_and_substantive() -> None:
                 "Reproduction Boundary",
             ),
         ),
+        "17_silva_fno_equilibrium_lab.ipynb": (
+            15,
+            (
+                "Exact Periodic Elliptic Data",
+                "Three Errors, Three Questions",
+                "make_periodic_elliptic_dataset",
+                "Resolution Transfer Is a Testable Contract",
+            ),
+        ),
+        "18_silva_graph_transport_lab.ipynb": (
+            15,
+            (
+                "Continuous and Discrete Transport",
+                "make_graph_transport_dataset",
+                "Train a Small Node Field",
+                "Node Relabeling",
+            ),
+        ),
+        "19_silva_homotopy_equilibrium_lab.ipynb": (
+            15,
+            (
+                "Fixed-Point Residual and Classical Homotopy",
+                "Analytic Affine Path",
+                "make_affine_homotopy_dataset",
+                "Choosing the Horizon and Integrator",
+            ),
+        ),
+        "20_silva_distributional_equilibrium_lab.ipynb": (
+            16,
+            (
+                "Matrices Represent Empirical Measures",
+                "Gaussian MMD and Energy Distance",
+                "make_variable_measure_dataset",
+                "Train a Readout from the Equilibrium Measure",
+            ),
+        ),
     }
 
     for name, (minimum_cells, markers) in requirements.items():

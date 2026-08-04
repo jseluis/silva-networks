@@ -144,14 +144,25 @@ _IMPLEMENTATION_CASES: tuple[SILVAImplementationCase, ...] = (
             "SILVADistributionalTransition",
             "SILVADistributionalDEQ",
             "distributional_discrepancy",
+            "make_periodic_elliptic_dataset",
+            "make_graph_transport_dataset",
+            "make_affine_homotopy_dataset",
+            "make_variable_measure_dataset",
         ),
         tutorial="docs/learn/frontier-equilibrium-families.md",
-        notebooks=("docs/package-notebooks/16_frontier_equilibrium_families.ipynb",),
-        smoke_tests=("tests/test_frontier.py",),
+        notebooks=(
+            "docs/package-notebooks/16_frontier_equilibrium_families.ipynb",
+            "docs/package-notebooks/17_silva_fno_equilibrium_lab.ipynb",
+            "docs/package-notebooks/18_silva_graph_transport_lab.ipynb",
+            "docs/package-notebooks/19_silva_homotopy_equilibrium_lab.ipynb",
+            "docs/package-notebooks/20_silva_distributional_equilibrium_lab.ipynb",
+        ),
+        smoke_tests=("tests/test_frontier.py", "tests/test_frontier_data.py"),
         examples=("examples/frontier_equilibria.py",),
         scope=(
             "Input-injected Fourier, convection-diffusion graph, continuous residual-flow, "
-            "and empirical-measure SILVA equilibria with invariance and gradient checks."
+            "and empirical-measure SILVA equilibria with equation-checked datasets, "
+            "invariance tests, training paths, and gradient checks."
         ),
     ),
     SILVAImplementationCase(

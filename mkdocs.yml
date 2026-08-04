@@ -122,6 +122,7 @@ nav:
       - Point Architecture Catalog: learn/point-architecture-catalog.md
       - Neural Operators, ODEs, PDEs, and SILVA: learn/neural-operators-ode-pde.md
       - Recent Equilibrium Families: learn/frontier-equilibrium-families.md
+      - Dataset-Backed Equilibrium Labs: learn/frontier-dataset-labs.md
       - Stacking and Devices: learn/stacking-and-devices.md
       - Datasets and Preprocessing: learn/datasets-and-preprocessing.md
       - Reconstructing Paper Experiments: learn/reconstructing-paper-experiments.md
@@ -147,6 +148,10 @@ nav:
       - Point Architecture Catalog: package-notebooks/14_point_architecture_catalog.ipynb
       - Neural Operators, ODEs, and PDEs: package-notebooks/15_neural_operators_ode_pde.ipynb
       - Recent Equilibrium Families: package-notebooks/16_frontier_equilibrium_families.ipynb
+      - SILVA Fourier Equilibrium Lab: package-notebooks/17_silva_fno_equilibrium_lab.ipynb
+      - SILVA Graph Transport Lab: package-notebooks/18_silva_graph_transport_lab.ipynb
+      - SILVA Homotopy Equilibrium Lab: package-notebooks/19_silva_homotopy_equilibrium_lab.ipynb
+      - SILVA Distributional Equilibrium Lab: package-notebooks/20_silva_distributional_equilibrium_lab.ipynb
       - Implicit Layers Bridge:
           - Fixed Points as Layers: implicit-bridge-notebooks/01_introduction_fixed_points.ipynb
           - Implicit Autodiff: implicit-bridge-notebooks/02_implicit_autodiff.ipynb
@@ -168,6 +173,7 @@ nav:
       - Point Architectures: api/point_architectures.md
       - Scientific Operators: api/scientific.md
       - Recent Equilibrium Families: api/frontier.md
+      - Recent Equilibrium Datasets: api/frontier_data.md
       - Implicit Bridge: api/implicit.md
       - DEQ Engine: api/deq-engine.md
       - Optical Flow: api/flow.md

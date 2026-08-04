@@ -15,6 +15,10 @@ DEFAULT_NOTEBOOKS = (
     "docs/package-notebooks/14_point_architecture_catalog.ipynb",
     "docs/package-notebooks/15_neural_operators_ode_pde.ipynb",
     "docs/package-notebooks/16_frontier_equilibrium_families.ipynb",
+    "docs/package-notebooks/17_silva_fno_equilibrium_lab.ipynb",
+    "docs/package-notebooks/18_silva_graph_transport_lab.ipynb",
+    "docs/package-notebooks/19_silva_homotopy_equilibrium_lab.ipynb",
+    "docs/package-notebooks/20_silva_distributional_equilibrium_lab.ipynb",
     "docs/implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb",
 )
 

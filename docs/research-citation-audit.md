@@ -35,6 +35,7 @@ The audit was checked against the package source under `src/silva_networks`:
 | `flow.py` | RAFT/DEQ-Flow-style optical-flow utilities and package-native flow DEQ |
 | `datasets.py` | tabular, image, pixel-graph, PyG-like, and molecular adapters |
 | `frontier.py` | input-injected Fourier, physics-guided graph, homotopy-flow, and empirical-measure equilibria |
+| `frontier_data.py` | equation-checked periodic fields, graph transport systems, affine homotopy roots, and variable-size empirical measures |
 
 ## Method-to-Citation Matrix
 
@@ -61,6 +62,7 @@ The audit was checked against the package source under `src/silva_networks`:
 | `graph_convection_diffusion`, `SILVAGraphConvectionDiffusion`, `SILVAPhysicsGuidedGraphDEQ` | separated graph source, reaction, normalized diffusion, and directed transport branches | Rodrigo-Bonet and Deligiannis, physics-guided graph DEQ [[44]](paper/references.md#ref-44){ .silva-cite }; graph convolution literature; SILVA paper/package |
 | `SILVAHomotopyTransition`, `SILVAHomotopyEquilibrium` | continuous residual path $\dot z=T(z;x)-z$ toward a SILVA fixed point | Ding et al., HomoODE [[46]](paper/references.md#ref-46){ .silva-cite }; Neural ODEs [[7]](paper/references.md#ref-7){ .silva-cite }; SILVA paper/package |
 | `distributional_discrepancy`, `SILVADistributionalTransition`, `SILVADistributionalDEQ` | empirical-measure discrepancy and differentiable particle descent with variable-size masks | Geuter et al., DDEQ [[45]](paper/references.md#ref-45){ .silva-cite }; SILVA paper/package |
+| `make_periodic_elliptic_dataset`, `make_graph_transport_dataset`, `make_affine_homotopy_dataset`, `make_variable_measure_dataset` | deterministic teaching problems with exact spectral, graph, fixed-point, or empirical-moment checks | FNO and neural operators [[31]](paper/references.md#ref-31){ .silva-cite } [[32]](paper/references.md#ref-32){ .silva-cite }, FNO-DEQ [[43]](paper/references.md#ref-43){ .silva-cite }, physics-guided graph DEQ [[44]](paper/references.md#ref-44){ .silva-cite }, DDEQ [[45]](paper/references.md#ref-45){ .silva-cite }, and HomoODE [[46]](paper/references.md#ref-46){ .silva-cite }, according to the builder used |
 | `QuadraticOptimizationLayer`, `SILVAQuadraticOptimizationLayer` | differentiable quadratic argmin and fixed-point KKT solve | Amos and Kolter, [OptNet](https://arxiv.org/abs/1703.00443); Agrawal et al., [Differentiable Convex Optimization Layers](https://arxiv.org/abs/1910.12430); Deep Implicit Layers tutorial |
 | `SILVAProjectedQPLayer`, `silva_projected_qp_layer`, `SILVAConstrainedQuadraticLayer`, `silva_cvxpy_layer` | projected constrained quadratic programs and optional CVXPYlayers bridge | OptNet for optimization-layer framing; Agrawal et al. differentiable convex optimization layers; CVXPYlayers when the optional bridge is used |
 | `ToyMultiscaleDEQBlock`, `SILVAMultiscaleDEQBlock` | coupled low/high equilibrium state | Bai, Koltun, and Kolter, [Multiscale Deep Equilibrium Models](https://arxiv.org/abs/2006.08656) |
@@ -86,6 +88,7 @@ Use the narrowest citation set that supports the claim.
 | "Convection-diffusion physics is represented inside a graph equilibrium." | physics-guided graph DEQ [[44]](paper/references.md#ref-44), the graph discretization source, and SILVA paper/package |
 | "A continuous residual path approaches the SILVA fixed point." | HomoODE [[46]](paper/references.md#ref-46), Neural ODEs, and SILVA paper/package |
 | "The SILVA state is an empirical measure optimized by particle descent." | DDEQ [[45]](paper/references.md#ref-45) and SILVA paper/package |
+| "A generated SILVA teaching dataset was used." | SILVA paper/package, the corresponding method citation, and the builder name, seed, shape, and equation-check tolerance; do not present it as an external benchmark |
 | "A Jacobian Frobenius penalty was used." | Hutchinson 1989 and Bai-Koltun-Kolter 2021 |
 | "The graph local operator is attention-based." | GAT and Attention Is All You Need |
 | "The molecular model is message-passing-like." | MPNN and GAT, plus SILVA |
@@ -115,6 +118,7 @@ repository, then cite the relevant building blocks only as background:
 | package-native optical-flow DEQ | compact RAFT/DEQ-Flow-inspired implementation using SILVA solvers |
 | package-native projected QP layer | projected fixed-point QP implementation with selectable nonnegative, box, simplex, and affine constraints |
 | recent equilibrium family adaptations | places Fourier input injection, graph-physics branches, homotopy flow, and empirical-measure descent inside canonical SILVA state and transition contracts |
+| recent equilibrium teaching datasets | provides deterministic, typed examples whose targets satisfy the documented spectral, graph, fixed-point, or empirical-moment relation |
 
 ## Example Citation Checklist
 
@@ -163,6 +167,7 @@ For an optical-flow DEQ validation experiment, cite:
 | Some SILVA operators are related to published mechanisms but are not exact reproductions. | Labeled as package-specific compositions above. |
 | Flow and DEQ-engine modules were public through `__init__` and needed their own citation/API coverage. | Added RAFT, DEQ-Flow, and TorchDEQ lineage. |
 | Dataset adapters cannot be fully cited without knowing the downstream dataset actually used. | Docs instruct users to cite each dataset source separately. |
+| Small generated problems could be mistaken for published benchmark reproductions. | Dataset labs label them as deterministic teaching problems and document the separate benchmark handoff, source, split, and metric requirements. |
 | External tutorials and repositories needed a clear method lineage. | Added the Method Adaptation Atlas and notebook as SILVA-native translations with upstream citations. |
 | The optimization bridge could be misread as one object with one scope. | Scope note added: the implicit tutorial object is an unconstrained quadratic bridge; the optimization module adds projected constrained QP layers and an optional CVXPYlayers wrapper. |
 
@@ -172,4 +177,5 @@ For an optical-flow DEQ validation experiment, cite:
 | --- | --- |
 | Where is the maintained bibliography? | [Paper and References](paper/references.md) |
 | How should methods and results be cited in reports? | [Citation-Aware Reporting](examples/citation-aware-reporting.md) |
+| Which generated datasets support the recent family labs? | [Dataset-Backed Equilibrium Labs](learn/frontier-dataset-labs.md) |
 | Where is the front-page citation presented? | [Home](index.md#how-to-cite) |

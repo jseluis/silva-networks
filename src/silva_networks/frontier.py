@@ -1,8 +1,8 @@
 """Recent equilibrium mechanisms expressed through SILVA contracts.
 
-The implementations in this module are independent, compact adaptations of
-published mechanisms. They share SILVA's explicit source, state, local, and
-global decomposition while exposing the numerical state needed for diagnosis.
+The implementations in this module express published mechanisms through
+SILVA's explicit source, state, local, and global decomposition while exposing
+the numerical state needed for diagnosis.
 """
 
 from __future__ import annotations

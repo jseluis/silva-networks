@@ -312,8 +312,11 @@ particle_model = silva_equilibrium_model(
 | `silva_homotopy_equilibrium` | $\dot z=T(z;x)-z$ from one shared initial state | terminal fixed-point residual and velocity history |
 | `silva_distributional_deq` | EI transition and Wasserstein particle descent | MMD or energy discrepancy history |
 
-The full derivations and small reproductions are in
+The full mechanism derivations are in
 [Recent Equilibrium Families Inside SILVA](frontier-equilibrium-families.md).
+For equation-checked datasets, complete training loops, solver diagnostics, and
+four focused notebooks, continue with
+[Dataset-Backed Equilibrium Labs](frontier-dataset-labs.md).
 
 ## Optimization Families
 

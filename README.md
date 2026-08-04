@@ -346,10 +346,29 @@ particle_model = SILVADistributionalDEQ(
 )
 ```
 
-The derivations, citations, small reproductions, tests, and extension boundary
-are in `docs/learn/frontier-equilibrium-families.md`,
-`notebooks/package_api/16_frontier_equilibrium_families.ipynb`, and
-`examples/frontier_equilibria.py`.
+The derivations, citations, dataset-backed reproductions, tests, and extension
+boundary are in `docs/learn/frontier-equilibrium-families.md`,
+`docs/learn/frontier-dataset-labs.md`, and
+`examples/frontier_equilibria.py`. The combined notebook is
+`notebooks/package_api/16_frontier_equilibrium_families.ipynb`; focused
+Fourier, graph transport, homotopy, and distributional labs are notebooks
+`17` through `20` in the same directory.
+
+The matching deterministic datasets are created inside the package:
+
+```python
+from silva_networks import (
+    make_affine_homotopy_dataset,
+    make_graph_transport_dataset,
+    make_periodic_elliptic_dataset,
+    make_variable_measure_dataset,
+)
+
+fields = make_periodic_elliptic_dataset(samples=8, height=16, width=16)
+graphs = make_graph_transport_dataset(samples=4, nodes=12)
+paths = make_affine_homotopy_dataset(samples=32, dimension=2)
+measures = make_variable_measure_dataset(samples=12, max_particles=16)
+```
 
 Use the family selector when you want a single choice point:
 

@@ -41,15 +41,19 @@ from silva_networks import (
     SILVAHomotopyEquilibrium,
     SILVAPhysicsGuidedGraphDEQ,
     SolverConfig,
+    make_affine_homotopy_dataset,
+    make_graph_transport_dataset,
+    make_periodic_elliptic_dataset,
+    make_variable_measure_dataset,
 )
 ```
 
 ## Fourier Field
 
 ```python
-axis = torch.linspace(0.0, 1.0, 8)
-y, x = torch.meshgrid(axis, axis, indexing="ij")
-forcing = (torch.sin(torch.pi * x) * torch.sin(torch.pi * y))[None, None]
+data = make_periodic_elliptic_dataset(
+    samples=1, height=8, width=8, modes=2, seed=31
+)
 
 model = SILVAFNODEQ(
     1,
@@ -60,28 +64,28 @@ model = SILVAFNODEQ(
     state_scale=0.05,
     config=SolverConfig(max_iter=12, tol=1e-6, alpha=1.0),
 )
-result = model(forcing, return_result=True)
+result = model(data.forcing, return_result=True)
+dataset_residual = data.equation_residual().abs().max()
 ```
 
 The test checks the fixed-point residual. This untrained run validates the
-operator and solver contract; it is not a learned PDE solution benchmark.
+operator and solver contract, while the generated target checks the periodic
+elliptic equation. This untrained call is not a learned PDE benchmark.
 
 ## Directed Transport Graph
 
 ```python
-coordinates = torch.linspace(0.0, 1.0, 6)
-x = torch.stack([coordinates, torch.sin(torch.pi * coordinates)], dim=-1)
-forward = torch.stack([torch.arange(5), torch.arange(1, 6)])
-edge_index = torch.cat([forward, forward.flip(0)], dim=1)
-velocity = torch.cat([torch.ones(5), -torch.ones(5)])
+data = make_graph_transport_dataset(samples=1, nodes=6, seed=32)
 
-model = SILVAPhysicsGuidedGraphDEQ(2, 5, 1)
+model = SILVAPhysicsGuidedGraphDEQ(3, 5, 1)
 result = model(
-    x,
-    edge_index,
-    edge_velocity=velocity,
+    data.x,
+    data.edge_index,
+    edge_weight=data.edge_weight,
+    edge_velocity=data.edge_velocity,
     return_result=True,
 )
+dataset_residual = data.equation_residual().abs().max()
 ```
 
 Opposite edge directions receive opposite signed velocities. A separate unit
@@ -105,9 +109,11 @@ model = SILVAHomotopyEquilibrium(
     horizon=10.0,
     learnable_initial=False,
 )
-condition = torch.tensor([[0.25], [-0.4]])
-result = model(condition, return_result=True)
-analytic_error = torch.max(torch.abs(result.output - 2.0 * condition))
+data = make_affine_homotopy_dataset(
+    samples=2, dimension=1, contraction=0.5, seed=33
+)
+result = model(data.condition, return_result=True)
+analytic_error = torch.max(torch.abs(result.output - data.target))
 ```
 
 Because $z^\star=2x$ is known, this case checks both terminal residual and
@@ -116,8 +122,12 @@ state error.
 ## Empirical Measure
 
 ```python
-context = torch.tensor(
-    [[[-1.0, 0.0], [-0.3, 0.5], [0.4, -0.2], [1.0, 0.1]]]
+data = make_variable_measure_dataset(
+    samples=1,
+    min_particles=4,
+    max_particles=6,
+    dimension=2,
+    seed=34,
 )
 model = SILVADistributionalDEQ(
     2,
@@ -128,7 +138,11 @@ model = SILVADistributionalDEQ(
     step_size=0.2,
     max_iter=5,
 )
-result = model(context, return_result=True)
+result = model(
+    data.context,
+    context_mask=data.context_mask,
+    return_result=True,
+)
 ```
 
 The script compares the initial and final empirical-measure discrepancy. For a
@@ -152,7 +166,7 @@ must remain stable:
 
 | Question | Page |
 | --- | --- |
-| Why are these the correct equations? | [Recent Equilibrium Families Inside SILVA](../learn/frontier-equilibrium-families.md) |
+| Where are the equations and generated datasets derived? | [Dataset-Backed Equilibrium Labs](../learn/frontier-dataset-labs.md) |
 | What arguments and result fields are public? | [Recent Equilibrium API](../api/frontier.md) |
 | How do the broader ODE/PDE cases work? | [Scientific Operators Example](scientific-operators.md) |
 | Can I execute every derivation and check? | [Recent Equilibrium Families Notebook](../package-notebooks/16_frontier_equilibrium_families.ipynb) |

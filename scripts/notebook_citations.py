@@ -28,6 +28,10 @@ PACKAGE_CITATIONS = {
     "14_point_architecture_catalog.ipynb": tuple(range(25, 35)),
     "15_neural_operators_ode_pde.ipynb": (7, 31, 32),
     "16_frontier_equilibrium_families.ipynb": tuple(range(43, 51)),
+    "17_silva_fno_equilibrium_lab.ipynb": (1, 31, 32, 43),
+    "18_silva_graph_transport_lab.ipynb": (1, 36, 44),
+    "19_silva_homotopy_equilibrium_lab.ipynb": (1, 7, 46),
+    "20_silva_distributional_equilibrium_lab.ipynb": (1, 45),
 }
 
 BRIDGE_CITATIONS = {
@@ -87,6 +91,10 @@ def _json_indent(path: Path) -> int:
         "14_point_architecture_catalog.ipynb",
         "15_neural_operators_ode_pde.ipynb",
         "16_frontier_equilibrium_families.ipynb",
+        "17_silva_fno_equilibrium_lab.ipynb",
+        "18_silva_graph_transport_lab.ipynb",
+        "19_silva_homotopy_equilibrium_lab.ipynb",
+        "20_silva_distributional_equilibrium_lab.ipynb",
     } and path.parent != ROOT / "docs/package-notebooks":
         return 2
     return 1

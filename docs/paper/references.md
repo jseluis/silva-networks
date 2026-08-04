@@ -178,6 +178,7 @@ continued reading.
 | physics graph equilibria | `SILVAGraphConvectionDiffusion`, `SILVAPhysicsGuidedGraphDEQ` | pGCN-DEQ, graph convection-diffusion operators, SILVA |
 | continuous equilibrium paths | `SILVAHomotopyEquilibrium` | fixed-point homotopy, conditioned ODE flows, SILVA residual flow |
 | empirical-measure equilibria | `SILVADistributionalTransition`, `SILVADistributionalDEQ` | DDEQ, Wasserstein gradient flows, MMD, energy distance, SILVA |
+| recent equilibrium teaching data | `make_periodic_elliptic_dataset`, `make_graph_transport_dataset`, `make_affine_homotopy_dataset`, `make_variable_measure_dataset` | FNO/FNO-DEQ, pGCN-DEQ, homotopy equilibrium, or DDEQ according to the generated problem; SILVA for the typed equation checks |
 | coupled RAFT/DEQ-Flow | `SILVARAFTDEQ`, correlation pyramid, update block, correction loss | RAFT, DEQ-Flow, SILVA |
 
 ## Equilibrium and Implicit Layers
@@ -268,6 +269,13 @@ When writing up package results:
 4. Cite graph/attention/set/molecular papers only when the corresponding
    package branch is used or discussed.
 5. Cite dataset sources separately from model-method citations.
+
+The four builders in `silva_networks.frontier_data` generate deterministic
+teaching problems rather than redistributing an external benchmark. Report the
+builder, seed, tensor shape, physical or statistical parameters, and residual
+tolerance. When replacing generated data with a published benchmark, also cite
+that benchmark and report its official split and metric protocol. The complete
+mapping is in [Dataset-Backed Equilibrium Labs](../learn/frontier-dataset-labs.md).
 
 Public dataset sources:
 

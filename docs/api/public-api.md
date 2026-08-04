@@ -37,6 +37,7 @@ should normally name the objects it uses.
 | link several equilibrium points | [Architectures](architectures.md) |
 | choose an internal point mapping | [Point Architectures](point_architectures.md) |
 | construct a Fourier, physics-graph, homotopy, or distributional equilibrium | [Recent Equilibrium Families](frontier.md) |
+| generate equation-checked data for those four families | [Recent Equilibrium Datasets](frontier_data.md) |
 | adapt tables, images, or graphs | [Datasets](datasets.md) |
 | train and evaluate | [Training](training.md) |
 | reproduce a packaged run | [Public Experiments](public_experiments.md) |

@@ -112,6 +112,6 @@ model = silva_equilibrium_model(
 | Question | Page |
 | --- | --- |
 | How should I choose among these families? | [Selecting Model Families](../learn/selecting-model-families.md) |
-| Where are several families executed? | [Paper Family Cases](../examples/paper-family-cases.md) |
 | Which classes implement ODE, PDE, and learned operators? | [Scientific Operators API](scientific.md) |
 | Which classes implement the recent operator, graph, flow, and measure families? | [Recent Equilibrium API](frontier.md) |
+| Which generated datasets exercise those four families? | [Recent Equilibrium Dataset API](frontier_data.md) |

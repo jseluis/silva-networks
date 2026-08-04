@@ -28,9 +28,9 @@ source, state, local, and global decomposition
 | mirror-descent Poisson equilibrium [[50]](../paper/references.md#ref-50){ .silva-cite } | documented port target | requires a positive-domain mirror map and Poisson data fidelity |
 
 “Implemented as a SILVA family” means the mathematical mechanism has a public
-class, unit tests, a runnable example, and an executable small-scale
-reproduction. It does not mean that the large datasets, model sizes, or paper
-benchmark tables have been reproduced.
+class, unit and integration tests, a runnable example, deterministic teaching
+data, and executable small-scale reproductions. It does not mean that the large
+datasets, model sizes, or paper benchmark tables have been reproduced.
 
 ## One Grammar, Four Extensions
 
@@ -528,22 +528,23 @@ The searchable literature aliases `fno_deq`, `pgcn_deq`, `homoode`, and
 `ddeq` resolve to these SILVA constructors. New configuration files should use
 the canonical `silva_*` keys.
 
-## Small-Scale Reproductions
+## Dataset-Backed Reproductions
 
-The executable notebook and `examples/frontier_equilibria.py` run four bounded
-experiments without external datasets.
+The combined notebook, four focused labs, and `examples/frontier_equilibria.py`
+now use deterministic package builders matched to each state geometry.
 
-| Reproduction | Quantity checked | Acceptance condition |
-| --- | --- | --- |
-| smooth $8\times8$ Fourier forcing | fixed-point residual and field shape | residual finite and below the configured tolerance |
-| six-node transport graph | graph residual and node output | finite equilibrium and relabeling-equivariant test |
-| scalar affine homotopy | error against $z^\star=2x$ | terminal residual and analytic error decrease |
-| two-dimensional particle set | initial/final measure discrepancy | final discrepancy does not exceed the initial value |
+| SILVA family | Dataset builder | Quantity checked | Focused notebook |
+| --- | --- | --- | --- |
+| Fourier equilibrium | `make_periodic_elliptic_dataset` | field shape, fixed-point residual, elliptic residual, gradients, resolution change | [Fourier equilibrium lab](../package-notebooks/17_silva_fno_equilibrium_lab.ipynb) |
+| physics graph equilibrium | `make_graph_transport_dataset` | discrete transport residual, batched edges, node relabeling, gradients | [Graph transport lab](../package-notebooks/18_silva_graph_transport_lab.ipynb) |
+| homotopy equilibrium | `make_affine_homotopy_dataset` | analytic endpoint, complete decay law, Euler/RK4, gradients | [Homotopy equilibrium lab](../package-notebooks/19_silva_homotopy_equilibrium_lab.ipynb) |
+| distributional equilibrium | `make_variable_measure_dataset` | masks, counts, moments, permutation behavior, particle descent, gradients | [Distributional equilibrium lab](../package-notebooks/20_silva_distributional_equilibrium_lab.ipynb) |
 
-These experiments validate equations, tensor contracts, solver wiring, and
-gradients. The paper-reported Darcy, Navier-Stokes, environmental, image, and
-point-cloud benchmark results require their full datasets and training
-protocols and are outside these smoke reproductions.
+These experiments validate equations, tensor contracts, solver wiring,
+training paths, plots, and gradients. The [dataset-backed lab guide](frontier-dataset-labs.md)
+derives every builder and explains the handoff to the paper datasets. The
+paper-reported Darcy, Navier-Stokes, environmental, image, and point-cloud
+results still require their complete datasets and protocols.
 
 ## Extension Requirements
 
@@ -591,14 +592,16 @@ projected gradient step is not an equivalent substitute.
 | analytic homotopy endpoint and both integrators | `tests/test_frontier.py` |
 | MMD/energy permutation invariance and masks | `tests/test_frontier.py` |
 | EI transition property and fixed particles | `tests/test_frontier.py` |
+| generated equation datasets, masks, batching, and integrated gradients | `tests/test_frontier_data.py` |
 | all four small runs | `examples/frontier_equilibria.py` |
 | derivations and progressive experiments | `16_frontier_equilibrium_families.ipynb` |
+| dataset-backed derivation and training labs | notebooks `17` through `20` |
 
 ## Where to Go Next
 
 | Question | Page |
 | --- | --- |
 | How do ordinary ODE, PDE, and neural-operator cases enter SILVA? | [Neural Operators, ODEs, PDEs, and SILVA](neural-operators-ode-pde.md) |
-| How do all selectable family keys work? | [Selecting Model Families](selecting-model-families.md) |
 | Where is the public API for these four families? | [Recent Equilibrium API](../api/frontier.md) |
+| Where are the datasets and focused training labs derived? | [Dataset-Backed Equilibrium Labs](frontier-dataset-labs.md) |
 | Where can I run the compact reproductions? | [Recent Equilibrium Examples](../examples/frontier-equilibria.md) |

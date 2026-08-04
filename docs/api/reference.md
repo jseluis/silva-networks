@@ -23,6 +23,7 @@ inputs, outputs, and source links.
 | [Point Architectures](point_architectures.md) | ten shape-preserving vector, token, convolutional, U-Net, attention, and spectral fields |
 | [Scientific Operators](scientific.md) | finite differences, PDE residuals, boundaries, implicit time steps, reaction-diffusion, Burgers, and Fourier equilibrium operators |
 | [Recent Equilibrium Families](frontier.md) | input-injected Fourier, physics-guided graph, homotopy-flow, and distributional SILVA equilibria |
+| [Recent Equilibrium Datasets](frontier_data.md) | equation-checked fields, transport graphs, homotopy pairs, and variable-size empirical measures |
 | [Implicit Bridge](implicit.md) | SILVA-named DEQ transition, fixed-point classifier, Euler flow, quadratic optimization, MDEQ bridge |
 | [DEQ Engine](deq-engine.md) | general single-state and multi-state SILVA DEQ engine, variational dropout, state packing |
 | [Optical Flow](flow.md) | RAFT-style correlation, warping, DEQ-flow fixed point, synthetic flow data |

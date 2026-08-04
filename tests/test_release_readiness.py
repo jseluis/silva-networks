@@ -103,6 +103,10 @@ def test_notebook_smoke_script_lists_defaults() -> None:
     assert "docs/package-notebooks/14_point_architecture_catalog.ipynb" in result.stdout
     assert "docs/package-notebooks/15_neural_operators_ode_pde.ipynb" in result.stdout
     assert "docs/package-notebooks/16_frontier_equilibrium_families.ipynb" in result.stdout
+    assert "docs/package-notebooks/17_silva_fno_equilibrium_lab.ipynb" in result.stdout
+    assert "docs/package-notebooks/18_silva_graph_transport_lab.ipynb" in result.stdout
+    assert "docs/package-notebooks/19_silva_homotopy_equilibrium_lab.ipynb" in result.stdout
+    assert "docs/package-notebooks/20_silva_distributional_equilibrium_lab.ipynb" in result.stdout
 
 
 def test_global_numbered_citations_cover_solver_and_notebooks() -> None:

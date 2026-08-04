@@ -94,6 +94,32 @@ layout is ambiguous, such as a 3- or 4-pixel spatial dimension.
 The supported TorchVision names are `MNIST`, `FashionMNIST`, `KMNIST`,
 `EMNIST`, `CIFAR10`, `CIFAR100`, and `SVHN`.
 
+## Equation-Checked Teaching Problems
+
+The recent equilibrium families also include deterministic generated problems
+that can be used without a download:
+
+```python
+from silva_networks import (
+    make_affine_homotopy_dataset,
+    make_graph_transport_dataset,
+    make_periodic_elliptic_dataset,
+    make_variable_measure_dataset,
+)
+
+field = make_periodic_elliptic_dataset(samples=8, height=16, width=16, seed=7)
+graph = make_graph_transport_dataset(graphs=4, nodes_per_graph=12, seed=7)
+homotopy = make_affine_homotopy_dataset(samples=16, features=4, seed=7)
+measure = make_variable_measure_dataset(samples=8, max_points=20, seed=7)
+```
+
+Each return type carries the tensors required by its SILVA family and an exact
+equation or empirical-moment check. These are compact teaching datasets, not
+substitutes for published benchmark protocols. Their derivations, tensor
+contracts, training examples, citations, and benchmark handoffs are in
+[Dataset-Backed Equilibrium Labs](../learn/frontier-dataset-labs.md); the typed
+builders are documented in the [Recent Equilibrium Dataset API](frontier_data.md).
+
 ## From Table to Interaction Graph
 
 A tabular dataset can be converted into a sample graph by connecting each
@@ -219,4 +245,5 @@ dataset sources under
 | --- | --- |
 | How should data be preprocessed and validated? | [Datasets and Preprocessing](../learn/datasets-and-preprocessing.md) |
 | Where is a dataset passed through a model? | [Dataset Quickstart](../examples/datasets-quickstart.md) |
+| Which generated datasets have exact equation checks? | [Recent Equilibrium Dataset API](frontier_data.md) |
 | How can datasets be downloaded from the command line? | [Dataset CLI API](dataset_cli.md) |

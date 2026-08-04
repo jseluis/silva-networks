@@ -35,6 +35,10 @@ dataset adapters, and extension points work together.
 | [Point Architecture Catalog](package-notebooks/14_point_architecture_catalog.ipynb) | `notebooks/package_api/14_point_architecture_catalog.ipynb` | checks ten vector, token, and spatial architectures inside SILVA points, then composes modules within and across points |
 | [Neural Operators, ODEs, and PDEs](package-notebooks/15_neural_operators_ode_pde.ipynb) | `notebooks/package_api/15_neural_operators_ode_pde.ipynb` | derives ODE flow, implicit PDE stepping, Poisson residuals, Fourier operators, and their exact roles inside SILVA |
 | [Recent Equilibrium Families](package-notebooks/16_frontier_equilibrium_families.ipynb) | `notebooks/package_api/16_frontier_equilibrium_families.ipynb` | derives and runs SILVA Fourier, graph-physics, homotopy, and empirical-measure equilibria with invariance and gradient checks |
+| [SILVA Fourier Equilibrium Lab](package-notebooks/17_silva_fno_equilibrium_lab.ipynb) | `notebooks/package_api/17_silva_fno_equilibrium_lab.ipynb` | derives a periodic elliptic dataset, trains the Fourier equilibrium, and separates task, fixed-point, and PDE residuals |
+| [SILVA Graph Transport Lab](package-notebooks/18_silva_graph_transport_lab.ipynb) | `notebooks/package_api/18_silva_graph_transport_lab.ipynb` | derives discrete convection-diffusion branches, trains batched graphs, and checks node relabeling |
+| [SILVA Homotopy Equilibrium Lab](package-notebooks/19_silva_homotopy_equilibrium_lab.ipynb) | `notebooks/package_api/19_silva_homotopy_equilibrium_lab.ipynb` | derives residual flow, compares Euler and RK4 with an analytic path, and trains a conditioned transition |
+| [SILVA Distributional Equilibrium Lab](package-notebooks/20_silva_distributional_equilibrium_lab.ipynb) | `notebooks/package_api/20_silva_distributional_equilibrium_lab.ipynb` | derives measure discrepancies, runs masked particle descent, and trains a task readout |
 
 ## Implicit Layers Bridge Track
 

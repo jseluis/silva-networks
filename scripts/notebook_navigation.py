@@ -99,6 +99,26 @@ NOTEBOOK_NEXT_STEPS: dict[str, tuple[tuple[str, str, str], ...]] = {
         ("Where do the four compact cases run?", *_page("Recent Equilibrium Example", "examples/frontier-equilibria")),
         ("Which constructors and diagnostics are public?", *_page("Recent Equilibrium API", "api/frontier")),
     ),
+    "package_api/17_silva_fno_equilibrium_lab.ipynb": (
+        ("How was the periodic PDE dataset constructed?", *_page("Dataset-Backed Equilibrium Labs", "learn/frontier-dataset-labs#periodic-elliptic-fields")),
+        ("How does the Fourier family fit the SILVA grammar?", *_page("Recent Equilibrium Families", "learn/frontier-equilibrium-families#silva-fourier-equilibrium")),
+        ("Which dataset builders are public?", *_page("Recent Dataset API", "api/frontier_data")),
+    ),
+    "package_api/18_silva_graph_transport_lab.ipynb": (
+        ("How was the graph transport target constructed?", *_page("Dataset-Backed Equilibrium Labs", "learn/frontier-dataset-labs#graph-transport-fields")),
+        ("How are graph branches derived inside SILVA?", *_page("Recent Equilibrium Families", "learn/frontier-equilibrium-families#silva-physics-guided-graph-equilibrium")),
+        ("Which graph dataset tensors are public?", *_page("Recent Dataset API", "api/frontier_data")),
+    ),
+    "package_api/19_silva_homotopy_equilibrium_lab.ipynb": (
+        ("How are the analytic homotopy pairs constructed?", *_page("Dataset-Backed Equilibrium Labs", "learn/frontier-dataset-labs#affine-homotopy-pairs")),
+        ("How does the residual flow retain the SILVA fixed point?", *_page("Recent Equilibrium Families", "learn/frontier-equilibrium-families#silva-homotopy-equilibrium")),
+        ("Which homotopy dataset objects are public?", *_page("Recent Dataset API", "api/frontier_data")),
+    ),
+    "package_api/20_silva_distributional_equilibrium_lab.ipynb": (
+        ("How are variable-size empirical measures generated?", *_page("Dataset-Backed Equilibrium Labs", "learn/frontier-dataset-labs#variable-size-empirical-measures")),
+        ("How is the measure objective derived inside SILVA?", *_page("Recent Equilibrium Families", "learn/frontier-equilibrium-families#silva-distributional-equilibrium")),
+        ("Which measure dataset objects are public?", *_page("Recent Dataset API", "api/frontier_data")),
+    ),
     "implicit_bridge/01_introduction_fixed_points.ipynb": (
         ("What does a fixed point mean operationally?", *_page("Fixed Points", "learn/fixed-points")),
         ("Where is a scalar equilibrium checked exactly?", *_page("Scalar Equilibrium Example", "examples/scalar-deq")),

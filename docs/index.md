@@ -184,6 +184,12 @@ the four newer mechanisms, and its
 [executable notebook](package-notebooks/16_frontier_equilibrium_families.ipynb)
 runs their small-scale reproductions and gradient checks.
 
+The [dataset-backed lab guide](learn/frontier-dataset-labs.md) adds exact
+periodic fields, steady transport graphs, analytic homotopy pairs, and
+variable-size empirical measures. Four focused notebooks train the matching
+SILVA families and report their task, equilibrium, physical, and structural
+diagnostics separately.
+
 The package is meant to be read, imported, extended, and tested. It contains
 reference SILVA presets, generic custom layers, fixed-point solvers,
 Jacobian diagnostics, Lyapunov-style diagnostics, dataset adapters, examples,
@@ -446,6 +452,7 @@ residual, boundary error, and resolution or mesh transfer separately.
 | [Generalized Cases](api/cases.md) | sequence, multiscale vision, implicit graph, coordinate representation, and diffusion equilibria |
 | [Family Selection](api/families.md) | 25 canonical constructors and compatibility aliases through one configuration surface |
 | [Recent Equilibrium API](api/frontier.md) | Fourier, physics graph, homotopy, and empirical-measure SILVA families |
+| [Recent Equilibrium Datasets](api/frontier_data.md) | deterministic field, graph, homotopy, and empirical-measure teaching data |
 | [Optimization](api/optimization.md) | projected constrained QP layers and optional CVXPYlayers bridge |
 | [SILVA Presets](api/presets.md) | graph/node, vector vision, convolutional vision, molecular presets |
 | [Datasets](api/datasets.md) | public loaders, adapters, `GraphTensorBatch`, validation |
@@ -473,6 +480,11 @@ residual, boundary error, and resolution or mesh transfer separately.
 | [RAFT and DEQ-Flow](package-notebooks/13_raft_deq_flow.ipynb) | coupled flow state, corrections, implicit gradients, upsampling, and state reuse |
 | [Point Architecture Catalog](package-notebooks/14_point_architecture_catalog.ipynb) | all ten internal architectures, tensor contracts, gradients, residuals, and point composition |
 | [Neural Operators, ODEs, and PDEs](package-notebooks/15_neural_operators_ode_pde.ipynb) | ODE flow, implicit PDE steps, Fourier operators inside SILVA, training, and residual diagnostics |
+| [Recent Equilibrium Families](package-notebooks/16_frontier_equilibrium_families.ipynb) | all four recent SILVA mechanisms, connected pipeline, invariances, gradients, and scope boundaries |
+| [SILVA Fourier Equilibrium Lab](package-notebooks/17_silva_fno_equilibrium_lab.ipynb) | exact periodic elliptic data, field training, resolution change, and three residuals |
+| [SILVA Graph Transport Lab](package-notebooks/18_silva_graph_transport_lab.ipynb) | steady transport data, batched graph training, physical residual, and relabeling |
+| [SILVA Homotopy Equilibrium Lab](package-notebooks/19_silva_homotopy_equilibrium_lab.ipynb) | analytic residual flow, Euler/RK4 comparison, terminal diagnostics, and training |
+| [SILVA Distributional Equilibrium Lab](package-notebooks/20_silva_distributional_equilibrium_lab.ipynb) | variable-size measures, masks, discrepancies, particle descent, and task readout |
 | [Fixed Points as Layers](implicit-bridge-notebooks/01_introduction_fixed_points.ipynb) | implicit-layer introduction through package solvers |
 | [DEQ and SILVA](implicit-bridge-notebooks/04_deq_and_silva.ipynb) | DEQ baseline and configurable SILVA graph model in one API |
 | [SILVA DEQ Engine](implicit-bridge-notebooks/07_silva_deq_engine_torchdeq_bridge.ipynb) | single-state, multi-state, and variational-dropout fixed-point systems |
