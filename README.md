@@ -317,6 +317,40 @@ also provides finite-difference derivatives, Poisson and boundary residuals,
 implicit ODE/PDE time steps, reaction-diffusion, and viscous Burgers fields.
 See `examples/scientific_operators.py` and `docs/api/scientific.md`.
 
+### Recent SILVA Equilibrium Families
+
+Four additional mechanisms are available as SILVA families:
+
+- input-injected Fourier equilibria for steady function-to-function maps,
+  derived from [FNO-DEQ](https://arxiv.org/abs/2312.00234);
+- reaction, graph diffusion, and directed transport branches, derived from
+  [physics-guided graph equilibria](https://eurasip.org/Proceedings/Eusipco/Eusipco2024/pdfs/0000987.pdf);
+- continuous residual flows whose stationary state is a SILVA fixed point,
+  connected to [homotopy equilibrium models](https://arxiv.org/abs/2310.09583);
+- permutation-compatible empirical-measure equilibria, derived from
+  [distributional DEQs](https://proceedings.mlr.press/v258/geuter25a.html).
+
+```python
+from silva_networks import SILVAFNODEQ, SILVADistributionalDEQ
+
+steady_operator = SILVAFNODEQ(
+    in_channels=1,
+    state_channels=8,
+    out_channels=1,
+)
+
+particle_model = SILVADistributionalDEQ(
+    input_dim=3,
+    latent_dim=16,
+    particles=10,
+)
+```
+
+The derivations, citations, small reproductions, tests, and extension boundary
+are in `docs/learn/frontier-equilibrium-families.md`,
+`notebooks/package_api/16_frontier_equilibrium_families.ipynb`, and
+`examples/frontier_equilibria.py`.
+
 Use the family selector when you want a single choice point:
 
 ```python
@@ -352,8 +386,8 @@ vector, image pixel-grid, and molecular graph adapters.
 - `src/silva_networks/`: PyTorch package with solvers, Jacobian diagnostics,
   SILVA layers, cortex hierarchies, ten internal point architectures, stackable
   architectures, scientific ODE/PDE and operator modules, DEQ engine utilities,
-  optical-flow modules, constrained optimization layers, dataset helpers, and
-  device helpers.
+  Fourier equilibrium, graph-physics, homotopy, distributional, optical-flow,
+  constrained optimization, dataset, and device modules.
 - `docs/`: Material for MkDocs documentation site, including the case atlas,
   derivation-first math pages, API maps, examples, and references.
 - Companion book and solutions manual: planned long-form learning assets.
@@ -427,6 +461,10 @@ from silva_networks import (
     SILVAEulerFlowBlock,
     SILVAFixedPointBlock,
     SILVAFixedPointClassifier,
+    SILVAFNODEQ,
+    SILVADistributionalDEQ,
+    SILVAHomotopyEquilibrium,
+    SILVAPhysicsGuidedGraphDEQ,
     SILVAImplicitTransition,
     SILVAImplicitTimeStep,
     SILVAMultiscaleDEQBlock,
@@ -437,6 +475,10 @@ from silva_networks import (
     SILVAVariationalDropout,
     available_silva_families,
     silva_deq_flow,
+    silva_distributional_deq,
+    silva_fno_deq,
+    silva_homotopy_equilibrium,
+    silva_physics_guided_graph_deq,
     silva_projected_qp_layer,
     silva_cvxpy_layer,
     silva_deq,

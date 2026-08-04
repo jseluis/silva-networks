@@ -17,6 +17,11 @@ representation cases [[36]](../paper/references.md#ref-36){ .silva-cite }
 [[38]](../paper/references.md#ref-38){ .silva-cite }, and optical flow
 [[22]](../paper/references.md#ref-22){ .silva-cite }
 [[23]](../paper/references.md#ref-23){ .silva-cite }.
+Recent function-space, graph-physics, continuous-path, and empirical-measure
+extensions are recorded as FNO-DEQ [[43]](../paper/references.md#ref-43){ .silva-cite },
+physics-guided graph DEQ [[44]](../paper/references.md#ref-44){ .silva-cite },
+DDEQ [[45]](../paper/references.md#ref-45){ .silva-cite }, and HomoODE
+[[46]](../paper/references.md#ref-46){ .silva-cite }.
 
 ## Capability Matrix
 
@@ -31,12 +36,21 @@ representation cases [[36]](../paper/references.md#ref-36){ .silva-cite }
 | [DEQ-INR](https://openreview.net/forum?id=AcoMwAU5c0s) | coordinate injection and implicit representation | `SILVAImplicitNeuralRepresentation`, `SILVACoordinateInjection` | SIREN/Fourier/Gabor/ReLU injection, width/depth/scale, output field and coordinate sampling |
 | [DEQ-DDIM](https://arxiv.org/abs/2210.12867) | the complete selected DDIM trajectory as a triangular fixed point | `SILVADiffusionEquilibrium` | pretrained/user denoiser, cumulative alpha schedule, descending timesteps, eta and fixed step noise |
 | [RAFT](https://arxiv.org/abs/2003.12039) and [DEQ-Flow](https://arxiv.org/abs/2204.08442) | RAFT residual encoders, all-pairs correlation pyramid, local lookup, material motion-encoder widths, separated ConvGRU, flow head, scaled convex upsampling, coupled hidden/flow equilibrium, reuse and sparse correction | `SILVARAFTDEQ`, `SILVARAFTEncoder`, `SILVACorrelationPyramid`, `SILVARAFTUpdateBlock` | encoder architecture/blocks/stride/dropout, correlation levels/radius, hidden/context/motion widths, GMA switch, solver, correction indices and loss |
+| [FNO-DEQ](https://arxiv.org/abs/2312.00234) | forcing reinjection inside a tied Fourier transition and a steady field fixed point | `SILVAFNODEQBlock`, `SILVAFNODEQ` | modes, state channels, block depth, solver, field normalization, PDE dataset and residual metrics |
+| [physics-guided graph DEQ](https://eurasip.org/Proceedings/Eusipco/Eusipco2024/pdfs/0000987.pdf) | source, reaction, graph diffusion, and directed transport inside one equilibrium transition | `SILVAGraphConvectionDiffusion`, `SILVAPhysicsGuidedGraphDEQ` | graph discretization, edge weights, signed velocities, branch scales, node/graph task and solver |
+| [DDEQ](https://proceedings.mlr.press/v258/geuter25a.html) | empirical-measure state, equivariant-invariant transition, MMD or energy discrepancy, particle descent | `SILVADistributionalTransition`, `SILVADistributionalDEQ` | particle masks/counts, kernel, bandwidth, step size, iteration budget and task readout |
+| [HomoODE](https://arxiv.org/abs/2310.09583) | condition-dependent continuous path toward a fixed point | `SILVAHomotopyTransition`, `SILVAHomotopyEquilibrium` | transition, shared initial state, horizon, steps, Euler/RK4 integrator and terminal residual |
 
 Use the cited implementations for paper-specific recipes:
 [locuslab/deq](https://github.com/locuslab/deq),
 [locuslab/torchdeq](https://github.com/locuslab/torchdeq),
 [locuslab/deq-flow](https://github.com/locuslab/deq-flow), and
 [princeton-vl/RAFT](https://github.com/princeton-vl/RAFT).
+
+The four recent mechanisms are derived and executed in
+[Recent Equilibrium Families Inside SILVA](frontier-equilibrium-families.md).
+Their canonical registry names begin with `silva_`; source-family labels are
+aliases for discovery and do not create a parallel model hierarchy.
 
 ## The Shared Equation
 
@@ -224,4 +238,5 @@ identified by the source paper.
 | --- | --- |
 | What evidence is needed to reconstruct a published experiment? | [Reconstructing Paper Experiments](reconstructing-paper-experiments.md) |
 | Where are the compact family cases executed? | [Paper Family Cases](../examples/paper-family-cases.md) |
-| Can I inspect every family in one notebook? | [Paper Family Architectures Notebook](../package-notebooks/12_paper_family_architectures.ipynb) |
+| Where are the newer field, graph-physics, flow, and measure families derived? | [Recent Equilibrium Families Inside SILVA](frontier-equilibrium-families.md) |
+| Can I execute their small-scale reproductions? | [Recent Equilibrium Families Notebook](../package-notebooks/16_frontier_equilibrium_families.ipynb) |

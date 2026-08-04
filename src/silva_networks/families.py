@@ -13,6 +13,12 @@ from .cases import (
     SILVASequenceDEQ,
 )
 from .flow import silva_deq_flow, silva_raft_deq
+from .frontier import (
+    silva_distributional_deq,
+    silva_fno_deq,
+    silva_homotopy_equilibrium,
+    silva_physics_guided_graph_deq,
+)
 from .implicit import (
     silva_multiscale_deq_block,
     silva_quadratic_optimization_layer,
@@ -52,6 +58,10 @@ SILVAFamily = Literal[
     "raft_deq_flow",
     "quadratic_optimization",
     "silva_projected_qp",
+    "silva_fno_deq",
+    "silva_physics_graph_deq",
+    "silva_homotopy_equilibrium",
+    "silva_distributional_deq",
 ]
 
 _FAMILY_DESCRIPTIONS: dict[str, str] = {
@@ -78,6 +88,16 @@ _FAMILY_DESCRIPTIONS: dict[str, str] = {
     "raft_deq_flow": "coupled hidden-state/flow RAFT and DEQ-Flow architecture",
     "quadratic_optimization": "unconstrained quadratic optimization layer",
     "silva_projected_qp": "SILVA-named projected quadratic-program layer",
+    "silva_fno_deq": "input-injected Fourier block solved inside a SILVA equilibrium",
+    "silva_physics_graph_deq": (
+        "convection-diffusion graph branches solved inside a SILVA equilibrium"
+    ),
+    "silva_homotopy_equilibrium": (
+        "conditioned continuous residual flow whose stationary state is a SILVA equilibrium"
+    ),
+    "silva_distributional_deq": (
+        "permutation-compatible SILVA particle equilibrium solved by measure discrepancy descent"
+    ),
 }
 
 _FAMILY_ALIASES: dict[str, str] = {
@@ -113,6 +133,14 @@ _FAMILY_ALIASES: dict[str, str] = {
     "projected_qp": "silva_projected_qp",
     "projected_quadratic_program": "silva_projected_qp",
     "constrained_quadratic_optimization": "silva_projected_qp",
+    "fno_deq": "silva_fno_deq",
+    "deq_neural_operator": "silva_fno_deq",
+    "physics_guided_graph_deq": "silva_physics_graph_deq",
+    "pgcn_deq": "silva_physics_graph_deq",
+    "homoode": "silva_homotopy_equilibrium",
+    "homotopy_deq": "silva_homotopy_equilibrium",
+    "ddeq": "silva_distributional_deq",
+    "distributional_deq": "silva_distributional_deq",
 }
 
 
@@ -186,6 +214,14 @@ def silva_equilibrium_model(family: SILVAFamily | str, **kwargs: Any) -> Any:
         return silva_quadratic_optimization_layer(**kwargs)
     if key == "silva_projected_qp":
         return silva_projected_qp_layer(**kwargs)
+    if key == "silva_fno_deq":
+        return silva_fno_deq(**kwargs)
+    if key == "silva_physics_graph_deq":
+        return silva_physics_guided_graph_deq(**kwargs)
+    if key == "silva_homotopy_equilibrium":
+        return silva_homotopy_equilibrium(**kwargs)
+    if key == "silva_distributional_deq":
+        return silva_distributional_deq(**kwargs)
     raise KeyError(_unknown_family_message(family))
 
 

@@ -61,7 +61,32 @@ def run_documentation_audit(root: Path = ROOT) -> dict[str, list[str]]:
     _check_ui_configuration(root, errors)
     _check_numbered_citations(root, docs, errors)
     _check_reader_wording(docs, errors)
+    _check_math_source(docs, errors)
     return {"errors": errors, "warnings": warnings}
+
+
+def _check_math_source(docs: Path, errors: list[str]) -> None:
+    units: list[tuple[str, str]] = [
+        (path.relative_to(ROOT).as_posix(), path.read_text(encoding="utf-8"))
+        for path in sorted(docs.rglob("*.md"))
+    ]
+    for path in sorted(docs.rglob("*.ipynb")):
+        notebook = json.loads(path.read_text(encoding="utf-8"))
+        for index, cell in enumerate(notebook.get("cells", [])):
+            if cell.get("cell_type") == "markdown":
+                units.append(
+                    (
+                        f"{path.relative_to(ROOT).as_posix()}:cell{index}",
+                        "".join(cell.get("source", [])),
+                    )
+                )
+
+    for label, source in units:
+        visible = FENCED_CODE_RE.sub("", source)
+        if "\t" in visible:
+            errors.append(f"{label} contains a tab in reader-facing mathematical text")
+        if re.search(r"\^star\b|_heta\b", visible):
+            errors.append(f"{label} contains a malformed LaTeX command")
 
 
 def _check_navigation(root: Path, docs: Path, errors: list[str]) -> None:
@@ -311,8 +336,11 @@ def _check_numbered_citations(root: Path, docs: Path, errors: list[str]) -> None
     references = references_path.read_text(encoding="utf-8")
     entries = REFERENCE_ID_RE.findall(references)
     numbers = [int(number) for number, _ in entries]
-    if numbers != list(range(1, 43)):
-        errors.append("numbered reference registry must contain sequential entries 1 through 42")
+    expected_numbers = list(range(1, max(numbers, default=0) + 1))
+    if numbers != expected_numbers or max(numbers, default=0) < 50:
+        errors.append(
+            "numbered reference registry must contain sequential entries 1 through 50"
+        )
     for number, entry in entries:
         if 'target="_blank"' not in entry or 'rel="noopener"' not in entry:
             errors.append(f"numbered reference {number} does not open its external source safely")

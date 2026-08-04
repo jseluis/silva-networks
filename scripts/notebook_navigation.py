@@ -94,6 +94,11 @@ NOTEBOOK_NEXT_STEPS: dict[str, tuple[tuple[str, str, str], ...]] = {
         ("Where do the compact ODE, PDE, Fourier, and graph cases run?", *_page("Scientific Operators Example", "examples/scientific-operators")),
         ("Which numerical and learned scientific objects are public?", *_page("Scientific Operators API", "api/scientific")),
     ),
+    "package_api/16_frontier_equilibrium_families.ipynb": (
+        ("How is each recent mechanism derived inside SILVA?", *_page("Recent Equilibrium Families", "learn/frontier-equilibrium-families")),
+        ("Where do the four compact cases run?", *_page("Recent Equilibrium Example", "examples/frontier-equilibria")),
+        ("Which constructors and diagnostics are public?", *_page("Recent Equilibrium API", "api/frontier")),
+    ),
     "implicit_bridge/01_introduction_fixed_points.ipynb": (
         ("What does a fixed point mean operationally?", *_page("Fixed Points", "learn/fixed-points")),
         ("Where is a scalar equilibrium checked exactly?", *_page("Scalar Equilibrium Example", "examples/scalar-deq")),

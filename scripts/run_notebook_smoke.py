@@ -14,6 +14,7 @@ DEFAULT_NOTEBOOKS = (
     "docs/package-notebooks/13_raft_deq_flow.ipynb",
     "docs/package-notebooks/14_point_architecture_catalog.ipynb",
     "docs/package-notebooks/15_neural_operators_ode_pde.ipynb",
+    "docs/package-notebooks/16_frontier_equilibrium_families.ipynb",
     "docs/implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb",
 )
 

@@ -34,6 +34,7 @@ The audit was checked against the package source under `src/silva_networks`:
 | `deq_engine.py` | TorchDEQ-style single-state and multi-state package engine, packed state helpers, variational dropout |
 | `flow.py` | RAFT/DEQ-Flow-style optical-flow utilities and package-native flow DEQ |
 | `datasets.py` | tabular, image, pixel-graph, PyG-like, and molecular adapters |
+| `frontier.py` | input-injected Fourier, physics-guided graph, homotopy-flow, and empirical-measure equilibria |
 
 ## Method-to-Citation Matrix
 
@@ -56,6 +57,10 @@ The audit was checked against the package source under `src/silva_networks`:
 | `SILVAMolecularLayer`, `SILVAMolecularRegressor`, `molecular_to_silva_graph` | bond-aware graph equilibrium and graph-level molecular readout | Gilmer et al., MPNN; Velickovic et al., GAT; cite molecule benchmark/dataset separately |
 | `ExplicitEulerODEBlock`, `SILVAEulerFlowBlock` | finite explicit Euler bridge for neural ODE intuition | Chen et al., [Neural Ordinary Differential Equations](https://arxiv.org/abs/1806.07366); Deep Implicit Layers tutorial |
 | `SILVAFourierOperatorPointArchitecture`, `fourier_operator` | low-mode spectral operator with a local channel projection, used as a shape-preserving SILVA transition field | Li et al., [Fourier Neural Operator](https://openreview.net/forum?id=c8P9NQVtmnO); Kovachki et al., [Neural Operator](https://www.jmlr.org/papers/v24/21-1524.html); SILVA paper/package for its placement inside the structured fixed-point transition |
+| `SILVAFNODEQBlock`, `SILVAFNODEQ` | input-injected, tied Fourier transition solved as a steady field equilibrium | Marwah et al., FNO-DEQ [[43]](paper/references.md#ref-43){ .silva-cite }; FNO [[31]](paper/references.md#ref-31){ .silva-cite }; SILVA paper/package |
+| `graph_convection_diffusion`, `SILVAGraphConvectionDiffusion`, `SILVAPhysicsGuidedGraphDEQ` | separated graph source, reaction, normalized diffusion, and directed transport branches | Rodrigo-Bonet and Deligiannis, physics-guided graph DEQ [[44]](paper/references.md#ref-44){ .silva-cite }; graph convolution literature; SILVA paper/package |
+| `SILVAHomotopyTransition`, `SILVAHomotopyEquilibrium` | continuous residual path $\dot z=T(z;x)-z$ toward a SILVA fixed point | Ding et al., HomoODE [[46]](paper/references.md#ref-46){ .silva-cite }; Neural ODEs [[7]](paper/references.md#ref-7){ .silva-cite }; SILVA paper/package |
+| `distributional_discrepancy`, `SILVADistributionalTransition`, `SILVADistributionalDEQ` | empirical-measure discrepancy and differentiable particle descent with variable-size masks | Geuter et al., DDEQ [[45]](paper/references.md#ref-45){ .silva-cite }; SILVA paper/package |
 | `QuadraticOptimizationLayer`, `SILVAQuadraticOptimizationLayer` | differentiable quadratic argmin and fixed-point KKT solve | Amos and Kolter, [OptNet](https://arxiv.org/abs/1703.00443); Agrawal et al., [Differentiable Convex Optimization Layers](https://arxiv.org/abs/1910.12430); Deep Implicit Layers tutorial |
 | `SILVAProjectedQPLayer`, `silva_projected_qp_layer`, `SILVAConstrainedQuadraticLayer`, `silva_cvxpy_layer` | projected constrained quadratic programs and optional CVXPYlayers bridge | OptNet for optimization-layer framing; Agrawal et al. differentiable convex optimization layers; CVXPYlayers when the optional bridge is used |
 | `ToyMultiscaleDEQBlock`, `SILVAMultiscaleDEQBlock` | coupled low/high equilibrium state | Bai, Koltun, and Kolter, [Multiscale Deep Equilibrium Models](https://arxiv.org/abs/2006.08656) |
@@ -77,6 +82,10 @@ Use the narrowest citation set that supports the claim.
 | "Broyden acceleration was used." | Broyden 1965 |
 | "GMRES was used for the adjoint linear system." | Saad-Schultz 1986 |
 | "A Fourier neural operator was used inside a SILVA point." | Li et al. FNO, Kovachki et al. neural operator, and SILVA paper/package |
+| "The forcing is reinjected in a tied Fourier equilibrium transition." | FNO-DEQ [[43]](paper/references.md#ref-43), FNO, and SILVA paper/package |
+| "Convection-diffusion physics is represented inside a graph equilibrium." | physics-guided graph DEQ [[44]](paper/references.md#ref-44), the graph discretization source, and SILVA paper/package |
+| "A continuous residual path approaches the SILVA fixed point." | HomoODE [[46]](paper/references.md#ref-46), Neural ODEs, and SILVA paper/package |
+| "The SILVA state is an empirical measure optimized by particle descent." | DDEQ [[45]](paper/references.md#ref-45) and SILVA paper/package |
 | "A Jacobian Frobenius penalty was used." | Hutchinson 1989 and Bai-Koltun-Kolter 2021 |
 | "The graph local operator is attention-based." | GAT and Attention Is All You Need |
 | "The molecular model is message-passing-like." | MPNN and GAT, plus SILVA |
@@ -105,6 +114,7 @@ repository, then cite the relevant building blocks only as background:
 | package-native DEQ engine | TorchDEQ-style convenience interface implemented through SILVA solvers and state packing |
 | package-native optical-flow DEQ | compact RAFT/DEQ-Flow-inspired implementation using SILVA solvers |
 | package-native projected QP layer | projected fixed-point QP implementation with selectable nonnegative, box, simplex, and affine constraints |
+| recent equilibrium family adaptations | places Fourier input injection, graph-physics branches, homotopy flow, and empirical-measure descent inside canonical SILVA state and transition contracts |
 
 ## Example Citation Checklist
 

@@ -50,6 +50,10 @@ def test_family_registry_lists_selectable_models() -> None:
     assert "scientific_operator" in families
     assert "fourier_operator_equilibrium" in families
     assert "implicit_time_step" in families
+    assert "silva_fno_deq" in families
+    assert "silva_physics_graph_deq" in families
+    assert "silva_homotopy_equilibrium" in families
+    assert "silva_distributional_deq" in families
     assert "DEQ reduction" in silva_family_description("compact-deq")
     assert "optical-flow" in silva_family_description("optical_flow_deq")
     assert "cortex" in silva_family_description("visual_cortex")

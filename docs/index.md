@@ -23,8 +23,8 @@ branches, solvers, diagnostics, and readouts.
 <span>Picard, Anderson, Broyden, GMRES diagnostics</span>
 </div>
 <div class="silva-metric" markdown>
-<strong>21 Model Families</strong>
-<span>SILVA, DEQ, scientific operators, flow, diffusion, optimization</span>
+<strong>25 Model Families</strong>
+<span>SILVA, operator, graph physics, continuous flow, distributional, diffusion</span>
 </div>
 <div class="silva-metric" markdown>
 <strong>Derivations</strong>
@@ -73,6 +73,10 @@ branches, solvers, diagnostics, and readouts.
 <a class="silva-action" href="learn/neural-operators-ode-pde/" markdown>
 <strong>Connect ODEs and PDEs</strong>
 <span>Implicit time steps, solution operators, Fourier fields, diagnostics</span>
+</a>
+<a class="silva-action" href="learn/frontier-equilibrium-families/" markdown>
+<strong>Use recent families</strong>
+<span>Fourier equilibrium, graph physics, homotopy, empirical measures</span>
 </a>
 <a class="silva-action" href="experiments/benchmark-cards/" markdown>
 <strong>Read benchmarks</strong>
@@ -133,8 +137,10 @@ equilibrium state for readout.
 SILVA is not limited to one graph or image architecture. The recurrent state
 can be a vector, token sequence, multiresolution tuple, coordinate field,
 sampled physical field, flow pair, diffusion trajectory, or optimization
-variable. The package provides 21 selectable model families and ten internal
-point architectures while retaining one numerical contract:
+variable. It can also be a continuous-flow endpoint or an empirical measure
+represented by variable-size particles. The package provides 25 selectable
+model families and ten internal point architectures while retaining an
+explicit state-transition contract:
 
 $$
 z^\star=F_\theta(z^\star;x),
@@ -149,7 +155,11 @@ trajectory. An implicit ODE or PDE step solves the unknown next state as a
 fixed point. A neural operator learns a map between functions; the Fourier
 Neural Operator (FNO) [[31]](paper/references.md#ref-31){ .silva-cite } is one
 possible internal field, while broader neural-operator theory is described in
-[[32]](paper/references.md#ref-32){ .silva-cite }.
+[[32]](paper/references.md#ref-32){ .silva-cite }. Recent SILVA extensions add
+input-injected FNO-DEQ blocks [[43]](paper/references.md#ref-43){ .silva-cite },
+physics-guided graph transport [[44]](paper/references.md#ref-44){ .silva-cite },
+homotopy residual flows [[46]](paper/references.md#ref-46){ .silva-cite }, and
+distributional equilibria [[45]](paper/references.md#ref-45){ .silva-cite }.
 
 | Construction | SILVA state and transition | Public entry point | Full treatment |
 | --- | --- | --- | --- |
@@ -157,6 +167,10 @@ possible internal field, while broader neural-operator theory is described in
 | implicit ODE/PDE step | next time slice is the equilibrium state | `SILVAImplicitTimeStep` | [Implicit time stepping](learn/neural-operators-ode-pde.md#implicit-time-stepping-is-a-silva-point) |
 | source-to-solution operator | lifted input function drives a learned equilibrium field | `SILVAOperatorModel` | [Neural solution operators](learn/neural-operators-ode-pde.md#neural-solution-operators) |
 | Fourier equilibrium operator | spectral and local fields act inside one SILVA point | `SILVAFourierNeuralOperator` | [FNO derivation](learn/neural-operators-ode-pde.md#fourier-neural-operator-derivation) |
+| input-injected Fourier equilibrium | lifted forcing enters every layer of a tied spectral block | `SILVAFNODEQ` | [SILVA Fourier equilibrium](learn/frontier-equilibrium-families.md#silva-fourier-equilibrium) |
+| physics graph equilibrium | reaction, diffusion, and directed transport are named graph branches | `SILVAPhysicsGuidedGraphDEQ` | [Physics graph derivation](learn/frontier-equilibrium-families.md#silva-physics-guided-graph-equilibrium) |
+| homotopy equilibrium | continuous residual flow approaches a SILVA stationary state | `SILVAHomotopyEquilibrium` | [Homotopy derivation](learn/frontier-equilibrium-families.md#silva-homotopy-equilibrium) |
+| distributional equilibrium | empirical-measure discrepancy moves permutation-compatible particles | `SILVADistributionalDEQ` | [Distributional derivation](learn/frontier-equilibrium-families.md#silva-distributional-equilibrium) |
 | reaction-diffusion and Burgers | known finite-difference field inside backward Euler | scientific right-hand-side modules | [Worked equations](learn/neural-operators-ode-pde.md#worked-scientific-constructions) |
 | irregular graph PDE | graph Laplacian or message field in `local_terms` | `SILVACortexLayer` | [Graph discretization](learn/neural-operators-ode-pde.md#irregular-domains-and-graph-pdes) |
 
@@ -164,6 +178,11 @@ Use the [Scientific Operators API](api/scientific.md) for signatures, the
 [complete example](examples/scientific-operators.md) for a compact run, and the
 [executable notebook](package-notebooks/15_neural_operators_ode_pde.ipynb) for
 derivations, training, and numerical diagnostics.
+
+The [recent-family tutorial](learn/frontier-equilibrium-families.md) develops
+the four newer mechanisms, and its
+[executable notebook](package-notebooks/16_frontier_equilibrium_families.ipynb)
+runs their small-scale reproductions and gradient checks.
 
 The package is meant to be read, imported, extended, and tested. It contains
 reference SILVA presets, generic custom layers, fixed-point solvers,
@@ -425,7 +444,8 @@ residual, boundary error, and resolution or mesh transfer separately.
 | [DEQ Engine](api/deq-engine.md) | TorchDEQ-style single-state and multi-state engine helpers |
 | [Optical Flow](api/flow.md) | RAFT/DEQ-Flow-style package-native optical-flow utilities |
 | [Generalized Cases](api/cases.md) | sequence, multiscale vision, implicit graph, coordinate representation, and diffusion equilibria |
-| [Family Selection](api/families.md) | 21 canonical constructors and compatibility aliases through one configuration surface |
+| [Family Selection](api/families.md) | 25 canonical constructors and compatibility aliases through one configuration surface |
+| [Recent Equilibrium API](api/frontier.md) | Fourier, physics graph, homotopy, and empirical-measure SILVA families |
 | [Optimization](api/optimization.md) | projected constrained QP layers and optional CVXPYlayers bridge |
 | [SILVA Presets](api/presets.md) | graph/node, vector vision, convolutional vision, molecular presets |
 | [Datasets](api/datasets.md) | public loaders, adapters, `GraphTensorBatch`, validation |

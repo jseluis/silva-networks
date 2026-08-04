@@ -22,6 +22,7 @@ inputs, outputs, and source links.
 | [Architectures](architectures.md) | stacks, cortex hierarchies, graph networks, image classifiers, pooling, readout heads |
 | [Point Architectures](point_architectures.md) | ten shape-preserving vector, token, convolutional, U-Net, attention, and spectral fields |
 | [Scientific Operators](scientific.md) | finite differences, PDE residuals, boundaries, implicit time steps, reaction-diffusion, Burgers, and Fourier equilibrium operators |
+| [Recent Equilibrium Families](frontier.md) | input-injected Fourier, physics-guided graph, homotopy-flow, and distributional SILVA equilibria |
 | [Implicit Bridge](implicit.md) | SILVA-named DEQ transition, fixed-point classifier, Euler flow, quadratic optimization, MDEQ bridge |
 | [DEQ Engine](deq-engine.md) | general single-state and multi-state SILVA DEQ engine, variational dropout, state packing |
 | [Optical Flow](flow.md) | RAFT-style correlation, warping, DEQ-flow fixed point, synthetic flow data |
@@ -44,6 +45,7 @@ inputs, outputs, and source links.
 | Cortex hierarchy | `SILVACortexLayer`, `SILVACortexNetwork`, `SILVAImageCortexClassifier`, `silva_cortex_layer`, `silva_cortex_network` |
 | Internal point architectures | `available_silva_point_architectures`, `silva_point_architecture`, and ten `SILVA...PointArchitecture` modules |
 | ODE, PDE, and learned operators | `SILVAImplicitTimeStep`, `SILVAOperatorModel`, `SILVAFourierNeuralOperator`, numerical derivatives, PDE and boundary residuals |
+| Recent equilibrium mechanisms | `SILVAFNODEQ`, `SILVAPhysicsGuidedGraphDEQ`, `SILVAHomotopyEquilibrium`, `SILVADistributionalDEQ` |
 | SILVA reductions to baseline implicit models | `silva_deq_reduction_layer`, `silva_message_passing_reduction_layer`, `SILVAFixedPointBlock`, `SILVADEQEngine` |
 | Graph node or graph prediction | `SILVAGraphLayer`, `SILVAGraphNetwork`, `SILVAGraphPresetNetwork`, `pool_entities` |
 | Vision vectors | `SILVAVisionVectorLayer`, `SILVAVisionVectorClassifier`, `DynamicChannelLocal`, `ChannelSelfAttentionGlobal` |
@@ -82,6 +84,7 @@ inputs, outputs, and source links.
 | optimization | projected-gradient methods, OptNet, CVXPYlayers depending on the selected layer |
 | presets | SILVA paper/package plus the branch-level citations used by the chosen preset |
 | point architectures | SILVA plus the primary architecture paper when the selected field derives from a named architecture |
+| recent equilibrium families | SILVA plus FNO-DEQ, physics-guided graph DEQ, HomoODE, or DDEQ according to the selected mechanism |
 
 ## Common Imports
 

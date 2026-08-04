@@ -34,6 +34,7 @@ dataset adapters, and extension points work together.
 | [RAFT and DEQ-Flow](package-notebooks/13_raft_deq_flow.ipynb) | `notebooks/package_api/13_raft_deq_flow.ipynb` | runs the coupled hidden/flow equilibrium, exact implicit gradients, sparse corrections, learned upsampling, and reuse |
 | [Point Architecture Catalog](package-notebooks/14_point_architecture_catalog.ipynb) | `notebooks/package_api/14_point_architecture_catalog.ipynb` | checks ten vector, token, and spatial architectures inside SILVA points, then composes modules within and across points |
 | [Neural Operators, ODEs, and PDEs](package-notebooks/15_neural_operators_ode_pde.ipynb) | `notebooks/package_api/15_neural_operators_ode_pde.ipynb` | derives ODE flow, implicit PDE stepping, Poisson residuals, Fourier operators, and their exact roles inside SILVA |
+| [Recent Equilibrium Families](package-notebooks/16_frontier_equilibrium_families.ipynb) | `notebooks/package_api/16_frontier_equilibrium_families.ipynb` | derives and runs SILVA Fourier, graph-physics, homotopy, and empirical-measure equilibria with invariance and gradient checks |
 
 ## Implicit Layers Bridge Track
 

@@ -134,6 +134,27 @@ _IMPLEMENTATION_CASES: tuple[SILVAImplementationCase, ...] = (
         ),
     ),
     SILVAImplementationCase(
+        key="recent_equilibrium_families",
+        public_objects=(
+            "SILVAFNODEQ",
+            "SILVAFNODEQBlock",
+            "SILVAGraphConvectionDiffusion",
+            "SILVAPhysicsGuidedGraphDEQ",
+            "SILVAHomotopyEquilibrium",
+            "SILVADistributionalTransition",
+            "SILVADistributionalDEQ",
+            "distributional_discrepancy",
+        ),
+        tutorial="docs/learn/frontier-equilibrium-families.md",
+        notebooks=("docs/package-notebooks/16_frontier_equilibrium_families.ipynb",),
+        smoke_tests=("tests/test_frontier.py",),
+        examples=("examples/frontier_equilibria.py",),
+        scope=(
+            "Input-injected Fourier, convection-diffusion graph, continuous residual-flow, "
+            "and empirical-measure SILVA equilibria with invariance and gradient checks."
+        ),
+    ),
+    SILVAImplementationCase(
         key="presets",
         public_objects=("SILVAGraphPresetNetwork", "SILVAVisionVectorClassifier", "SILVAMolecularRegressor"),
         tutorial="docs/api/presets.md",

@@ -134,6 +134,17 @@ def test_all_markdown_math_delimiters_are_balanced() -> None:
     assert offenders == []
 
 
+def test_markdown_math_has_no_escaped_control_character_damage() -> None:
+    offenders: list[str] = []
+    for label, raw_source in _markdown_units():
+        source = _without_code(raw_source)
+        if "\t" in source:
+            offenders.append(f"{label}: tab in mathematical prose")
+        if re.search(r"\^star\b|_heta\b", source):
+            offenders.append(f"{label}: malformed LaTeX command")
+    assert offenders == []
+
+
 def test_mathjax_loader_supports_docs_and_notebook_math() -> None:
     loader = (ROOT / "docs/javascripts/mathjax.js").read_text(encoding="utf-8")
     config = (ROOT / "mkdocs.yml").read_text(encoding="utf-8")
@@ -255,6 +266,18 @@ def test_expanded_notebooks_are_synchronized_and_substantive() -> None:
                 "Coefficient-to-Solution Learning",
                 "SILVAFourierNeuralOperator",
                 "Irregular Domains as Graph PDEs",
+            ),
+        ),
+        "16_frontier_equilibrium_families.ipynb": (
+            34,
+            (
+                "Input-Injected Fourier Equilibrium",
+                "Physics-Guided Graph Convection-Diffusion Equilibrium",
+                "Continuous Residual Path",
+                "Distributional SILVA Equilibrium",
+                "Connect All Four Mechanisms",
+                "Tiny Trained Task",
+                "Reproduction Boundary",
             ),
         ),
     }

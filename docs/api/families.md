@@ -15,6 +15,11 @@ optimization [[8]](../paper/references.md#ref-8){ .silva-cite }
 [[23]](../paper/references.md#ref-23){ .silva-cite }. Scientific operator
 families connect to FNO [[31]](../paper/references.md#ref-31){ .silva-cite } and
 neural operators [[32]](../paper/references.md#ref-32){ .silva-cite }.
+Recent SILVA families also connect to Fourier equilibria
+[[43]](../paper/references.md#ref-43){ .silva-cite }, physics-guided graph
+equilibria [[44]](../paper/references.md#ref-44){ .silva-cite }, homotopy
+continuation [[46]](../paper/references.md#ref-46){ .silva-cite }, and
+distributional equilibria [[45]](../paper/references.md#ref-45){ .silva-cite }.
 
 The factory normalizes hyphenated names and compatibility aliases before
 dispatching to the package-native constructors. It does not choose dataset
@@ -29,7 +34,8 @@ $$
 
 but the state may be a matrix, image field, multiscale tuple, flow pair,
 diffusion trajectory, sampled physical field, or constrained optimization
-variable.
+variable. It may also be a continuous-flow endpoint or an empirical measure
+represented by variable-size particles.
 
 ## Canonical Families
 
@@ -56,6 +62,10 @@ variable.
 | `raft_deq_flow` | coupled RAFT/DEQ-Flow architecture |
 | `quadratic_optimization` | unconstrained quadratic optimization layer |
 | `silva_projected_qp` | projected quadratic-program layer |
+| `silva_fno_deq` | input-injected Fourier block inside a SILVA equilibrium |
+| `silva_physics_graph_deq` | SILVA graph equilibrium with reaction, diffusion, and directed transport |
+| `silva_homotopy_equilibrium` | conditioned SILVA residual flow with a fixed-point stationary state |
+| `silva_distributional_deq` | empirical-measure SILVA equilibrium using discrepancy descent |
 
 ## Minimal Use
 
@@ -103,5 +113,5 @@ model = silva_equilibrium_model(
 | --- | --- |
 | How should I choose among these families? | [Selecting Model Families](../learn/selecting-model-families.md) |
 | Where are several families executed? | [Paper Family Cases](../examples/paper-family-cases.md) |
-| Which classes implement the generalized cases? | [Generalized Cases API](cases.md) |
 | Which classes implement ODE, PDE, and learned operators? | [Scientific Operators API](scientific.md) |
+| Which classes implement the recent operator, graph, flow, and measure families? | [Recent Equilibrium API](frontier.md) |

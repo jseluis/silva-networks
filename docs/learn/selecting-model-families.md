@@ -22,8 +22,9 @@ S_\theta(x)
 $$
 
 For broader implicit systems, the state can be a tuple of tensors, a multiscale
-state, a flow field, or an optimizer variable. The solver interface remains the
-same.
+state, a flow field, an optimizer variable, a continuous-flow endpoint, or an
+empirical measure represented by particles. The numerical interface follows
+the state: fixed-point, continuous integration, or measure-discrepancy descent.
 
 The selector covers SILVA [[1]](../paper/references.md#ref-1){ .silva-cite }, DEQ
 [[4]](../paper/references.md#ref-4){ .silva-cite }, MDEQ
@@ -32,7 +33,11 @@ The selector covers SILVA [[1]](../paper/references.md#ref-1){ .silva-cite }, DE
 [[8]](../paper/references.md#ref-8){ .silva-cite }
 [[9]](../paper/references.md#ref-9){ .silva-cite }, and optical flow
 [[22]](../paper/references.md#ref-22){ .silva-cite }
-[[23]](../paper/references.md#ref-23){ .silva-cite }.
+[[23]](../paper/references.md#ref-23){ .silva-cite }. Recent choices add
+input-injected Fourier equilibria [[43]](../paper/references.md#ref-43){ .silva-cite },
+physics graph equilibria [[44]](../paper/references.md#ref-44){ .silva-cite },
+homotopy flows [[46]](../paper/references.md#ref-46){ .silva-cite }, and
+distributional equilibria [[45]](../paper/references.md#ref-45){ .silva-cite }.
 
 ## Family Selector
 
@@ -65,6 +70,10 @@ print(available_silva_families())
 | `"raft_deq_flow"` | coupled hidden-state and flow RAFT/DEQ-Flow equilibrium |
 | `"quadratic_optimization"` | unconstrained quadratic optimization layer |
 | `"silva_projected_qp"` | SILVA-named projected constrained quadratic layer |
+| `"silva_fno_deq"` | input-injected Fourier block solved inside SILVA |
+| `"silva_physics_graph_deq"` | reaction, diffusion, and directed transport graph equilibrium |
+| `"silva_homotopy_equilibrium"` | conditioned SILVA residual flow |
+| `"silva_distributional_deq"` | permutation-compatible empirical-measure equilibrium |
 
 ## Reductions
 
@@ -275,6 +284,37 @@ Use a projector when every solver evaluation must obey a boundary or state
 constraint. The [scientific tutorial](neural-operators-ode-pde.md) derives the
 reaction-diffusion, Burgers, Poisson, Fourier, and graph cases in full.
 
+## Recent SILVA Families
+
+These four families remain inside the same SILVA grammar while changing the
+internal operator or numerical path:
+
+```python
+steady_operator = silva_equilibrium_model(
+    "silva_fno_deq",
+    in_channels=1,
+    state_channels=8,
+    out_channels=1,
+)
+
+particle_model = silva_equilibrium_model(
+    "silva_distributional_deq",
+    input_dim=3,
+    latent_dim=16,
+    particles=10,
+)
+```
+
+| Family | Internal SILVA mechanism | Main diagnostic |
+| --- | --- | --- |
+| `silva_fno_deq` | lifted source injected into every tied Fourier layer | fixed-point residual plus PDE/task residual |
+| `silva_physics_graph_deq` | reaction, graph diffusion, directed-gradient branches | graph residual plus physical/task error |
+| `silva_homotopy_equilibrium` | $\dot z=T(z;x)-z$ from one shared initial state | terminal fixed-point residual and velocity history |
+| `silva_distributional_deq` | EI transition and Wasserstein particle descent | MMD or energy discrepancy history |
+
+The full derivations and small reproductions are in
+[Recent Equilibrium Families Inside SILVA](frontier-equilibrium-families.md).
+
 ## Optimization Families
 
 The unconstrained quadratic bridge solves
@@ -311,6 +351,10 @@ families below:
 | MDEQ | `mdeq`, `SILVAMultiscaleDEQBlock` |
 | TorchDEQ | `SILVADEQEngine`, variational dropout, multi-state packing |
 | FNO / neural operators | `scientific_operator`, `fourier_operator_equilibrium`, `SILVAOperatorModel` |
+| FNO-DEQ | `silva_fno_deq`, `SILVAFNODEQ`, `SILVAFNODEQBlock` |
+| physics-guided graph DEQ | `silva_physics_graph_deq`, `SILVAGraphConvectionDiffusion` |
+| homotopy equilibrium | `silva_homotopy_equilibrium`, `SILVAHomotopyEquilibrium` |
+| distributional equilibrium | `silva_distributional_deq`, `SILVADistributionalDEQ` |
 | ODE / PDE implicit stepping | `implicit_time_step`, numerical derivative and residual helpers |
 | RAFT / DEQ-Flow | `silva_deq_flow`, correlation, warping, fixed-point flow |
 | OptNet / CVXPYlayers | `silva_projected_qp` plus optional `silva_cvxpy_layer` bridge |

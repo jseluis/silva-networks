@@ -93,6 +93,7 @@ def test_notebook_smoke_script_lists_defaults() -> None:
     assert "docs/package-notebooks/13_raft_deq_flow.ipynb" in result.stdout
     assert "docs/package-notebooks/14_point_architecture_catalog.ipynb" in result.stdout
     assert "docs/package-notebooks/15_neural_operators_ode_pde.ipynb" in result.stdout
+    assert "docs/package-notebooks/16_frontier_equilibrium_families.ipynb" in result.stdout
 
 
 def test_global_numbered_citations_cover_solver_and_notebooks() -> None:

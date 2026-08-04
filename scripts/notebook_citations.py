@@ -27,6 +27,7 @@ PACKAGE_CITATIONS = {
     "13_raft_deq_flow.ipynb": (22, 23, 24),
     "14_point_architecture_catalog.ipynb": tuple(range(25, 35)),
     "15_neural_operators_ode_pde.ipynb": (7, 31, 32),
+    "16_frontier_equilibrium_families.ipynb": tuple(range(43, 51)),
 }
 
 BRIDGE_CITATIONS = {
@@ -85,6 +86,7 @@ def _json_indent(path: Path) -> int:
     if path.name in {
         "14_point_architecture_catalog.ipynb",
         "15_neural_operators_ode_pde.ipynb",
+        "16_frontier_equilibrium_families.ipynb",
     } and path.parent != ROOT / "docs/package-notebooks":
         return 2
     return 1
