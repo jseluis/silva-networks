@@ -4,6 +4,10 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
+from .advanced_equilibria import (
+    silva_generative_equilibrium_transformer,
+    silva_monotone_graph_equilibrium,
+)
 from .architectures import SILVAGraphNetwork, silva_cortex_layer, silva_cortex_network
 from .cases import (
     SILVADiffusionEquilibrium,
@@ -29,6 +33,11 @@ from .layers import (
     silva_message_passing_reduction_layer,
 )
 from .optimization import silva_projected_qp_layer
+from .physics_informed import (
+    silva_implicit_dae_step,
+    silva_physics_informed_equilibrium,
+    silva_poisson_mirror_equilibrium,
+)
 from .presets import SILVAGraphPresetNetwork, SILVAImageCortexClassifier
 from .scientific import (
     silva_fourier_neural_operator,
@@ -62,6 +71,11 @@ SILVAFamily = Literal[
     "silva_physics_graph_deq",
     "silva_homotopy_equilibrium",
     "silva_distributional_deq",
+    "silva_monotone_graph_equilibrium",
+    "silva_generative_equilibrium_transformer",
+    "silva_poisson_mirror_equilibrium",
+    "silva_physics_informed_equilibrium",
+    "silva_implicit_dae_step",
 ]
 
 _FAMILY_DESCRIPTIONS: dict[str, str] = {
@@ -97,6 +111,21 @@ _FAMILY_DESCRIPTIONS: dict[str, str] = {
     ),
     "silva_distributional_deq": (
         "permutation-compatible SILVA particle equilibrium solved by measure discrepancy descent"
+    ),
+    "silva_monotone_graph_equilibrium": (
+        "monotone forward-backward graph equilibrium with a constrained channel operator"
+    ),
+    "silva_generative_equilibrium_transformer": (
+        "one-time source injection followed by a weight-tied token equilibrium"
+    ),
+    "silva_poisson_mirror_equilibrium": (
+        "positive Poisson inverse layer solved by Burg mirror-descent equilibrium"
+    ),
+    "silva_physics_informed_equilibrium": (
+        "ODE solution equilibrium with implicit-function derivatives and physics residuals"
+    ),
+    "silva_implicit_dae_step": (
+        "implicit Runge-Kutta stage system for differential-algebraic equations"
     ),
 }
 
@@ -141,6 +170,17 @@ _FAMILY_ALIASES: dict[str, str] = {
     "homotopy_deq": "silva_homotopy_equilibrium",
     "ddeq": "silva_distributional_deq",
     "distributional_deq": "silva_distributional_deq",
+    "mignn": "silva_monotone_graph_equilibrium",
+    "monotone_ignn": "silva_monotone_graph_equilibrium",
+    "monotone_graph_deq": "silva_monotone_graph_equilibrium",
+    "get": "silva_generative_equilibrium_transformer",
+    "generative_equilibrium_transformer": "silva_generative_equilibrium_transformer",
+    "deq_md": "silva_poisson_mirror_equilibrium",
+    "poisson_mirror_deq": "silva_poisson_mirror_equilibrium",
+    "pideq": "silva_physics_informed_equilibrium",
+    "physics_informed_deq": "silva_physics_informed_equilibrium",
+    "dae_pinn": "silva_implicit_dae_step",
+    "implicit_rk_dae": "silva_implicit_dae_step",
 }
 
 
@@ -222,6 +262,16 @@ def silva_equilibrium_model(family: SILVAFamily | str, **kwargs: Any) -> Any:
         return silva_homotopy_equilibrium(**kwargs)
     if key == "silva_distributional_deq":
         return silva_distributional_deq(**kwargs)
+    if key == "silva_monotone_graph_equilibrium":
+        return silva_monotone_graph_equilibrium(**kwargs)
+    if key == "silva_generative_equilibrium_transformer":
+        return silva_generative_equilibrium_transformer(**kwargs)
+    if key == "silva_poisson_mirror_equilibrium":
+        return silva_poisson_mirror_equilibrium(**kwargs)
+    if key == "silva_physics_informed_equilibrium":
+        return silva_physics_informed_equilibrium(**kwargs)
+    if key == "silva_implicit_dae_step":
+        return silva_implicit_dae_step(**kwargs)
     raise KeyError(_unknown_family_message(family))
 
 

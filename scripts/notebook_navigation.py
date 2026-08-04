@@ -119,6 +119,31 @@ NOTEBOOK_NEXT_STEPS: dict[str, tuple[tuple[str, str, str], ...]] = {
         ("How is the measure objective derived inside SILVA?", *_page("Recent Equilibrium Families", "learn/frontier-equilibrium-families#silva-distributional-equilibrium")),
         ("Which measure dataset objects are public?", *_page("Recent Dataset API", "api/frontier_data")),
     ),
+    "package_api/21_silva_monotone_graph_equilibrium.ipynb": (
+        ("How is the monotone parameterization derived?", *_page("Advanced Equilibrium Families", "learn/advanced-equilibrium-families#monotone-graph-equilibrium")),
+        ("Which exact chain equation is checked?", *_page("Advanced Equilibrium Datasets", "learn/advanced-equilibrium-datasets#monotone-chain")),
+        ("Which graph classes and helpers are public?", *_page("Advanced Equilibria API", "api/advanced_equilibria")),
+    ),
+    "package_api/22_silva_generative_equilibrium_transformer.ipynb": (
+        ("How is one-time QKV injection derived?", *_page("Advanced Equilibrium Families", "learn/advanced-equilibrium-families#generative-equilibrium-transformer")),
+        ("What does the generated teacher target satisfy?", *_page("Advanced Equilibrium Datasets", "learn/advanced-equilibrium-datasets#teacher-image-pairs")),
+        ("Which transformer classes are public?", *_page("Advanced Equilibria API", "api/advanced_equilibria")),
+    ),
+    "package_api/23_silva_poisson_mirror_equilibrium.ipynb": (
+        ("How is the Burg update derived?", *_page("Advanced Equilibrium Families", "learn/advanced-equilibrium-families#poisson-mirror-equilibrium")),
+        ("How are the seeded Poisson observations generated?", *_page("Advanced Equilibrium Datasets", "learn/advanced-equilibrium-datasets#poisson-inverse-images")),
+        ("Which mirror and KL objects are public?", *_page("Physics-Informed API", "api/physics_informed")),
+    ),
+    "package_api/24_silva_physics_informed_equilibrium.ipynb": (
+        ("How is the implicit time derivative obtained?", *_page("Physics-Informed Equilibria", "learn/physics-informed-equilibria#implicit-time-derivative")),
+        ("Which analytic ODE is used?", *_page("Advanced Equilibrium Datasets", "learn/advanced-equilibrium-datasets#linear-ode-ivp")),
+        ("Which physics-loss objects are public?", *_page("Physics-Informed API", "api/physics_informed")),
+    ),
+    "package_api/25_silva_implicit_dae_and_residuals.ipynb": (
+        ("How are the DAE stage roots derived?", *_page("Physics-Informed Equilibria", "learn/physics-informed-equilibria#differential-algebraic-equations")),
+        ("Why is the residual objective not a DEQ family?", *_page("Adversarial Residual Objective", "learn/physics-informed-equilibria#adversarial-equation-residual-objective")),
+        ("Which DAE and residual objects are public?", *_page("Physics-Informed API", "api/physics_informed")),
+    ),
     "implicit_bridge/01_introduction_fixed_points.ipynb": (
         ("What does a fixed point mean operationally?", *_page("Fixed Points", "learn/fixed-points")),
         ("Where is a scalar equilibrium checked exactly?", *_page("Scalar Equilibrium Example", "examples/scalar-deq")),

@@ -40,6 +40,20 @@ dataset adapters, and extension points work together.
 | [SILVA Homotopy Equilibrium Lab](package-notebooks/19_silva_homotopy_equilibrium_lab.ipynb) | `notebooks/package_api/19_silva_homotopy_equilibrium_lab.ipynb` | derives residual flow, compares Euler and RK4 with an analytic path, and trains a conditioned transition |
 | [SILVA Distributional Equilibrium Lab](package-notebooks/20_silva_distributional_equilibrium_lab.ipynb) | `notebooks/package_api/20_silva_distributional_equilibrium_lab.ipynb` | derives measure discrepancies, runs masked particle descent, and trains a task readout |
 
+## Advanced Equilibrium and Physics Track
+
+These focused labs extend the same public API track with monotone operators,
+one-time transformer injection, positive mirror geometry, implicit physical
+derivatives, and DAE roots.
+
+| Rendered page | Source notebook | Main result |
+| --- | --- | --- |
+| [SILVA Monotone Graph Equilibrium](package-notebooks/21_silva_monotone_graph_equilibrium.ipynb) | `notebooks/package_api/21_silva_monotone_graph_equilibrium.ipynb` | derives the constrained channel operator, exact chain system, training path, and node equivariance |
+| [SILVA Generative Equilibrium Transformer](package-notebooks/22_silva_generative_equilibrium_transformer.ipynb) | `notebooks/package_api/22_silva_generative_equilibrium_transformer.ipynb` | derives patching, one-time QKV injection, token fixed point, teacher loss, and class conditioning |
+| [SILVA Poisson Mirror Equilibrium](package-notebooks/23_silva_poisson_mirror_equilibrium.ipynb) | `notebooks/package_api/23_silva_poisson_mirror_equilibrium.ipynb` | derives Poisson KL and Burg geometry, checks the adjoint pair, positivity, and reconstruction fidelity |
+| [SILVA Physics-Informed Equilibrium](package-notebooks/24_silva_physics_informed_equilibrium.ipynb) | `notebooks/package_api/24_silva_physics_informed_equilibrium.ipynb` | derives the implicit time derivative and trains boundary, ODE, and Jacobian terms |
+| [SILVA Implicit DAE and Residuals](package-notebooks/25_silva_implicit_dae_and_residuals.ipynb) | `notebooks/package_api/25_silva_implicit_dae_and_residuals.ipynb` | derives one- and two-stage DAE roots, rolls out a trajectory, and distinguishes the residual objective |
+
 ## Implicit Layers Bridge Track
 
 These notebooks adapt the Deep Implicit Layers tutorial themes, DEQ baselines,

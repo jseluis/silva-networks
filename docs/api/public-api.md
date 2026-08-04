@@ -38,6 +38,9 @@ should normally name the objects it uses.
 | choose an internal point mapping | [Point Architectures](point_architectures.md) |
 | construct a Fourier, physics-graph, homotopy, or distributional equilibrium | [Recent Equilibrium Families](frontier.md) |
 | generate equation-checked data for those four families | [Recent Equilibrium Datasets](frontier_data.md) |
+| construct a monotone graph or injected transformer equilibrium | [Advanced Equilibria](advanced_equilibria.md) |
+| construct Poisson mirror, physics-informed ODE, or implicit DAE layers | [Physics-Informed and DAE](physics_informed.md) |
+| generate exact data for the advanced mechanism labs | [Advanced Equilibrium Data](advanced_data.md) |
 | adapt tables, images, or graphs | [Datasets](datasets.md) |
 | train and evaluate | [Training](training.md) |
 | reproduce a packaged run | [Public Experiments](public_experiments.md) |

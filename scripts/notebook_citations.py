@@ -32,6 +32,11 @@ PACKAGE_CITATIONS = {
     "18_silva_graph_transport_lab.ipynb": (1, 36, 44),
     "19_silva_homotopy_equilibrium_lab.ipynb": (1, 7, 46),
     "20_silva_distributional_equilibrium_lab.ipynb": (1, 45),
+    "21_silva_monotone_graph_equilibrium.ipynb": (1, 4, 47),
+    "22_silva_generative_equilibrium_transformer.ipynb": (1, 4, 48),
+    "23_silva_poisson_mirror_equilibrium.ipynb": (1, 4, 50),
+    "24_silva_physics_informed_equilibrium.ipynb": (1, 4, 6, 14, 51),
+    "25_silva_implicit_dae_and_residuals.ipynb": (1, 52, 53),
 }
 
 BRIDGE_CITATIONS = {
@@ -95,6 +100,11 @@ def _json_indent(path: Path) -> int:
         "18_silva_graph_transport_lab.ipynb",
         "19_silva_homotopy_equilibrium_lab.ipynb",
         "20_silva_distributional_equilibrium_lab.ipynb",
+        "21_silva_monotone_graph_equilibrium.ipynb",
+        "22_silva_generative_equilibrium_transformer.ipynb",
+        "23_silva_poisson_mirror_equilibrium.ipynb",
+        "24_silva_physics_informed_equilibrium.ipynb",
+        "25_silva_implicit_dae_and_residuals.ipynb",
     } and path.parent != ROOT / "docs/package-notebooks":
         return 2
     return 1

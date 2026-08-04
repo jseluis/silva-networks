@@ -318,6 +318,40 @@ For equation-checked datasets, complete training loops, solver diagnostics, and
 four focused notebooks, continue with
 [Dataset-Backed Equilibrium Labs](frontier-dataset-labs.md).
 
+## Advanced Equilibrium and Physics Families
+
+Five additional canonical constructors cover monotone graph operators,
+one-time-injected transformers, Poisson mirror geometry, physics-informed ODE
+equilibria, and implicit DAE stages:
+
+```python
+monotone_graph = silva_equilibrium_model(
+    "silva_monotone_graph_equilibrium",
+    in_dim=3,
+    state_dim=16,
+    out_dim=2,
+)
+
+physics_ode = silva_equilibrium_model(
+    "silva_physics_informed_equilibrium",
+    state_dim=8,
+    output_dim=2,
+)
+```
+
+| Family | Defining mechanism | Main diagnostic |
+| --- | --- | --- |
+| `silva_monotone_graph_equilibrium` | constrained channel matrix and forward-backward graph step | certificate, equivariance, residual |
+| `silva_generative_equilibrium_transformer` | one-time QKV source injection into tied token blocks | residual and teacher metric |
+| `silva_poisson_mirror_equilibrium` | Burg mirror update in the positive orthant | positivity, KL, residual |
+| `silva_physics_informed_equilibrium` | latent fixed point and implicit time derivative | boundary, ODE, Jacobian terms |
+| `silva_implicit_dae_step` | implicit Runge-Kutta stage root | stage and endpoint constraint residuals |
+
+The adversarial differential-equation residual objective is not a family. It is
+combined with a chosen physical model through
+`silva_adversarial_residual_loss`. See [Advanced Equilibrium Families](advanced-equilibrium-families.md)
+and [Physics-Informed Equilibria](physics-informed-equilibria.md).
+
 ## Optimization Families
 
 The unconstrained quadratic bridge solves

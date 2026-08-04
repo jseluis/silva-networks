@@ -83,6 +83,12 @@ def test_bibtex_contains_silva_article_and_related_sources() -> None:
         "dosovitskiy2015flownet",
         "banach1922operations",
         "dua2019uci",
+        "baker2023mignn",
+        "geng2023get",
+        "daniele2025deqmd",
+        "pacheco2024pideq",
+        "moya2021daepinn",
+        "bullwinkel2022deqgan",
     ]:
         assert f"{{{key}," in bibtex
     assert "2607.28989" in bibtex
@@ -107,6 +113,11 @@ def test_notebook_smoke_script_lists_defaults() -> None:
     assert "docs/package-notebooks/18_silva_graph_transport_lab.ipynb" in result.stdout
     assert "docs/package-notebooks/19_silva_homotopy_equilibrium_lab.ipynb" in result.stdout
     assert "docs/package-notebooks/20_silva_distributional_equilibrium_lab.ipynb" in result.stdout
+    assert "docs/package-notebooks/21_silva_monotone_graph_equilibrium.ipynb" in result.stdout
+    assert "docs/package-notebooks/22_silva_generative_equilibrium_transformer.ipynb" in result.stdout
+    assert "docs/package-notebooks/23_silva_poisson_mirror_equilibrium.ipynb" in result.stdout
+    assert "docs/package-notebooks/24_silva_physics_informed_equilibrium.ipynb" in result.stdout
+    assert "docs/package-notebooks/25_silva_implicit_dae_and_residuals.ipynb" in result.stdout
 
 
 def test_global_numbered_citations_cover_solver_and_notebooks() -> None:

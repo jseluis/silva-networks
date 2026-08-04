@@ -36,6 +36,9 @@ The audit was checked against the package source under `src/silva_networks`:
 | `datasets.py` | tabular, image, pixel-graph, PyG-like, and molecular adapters |
 | `frontier.py` | input-injected Fourier, physics-guided graph, homotopy-flow, and empirical-measure equilibria |
 | `frontier_data.py` | equation-checked periodic fields, graph transport systems, affine homotopy roots, and variable-size empirical measures |
+| `advanced_equilibria.py` | monotone graph and one-time-injected transformer equilibria |
+| `physics_informed.py` | Poisson mirror equilibrium, physics-informed ODE equilibrium, implicit DAE stages, and residual adversarial training |
+| `advanced_data.py` | equation-checked chain, image-pair, Poisson, ODE, and DAE teaching batches |
 
 ## Method-to-Citation Matrix
 
@@ -119,6 +122,12 @@ repository, then cite the relevant building blocks only as background:
 | package-native projected QP layer | projected fixed-point QP implementation with selectable nonnegative, box, simplex, and affine constraints |
 | recent equilibrium family adaptations | places Fourier input injection, graph-physics branches, homotopy flow, and empirical-measure descent inside canonical SILVA state and transition contracts |
 | recent equilibrium teaching datasets | provides deterministic, typed examples whose targets satisfy the documented spectral, graph, fixed-point, or empirical-moment relation |
+| advanced graph and transformer equilibria | maps monotone operator splitting and one-time QKV injection into canonical SILVA source/state contracts |
+| positive Poisson mirror equilibrium | places Burg mirror geometry, Poisson KL, forward/adjoint operators, and learned regularizer gradients inside SILVA |
+| physics-informed equilibrium | combines latent fixed points, implicit-function time derivatives, initial conditions, ODE residuals, and Jacobian regularization |
+| implicit DAE stage layer | solves one- or multistage Runge-Kutta DAE equations as a differentiable SILVA root layer |
+| adversarial equation-residual objective | exposes separate generator/discriminator losses and records that the cited DEQGAN abbreviation means Differential Equation |
+| advanced equilibrium teaching datasets | provides deterministic targets with directly evaluated graph, teacher-map, intensity, ODE, or DAE equations |
 
 ## Example Citation Checklist
 

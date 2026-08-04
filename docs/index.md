@@ -23,8 +23,8 @@ branches, solvers, diagnostics, and readouts.
 <span>Picard, Anderson, Broyden, GMRES diagnostics</span>
 </div>
 <div class="silva-metric" markdown>
-<strong>25 Model Families</strong>
-<span>SILVA, operator, graph physics, continuous flow, distributional, diffusion</span>
+<strong>30 Model Families</strong>
+<span>SILVA, operators, graph physics, transformers, inverse problems, ODEs, DAEs</span>
 </div>
 <div class="silva-metric" markdown>
 <strong>Derivations</strong>
@@ -76,7 +76,11 @@ branches, solvers, diagnostics, and readouts.
 </a>
 <a class="silva-action" href="learn/frontier-equilibrium-families/" markdown>
 <strong>Use recent families</strong>
-<span>Fourier equilibrium, graph physics, homotopy, empirical measures</span>
+<span>Fourier, graph physics, homotopy, measures, monotone and mirror equilibria</span>
+</a>
+<a class="silva-action" href="learn/physics-informed-equilibria/" markdown>
+<strong>Build physical equilibria</strong>
+<span>Implicit ODE derivatives, DAE stages, residual objectives</span>
 </a>
 <a class="silva-action" href="experiments/benchmark-cards/" markdown>
 <strong>Read benchmarks</strong>
@@ -138,7 +142,7 @@ SILVA is not limited to one graph or image architecture. The recurrent state
 can be a vector, token sequence, multiresolution tuple, coordinate field,
 sampled physical field, flow pair, diffusion trajectory, or optimization
 variable. It can also be a continuous-flow endpoint or an empirical measure
-represented by variable-size particles. The package provides 25 selectable
+represented by variable-size particles. The package provides 30 selectable
 model families and ten internal point architectures while retaining an
 explicit state-transition contract:
 
@@ -160,6 +164,14 @@ input-injected FNO-DEQ blocks [[43]](paper/references.md#ref-43){ .silva-cite },
 physics-guided graph transport [[44]](paper/references.md#ref-44){ .silva-cite },
 homotopy residual flows [[46]](paper/references.md#ref-46){ .silva-cite }, and
 distributional equilibria [[45]](paper/references.md#ref-45){ .silva-cite }.
+Monotone graph operators [[47]](paper/references.md#ref-47){ .silva-cite },
+one-time-injected equilibrium transformers [[48]](paper/references.md#ref-48){ .silva-cite },
+Poisson mirror equilibria [[50]](paper/references.md#ref-50){ .silva-cite }, and
+physics-informed equilibria [[51]](paper/references.md#ref-51){ .silva-cite }
+extend the same source/state/solver contract. Implicit DAE stages
+[[52]](paper/references.md#ref-52){ .silva-cite } are represented as root layers,
+while adversarial equation residuals [[53]](paper/references.md#ref-53){ .silva-cite }
+remain an optional loss rather than a deep-equilibrium family.
 
 | Construction | SILVA state and transition | Public entry point | Full treatment |
 | --- | --- | --- | --- |
@@ -171,6 +183,11 @@ distributional equilibria [[45]](paper/references.md#ref-45){ .silva-cite }.
 | physics graph equilibrium | reaction, diffusion, and directed transport are named graph branches | `SILVAPhysicsGuidedGraphDEQ` | [Physics graph derivation](learn/frontier-equilibrium-families.md#silva-physics-guided-graph-equilibrium) |
 | homotopy equilibrium | continuous residual flow approaches a SILVA stationary state | `SILVAHomotopyEquilibrium` | [Homotopy derivation](learn/frontier-equilibrium-families.md#silva-homotopy-equilibrium) |
 | distributional equilibrium | empirical-measure discrepancy moves permutation-compatible particles | `SILVADistributionalDEQ` | [Distributional derivation](learn/frontier-equilibrium-families.md#silva-distributional-equilibrium) |
+| monotone graph equilibrium | constrained channel operator and forward-backward graph step | `SILVAMonotoneGraphEquilibrium` | [Monotone derivation](learn/advanced-equilibrium-families.md#monotone-graph-equilibrium) |
+| generative equilibrium transformer | one-time source path injects QKV fields into tied token blocks | `SILVAGenerativeEquilibriumTransformer` | [Transformer derivation](learn/advanced-equilibrium-families.md#generative-equilibrium-transformer) |
+| Poisson mirror equilibrium | Burg mirror geometry preserves a positive inverse state | `SILVAPoissonMirrorEquilibrium` | [Mirror derivation](learn/advanced-equilibrium-families.md#poisson-mirror-equilibrium) |
+| physics-informed equilibrium | latent fixed point supplies an implicit ODE time derivative | `SILVAPhysicsInformedEquilibrium` | [Physics-informed derivation](learn/physics-informed-equilibria.md#physics-informed-deep-equilibrium) |
+| implicit DAE stage layer | Runge-Kutta stages and algebraic endpoint form one root | `SILVAImplicitDAEStep` | [DAE derivation](learn/physics-informed-equilibria.md#differential-algebraic-equations) |
 | reaction-diffusion and Burgers | known finite-difference field inside backward Euler | scientific right-hand-side modules | [Worked equations](learn/neural-operators-ode-pde.md#worked-scientific-constructions) |
 | irregular graph PDE | graph Laplacian or message field in `local_terms` | `SILVACortexLayer` | [Graph discretization](learn/neural-operators-ode-pde.md#irregular-domains-and-graph-pdes) |
 
@@ -189,6 +206,12 @@ periodic fields, steady transport graphs, analytic homotopy pairs, and
 variable-size empirical measures. Four focused notebooks train the matching
 SILVA families and report their task, equilibrium, physical, and structural
 diagnostics separately.
+
+The [advanced equilibrium guide](learn/advanced-equilibrium-families.md) and
+[physics-informed guide](learn/physics-informed-equilibria.md) add five focused
+families or implicit layers. Their [dataset guide](learn/advanced-equilibrium-datasets.md)
+states the exact chain, image-pair, Poisson, ODE, and DAE equations, while
+notebooks 21 through 25 execute every derivation and gradient path.
 
 The package is meant to be read, imported, extended, and tested. It contains
 reference SILVA presets, generic custom layers, fixed-point solvers,
@@ -450,9 +473,12 @@ residual, boundary error, and resolution or mesh transfer separately.
 | [DEQ Engine](api/deq-engine.md) | TorchDEQ-style single-state and multi-state engine helpers |
 | [Optical Flow](api/flow.md) | RAFT/DEQ-Flow-style package-native optical-flow utilities |
 | [Generalized Cases](api/cases.md) | sequence, multiscale vision, implicit graph, coordinate representation, and diffusion equilibria |
-| [Family Selection](api/families.md) | 25 canonical constructors and compatibility aliases through one configuration surface |
+| [Family Selection](api/families.md) | 30 canonical constructors and compatibility aliases through one configuration surface |
 | [Recent Equilibrium API](api/frontier.md) | Fourier, physics graph, homotopy, and empirical-measure SILVA families |
 | [Recent Equilibrium Datasets](api/frontier_data.md) | deterministic field, graph, homotopy, and empirical-measure teaching data |
+| [Advanced Equilibria API](api/advanced_equilibria.md) | monotone graph and one-time-injected transformer equilibria |
+| [Physics-Informed API](api/physics_informed.md) | Poisson mirror, implicit ODE derivative, DAE stage, and residual-objective APIs |
+| [Advanced Equilibrium Data](api/advanced_data.md) | exact chain, teacher-map, Poisson, ODE, and DAE batches |
 | [Optimization](api/optimization.md) | projected constrained QP layers and optional CVXPYlayers bridge |
 | [SILVA Presets](api/presets.md) | graph/node, vector vision, convolutional vision, molecular presets |
 | [Datasets](api/datasets.md) | public loaders, adapters, `GraphTensorBatch`, validation |
@@ -485,6 +511,11 @@ residual, boundary error, and resolution or mesh transfer separately.
 | [SILVA Graph Transport Lab](package-notebooks/18_silva_graph_transport_lab.ipynb) | steady transport data, batched graph training, physical residual, and relabeling |
 | [SILVA Homotopy Equilibrium Lab](package-notebooks/19_silva_homotopy_equilibrium_lab.ipynb) | analytic residual flow, Euler/RK4 comparison, terminal diagnostics, and training |
 | [SILVA Distributional Equilibrium Lab](package-notebooks/20_silva_distributional_equilibrium_lab.ipynb) | variable-size measures, masks, discrepancies, particle descent, and task readout |
+| [SILVA Monotone Graph Equilibrium](package-notebooks/21_silva_monotone_graph_equilibrium.ipynb) | monotone parameterization, graph equation, training, and relabeling |
+| [SILVA Generative Equilibrium Transformer](package-notebooks/22_silva_generative_equilibrium_transformer.ipynb) | patches, one-time QKV injection, teacher matching, and conditioning |
+| [SILVA Poisson Mirror Equilibrium](package-notebooks/23_silva_poisson_mirror_equilibrium.ipynb) | Poisson KL, Burg geometry, positivity, and inverse diagnostics |
+| [SILVA Physics-Informed Equilibrium](package-notebooks/24_silva_physics_informed_equilibrium.ipynb) | implicit time derivatives and decomposed physics training |
+| [SILVA Implicit DAE and Residuals](package-notebooks/25_silva_implicit_dae_and_residuals.ipynb) | Runge-Kutta roots, DAE rollout, and residual-objective boundary |
 | [Fixed Points as Layers](implicit-bridge-notebooks/01_introduction_fixed_points.ipynb) | implicit-layer introduction through package solvers |
 | [DEQ and SILVA](implicit-bridge-notebooks/04_deq_and_silva.ipynb) | DEQ baseline and configurable SILVA graph model in one API |
 | [SILVA DEQ Engine](implicit-bridge-notebooks/07_silva_deq_engine_torchdeq_bridge.ipynb) | single-state, multi-state, and variational-dropout fixed-point systems |

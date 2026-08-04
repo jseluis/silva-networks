@@ -123,6 +123,9 @@ nav:
       - Neural Operators, ODEs, PDEs, and SILVA: learn/neural-operators-ode-pde.md
       - Recent Equilibrium Families: learn/frontier-equilibrium-families.md
       - Dataset-Backed Equilibrium Labs: learn/frontier-dataset-labs.md
+      - Advanced Equilibrium Families: learn/advanced-equilibrium-families.md
+      - Physics-Informed Equilibria and DAEs: learn/physics-informed-equilibria.md
+      - Advanced Equilibrium Datasets: learn/advanced-equilibrium-datasets.md
       - Stacking and Devices: learn/stacking-and-devices.md
       - Datasets and Preprocessing: learn/datasets-and-preprocessing.md
       - Reconstructing Paper Experiments: learn/reconstructing-paper-experiments.md
@@ -152,6 +155,11 @@ nav:
       - SILVA Graph Transport Lab: package-notebooks/18_silva_graph_transport_lab.ipynb
       - SILVA Homotopy Equilibrium Lab: package-notebooks/19_silva_homotopy_equilibrium_lab.ipynb
       - SILVA Distributional Equilibrium Lab: package-notebooks/20_silva_distributional_equilibrium_lab.ipynb
+      - SILVA Monotone Graph Equilibrium: package-notebooks/21_silva_monotone_graph_equilibrium.ipynb
+      - SILVA Generative Equilibrium Transformer: package-notebooks/22_silva_generative_equilibrium_transformer.ipynb
+      - SILVA Poisson Mirror Equilibrium: package-notebooks/23_silva_poisson_mirror_equilibrium.ipynb
+      - SILVA Physics-Informed Equilibrium: package-notebooks/24_silva_physics_informed_equilibrium.ipynb
+      - SILVA Implicit DAE and Residuals: package-notebooks/25_silva_implicit_dae_and_residuals.ipynb
       - Implicit Layers Bridge:
           - Fixed Points as Layers: implicit-bridge-notebooks/01_introduction_fixed_points.ipynb
           - Implicit Autodiff: implicit-bridge-notebooks/02_implicit_autodiff.ipynb
@@ -174,6 +182,9 @@ nav:
       - Scientific Operators: api/scientific.md
       - Recent Equilibrium Families: api/frontier.md
       - Recent Equilibrium Datasets: api/frontier_data.md
+      - Advanced Equilibria: api/advanced_equilibria.md
+      - Physics-Informed and DAE: api/physics_informed.md
+      - Advanced Equilibrium Data: api/advanced_data.md
       - Implicit Bridge: api/implicit.md
       - DEQ Engine: api/deq-engine.md
       - Optical Flow: api/flow.md
@@ -207,6 +218,7 @@ nav:
       - Full Cortex Operators: examples/full-cortex-operators.md
       - Scientific Operators: examples/scientific-operators.md
       - Recent Equilibrium Families: examples/frontier-equilibria.md
+      - Advanced Equilibria: examples/advanced-equilibria.md
       - Optical Flow SILVA: examples/optical-flow-silva.md
       - Constrained Optimization: examples/constrained-optimization.md
       - Stacked Architecture: examples/stacked-architecture.md

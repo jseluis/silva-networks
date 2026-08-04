@@ -6,6 +6,31 @@ paper, book sources, or production code outside the package.
 
 <div class="silva-doclog" markdown>
 <div class="silva-doclog__date" markdown>
+<strong>August 4, 2026</strong>
+<span>Advanced equilibrium and physics-informed SILVA families</span>
+</div>
+<div class="silva-doclog__body" markdown>
+## Advanced Equilibrium Family Pass
+
+Added six adjacent equilibrium mechanisms as SILVA transitions, objectives, or
+time-stepping components while preserving their distinct mathematical roles.
+
+| Area | Change |
+| --- | --- |
+| Graph equilibrium | Added a monotone graph transition with a constrained operator and a computable monotonicity certificate. |
+| Generative equilibrium | Added an injected self-attention transition with one-time input injection and a teacher-distillation objective. |
+| Inverse problems | Added a positive Burg-geometry mirror transition with a Poisson data-fidelity objective. |
+| Physics-informed equilibrium | Added equilibrium-state ODE residuals, initial-condition terms, Jacobian regularization, and implicit time derivatives. |
+| Differential-algebraic systems | Added a differentiable implicit Runge-Kutta step with algebraic constraints and damped Newton correction. |
+| Residual objective | Added a separately optimized adversarial residual objective and documented the Differential Equation naming distinction. |
+| Data | Added deterministic chain-graph, teacher-image, Poisson inverse, linear IVP, and linear DAE datasets with exact residual checks. |
+| Learning | Added five executable notebooks, three learning guides, an API reference, and a complete runnable example. |
+| Validation | Added finite-value, shape, convergence, equation-residual, gradient, factory, notebook, example, citation, and release checks. |
+</div>
+</div>
+
+<div class="silva-doclog" markdown>
+<div class="silva-doclog__date" markdown>
 <strong>August 3, 2026</strong>
 <span>Ten internal architectures for SILVA points</span>
 </div>
@@ -265,7 +290,7 @@ PDFs are treated as sources and references, not as files to rewrite here.
 | Companion book/manual | Planned public learning assets connected to the package roadmap. |
 | External papers | References are cited and linked from the documentation. |
 
-All 88 Markdown pages and 24 rendered notebooks use contextual `Where to Go
+All 102 Markdown pages and 34 rendered notebooks use contextual `Where to Go
 Next` tables. Each table connects the current page to the most relevant
 derivation, executable material, example, or API contract, and the
 documentation audit checks this coverage during release validation.

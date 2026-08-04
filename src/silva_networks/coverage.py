@@ -175,6 +175,44 @@ _IMPLEMENTATION_CASES: tuple[SILVAImplementationCase, ...] = (
         scope="Reference graph, vision, convolutional, and molecular configurations.",
     ),
     SILVAImplementationCase(
+        key="advanced_equilibrium_families",
+        public_objects=(
+            "SILVAMonotoneGraphEquilibrium",
+            "SILVAMonotoneGraphTransition",
+            "SILVAGenerativeEquilibriumTransformer",
+            "SILVAInjectedSelfAttention",
+            "SILVABurgMirrorTransition",
+            "SILVAPoissonMirrorEquilibrium",
+            "SILVAPhysicsInformedEquilibrium",
+            "SILVAImplicitDAEStep",
+            "SILVAResidualDiscriminator",
+            "silva_adversarial_residual_loss",
+            "make_monotone_chain_dataset",
+            "make_teacher_image_pairs",
+            "make_poisson_inverse_dataset",
+            "make_linear_ivp_dataset",
+            "make_linear_dae_dataset",
+        ),
+        tutorial="docs/learn/advanced-equilibrium-families.md",
+        notebooks=(
+            "docs/package-notebooks/21_silva_monotone_graph_equilibrium.ipynb",
+            "docs/package-notebooks/22_silva_generative_equilibrium_transformer.ipynb",
+            "docs/package-notebooks/23_silva_poisson_mirror_equilibrium.ipynb",
+            "docs/package-notebooks/24_silva_physics_informed_equilibrium.ipynb",
+            "docs/package-notebooks/25_silva_implicit_dae_and_residuals.ipynb",
+        ),
+        smoke_tests=(
+            "tests/test_advanced_equilibria.py",
+            "tests/test_advanced_data.py",
+        ),
+        examples=("examples/advanced_equilibria.py",),
+        scope=(
+            "Monotone graph, injected transformer, Poisson mirror, physics-informed "
+            "ODE, implicit DAE, and residual-objective mechanisms with exact teaching "
+            "data, gradients, derivations, and numerical diagnostics."
+        ),
+    ),
+    SILVAImplementationCase(
         key="datasets",
         public_objects=("load_tabular_dataset", "tabular_to_silva_graph", "images_to_silva_vectors"),
         tutorial="docs/learn/datasets-and-preprocessing.md",

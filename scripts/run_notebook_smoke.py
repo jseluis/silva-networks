@@ -19,6 +19,11 @@ DEFAULT_NOTEBOOKS = (
     "docs/package-notebooks/18_silva_graph_transport_lab.ipynb",
     "docs/package-notebooks/19_silva_homotopy_equilibrium_lab.ipynb",
     "docs/package-notebooks/20_silva_distributional_equilibrium_lab.ipynb",
+    "docs/package-notebooks/21_silva_monotone_graph_equilibrium.ipynb",
+    "docs/package-notebooks/22_silva_generative_equilibrium_transformer.ipynb",
+    "docs/package-notebooks/23_silva_poisson_mirror_equilibrium.ipynb",
+    "docs/package-notebooks/24_silva_physics_informed_equilibrium.ipynb",
+    "docs/package-notebooks/25_silva_implicit_dae_and_residuals.ipynb",
     "docs/implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb",
 )
 

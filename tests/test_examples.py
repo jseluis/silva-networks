@@ -19,6 +19,8 @@ def test_examples_import_and_run() -> None:
         "spatial_cortex.py",
         "point_architecture_catalog.py",
         "scientific_operators.py",
+        "frontier_equilibria.py",
+        "advanced_equilibria.py",
         "optical_flow_silva.py",
         "constrained_optimization.py",
         "stacked_architecture.py",

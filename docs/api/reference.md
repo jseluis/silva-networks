@@ -24,6 +24,9 @@ inputs, outputs, and source links.
 | [Scientific Operators](scientific.md) | finite differences, PDE residuals, boundaries, implicit time steps, reaction-diffusion, Burgers, and Fourier equilibrium operators |
 | [Recent Equilibrium Families](frontier.md) | input-injected Fourier, physics-guided graph, homotopy-flow, and distributional SILVA equilibria |
 | [Recent Equilibrium Datasets](frontier_data.md) | equation-checked fields, transport graphs, homotopy pairs, and variable-size empirical measures |
+| [Advanced Equilibria](advanced_equilibria.md) | monotone graph and one-time-injected transformer equilibria |
+| [Physics-Informed and DAE](physics_informed.md) | Poisson mirror geometry, implicit ODE derivatives, DAE roots, and residual objectives |
+| [Advanced Equilibrium Data](advanced_data.md) | exact chain, teacher-map, Poisson, ODE, and DAE teaching problems |
 | [Implicit Bridge](implicit.md) | SILVA-named DEQ transition, fixed-point classifier, Euler flow, quadratic optimization, MDEQ bridge |
 | [DEQ Engine](deq-engine.md) | general single-state and multi-state SILVA DEQ engine, variational dropout, state packing |
 | [Optical Flow](flow.md) | RAFT-style correlation, warping, DEQ-flow fixed point, synthetic flow data |
@@ -47,6 +50,8 @@ inputs, outputs, and source links.
 | Internal point architectures | `available_silva_point_architectures`, `silva_point_architecture`, and ten `SILVA...PointArchitecture` modules |
 | ODE, PDE, and learned operators | `SILVAImplicitTimeStep`, `SILVAOperatorModel`, `SILVAFourierNeuralOperator`, numerical derivatives, PDE and boundary residuals |
 | Recent equilibrium mechanisms | `SILVAFNODEQ`, `SILVAPhysicsGuidedGraphDEQ`, `SILVAHomotopyEquilibrium`, `SILVADistributionalDEQ` |
+| Advanced equilibrium mechanisms | `SILVAMonotoneGraphEquilibrium`, `SILVAGenerativeEquilibriumTransformer`, `SILVAPoissonMirrorEquilibrium` |
+| Physics-informed and DAE mechanisms | `SILVAPhysicsInformedEquilibrium`, `SILVAImplicitDAEStep`, `SILVAResidualDiscriminator` |
 | SILVA reductions to baseline implicit models | `silva_deq_reduction_layer`, `silva_message_passing_reduction_layer`, `SILVAFixedPointBlock`, `SILVADEQEngine` |
 | Graph node or graph prediction | `SILVAGraphLayer`, `SILVAGraphNetwork`, `SILVAGraphPresetNetwork`, `pool_entities` |
 | Vision vectors | `SILVAVisionVectorLayer`, `SILVAVisionVectorClassifier`, `DynamicChannelLocal`, `ChannelSelfAttentionGlobal` |
@@ -86,6 +91,8 @@ inputs, outputs, and source links.
 | presets | SILVA paper/package plus the branch-level citations used by the chosen preset |
 | point architectures | SILVA plus the primary architecture paper when the selected field derives from a named architecture |
 | recent equilibrium families | SILVA plus FNO-DEQ, physics-guided graph DEQ, HomoODE, or DDEQ according to the selected mechanism |
+| advanced equilibrium families | SILVA plus MIGNN, GET, DEQ-MD, or PIDEQ according to the selected mechanism |
+| DAE and residual objectives | DAE-PINN or differential-equation GAN lineage; the latter is not a deep-equilibrium family |
 
 ## Common Imports
 

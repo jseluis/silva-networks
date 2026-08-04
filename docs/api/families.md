@@ -114,4 +114,4 @@ model = silva_equilibrium_model(
 | How should I choose among these families? | [Selecting Model Families](../learn/selecting-model-families.md) |
 | Which classes implement ODE, PDE, and learned operators? | [Scientific Operators API](scientific.md) |
 | Which classes implement the recent operator, graph, flow, and measure families? | [Recent Equilibrium API](frontier.md) |
-| Which generated datasets exercise those four families? | [Recent Equilibrium Dataset API](frontier_data.md) |
+| Which classes implement monotone, transformer, mirror, physics, and DAE mechanisms? | [Advanced Equilibria API](advanced_equilibria.md) |

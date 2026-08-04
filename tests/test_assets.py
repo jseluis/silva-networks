@@ -316,6 +316,51 @@ def test_expanded_notebooks_are_synchronized_and_substantive() -> None:
                 "Train a Readout from the Equilibrium Measure",
             ),
         ),
+        "21_silva_monotone_graph_equilibrium.ipynb": (
+            14,
+            (
+                "Monotone Channel Parameterization",
+                "Forward-Backward Step as a SILVA Transition",
+                "make_monotone_chain_dataset",
+                "Node Relabeling",
+            ),
+        ),
+        "22_silva_generative_equilibrium_transformer.ipynb": (
+            14,
+            (
+                "Injection Is Computed Once",
+                "QKV-Injected Equilibrium Block",
+                "One-Step Teacher Matching",
+                "Class Conditioning",
+            ),
+        ),
+        "23_silva_poisson_mirror_equilibrium.ipynb": (
+            14,
+            (
+                "Poisson Observation Model",
+                "Closed-Form Burg Update",
+                "Mirror Step as a SILVA Equilibrium",
+                "Learned Regularizer Contract",
+            ),
+        ),
+        "24_silva_physics_informed_equilibrium.ipynb": (
+            14,
+            (
+                "Time Derivative from the Implicit Function Theorem",
+                "Three-Term Physics-Informed Objective",
+                "Tiny Physics-Only Training Run",
+                "Stiff Systems and Scaling",
+            ),
+        ),
+        "25_silva_implicit_dae_and_residuals.ipynb": (
+            16,
+            (
+                "Implicit Runge-Kutta Stage Equations",
+                "Two-Stage Gauss-Legendre Layer",
+                "Adversarial Residual Objective and Naming Boundary",
+                "Choosing the Physics Construction",
+            ),
+        ),
     }
 
     for name, (minimum_cells, markers) in requirements.items():

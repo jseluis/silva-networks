@@ -23,16 +23,19 @@ source, state, local, and global decomposition
 | homotopy equilibrium flow [[46]](../paper/references.md#ref-46){ .silva-cite } | implemented as a transparent SILVA specialization | `SILVAHomotopyEquilibrium` |
 | distributional DEQ [[45]](../paper/references.md#ref-45){ .silva-cite } | implemented as a SILVA family | `SILVADistributionalTransition`, `SILVADistributionalDEQ` |
 | joint diffusion restoration [[49]](../paper/references.md#ref-49){ .silva-cite } | mechanism already represented | `SILVADiffusionEquilibrium` solves a joint triangular trajectory |
-| one-step equilibrium transformer [[48]](../paper/references.md#ref-48){ .silva-cite } | documented port target | requires image patching and an offline teacher-pair training recipe |
-| monotone implicit graph network [[47]](../paper/references.md#ref-47){ .silva-cite } | documented port target | requires resolvents and operator-splitting solvers |
-| mirror-descent Poisson equilibrium [[50]](../paper/references.md#ref-50){ .silva-cite } | documented port target | requires a positive-domain mirror map and Poisson data fidelity |
+| one-step equilibrium transformer [[48]](../paper/references.md#ref-48){ .silva-cite } | implemented as a SILVA family | `SILVAGenerativeEquilibriumTransformer`, QKV injection, teacher loss |
+| monotone implicit graph network [[47]](../paper/references.md#ref-47){ .silva-cite } | implemented as a SILVA family | `SILVAMonotoneGraphTransition`, `SILVAMonotoneGraphEquilibrium` |
+| mirror-descent Poisson equilibrium [[50]](../paper/references.md#ref-50){ .silva-cite } | implemented as a SILVA family | `SILVABurgMirrorTransition`, `SILVAPoissonMirrorEquilibrium` |
+| physics-informed deep equilibrium [[51]](../paper/references.md#ref-51){ .silva-cite } | implemented as a SILVA family | `SILVAPhysicsInformedEquilibrium`, implicit time derivative, decomposed loss |
+| DAE-PINN implicit stage mechanism [[52]](../paper/references.md#ref-52){ .silva-cite } | implemented as an implicit SILVA layer | `SILVAImplicitDAEStep`, one- and multistage tableaus |
+| adversarial differential-equation residual [[53]](../paper/references.md#ref-53){ .silva-cite } | implemented as a training objective | `SILVAResidualDiscriminator`, `silva_adversarial_residual_loss` |
 
 “Implemented as a SILVA family” means the mathematical mechanism has a public
 class, unit and integration tests, a runnable example, deterministic teaching
 data, and executable small-scale reproductions. It does not mean that the large
 datasets, model sizes, or paper benchmark tables have been reproduced.
 
-## One Grammar, Four Extensions
+## One Grammar, Multiple Extensions
 
 The ordinary SILVA equilibrium is
 
@@ -546,26 +549,29 @@ derives every builder and explains the handoff to the paper datasets. The
 paper-reported Darcy, Navier-Stokes, environmental, image, and point-cloud
 results still require their complete datasets and protocols.
 
-## Extension Requirements
+## Implemented Architecture Contracts
 
-The remaining ports have clear implementation boundaries.
+The adjacent mechanisms retain explicit implementation boundaries. The full
+derivations and runnable code are in [Advanced Equilibrium Families](advanced-equilibrium-families.md)
+and [Physics-Informed Equilibria](physics-informed-equilibria.md).
 
 ### Monotone graph equilibrium
 
-A monotone graph port needs a resolvent or proximal operator and an
+A monotone graph equilibrium needs a resolvent or proximal operator and an
 operator-splitting update, such as forward-backward, Peaceman-Rachford, or
 Douglas-Rachford. Merely projecting the recurrent weight norm would not
 reproduce the monotone formulation
-[[47]](../paper/references.md#ref-47){ .silva-cite }.
+[[47]](../paper/references.md#ref-47){ .silva-cite }. SILVA implements the
+forward-backward case and exposes the monotonicity certificate.
 
 ### One-step equilibrium transformer
 
-A complete port needs image patch embedding, a noncausal equilibrium
+A complete model needs image patch embedding, a noncausal equilibrium
 transformer, conditioning from the input noise, image reconstruction, and the
 offline noise/image-pair distillation objective
-[[48]](../paper/references.md#ref-48){ .silva-cite }. The existing SILVA
-sequence equilibrium supplies part of the internal transition, but not the
-complete training protocol.
+[[48]](../paper/references.md#ref-48){ .silva-cite }. SILVA implements these
+architecture and loss contracts. Published image results still require the
+original teacher, schedule, dataset, and evaluation protocol.
 
 ### Parallel diffusion restoration
 
@@ -578,10 +584,29 @@ and restoration datasets.
 
 ### Poisson mirror descent
 
-A faithful port needs the Poisson negative log-likelihood, a positive-domain
+A faithful mechanism needs the Poisson negative log-likelihood, a positive-domain
 mirror map, the associated Bregman divergence, and convergence-aware learned
 regularization [[50]](../paper/references.md#ref-50){ .silva-cite }. A Euclidean
-projected gradient step is not an equivalent substitute.
+projected gradient step is not an equivalent substitute. SILVA implements the
+Burg closed-form update, positivity projection, forward/adjoint operators, and
+optional learned regularizer gradient.
+
+### Physics-informed equilibrium and DAE layers
+
+The physics-informed family defines the trajectory representation by a latent
+fixed point, evaluates its time derivative with the implicit function theorem,
+and separates initial, ODE-residual, and Jacobian terms
+[[51]](../paper/references.md#ref-51){ .silva-cite }. The DAE layer instead packs
+implicit Runge-Kutta stages and endpoint algebraic variables into one Newton
+root [[52]](../paper/references.md#ref-52){ .silva-cite }. The latter is an
+implicit numerical layer, not a globally weight-tied DEQ.
+
+### Adversarial residual objective
+
+The differential-equation GAN mechanism supplies an optional learned residual
+loss [[53]](../paper/references.md#ref-53){ .silva-cite }. Its “DEQ” abbreviation
+does not mean deep equilibrium, so it is intentionally not registered as a
+selectable equilibrium family.
 
 ## Validation in the Repository
 
@@ -596,8 +621,16 @@ projected gradient step is not an equivalent substitute.
 | all four small runs | `examples/frontier_equilibria.py` |
 | derivations and progressive experiments | `16_frontier_equilibrium_families.ipynb` |
 | dataset-backed derivation and training labs | notebooks `17` through `20` |
+| monotone, transformer, mirror, physics, DAE, and residual tests | `tests/test_advanced_equilibria.py` |
+| exact generated equations for the adjacent families | `tests/test_advanced_data.py` |
+| complete advanced mechanism run | `examples/advanced_equilibria.py` |
+| focused advanced notebooks | notebooks `21` through `25` |
 
 ## Where to Go Next
+
+The adjacent monotone, transformer, mirror, physics-informed, DAE, and
+residual-objective material continues in [Advanced Equilibrium Families](advanced-equilibrium-families.md)
+and [Physics-Informed Equilibria](physics-informed-equilibria.md).
 
 | Question | Page |
 | --- | --- |

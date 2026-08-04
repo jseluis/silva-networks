@@ -354,6 +354,47 @@ boundary are in `docs/learn/frontier-equilibrium-families.md`,
 Fourier, graph transport, homotopy, and distributional labs are notebooks
 `17` through `20` in the same directory.
 
+### Advanced Equilibrium and Physics Families
+
+Five adjacent mechanisms are also available inside SILVA:
+
+- a monotone graph equilibrium with constrained channel operator and
+  forward-backward splitting, connected to
+  [MIGNN](https://proceedings.mlr.press/v202/baker23a.html);
+- a one-time-injected equilibrium transformer, connected to
+  [GET](https://arxiv.org/abs/2401.08639);
+- a positive Poisson mirror equilibrium, connected to
+  [DEQ-MD](https://arxiv.org/abs/2507.11461);
+- a physics-informed ODE equilibrium with implicit-function time derivatives,
+  connected to [PIDEQ](https://arxiv.org/abs/2406.03472);
+- an implicit Runge-Kutta DAE root layer, connected to
+  [DAE-PINN](https://arxiv.org/abs/2109.04304).
+
+```python
+from silva_networks import silva_equilibrium_model
+
+graph_model = silva_equilibrium_model(
+    "silva_monotone_graph_equilibrium",
+    in_dim=3,
+    state_dim=16,
+    out_dim=2,
+)
+
+physics_model = silva_equilibrium_model(
+    "silva_physics_informed_equilibrium",
+    state_dim=8,
+    output_dim=2,
+)
+```
+
+An adversarial equation-residual loss is provided as a training utility. The
+DEQGAN abbreviation in that source means Differential Equation, so it is not a
+deep-equilibrium family. Full derivations are in
+`docs/learn/advanced-equilibrium-families.md` and
+`docs/learn/physics-informed-equilibria.md`. Equation-checked data are in
+`src/silva_networks/advanced_data.py`; focused notebooks are numbered `21`
+through `25`.
+
 The matching deterministic datasets are created inside the package:
 
 ```python
