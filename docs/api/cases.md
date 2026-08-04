@@ -4,6 +4,12 @@ The case architectures are SILVA-native implementations of major DEQ
 application families. They accept `SolverConfig` rather than embedding paper
 recipes.
 
+The case lineage includes DEQ [[4]](../paper/references.md#ref-4){ .silva-cite },
+MDEQ [[5]](../paper/references.md#ref-5){ .silva-cite }, implicit graph networks
+[[36]](../paper/references.md#ref-36){ .silva-cite }, implicit representations
+[[37]](../paper/references.md#ref-37){ .silva-cite }, and diffusion equilibria
+[[38]](../paper/references.md#ref-38){ .silva-cite }.
+
 All families preserve the same contract:
 
 $$

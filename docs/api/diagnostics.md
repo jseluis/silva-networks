@@ -4,6 +4,11 @@ SILVA layers are useful when the fixed-point dynamics can be inspected. The
 package exposes residual curves, Jacobian products, spectral-radius estimates,
 and Lyapunov-style energy traces as ordinary Python functions.
 
+The stochastic Jacobian estimate follows Hutchinson
+[[14]](../paper/references.md#ref-14){ .silva-cite }, and the equilibrium
+regularization interpretation follows Jacobian-regularized DEQ
+[[6]](../paper/references.md#ref-6){ .silva-cite }.
+
 ## Residual
 
 For a transition \(f\), the fixed-point residual is

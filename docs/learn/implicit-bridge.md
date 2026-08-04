@@ -11,6 +11,12 @@ methodology, cite the SILVA Networks paper: Jose Luis Lima de Jesus Silva,
 Structured Implicit Layers and Vector Attractors via Dynamic Interaction
 Fields* (2026; arXiv:2607.28989), together with the software
 repository.
+These are the global SILVA article
+[[1]](../paper/references.md#ref-1){ .silva-cite } and software
+[[2]](../paper/references.md#ref-2){ .silva-cite }
+entries; the implicit-layer and DEQ foundations are
+[[3]](../paper/references.md#ref-3){ .silva-cite } and
+[[4]](../paper/references.md#ref-4){ .silva-cite }.
 
 The bridge is useful because the same computational pattern appears in several
 forms:

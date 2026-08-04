@@ -129,8 +129,11 @@ map.
 
 ## Citations
 
-Cite SILVA for this package-native implementation, RAFT for all-pairs
-correlation and recurrent refinement lineage, and DEQ-Flow when discussing the
+Cite SILVA [[1]](../paper/references.md#ref-1){ .silva-cite } for this
+package-native implementation, RAFT
+[[22]](../paper/references.md#ref-22){ .silva-cite } for all-pairs correlation
+and recurrent refinement lineage, and DEQ-Flow
+[[23]](../paper/references.md#ref-23){ .silva-cite } when discussing the
 equilibrium optical-flow framing.
 
 Direct source links are collected in

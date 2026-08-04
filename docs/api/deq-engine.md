@@ -3,7 +3,10 @@
 The DEQ engine module provides a package-native convenience interface for
 single-state and multi-state fixed-point systems. It is inspired by the general
 DEQ interface style popularized by TorchDEQ, but it uses SILVA package solvers,
-configuration objects, and diagnostics.
+configuration objects, and diagnostics. The relevant entries are DEQ
+[[4]](../paper/references.md#ref-4){ .silva-cite }, the general engine lineage
+[[35]](../paper/references.md#ref-35){ .silva-cite }, and SILVA
+[[1]](../paper/references.md#ref-1){ .silva-cite }.
 
 For the source-to-package derivation and scope notes, see
 [Method Adaptation Atlas](../learn/method-adaptation-atlas.md).

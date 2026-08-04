@@ -14,13 +14,13 @@ For method citations and claim-level citation rules, read the
 
 | Topic in this page | Literature to cite |
 | --- | --- |
-| equilibrium layer \(z^\star=f_\theta(z^\star,x)\) | Bai, Kolter, and Koltun, [Deep Equilibrium Models](https://arxiv.org/abs/1909.01377); Deep Implicit Layers tutorial |
-| implicit differentiation / adjoint solve | [Deep Implicit Layers tutorial](https://implicit-layers-tutorial.org/); DEQ |
-| Anderson acceleration | Anderson, [1965](https://doi.org/10.1145/321296.321305); Walker and Ni, [2011](https://doi.org/10.1137/10078356X) |
-| Broyden update | Broyden, [1965](https://doi.org/10.1090/S0025-5718-1965-0198670-6) |
-| GMRES adjoint linear solve | Saad and Schultz, [1986](https://doi.org/10.1137/0907058) |
-| graph local / graph attention terms | Kipf and Welling, [GCN](https://arxiv.org/abs/1609.02907); Velickovic et al., [GAT](https://arxiv.org/abs/1710.10903); Gilmer et al., [MPNN](https://arxiv.org/abs/1704.01212) |
-| global set pooling and attention | Zaheer et al., [Deep Sets](https://arxiv.org/abs/1703.06114); Vaswani et al., [Attention](https://arxiv.org/abs/1706.03762); Lee et al., [Set Transformer](https://arxiv.org/abs/1810.00825) |
+| equilibrium layer \(z^\star=f_\theta(z^\star,x)\) | Bai, Kolter, and Koltun, [Deep Equilibrium Models](https://arxiv.org/abs/1909.01377) [[4]](../paper/references.md#ref-4){ .silva-cite }; Deep Implicit Layers tutorial [[3]](../paper/references.md#ref-3){ .silva-cite } |
+| implicit differentiation / adjoint solve | [Deep Implicit Layers tutorial](https://implicit-layers-tutorial.org/) [[3]](../paper/references.md#ref-3){ .silva-cite }; DEQ [[4]](../paper/references.md#ref-4){ .silva-cite } |
+| Anderson acceleration | Anderson, [1965](https://doi.org/10.1145/321296.321305) [[10]](../paper/references.md#ref-10){ .silva-cite }; Walker and Ni, [2011](https://doi.org/10.1137/10078356X) [[11]](../paper/references.md#ref-11){ .silva-cite } |
+| Broyden update | Broyden, [1965](https://doi.org/10.1090/S0025-5718-1965-0198670-6) [[12]](../paper/references.md#ref-12){ .silva-cite } |
+| GMRES adjoint linear solve | Saad and Schultz, [1986](https://doi.org/10.1137/0907058) [[13]](../paper/references.md#ref-13){ .silva-cite } |
+| graph local / graph attention terms | Kipf and Welling, [GCN](https://arxiv.org/abs/1609.02907) [[15]](../paper/references.md#ref-15){ .silva-cite }; Velickovic et al., [GAT](https://arxiv.org/abs/1710.10903) [[16]](../paper/references.md#ref-16){ .silva-cite }; Gilmer et al., [MPNN](https://arxiv.org/abs/1704.01212) [[17]](../paper/references.md#ref-17){ .silva-cite } |
+| global set pooling and attention | Zaheer et al., [Deep Sets](https://arxiv.org/abs/1703.06114) [[18]](../paper/references.md#ref-18){ .silva-cite }; Vaswani et al., [Attention](https://arxiv.org/abs/1706.03762) [[29]](../paper/references.md#ref-29){ .silva-cite }; Lee et al., [Set Transformer](https://arxiv.org/abs/1810.00825) [[19]](../paper/references.md#ref-19){ .silva-cite } |
 
 ## Symbols
 

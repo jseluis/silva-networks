@@ -79,9 +79,11 @@ Use [DEQ Engine API](../api/deq-engine.md) for the full engine object map.
 
 ## Citations
 
-Cite the SILVA package for this implementation, Deep Equilibrium Models for the
-fixed-point framing, and TorchDEQ when discussing the general DEQ-engine
-interface lineage.
+Cite the SILVA package [[2]](../paper/references.md#ref-2){ .silva-cite } for
+this implementation, Deep Equilibrium Models
+[[4]](../paper/references.md#ref-4){ .silva-cite } for the fixed-point framing,
+and TorchDEQ [[35]](../paper/references.md#ref-35){ .silva-cite } when discussing
+the general DEQ-engine interface lineage.
 
 Direct links and BibTeX keys are collected in
 [Equilibrium and Implicit Layers](../paper/references.md#equilibrium-and-implicit-layers).

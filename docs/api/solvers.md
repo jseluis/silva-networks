@@ -39,8 +39,9 @@ chooses the training rule from `SolverConfig.backward_mode`.
 
 ## Picard Iteration
 
-The damped Picard update starts with an initial state \(z_0\). At iteration
-\(k\), evaluate the transition
+The damped Picard update, interpreted through the classical contraction result
+[[41]](../paper/references.md#ref-41){ .silva-cite }, starts with an initial state
+\(z_0\). At iteration \(k\), evaluate the transition
 
 $$
 \tilde z_{k+1}=f_\theta(z_k).
@@ -65,7 +66,8 @@ can help when the map is nearly non-contractive.
 
 ## Anderson Acceleration
 
-Anderson acceleration stores recent residuals
+Anderson acceleration [[10]](../paper/references.md#ref-10){ .silva-cite }
+[[11]](../paper/references.md#ref-11){ .silva-cite } stores recent residuals
 
 $$
 r_i=f_\theta(z_i)-z_i.
@@ -117,7 +119,8 @@ differentiable transition after the accelerated numerical solve, so
 
 ## Broyden
 
-Broyden treats the equilibrium condition as a root-finding problem:
+Broyden's method [[12]](../paper/references.md#ref-12){ .silva-cite } treats the
+equilibrium condition as a root-finding problem:
 
 $$
 F(z)=f_\theta(z)-z=0.
@@ -153,8 +156,9 @@ full, then incorporates the newest secant pair.
 
 ## GMRES for Adjoint Systems
 
-The SILVA study's implicit-gradient diagnostic uses a linear adjoint solve. Around
-an equilibrium, let
+The SILVA study's implicit-gradient diagnostic uses the matrix-free GMRES
+method [[13]](../paper/references.md#ref-13){ .silva-cite } for a linear adjoint
+solve. Around an equilibrium, let
 
 $$
 J_f(z^\star)=\frac{\partial f}{\partial z}(z^\star).

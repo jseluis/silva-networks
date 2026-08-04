@@ -1,7 +1,8 @@
 # Cortex Hierarchies
 
 The cortex architecture is the package form of the article's hierarchical
-SILVA experiments: an input is first transformed into a stimulus, one
+SILVA experiments [[1]](../paper/references.md#ref-1){ .silva-cite }: an input is
+first transformed into a stimulus, one
 equilibrium point stabilizes a first representation, and a later equilibrium
 point receives that stable state as its own stimulus. The layers remain normal
 PyTorch modules, so a model can include convolutional stems, dense state
@@ -161,7 +162,9 @@ different damping. Both are trained by ordinary PyTorch gradients.
 
 The internal architecture is defined by ordinary PyTorch modules. A SILVA
 equilibrium point does not require an MLP: `state_network` may contain
-convolutions, residual blocks, a U-Net, attention, graph operations, or a
+convolutions, residual blocks, a U-Net
+[[27]](../paper/references.md#ref-27){ .silva-cite }, attention
+[[29]](../paper/references.md#ref-29){ .silva-cite }, graph operations, or a
 domain-specific module. The final transition must preserve the equilibrium
 state space:
 

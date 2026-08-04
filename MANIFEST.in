@@ -19,5 +19,6 @@ recursive-include experiments/public/configs *.json
 include scripts/smoke_test.sh
 include scripts/documentation_audit.py
 include scripts/notebook_navigation.py
+include scripts/notebook_citations.py
 recursive-include src/silva_networks/configs *.json
 include src/silva_networks/cases.py

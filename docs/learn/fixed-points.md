@@ -12,6 +12,11 @@ $$
 F_\theta(z,x)=f_\theta(z,x)-z=0.
 $$
 
+The classical contraction theorem supplies the standard existence, uniqueness,
+and Picard-convergence result [[41]](../paper/references.md#ref-41){ .silva-cite };
+deep equilibrium models use this implicit-state viewpoint in learned systems
+[[4]](../paper/references.md#ref-4){ .silva-cite }.
+
 The package exposes this as:
 
 ```python

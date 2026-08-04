@@ -12,6 +12,8 @@ with clear roles: features `x`, optional local edges `edge_index`, optional edge
 features `edge_attr`, optional graph ids `batch`, and optional targets `y`.
 Package adapters cover common public datasets, while private datasets can be
 adapted by producing the same tensors.
+The public tabular source used by the worked adapters is the UCI repository
+[[42]](../paper/references.md#ref-42){ .silva-cite }.
 
 ## From Rows to Tensors
 

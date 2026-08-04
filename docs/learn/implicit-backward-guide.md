@@ -2,6 +2,10 @@
 
 This guide explains the package gradient path through equilibrium solves, what
 `implicit_adjoint_solve` computes, and the scope of the public engine.
+The backward construction follows the implicit-function treatment in the Deep
+Implicit Layers tutorial [[3]](../paper/references.md#ref-3){ .silva-cite } and
+the adjoint formulation used for deep equilibrium models
+[[4]](../paper/references.md#ref-4){ .silva-cite }.
 
 ## Forward Equation
 
@@ -121,7 +125,9 @@ adjoint = implicit_adjoint_solve(
 print(adjoint.x, adjoint.residuals)
 ```
 
-The helper uses VJP-backed GMRES and does not materialize the full Jacobian.
+The helper uses VJP-backed GMRES
+[[13]](../paper/references.md#ref-13){ .silva-cite } and does not materialize the
+full Jacobian.
 
 ## What Implicit Mode Executes
 

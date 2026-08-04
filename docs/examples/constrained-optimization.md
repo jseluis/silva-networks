@@ -101,10 +101,12 @@ selector table.
 
 ## Citations
 
-Cite the SILVA package for this implementation. Cite
-[OptNet](https://arxiv.org/abs/1703.00443) when discussing differentiable
-quadratic-program layers and
-[CVXPYlayers](https://github.com/cvxpy/cvxpylayers) when using the optional
+Cite the SILVA package [[2]](../paper/references.md#ref-2){ .silva-cite } for
+this implementation. Cite [OptNet](https://arxiv.org/abs/1703.00443)
+[[8]](../paper/references.md#ref-8){ .silva-cite } when discussing
+differentiable quadratic-program layers and
+[CVXPYlayers](https://github.com/cvxpy/cvxpylayers)
+[[40]](../paper/references.md#ref-40){ .silva-cite } when using the optional
 general disciplined convex-program bridge.
 
 ## Where to Go Next

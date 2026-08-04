@@ -1,6 +1,7 @@
 # SILVA Operators and Customization
 
-The SILVA package is built so the SILVA configuration is easy to reproduce,
+The SILVA package [[1]](../paper/references.md#ref-1){ .silva-cite } is built so
+the SILVA configuration is easy to reproduce,
 and new configurations are easy to explore. The fixed point is always the
 center:
 
@@ -22,6 +23,16 @@ $$
 
 The state \(z\) has one row per entity: a graph node, atom, hidden channel, or
 other object from a user dataset.
+
+The graph and set branches connect to GCN
+[[15]](../paper/references.md#ref-15){ .silva-cite }, GAT
+[[16]](../paper/references.md#ref-16){ .silva-cite }, message passing
+[[17]](../paper/references.md#ref-17){ .silva-cite }, Deep Sets
+[[18]](../paper/references.md#ref-18){ .silva-cite }, Set Transformer
+[[19]](../paper/references.md#ref-19){ .silva-cite }, dynamic graph construction
+[[20]](../paper/references.md#ref-20){ .silva-cite }, and scaled attention
+[[29]](../paper/references.md#ref-29){ .silva-cite } where the corresponding
+operator is selected.
 
 ## SILVA as a Generalized Equilibrium Family
 

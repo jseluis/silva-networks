@@ -28,16 +28,16 @@ solver settings, training, and evaluation protocol.
 
 | Name | Public class | State layout | Internal pattern | Source |
 | --- | --- | --- | --- | --- |
-| `mlp` | `SILVAMLPPointArchitecture` | `(..., channels)` | feed-forward channel mixing | [Rumelhart et al., 1986](https://doi.org/10.1038/323533a0) |
-| `residual_mlp` | `SILVAResidualMLPPointArchitecture` | `(..., channels)` | residual dense blocks | [ResNet, 2015](https://arxiv.org/abs/1512.03385) |
-| `residual_cnn` | `SILVAResidualConvPointArchitecture` | `(batch, channels, height, width)` | local residual convolutions | [ResNet, 2015](https://arxiv.org/abs/1512.03385) |
-| `unet` | `SILVAUNetPointArchitecture` | `(batch, channels, height, width)` | downsample, bottleneck, upsample, skip | [U-Net, 2015](https://arxiv.org/abs/1505.04597) |
-| `dense_cnn` | `SILVADenseConvPointArchitecture` | `(batch, channels, height, width)` | concatenated convolutional features | [DenseNet, 2016](https://arxiv.org/abs/1608.06993) |
-| `transformer` | `SILVATransformerPointArchitecture` | `(batch, tokens, channels)` | multi-head attention and channel MLP | [Transformer, 2017](https://arxiv.org/abs/1706.03762) |
-| `inverted_residual` | `SILVAInvertedResidualPointArchitecture` | `(batch, channels, height, width)` | pointwise expansion, depthwise convolution, projection | [MobileNetV2, 2018](https://arxiv.org/abs/1801.04381) |
-| `fourier_operator` | `SILVAFourierOperatorPointArchitecture` | `(batch, channels, height, width)` | low-frequency spectral mixing and local projection | [Fourier Neural Operator, 2020](https://arxiv.org/abs/2010.08895) |
-| `mlp_mixer` | `SILVAMLPMixerPointArchitecture` | `(batch, tokens, channels)` | alternating token and channel MLPs | [MLP-Mixer, 2021](https://arxiv.org/abs/2105.01601) |
-| `convnext_v2` | `SILVAConvNeXtV2PointArchitecture` | `(batch, channels, height, width)` | depthwise convolution, channel expansion, global response normalization | [ConvNeXt V2, 2023](https://arxiv.org/abs/2301.00808) |
+| `mlp` | `SILVAMLPPointArchitecture` | `(..., channels)` | feed-forward channel mixing | [Rumelhart et al., 1986](https://doi.org/10.1038/323533a0) [[25]](../paper/references.md#ref-25){ .silva-cite } |
+| `residual_mlp` | `SILVAResidualMLPPointArchitecture` | `(..., channels)` | residual dense blocks | [ResNet, 2015](https://arxiv.org/abs/1512.03385) [[26]](../paper/references.md#ref-26){ .silva-cite } |
+| `residual_cnn` | `SILVAResidualConvPointArchitecture` | `(batch, channels, height, width)` | local residual convolutions | [ResNet, 2015](https://arxiv.org/abs/1512.03385) [[26]](../paper/references.md#ref-26){ .silva-cite } |
+| `unet` | `SILVAUNetPointArchitecture` | `(batch, channels, height, width)` | downsample, bottleneck, upsample, skip | [U-Net, 2015](https://arxiv.org/abs/1505.04597) [[27]](../paper/references.md#ref-27){ .silva-cite } |
+| `dense_cnn` | `SILVADenseConvPointArchitecture` | `(batch, channels, height, width)` | concatenated convolutional features | [DenseNet, 2016](https://arxiv.org/abs/1608.06993) [[28]](../paper/references.md#ref-28){ .silva-cite } |
+| `transformer` | `SILVATransformerPointArchitecture` | `(batch, tokens, channels)` | multi-head attention and channel MLP | [Transformer, 2017](https://arxiv.org/abs/1706.03762) [[29]](../paper/references.md#ref-29){ .silva-cite } |
+| `inverted_residual` | `SILVAInvertedResidualPointArchitecture` | `(batch, channels, height, width)` | pointwise expansion, depthwise convolution, projection | [MobileNetV2, 2018](https://arxiv.org/abs/1801.04381) [[30]](../paper/references.md#ref-30){ .silva-cite } |
+| `fourier_operator` | `SILVAFourierOperatorPointArchitecture` | `(batch, channels, height, width)` | low-frequency spectral mixing and local projection | [Fourier Neural Operator, 2020](https://arxiv.org/abs/2010.08895) [[31]](../paper/references.md#ref-31){ .silva-cite } |
+| `mlp_mixer` | `SILVAMLPMixerPointArchitecture` | `(batch, tokens, channels)` | alternating token and channel MLPs | [MLP-Mixer, 2021](https://arxiv.org/abs/2105.01601) [[33]](../paper/references.md#ref-33){ .silva-cite } |
+| `convnext_v2` | `SILVAConvNeXtV2PointArchitecture` | `(batch, channels, height, width)` | depthwise convolution, channel expansion, global response normalization | [ConvNeXt V2, 2023](https://arxiv.org/abs/2301.00808) [[34]](../paper/references.md#ref-34){ .silva-cite } |
 
 Each module returns a state-shaped field. `SILVACortexLayer` adds that field to
 the encoded stimulus and any self, local, global, or custom interaction fields.
@@ -123,9 +123,11 @@ z_{k+1}
 =(1-\alpha)z_k+\alpha F_\theta(z_k,u).
 $$
 
-Anderson and Broyden use the same undamped map $F_\theta$ but construct their
-next state from residual history or inverse-Jacobian information. The recorded
-fixed-point residual is
+Anderson [[10]](../paper/references.md#ref-10){ .silva-cite }
+[[11]](../paper/references.md#ref-11){ .silva-cite } and Broyden
+[[12]](../paper/references.md#ref-12){ .silva-cite } use the same undamped map
+$F_\theta$ but construct their next state from residual history or
+inverse-Jacobian information. The recorded fixed-point residual is
 
 $$
 r_k=\left\|F_\theta(z_k,u)-z_k\right\|_2.

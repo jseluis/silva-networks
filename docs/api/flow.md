@@ -3,7 +3,8 @@
 The optical-flow module has two public levels. `SILVADEQFlow` is a compact
 flow-only equilibrium for quick custom experiments. `SILVARAFTDEQ` is the
 coupled hidden-state/flow case connecting SILVA fixed points with RAFT
-correlation and DEQ-Flow equilibrium framing.
+correlation [[22]](../paper/references.md#ref-22){ .silva-cite } and DEQ-Flow
+equilibrium framing [[23]](../paper/references.md#ref-23){ .silva-cite }.
 
 For the source-to-package derivation and scope notes, see
 [Method Adaptation Atlas](../learn/method-adaptation-atlas.md).

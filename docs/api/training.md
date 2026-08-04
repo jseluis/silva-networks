@@ -8,6 +8,12 @@ Solver and backward choices belong to the model configuration. For example,
 `SolverConfig(backward_mode="unrolled")` differentiates through finite solver
 steps, while `SolverConfig(backward_mode="implicit", backward_solver="gmres")`
 uses the package DEQ/SILVA adjoint path.
+This path follows the DEQ implicit-gradient formulation
+[[4]](../paper/references.md#ref-4){ .silva-cite }, with matrix-free GMRES
+[[13]](../paper/references.md#ref-13){ .silva-cite }; training and regularization
+choices can also be compared with
+[[39]](../paper/references.md#ref-39){ .silva-cite } and
+[[6]](../paper/references.md#ref-6){ .silva-cite }.
 
 For supervised data \((x_i,y_i)\), the helper minimizes a batch objective
 

@@ -6,6 +6,13 @@ experiment: state width, number of layers, local operator, global operator,
 optional learned self term, solver family, solver parameters, readout head, task
 mode, pooling rule, and device placement.
 
+The stacked equilibrium interpretation follows DEQ
+[[4]](../paper/references.md#ref-4){ .silva-cite }; multiscale stacks connect to
+MDEQ [[5]](../paper/references.md#ref-5){ .silva-cite }, and graph/set readouts
+use the corresponding graph and invariant-set sources
+[[15]](../paper/references.md#ref-15){ .silva-cite }
+[[18]](../paper/references.md#ref-18){ .silva-cite }.
+
 ## Stack Recurrence
 
 For a stack with \(K\) equilibrium layers, define

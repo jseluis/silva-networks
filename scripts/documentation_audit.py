@@ -36,6 +36,12 @@ NEXT_STEP_LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
 FENCED_CODE_RE = re.compile(r"```.*?```|~~~.*?~~~", re.DOTALL)
 NEXT_STEP_CELL_TAG = "silva-next-steps"
 SITE_PREFIX = "https://jseluis.github.io/silva-networks/"
+REFERENCE_ID_RE = re.compile(r'<li id="ref-(\d+)">(.*?)</li>')
+NUMBERED_CITATION_RE = re.compile(
+    r"\[(?:\[(\d+)\]|(\d+))\]\(([^)]*#ref-(\d+))\)"
+)
+NUMBERED_CITATION_START = "<!-- silva-numbered-citations:start -->"
+NUMBERED_CITATION_END = "<!-- silva-numbered-citations:end -->"
 
 
 def run_documentation_audit(root: Path = ROOT) -> dict[str, list[str]]:
@@ -53,6 +59,7 @@ def run_documentation_audit(root: Path = ROOT) -> dict[str, list[str]]:
     _check_notebooks(root, docs, errors)
     _check_download_surface(root, errors)
     _check_ui_configuration(root, errors)
+    _check_numbered_citations(root, docs, errors)
     _check_reader_wording(docs, errors)
     return {"errors": errors, "warnings": warnings}
 
@@ -87,6 +94,8 @@ def _check_ui_configuration(root: Path, errors: list[str]) -> None:
         ".md-typeset .doc-signature",
         ".md-typeset .mkdocstrings-source[open] > .highlight",
         ".md-typeset .jupyter-wrapper .jp-CodeCell .jp-Cell-inputWrapper .jp-InputPrompt",
+        ".md-typeset .silva-cite",
+        ".md-typeset .silva-reference-list li:target",
     )
     for selector in required_styles:
         if selector not in stylesheet:
@@ -295,6 +304,51 @@ def _check_notebooks(root: Path, docs: Path, errors: list[str]) -> None:
                 errors.append(f"{label} repeats a notebook next-step destination")
             if len(families) < 2:
                 errors.append(f"{label} next steps do not connect multiple site families")
+
+
+def _check_numbered_citations(root: Path, docs: Path, errors: list[str]) -> None:
+    references_path = docs / "paper/references.md"
+    references = references_path.read_text(encoding="utf-8")
+    entries = REFERENCE_ID_RE.findall(references)
+    numbers = [int(number) for number, _ in entries]
+    if numbers != list(range(1, 43)):
+        errors.append("numbered reference registry must contain sequential entries 1 through 42")
+    for number, entry in entries:
+        if 'target="_blank"' not in entry or 'rel="noopener"' not in entry:
+            errors.append(f"numbered reference {number} does not open its external source safely")
+
+    valid_numbers = set(numbers)
+    paths = [*docs.rglob("*.md"), *docs.rglob("*.ipynb")]
+    for path in sorted(paths):
+        text = path.read_text(encoding="utf-8")
+        for match in NUMBERED_CITATION_RE.finditer(text):
+            displayed = int(match.group(1) or match.group(2))
+            target = int(match.group(4))
+            if displayed != target:
+                errors.append(
+                    f"{path.relative_to(root)} citation [{displayed}] points to ref-{target}"
+                )
+            if target not in valid_numbers:
+                errors.append(
+                    f"{path.relative_to(root)} citation points to missing ref-{target}"
+                )
+
+    notebook_roots = (
+        root / "notebooks/package_api",
+        root / "notebooks/implicit_bridge",
+        docs / "package-notebooks",
+        docs / "implicit-bridge-notebooks",
+        root / "colab",
+    )
+    for notebook_root in notebook_roots:
+        for path in sorted(notebook_root.rglob("*.ipynb")):
+            text = path.read_text(encoding="utf-8")
+            if text.count(NUMBERED_CITATION_START) != 1:
+                errors.append(f"{path.relative_to(root)} needs one numbered citation block")
+            if text.count(NUMBERED_CITATION_END) != 1:
+                errors.append(f"{path.relative_to(root)} needs one closed numbered citation block")
+            if "paper/references/#ref-" not in text:
+                errors.append(f"{path.relative_to(root)} has no numbered literature links")
 
 
 def _check_download_surface(root: Path, errors: list[str]) -> None:

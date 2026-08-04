@@ -89,7 +89,8 @@ context, solver dynamics, diagnostics, and readout heads.
 
 ## Extended Deep Equilibrium Layers
 
-Deep Equilibrium Models solve for a representation \(z^\star\) that is already
+Deep Equilibrium Models [[4]](paper/references.md#ref-4){ .silva-cite } solve for
+a representation \(z^\star\) that is already
 at rest under a learned transition. SILVA keeps that implicit-layer contract and
 makes the transition inspectable: data enters through a stimulus branch, while
 local, global, and optional self-interaction branches describe how the state
@@ -136,6 +137,11 @@ Author: [Dr. Jose Luis Silva](https://jsluis.com). Source:
 The package is released under the MIT License.
 
 ## How to Cite
+
+Use the SILVA article [[1]](paper/references.md#ref-1){ .silva-cite } for the
+methodology and the archived software record
+[[2]](paper/references.md#ref-2){ .silva-cite } for the package version. These
+numbers link to complete citations and primary records.
 
 If you use the package, cite the software repository. If the work uses or
 discusses the SILVA methodology, cite the arXiv article as well.

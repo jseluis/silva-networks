@@ -1,6 +1,8 @@
 # SILVA Presets API
 
-The SILVA study's Figure 1 is the organizing contract for the package:
+The SILVA study's Figure 1 is the organizing contract for the package; the
+complete article citation is
+[[1]](../paper/references.md#ref-1){ .silva-cite }.
 
 $$
 z_{k+1}

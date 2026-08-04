@@ -40,7 +40,9 @@ z_{k+1}
 $$
 
 For \(\alpha=1\), this is ordinary Picard iteration. For \(0<\alpha<1\), the
-step is damped. If \(f_\theta\) is a contraction with constant \(L<1\), then
+step is damped. The contraction argument follows the fixed-point theorem of
+Banach [[41]](../paper/references.md#ref-41){ .silva-cite }. If \(f_\theta\) is
+a contraction with constant \(L<1\), then
 
 $$
 \|z_{k+1}-z^\star\|
@@ -52,7 +54,9 @@ The package field is `SolverConfig.alpha`.
 
 ## Anderson Acceleration
 
-Anderson acceleration keeps recent states and transition values:
+Anderson acceleration [[10]](../paper/references.md#ref-10){ .silva-cite }
+[[11]](../paper/references.md#ref-11){ .silva-cite } keeps recent states and
+transition values:
 
 $$
 X_k=[z_{k-m},\ldots,z_k],
@@ -101,7 +105,8 @@ ridge term is the package's first stabilizer.
 
 ## Broyden Inverse Update
 
-Broyden solves the root problem \(r(z)=0\) by maintaining an approximate inverse
+Broyden's quasi-Newton method [[12]](../paper/references.md#ref-12){ .silva-cite }
+solves the root problem \(r(z)=0\) by maintaining an approximate inverse
 Jacobian \(B_k\approx J_r(z_k)^{-1}\). The step is
 
 $$
@@ -145,9 +150,10 @@ $$
 where \(T_\alpha(z)=(1-\alpha)z+\alpha f(z,x)\). The package exposes this
 through `implicit_adjoint_solve`.
 
-GMRES solves \(Au=b\) without materializing \(A\). Starting with \(r_0=b-Au_0\),
-Arnoldi iteration constructs orthonormal basis vectors \(q_1,\ldots,q_k\) and
-an upper Hessenberg matrix \(H_k\):
+GMRES [[13]](../paper/references.md#ref-13){ .silva-cite } solves \(Au=b\)
+without materializing \(A\). Starting with \(r_0=b-Au_0\), Arnoldi iteration
+constructs orthonormal basis vectors \(q_1,\ldots,q_k\) and an upper Hessenberg
+matrix \(H_k\):
 
 $$
 AQ_k\approx Q_{k+1}H_k.

@@ -1,7 +1,10 @@
 # Optimization API
 
 This module contains package-native projected quadratic-program layers and an
-optional CVXPYlayers bridge.
+optional CVXPYlayers bridge. Its method lineage is OptNet
+[[8]](../paper/references.md#ref-8){ .silva-cite }, differentiable convex
+optimization layers [[9]](../paper/references.md#ref-9){ .silva-cite }, and the
+CVXPYlayers implementation [[40]](../paper/references.md#ref-40){ .silva-cite }.
 
 For the source-to-package derivation and citation scope, see
 [Method Adaptation Atlas](../learn/method-adaptation-atlas.md).

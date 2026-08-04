@@ -11,18 +11,18 @@ when preparing a paper, README, model card, or experiment report.
 
 | Implementation family | Package surface | Primary references to cite |
 | --- | --- | --- |
-| fixed-point layer | `fixed_point`, `DEQLayer`, `SILVALayer`, presets | SILVA paper/package; Bai et al., [DEQ](https://arxiv.org/abs/1909.01377) |
-| implicit gradients | `implicit_adjoint_solve`, VJP/JVP helpers | [Deep Implicit Layers tutorial](https://implicit-layers-tutorial.org/); DEQ |
-| Anderson solver | `anderson` | Anderson, [1965](https://doi.org/10.1145/321296.321305); Walker-Ni, [2011](https://doi.org/10.1137/10078356X) |
-| Broyden solver | `broyden` | Broyden, [1965](https://doi.org/10.1090/S0025-5718-1965-0198670-6) |
-| GMRES adjoint solve | `gmres`, `LinearSolveResult` | Saad-Schultz, [1986](https://doi.org/10.1137/0907058) |
-| graph local terms | `GraphLocal`, `GraphAttentionLocal` | Kipf-Welling [GCN](https://arxiv.org/abs/1609.02907); Velickovic et al. [GAT](https://arxiv.org/abs/1710.10903); Gilmer et al. [MPNN](https://arxiv.org/abs/1704.01212) |
-| global set/attention terms | `MeanFieldGlobal`, `TopKGlobalAttention`, channel attention | Deep Sets, [Attention](https://arxiv.org/abs/1706.03762), [Set Transformer](https://arxiv.org/abs/1810.00825) |
-| dynamic kNN local terms | `TopKLocal`, `DynamicChannelLocal`, dataset kNN graph builders | Wang et al., [Dynamic Graph CNN](https://arxiv.org/abs/1801.07829); SILVA for hidden-channel adaptation |
-| Jacobian penalty | `hutchinson_jacobian_norm`, `jacobian_regularization_loss` | Hutchinson, [1989](https://doi.org/10.1080/03610918908812806); Bai et al., [Jacobian-regularized DEQ](https://arxiv.org/abs/2106.14342) |
-| implicit bridge | `SILVAFixedPointBlock`, `SILVAEulerFlowBlock`, `SILVAQuadraticOptimizationLayer`, `SILVAMultiscaleDEQBlock` | DEQ, Neural ODEs, OptNet, differentiable convex optimization layers, MDEQ |
-| DEQ engine | `SILVADEQEngine`, `silva_deq`, `pack_state`, `SILVAVariationalDropout` | SILVA package, [TorchDEQ](https://github.com/locuslab/torchdeq), DEQ |
-| SILVA DEQ flow | `SILVADEQFlow`, flow warp, all-pairs correlation | [RAFT](https://arxiv.org/abs/2003.12039), [DEQ-Flow](https://openaccess.thecvf.com/content/CVPR2022/html/Bai_Deep_Equilibrium_Optical_Flow_Estimation_CVPR_2022_paper.html), SILVA package |
+| fixed-point layer | `fixed_point`, `DEQLayer`, `SILVALayer`, presets | SILVA paper/package [[1]](../paper/references.md#ref-1){ .silva-cite } [[2]](../paper/references.md#ref-2){ .silva-cite }; Bai et al., [DEQ](https://arxiv.org/abs/1909.01377) [[4]](../paper/references.md#ref-4){ .silva-cite } |
+| implicit gradients | `implicit_adjoint_solve`, VJP/JVP helpers | [Deep Implicit Layers tutorial](https://implicit-layers-tutorial.org/) [[3]](../paper/references.md#ref-3){ .silva-cite }; DEQ [[4]](../paper/references.md#ref-4){ .silva-cite } |
+| Anderson solver | `anderson` | Anderson, [1965](https://doi.org/10.1145/321296.321305) [[10]](../paper/references.md#ref-10){ .silva-cite }; Walker-Ni, [2011](https://doi.org/10.1137/10078356X) [[11]](../paper/references.md#ref-11){ .silva-cite } |
+| Broyden solver | `broyden` | Broyden, [1965](https://doi.org/10.1090/S0025-5718-1965-0198670-6) [[12]](../paper/references.md#ref-12){ .silva-cite } |
+| GMRES adjoint solve | `gmres`, `LinearSolveResult` | Saad-Schultz, [1986](https://doi.org/10.1137/0907058) [[13]](../paper/references.md#ref-13){ .silva-cite } |
+| graph local terms | `GraphLocal`, `GraphAttentionLocal` | Kipf-Welling [GCN](https://arxiv.org/abs/1609.02907) [[15]](../paper/references.md#ref-15){ .silva-cite }; Velickovic et al. [GAT](https://arxiv.org/abs/1710.10903) [[16]](../paper/references.md#ref-16){ .silva-cite }; Gilmer et al. [MPNN](https://arxiv.org/abs/1704.01212) [[17]](../paper/references.md#ref-17){ .silva-cite } |
+| global set/attention terms | `MeanFieldGlobal`, `TopKGlobalAttention`, channel attention | Deep Sets [[18]](../paper/references.md#ref-18){ .silva-cite }, [Attention](https://arxiv.org/abs/1706.03762) [[29]](../paper/references.md#ref-29){ .silva-cite }, [Set Transformer](https://arxiv.org/abs/1810.00825) [[19]](../paper/references.md#ref-19){ .silva-cite } |
+| dynamic kNN local terms | `TopKLocal`, `DynamicChannelLocal`, dataset kNN graph builders | Wang et al., [Dynamic Graph CNN](https://arxiv.org/abs/1801.07829) [[20]](../paper/references.md#ref-20){ .silva-cite }; SILVA for hidden-channel adaptation [[1]](../paper/references.md#ref-1){ .silva-cite } |
+| Jacobian penalty | `hutchinson_jacobian_norm`, `jacobian_regularization_loss` | Hutchinson, [1989](https://doi.org/10.1080/03610918908812806) [[14]](../paper/references.md#ref-14){ .silva-cite }; Bai et al., [Jacobian-regularized DEQ](https://arxiv.org/abs/2106.14342) [[6]](../paper/references.md#ref-6){ .silva-cite } |
+| implicit bridge | `SILVAFixedPointBlock`, `SILVAEulerFlowBlock`, `SILVAQuadraticOptimizationLayer`, `SILVAMultiscaleDEQBlock` | DEQ [[4]](../paper/references.md#ref-4){ .silva-cite }, Neural ODEs [[7]](../paper/references.md#ref-7){ .silva-cite }, OptNet [[8]](../paper/references.md#ref-8){ .silva-cite }, differentiable convex optimization layers [[9]](../paper/references.md#ref-9){ .silva-cite }, MDEQ [[5]](../paper/references.md#ref-5){ .silva-cite } |
+| DEQ engine | `SILVADEQEngine`, `silva_deq`, `pack_state`, `SILVAVariationalDropout` | SILVA package [[2]](../paper/references.md#ref-2){ .silva-cite }, [TorchDEQ](https://github.com/locuslab/torchdeq) [[35]](../paper/references.md#ref-35){ .silva-cite }, DEQ [[4]](../paper/references.md#ref-4){ .silva-cite } |
+| SILVA DEQ flow | `SILVADEQFlow`, flow warp, all-pairs correlation | [RAFT](https://arxiv.org/abs/2003.12039) [[22]](../paper/references.md#ref-22){ .silva-cite }, [DEQ-Flow](https://openaccess.thecvf.com/content/CVPR2022/html/Bai_Deep_Equilibrium_Optical_Flow_Estimation_CVPR_2022_paper.html) [[23]](../paper/references.md#ref-23){ .silva-cite }, SILVA package [[2]](../paper/references.md#ref-2){ .silva-cite } |
 
 ## Reading Contract
 

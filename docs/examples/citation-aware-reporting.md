@@ -36,17 +36,28 @@ This configuration uses:
 
 For this configuration, cite:
 
-1. SILVA paper/package for the structured interaction field and implementation.
-2. Deep Equilibrium Models for the fixed-point layer view.
-3. Graph Attention Networks for the local graph-attention operator.
-4. Attention Is All You Need if discussing the attention score form.
-5. Deep Sets if discussing permutation-invariant graph/set pooling.
-6. Anderson 1965 and Walker-Ni 2011 for Anderson acceleration.
-7. Dataset source for the graph dataset used in the experiment.
+1. SILVA paper/package [[1]](../paper/references.md#ref-1){ .silva-cite }
+   [[2]](../paper/references.md#ref-2){ .silva-cite } for the structured
+   interaction field and implementation.
+2. Deep Equilibrium Models [[4]](../paper/references.md#ref-4){ .silva-cite } for
+   the fixed-point layer view.
+3. Graph Attention Networks [[16]](../paper/references.md#ref-16){ .silva-cite }
+   for the local graph-attention operator.
+4. Attention Is All You Need [[29]](../paper/references.md#ref-29){ .silva-cite }
+   if discussing the attention score form.
+5. Deep Sets [[18]](../paper/references.md#ref-18){ .silva-cite } if discussing
+   permutation-invariant graph/set pooling.
+6. Anderson 1965 [[10]](../paper/references.md#ref-10){ .silva-cite } and
+   Walker-Ni 2011 [[11]](../paper/references.md#ref-11){ .silva-cite } for
+   Anderson acceleration.
+7. Dataset source, such as the UCI repository
+   [[42]](../paper/references.md#ref-42){ .silva-cite }, for the dataset used in
+   the experiment.
 
 If you add `stability_report`, `hutchinson_jacobian_norm`, or
 `jacobian_regularization_loss`, also cite Hutchinson trace estimation and
-Jacobian-regularized DEQs.
+Jacobian-regularized DEQs [[14]](../paper/references.md#ref-14){ .silva-cite }
+[[6]](../paper/references.md#ref-6){ .silva-cite }.
 
 ## Methods Sentence
 

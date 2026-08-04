@@ -2,9 +2,12 @@
 
 This page connects three practical ideas to SILVA:
 
-- TorchDEQ-style general fixed-point engines;
-- RAFT-style all-pairs correlation and recurrent flow refinement;
-- DEQ-Flow-style fixed-point optical-flow estimation.
+- TorchDEQ-style general fixed-point engines
+  [[35]](../paper/references.md#ref-35){ .silva-cite };
+- RAFT-style all-pairs correlation and recurrent flow refinement
+  [[22]](../paper/references.md#ref-22){ .silva-cite };
+- DEQ-Flow-style fixed-point optical-flow estimation
+  [[23]](../paper/references.md#ref-23){ .silva-cite }.
 
 The equations and package objects below are paired with their primary method
 sources so readers can distinguish the SILVA transition, the equilibrium

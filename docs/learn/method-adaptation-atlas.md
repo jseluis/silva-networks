@@ -2,7 +2,14 @@
 
 This page translates implicit-layer, DEQ, ODE, optimization, and optical-flow
 literature into SILVA-native documentation, package APIs, runnable notebooks,
-and clear citation practice.
+and clear citation practice. The central lineage is indexed locally for Deep
+Implicit Layers [[3]](../paper/references.md#ref-3){ .silva-cite }, DEQ
+[[4]](../paper/references.md#ref-4){ .silva-cite }, Neural ODEs
+[[7]](../paper/references.md#ref-7){ .silva-cite }, differentiable optimization
+[[8]](../paper/references.md#ref-8){ .silva-cite }
+[[9]](../paper/references.md#ref-9){ .silva-cite }, RAFT
+[[22]](../paper/references.md#ref-22){ .silva-cite }, and DEQ-Flow
+[[23]](../paper/references.md#ref-23){ .silva-cite }.
 
 Use this page when you want to answer three questions:
 

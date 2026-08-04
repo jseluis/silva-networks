@@ -21,8 +21,11 @@ The output reports:
 
 The checked catalog contains MLP, residual MLP, residual CNN, U-Net, dense CNN,
 Transformer, inverted residual, Fourier operator, MLP-Mixer, and ConvNeXt V2
-fields. The example is a compatibility and differentiation check rather than an
-accuracy comparison.
+fields. Their numbered primary entries are
+[[25]](../paper/references.md#ref-25){ .silva-cite } through
+[[34]](../paper/references.md#ref-34){ .silva-cite }, with the neural-operator
+overview at [[32]](../paper/references.md#ref-32){ .silva-cite }. The example is
+a compatibility and differentiation check rather than an accuracy comparison.
 
 ## What the Run Establishes
 

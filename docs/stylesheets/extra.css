@@ -51,6 +51,27 @@
   text-underline-offset: 0.14em;
 }
 
+.md-typeset .silva-cite {
+  font-size: 0.86em;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.md-typeset .silva-reference-list {
+  padding-left: 1.6rem;
+}
+
+.md-typeset .silva-reference-list li {
+  margin-bottom: 0.7rem;
+  padding: 0.2rem 0.45rem;
+  scroll-margin-top: 5.2rem;
+}
+
+.md-typeset .silva-reference-list li:target {
+  border-left: 3px solid var(--md-accent-fg-color);
+  background: rgba(96, 165, 250, 0.1);
+}
+
 .md-typeset .silva-coming-soon {
   display: inline-flex;
   align-items: center;

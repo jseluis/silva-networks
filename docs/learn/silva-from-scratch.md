@@ -1,6 +1,8 @@
 # SILVA From Scratch
 
-SILVA layers are PyTorch equilibrium layers built from three visible
+SILVA layers [[1]](../paper/references.md#ref-1){ .silva-cite } are PyTorch
+equilibrium layers, connected to the deep-equilibrium formulation
+[[4]](../paper/references.md#ref-4){ .silva-cite }, and built from three visible
 interactions:
 
 $$

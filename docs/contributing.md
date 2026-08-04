@@ -42,6 +42,26 @@ The documentation audit validates the heading, table shape, question wording,
 destination uniqueness, cross-section reach, local link targets, notebook cell
 placement, and notebook source synchronization.
 
+## Citation Convention
+
+Documentation citations use one global sequence defined in
+[Paper and References](paper/references.md#numbered-reference-registry). Numbers
+never restart on an individual page. A prose marker links to its complete local
+entry:
+
+```markdown
+GMRES [[13]](paper/references.md#ref-13){ .silva-cite }
+```
+
+Each registry entry includes the full citation, a BibTeX key, and a primary
+external link with `target="_blank"` and `rel="noopener"`. Add a BibTeX entry
+whenever a new numbered source is introduced. Notebook citation blocks are
+synchronized with:
+
+```bash
+python scripts/notebook_citations.py
+```
+
 ## Where to Go Next
 
 | Question | Page |

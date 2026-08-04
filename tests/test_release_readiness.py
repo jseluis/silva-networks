@@ -70,6 +70,10 @@ def test_bibtex_contains_silva_article_and_related_sources() -> None:
         "kovachki2023neuraloperator",
         "tolstikhin2021mlpmixer",
         "woo2023convnextv2",
+        "scarselli2009graph",
+        "dosovitskiy2015flownet",
+        "banach1922operations",
+        "dua2019uci",
     ]:
         assert f"{{{key}," in bibtex
     assert "2607.28989" in bibtex
@@ -89,6 +93,23 @@ def test_notebook_smoke_script_lists_defaults() -> None:
     assert "docs/package-notebooks/13_raft_deq_flow.ipynb" in result.stdout
     assert "docs/package-notebooks/14_point_architecture_catalog.ipynb" in result.stdout
     assert "docs/package-notebooks/15_neural_operators_ode_pde.ipynb" in result.stdout
+
+
+def test_global_numbered_citations_cover_solver_and_notebooks() -> None:
+    references = (ROOT / "docs/paper/references.md").read_text(encoding="utf-8")
+    solvers = (ROOT / "docs/api/solvers.md").read_text(encoding="utf-8")
+    notebook = json.loads(
+        (ROOT / "notebooks/package_api/02_solvers_and_jacobians.ipynb").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert '<li id="ref-13">' in references
+    assert 'target="_blank" rel="noopener"' in references
+    assert "[[13]](../paper/references.md#ref-13)" in solvers
+    notebook_text = "".join(
+        "".join(cell.get("source", [])) for cell in notebook["cells"]
+    )
+    assert "[13](https://jseluis.github.io/silva-networks/paper/references/#ref-13)" in notebook_text
 
 
 def test_api_reference_covers_every_source_module() -> None:

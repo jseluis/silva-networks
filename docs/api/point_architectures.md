@@ -4,6 +4,17 @@ The point-architecture module provides ten shape-preserving internal fields for
 `SILVACortexLayer`. Use the registry to inspect the available names and the
 factory to build a module from configuration.
 
+Their source patterns have stable entries for the MLP lineage
+[[25]](../paper/references.md#ref-25){ .silva-cite }, residual networks
+[[26]](../paper/references.md#ref-26){ .silva-cite }, U-Net
+[[27]](../paper/references.md#ref-27){ .silva-cite }, DenseNet
+[[28]](../paper/references.md#ref-28){ .silva-cite }, Transformer
+[[29]](../paper/references.md#ref-29){ .silva-cite }, MobileNetV2
+[[30]](../paper/references.md#ref-30){ .silva-cite }, FNO
+[[31]](../paper/references.md#ref-31){ .silva-cite }, MLP-Mixer
+[[33]](../paper/references.md#ref-33){ .silva-cite }, and ConvNeXt V2
+[[34]](../paper/references.md#ref-34){ .silva-cite }.
+
 ```python
 from silva_networks import (
     available_silva_point_architectures,

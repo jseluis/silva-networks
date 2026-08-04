@@ -66,6 +66,7 @@ REQUIRED_FILES = (
     "scripts/smoke_test.sh",
     "scripts/run_notebook_smoke.py",
     "scripts/notebook_navigation.py",
+    "scripts/notebook_citations.py",
 )
 
 REQUIRED_NAV_MARKERS = (

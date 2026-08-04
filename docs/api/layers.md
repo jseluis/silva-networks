@@ -14,6 +14,16 @@ $$
 The public package keeps each term replaceable while preserving the fixed-point
 solve.
 
+The layer contract is defined by SILVA
+[[1]](../paper/references.md#ref-1){ .silva-cite } and its equilibrium framing
+connects to DEQ
+[[4]](../paper/references.md#ref-4){ .silva-cite }. Local and global choices use
+the appropriate GCN [[15]](../paper/references.md#ref-15){ .silva-cite }, GAT
+[[16]](../paper/references.md#ref-16){ .silva-cite }, MPNN
+[[17]](../paper/references.md#ref-17){ .silva-cite }, Deep Sets
+[[18]](../paper/references.md#ref-18){ .silva-cite }, or attention
+[[29]](../paper/references.md#ref-29){ .silva-cite } lineage.
+
 The solver supplies the default self-persistence term:
 
 $$

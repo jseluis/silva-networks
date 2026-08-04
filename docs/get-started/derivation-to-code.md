@@ -2,6 +2,11 @@
 
 The package is organized so every major equation has a nearby implementation
 object. This page shows the main derivation path and the matching code.
+The fixed-point and implicit-gradient lineage is indexed at
+[[3]](../paper/references.md#ref-3){ .silva-cite } and
+[[4]](../paper/references.md#ref-4){ .silva-cite }, with solver sources at
+[[10]](../paper/references.md#ref-10){ .silva-cite } through
+[[13]](../paper/references.md#ref-13){ .silva-cite }.
 
 For the full traceability manual, including solver algorithms, SILVA
 families, tensor contracts, Jacobian estimators, and reporting best practices,

@@ -5,6 +5,9 @@ when you need the equations, shape contracts, and solver assumptions behind the
 public classes.
 Pair it with [Research Citation Audit](../research-citation-audit.md) when you
 need to cite the methods behind a class, solver, diagnostic, or preset.
+The global registry starts with the SILVA article
+[[1]](../paper/references.md#ref-1){ .silva-cite } and archived package
+[[2]](../paper/references.md#ref-2){ .silva-cite }.
 
 The API is organized by role. The generated pages show signatures, docstrings,
 inputs, outputs, and source links.

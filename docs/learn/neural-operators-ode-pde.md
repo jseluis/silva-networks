@@ -2,10 +2,16 @@
 
 This guide connects four objects that are often introduced separately:
 
-1. an ODE evolves a state through continuous time;
+1. an ODE evolves a state through continuous time, including the learned
+   dynamics formulation of Neural ODEs
+   [[7]](../paper/references.md#ref-7){ .silva-cite };
 2. a PDE evolves or constrains a field over space and possibly time;
-3. a neural operator learns a map between functions;
-4. SILVA builds a structured transition from named fields and solves its fixed point.
+3. a neural operator learns a map between functions
+   [[32]](../paper/references.md#ref-32){ .silva-cite }, with the Fourier Neural
+   Operator as a spectral construction
+   [[31]](../paper/references.md#ref-31){ .silva-cite };
+4. SILVA builds a structured transition from named fields and solves its fixed
+   point [[1]](../paper/references.md#ref-1){ .silva-cite }.
 
 <div class="silva-document-actions">
   <a class="md-button md-button--primary" href="../../package-notebooks/15_neural_operators_ode_pde/">Open executable notebook</a>

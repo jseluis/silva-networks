@@ -7,7 +7,16 @@ transition architecture, solver, gradient estimator, and readout.
 Paper-level experiments require the dimensions, schedule, data split,
 optimizer, solver budget, and evaluation protocol specified by the selected
 study. The package exposes the operators and numerical controls needed to
-express those settings.
+express those settings. Numbered primary entries cover DEQ
+[[4]](../paper/references.md#ref-4){ .silva-cite }, MDEQ
+[[5]](../paper/references.md#ref-5){ .silva-cite }, Jacobian regularization
+[[6]](../paper/references.md#ref-6){ .silva-cite }, the general engine lineage
+[[35]](../paper/references.md#ref-35){ .silva-cite }, implicit graph and
+representation cases [[36]](../paper/references.md#ref-36){ .silva-cite }
+[[37]](../paper/references.md#ref-37){ .silva-cite }, diffusion equilibria
+[[38]](../paper/references.md#ref-38){ .silva-cite }, and optical flow
+[[22]](../paper/references.md#ref-22){ .silva-cite }
+[[23]](../paper/references.md#ref-23){ .silva-cite }.
 
 ## Capability Matrix
 

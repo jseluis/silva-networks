@@ -5,6 +5,15 @@ SILVA, DEQ, flow, diffusion, or optimization family by name. Use it when a
 notebook, experiment config, or teaching example should select the model family
 without importing every concrete class directly.
 
+The named choices connect to DEQ
+[[4]](../paper/references.md#ref-4){ .silva-cite }, MDEQ
+[[5]](../paper/references.md#ref-5){ .silva-cite }, Neural
+ODEs [[7]](../paper/references.md#ref-7){ .silva-cite }, differentiable
+optimization [[8]](../paper/references.md#ref-8){ .silva-cite }
+[[9]](../paper/references.md#ref-9){ .silva-cite }, and optical-flow equilibria
+[[22]](../paper/references.md#ref-22){ .silva-cite }
+[[23]](../paper/references.md#ref-23){ .silva-cite }.
+
 The factory normalizes hyphenated names and compatibility aliases before
 dispatching to the package-native constructors. It does not choose dataset
 splits, optimizer schedules, checkpoint recipes, or paper-specific metric

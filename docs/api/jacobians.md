@@ -13,6 +13,10 @@ J_z = \frac{\partial f_\theta}{\partial z}(z^\star,x).
 $$
 
 This matrix controls stability, implicit gradients, and solver behavior.
+The stochastic trace/norm diagnostic follows Hutchinson
+[[14]](../paper/references.md#ref-14){ .silva-cite }, while its use as an
+equilibrium regularizer connects to Jacobian-regularized DEQ
+[[6]](../paper/references.md#ref-6){ .silva-cite }.
 
 ## Full Jacobian
 

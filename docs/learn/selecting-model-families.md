@@ -25,6 +25,15 @@ For broader implicit systems, the state can be a tuple of tensors, a multiscale
 state, a flow field, or an optimizer variable. The solver interface remains the
 same.
 
+The selector covers SILVA [[1]](../paper/references.md#ref-1){ .silva-cite }, DEQ
+[[4]](../paper/references.md#ref-4){ .silva-cite }, MDEQ
+[[5]](../paper/references.md#ref-5){ .silva-cite }, Neural ODEs
+[[7]](../paper/references.md#ref-7){ .silva-cite }, optimization layers
+[[8]](../paper/references.md#ref-8){ .silva-cite }
+[[9]](../paper/references.md#ref-9){ .silva-cite }, and optical flow
+[[22]](../paper/references.md#ref-22){ .silva-cite }
+[[23]](../paper/references.md#ref-23){ .silva-cite }.
+
 ## Family Selector
 
 ```python

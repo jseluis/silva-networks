@@ -6,7 +6,9 @@ notebooks, or experiment logs.
 
 The SILVA paper and package should be cited for the package-specific structured
 interaction field, presets, notebooks, and implementation. Foundational methods
-should be cited when a result depends on them.
+should be cited when a result depends on them. The global entries for the SILVA
+article [[1]](paper/references.md#ref-1){ .silva-cite } and software archive
+[[2]](paper/references.md#ref-2){ .silva-cite } begin the numbered registry.
 
 !!! important "SILVA citation status"
     The SILVA paper citation is:
@@ -42,7 +44,7 @@ The audit was checked against the package source under `src/silva_networks`:
 | `picard`, damped solver update | damped fixed-point iteration | SILVA paper/package; Banach fixed-point theorem as mathematical background |
 | `anderson` | Anderson acceleration for fixed-point residuals | Anderson, [Iterative Procedures for Nonlinear Integral Equations](https://doi.org/10.1145/321296.321305); Walker and Ni, [Anderson Acceleration for Fixed-Point Iterations](https://doi.org/10.1137/10078356X) |
 | `broyden` | inverse secant quasi-Newton solve for \(F(z)=0\) | Broyden, [A Class of Methods for Solving Nonlinear Simultaneous Equations](https://doi.org/10.1090/S0025-5718-1965-0198670-6) |
-| `gmres` | Krylov minimal-residual linear solve | Saad and Schultz, [GMRES](https://doi.org/10.1137/0907058) |
+| `gmres` | Krylov minimal-residual linear solve | Saad and Schultz, [GMRES](https://doi.org/10.1137/0907058) [[13]](paper/references.md#ref-13){ .silva-cite } |
 | `hutchinson_jacobian_norm`, `jacobian_regularization_loss` | stochastic trace/Frobenius estimator for Jacobian penalties | Hutchinson, [A Stochastic Estimator of the Trace](https://doi.org/10.1080/03610918908812806); Bai, Koltun, and Kolter, [Jacobian Regularization](https://arxiv.org/abs/2106.14342) |
 | `full_jacobian`, `vjp`, `jvp`, `stability_report` | local linearization and product diagnostics | SILVA paper/package; Deep Implicit Layers tutorial |
 | `GraphLocal`, `SILVAGraphLayer`, graph preset mean branch | message passing / graph aggregation over `edge_index` | Kipf and Welling, [GCN](https://arxiv.org/abs/1609.02907); Gilmer et al., [MPNN](https://arxiv.org/abs/1704.01212); Scarselli et al., [GNN model](https://doi.org/10.1109/TNN.2008.2005605) |

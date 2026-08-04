@@ -4,6 +4,12 @@ This atlas maps every SILVA case family in the package and companion book to
 the equation, public API, input tensors, and diagnostics. It is the safest place
 to decide what to run before opening a notebook or experiment config.
 
+The numbered lineage begins with SILVA
+[[1]](../paper/references.md#ref-1){ .silva-cite } and DEQ
+[[4]](../paper/references.md#ref-4){ .silva-cite }; the
+specialized cases below link to graph, operator, optimization, multiscale, and
+optical-flow sources as their claims require.
+
 For a deeper equation-to-source audit of each case, see
 [Implementation Derivations](implementation-derivations.md).
 For a full method-to-paper audit, see

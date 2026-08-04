@@ -10,7 +10,14 @@ For the source-to-package derivation and scope notes, see
 When these objects are used as part of SILVA methodology, cite Jose Luis Lima
 de Jesus Silva, *SILVA Networks as Structured Implicit Layers and Vector
 Attractors via Dynamic Interaction Fields* (2026; arXiv:2607.28989), and cite
-the software repository.
+the software repository. Complete numbered entries are available for the
+article [[1]](../paper/references.md#ref-1){ .silva-cite }, package
+[[2]](../paper/references.md#ref-2){ .silva-cite }, DEQ
+[[4]](../paper/references.md#ref-4){ .silva-cite }, Neural ODEs
+[[7]](../paper/references.md#ref-7){ .silva-cite }, optimization layers
+[[8]](../paper/references.md#ref-8){ .silva-cite }
+[[9]](../paper/references.md#ref-9){ .silva-cite }, and MDEQ
+[[5]](../paper/references.md#ref-5){ .silva-cite }.
 
 ## Equations
 
