@@ -46,6 +46,7 @@ def test_bibtex_contains_silva_article_and_related_sources() -> None:
         "vaswani2017attention",
         "sandler2018mobilenetv2",
         "li2021fourier",
+        "kovachki2023neuraloperator",
         "tolstikhin2021mlpmixer",
         "woo2023convnextv2",
     ]:
@@ -66,6 +67,7 @@ def test_notebook_smoke_script_lists_defaults() -> None:
     assert "docs/package-notebooks/12_paper_family_architectures.ipynb" in result.stdout
     assert "docs/package-notebooks/13_raft_deq_flow.ipynb" in result.stdout
     assert "docs/package-notebooks/14_point_architecture_catalog.ipynb" in result.stdout
+    assert "docs/package-notebooks/15_neural_operators_ode_pde.ipynb" in result.stdout
 
 
 def test_api_reference_covers_every_source_module() -> None:

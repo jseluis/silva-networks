@@ -85,6 +85,9 @@ datasets, public experiments, custom operators, operator options, citation
 audit, the equation-to-code walkthrough, family-selector/projected-QP and
 training-helper smoke tutorials, the cortex hierarchy, generalized architecture
 cases, RAFT/DEQ-Flow, and the ten-entry point architecture catalog.
+The final package notebook derives ODE flow, implicit PDE time stepping,
+Poisson diagnostics, Fourier operators, and their placement inside a SILVA
+equilibrium point.
 
 ## Bridge Notebooks
 

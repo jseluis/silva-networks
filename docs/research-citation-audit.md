@@ -53,6 +53,7 @@ The audit was checked against the package source under `src/silva_networks`:
 | `SILVAVisionVectorLayer`, `SILVAConvVisionClassifier` | vector/channel SILVA equilibria and convolutional stimulus front-end | SILVA paper/package; Vaswani attention for global channel attention; Wang et al. DGCNN for dynamic kNN analogy |
 | `SILVAMolecularLayer`, `SILVAMolecularRegressor`, `molecular_to_silva_graph` | bond-aware graph equilibrium and graph-level molecular readout | Gilmer et al., MPNN; Velickovic et al., GAT; cite molecule benchmark/dataset separately |
 | `ExplicitEulerODEBlock`, `SILVAEulerFlowBlock` | finite explicit Euler bridge for neural ODE intuition | Chen et al., [Neural Ordinary Differential Equations](https://arxiv.org/abs/1806.07366); Deep Implicit Layers tutorial |
+| `SILVAFourierOperatorPointArchitecture`, `fourier_operator` | low-mode spectral operator with a local channel projection, used as a shape-preserving SILVA transition field | Li et al., [Fourier Neural Operator](https://openreview.net/forum?id=c8P9NQVtmnO); Kovachki et al., [Neural Operator](https://www.jmlr.org/papers/v24/21-1524.html); SILVA paper/package for its placement inside the structured fixed-point transition |
 | `QuadraticOptimizationLayer`, `SILVAQuadraticOptimizationLayer` | differentiable quadratic argmin and fixed-point KKT solve | Amos and Kolter, [OptNet](https://arxiv.org/abs/1703.00443); Agrawal et al., [Differentiable Convex Optimization Layers](https://arxiv.org/abs/1910.12430); Deep Implicit Layers tutorial |
 | `SILVAProjectedQPLayer`, `silva_projected_qp_layer`, `SILVAConstrainedQuadraticLayer`, `silva_cvxpy_layer` | projected constrained quadratic programs and optional CVXPYlayers bridge | OptNet for optimization-layer framing; Agrawal et al. differentiable convex optimization layers; CVXPYlayers when the optional bridge is used |
 | `ToyMultiscaleDEQBlock`, `SILVAMultiscaleDEQBlock` | coupled low/high equilibrium state | Bai, Koltun, and Kolter, [Multiscale Deep Equilibrium Models](https://arxiv.org/abs/2006.08656) |
@@ -73,6 +74,7 @@ Use the narrowest citation set that supports the claim.
 | "Anderson acceleration was used." | Anderson 1965 and Walker-Ni 2011 |
 | "Broyden acceleration was used." | Broyden 1965 |
 | "GMRES was used for the adjoint linear system." | Saad-Schultz 1986 |
+| "A Fourier neural operator was used inside a SILVA point." | Li et al. FNO, Kovachki et al. neural operator, and SILVA paper/package |
 | "A Jacobian Frobenius penalty was used." | Hutchinson 1989 and Bai-Koltun-Kolter 2021 |
 | "The graph local operator is attention-based." | GAT and Attention Is All You Need |
 | "The molecular model is message-passing-like." | MPNN and GAT, plus SILVA |

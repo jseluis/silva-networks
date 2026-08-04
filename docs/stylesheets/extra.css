@@ -664,3 +664,24 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+.silva-notebook-actions,
+.silva-document-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin: 0 0 1rem;
+}
+
+.silva-notebook-actions .md-button,
+.silva-document-actions .md-button {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.45rem;
+}
+
+.silva-notebook-actions svg {
+  fill: currentcolor;
+  height: 1rem;
+  width: 1rem;
+}

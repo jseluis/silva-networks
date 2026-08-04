@@ -79,6 +79,7 @@ Vector Attractors via Dynamic Interaction Fields. 2026. arXiv:2607.28989.
 Package highlights:
 - Structured SILVA equilibrium layers and presets.
 - Cortex hierarchies with independently configured per-point architectures and a ten-entry vector, token, spatial, attention, and spectral catalog.
+- ODE, implicit PDE-step, Poisson, and Fourier-operator derivations connected directly to SILVA fields and solver diagnostics.
 - Picard, Anderson, Broyden, and GMRES diagnostics.
 - DEQ, MDEQ, Neural ODE, optimization, and optical-flow bridge material.
 - Configurable sequence, multiscale, graph, INR, diffusion, and coupled RAFT/DEQ-Flow cases.

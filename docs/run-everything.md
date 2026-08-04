@@ -103,6 +103,7 @@ python examples/add_layers_on_top.py
 python examples/cortex_hierarchy.py
 python examples/spatial_cortex.py
 python examples/point_architecture_catalog.py
+python examples/full_cortex_operators.py
 python examples/stacked_architecture.py
 python examples/datasets_quickstart.py
 python examples/deq_engine_bridge.py
@@ -122,6 +123,7 @@ Use the example pages for explanations:
 | [Cortex Hierarchy](examples/cortex-hierarchy.md) | deep internal modules inside linked equilibrium points |
 | [Spatial SILVA Cortex](examples/spatial-cortex.md) | residual CNN and U-Net transition linked to a different vector point |
 | [Point Architecture Catalog](examples/point-architecture-catalog.md) | ten shape, residual, gradient, and tiny-data compatibility checks |
+| [Full Cortex Operators](examples/full-cortex-operators.md) | every configurable transition slot plus all 25 local, global, and self factory names |
 | [Stacked Architecture](examples/stacked-architecture.md) | multiple equilibrium layers with mixed solvers |
 | [Dataset Quickstart](examples/datasets-quickstart.md) | public data to `GraphTensorBatch` |
 | [DEQ Engine Bridge](examples/deq-engine-bridge.md) | arbitrary single-state and multi-state fixed-point systems |
@@ -155,6 +157,7 @@ The package API track:
 | [Paper Family Architectures](package-notebooks/12_paper_family_architectures.ipynb) | sequence, multiscale, Jacobian, graph, INR, diffusion, and custom-transition cases |
 | [RAFT and DEQ-Flow](package-notebooks/13_raft_deq_flow.ipynb) | coupled hidden/flow state, exact implicit gradients, corrections, upsampling, and reuse |
 | [Point Architecture Catalog](package-notebooks/14_point_architecture_catalog.ipynb) | ten internal architectures plus composition inside one point and across linked points |
+| [Neural Operators, ODEs, and PDEs](package-notebooks/15_neural_operators_ode_pde.ipynb) | ODE trajectories, implicit PDE steps, Fourier fields inside SILVA, training, and separate numerical/physical diagnostics |
 
 The implicit bridge track:
 

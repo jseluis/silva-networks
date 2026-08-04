@@ -39,6 +39,7 @@ python examples/raft_deq_flow.py
 | [Cortex Hierarchy](cortex-hierarchy.md) | `SILVACortexLayer`, `SILVACortexNetwork` | deep internal modules inside linked equilibrium points |
 | [Spatial SILVA Cortex](spatial-cortex.md) | `SILVACortexLayer`, `silva_equilibrium_model` | residual CNN and U-Net inside one point linked to a different vector point |
 | [Point Architecture Catalog](point-architecture-catalog.md) | point architecture registry and `SILVACortexLayer` | ten shape-preserving vector, token, spatial, gradient, and tiny-data checks |
+| [Full Cortex Operators](full-cortex-operators.md) | every `SILVACortexLayer` slot and all 25 branch factory names | internal sequence, self, local, global, custom, output, normalization, solver, shapes, and gradients |
 | [Optical Flow SILVA](optical-flow-silva.md) | `SILVADEQFlow`, RAFT-style correlation helpers | synthetic flow fixed point, EPE, smoothness, gradients |
 | [Constrained Optimization](constrained-optimization.md) | `SILVAProjectedQPLayer`, `silva_projected_qp_layer` | projected-QP fixed point, simplex constraints, gradients |
 | [Stacked Architecture](stacked-architecture.md) | `SILVAGraphNetwork`, mixed solvers | multi-layer equilibrium stack on a selected device |

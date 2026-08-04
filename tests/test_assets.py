@@ -86,7 +86,13 @@ def test_companion_book_and_manual_are_planned_without_direct_pdf_links() -> Non
 def test_bibtex_asset_is_packaged() -> None:
     assert (ROOT / "docs/assets/bib/silva-networks.bib").stat().st_size > 1_000
     manifest = (ROOT / "MANIFEST.in").read_text(encoding="utf-8")
-    for marker in ["CITATION.cff", "mkdocs.yml", "*.bib", "src/silva_networks/cases.py"]:
+    for marker in [
+        "CITATION.cff",
+        "mkdocs.yml",
+        "*.bib",
+        "*.html",
+        "src/silva_networks/cases.py",
+    ]:
         assert marker in manifest
 
 
@@ -223,6 +229,59 @@ def test_notebook_mirror_sets_are_complete() -> None:
     assert sorted(path.name for path in (ROOT / "colab").glob("*.ipynb")) == package_docs
     assert sorted(path.name for path in (ROOT / "notebooks/implicit_bridge").glob("*.ipynb")) == bridge_docs
     assert sorted(path.name for path in (ROOT / "colab/implicit_bridge").glob("*.ipynb")) == bridge_docs
+
+
+def test_expanded_notebooks_are_synchronized_and_substantive() -> None:
+    requirements = {
+        "14_point_architecture_catalog.ipynb": (
+            30,
+            (
+                "One Fully Populated SILVA Point",
+                "Multiple Architectures Inside Every Linked Point",
+                "Train a Tiny End-to-End Task",
+                "Fourier",
+            ),
+        ),
+        "15_neural_operators_ode_pde.ipynb": (
+            30,
+            (
+                "One Implicit PDE Step as One SILVA Point",
+                "PeriodicDiffusionField",
+                "poisson_residual",
+                "fourier_operator",
+                "fixed-point residual",
+            ),
+        ),
+    }
+
+    for name, (minimum_cells, markers) in requirements.items():
+        notebooks = [
+            json.loads((ROOT / folder / name).read_text(encoding="utf-8"))
+            for folder in ("notebooks/package_api", "docs/package-notebooks", "colab")
+        ]
+        signatures = [
+            [
+                (cell["cell_type"], "".join(cell.get("source", [])))
+                for cell in notebook["cells"]
+            ]
+            for notebook in notebooks
+        ]
+        assert signatures[0] == signatures[1] == signatures[2]
+        assert len(signatures[0]) >= minimum_cells
+        all_source = "\n".join(source for _, source in signatures[0])
+        for marker in markers:
+            assert marker in all_source
+
+
+def test_rendered_notebooks_have_a_shared_download_control() -> None:
+    config = (ROOT / "mkdocs.yml").read_text(encoding="utf-8")
+    override = (ROOT / "docs/overrides/main.html").read_text(encoding="utf-8")
+
+    assert "custom_dir: docs/overrides" in config
+    assert "include_source: true" in config
+    assert "page.nb_url" in override
+    assert "download" in override
+    assert "Download notebook" in override
 
 
 def test_no_external_paper_cache() -> None:

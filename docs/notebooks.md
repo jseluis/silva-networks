@@ -4,6 +4,10 @@ The package ships with rendered notebook pages in the documentation and the
 same `.ipynb` files in the repository. The rendered pages are part of the docs
 navigation. The source notebooks can be opened locally in Jupyter.
 
+Every rendered notebook page includes a **Download notebook** button above the
+content. The downloaded file is the same `.ipynb` artifact tracked in the
+documentation tree.
+
 Colab-ready copies are written to `colab/`. See [Run in Colab](colab.md) for
 the setup paths.
 
@@ -29,6 +33,7 @@ dataset adapters, and extension points work together.
 | [Paper Family Architectures](package-notebooks/12_paper_family_architectures.ipynb) | `notebooks/package_api/12_paper_family_architectures.ipynb` | runs sequence DEQ, MDEQ, Jacobian regularization, IGNN, INR, diffusion, and a custom transition |
 | [RAFT and DEQ-Flow](package-notebooks/13_raft_deq_flow.ipynb) | `notebooks/package_api/13_raft_deq_flow.ipynb` | runs the coupled hidden/flow equilibrium, exact implicit gradients, sparse corrections, learned upsampling, and reuse |
 | [Point Architecture Catalog](package-notebooks/14_point_architecture_catalog.ipynb) | `notebooks/package_api/14_point_architecture_catalog.ipynb` | checks ten vector, token, and spatial architectures inside SILVA points, then composes modules within and across points |
+| [Neural Operators, ODEs, and PDEs](package-notebooks/15_neural_operators_ode_pde.ipynb) | `notebooks/package_api/15_neural_operators_ode_pde.ipynb` | derives ODE flow, implicit PDE stepping, Poisson residuals, Fourier operators, and their exact roles inside SILVA |
 
 ## Implicit Layers Bridge Track
 

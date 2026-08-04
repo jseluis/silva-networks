@@ -95,12 +95,22 @@ _IMPLEMENTATION_CASES: tuple[SILVAImplementationCase, ...] = (
             "SILVAConvNeXtV2PointArchitecture",
         ),
         tutorial="docs/learn/point-architecture-catalog.md",
-        notebooks=("docs/package-notebooks/14_point_architecture_catalog.ipynb",),
-        smoke_tests=("tests/test_point_architectures.py",),
-        examples=("examples/point_architecture_catalog.py",),
+        notebooks=(
+            "docs/package-notebooks/14_point_architecture_catalog.ipynb",
+            "docs/package-notebooks/15_neural_operators_ode_pde.ipynb",
+        ),
+        smoke_tests=(
+            "tests/test_point_architectures.py",
+            "tests/test_full_cortex_operators.py",
+        ),
+        examples=(
+            "examples/point_architecture_catalog.py",
+            "examples/full_cortex_operators.py",
+        ),
         scope=(
             "Ten shape-preserving vector, token, and spatial architectures tested inside "
-            "SILVA equilibrium points."
+            "SILVA equilibrium points, all stable branch factory names, and operator, ODE, "
+            "and PDE derivations."
         ),
     ),
     SILVAImplementationCase(

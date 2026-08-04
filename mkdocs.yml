@@ -8,6 +8,7 @@ repo_name: jseluis/silva-networks
 
 theme:
   name: material
+  custom_dir: docs/overrides
   language: en
   logo: assets/images/silva-networks-icon.svg
   favicon: assets/images/silva-networks-icon.svg
@@ -117,6 +118,7 @@ nav:
       - Custom Layers: learn/custom-layers.md
       - Cortex Hierarchies: learn/cortex-hierarchy.md
       - Point Architecture Catalog: learn/point-architecture-catalog.md
+      - Neural Operators, ODEs, PDEs, and SILVA: learn/neural-operators-ode-pde.md
       - Stacking and Devices: learn/stacking-and-devices.md
       - Datasets and Preprocessing: learn/datasets-and-preprocessing.md
       - Reconstructing Paper Experiments: learn/reconstructing-paper-experiments.md
@@ -140,6 +142,7 @@ nav:
       - Paper Family Architectures: package-notebooks/12_paper_family_architectures.ipynb
       - RAFT and DEQ-Flow: package-notebooks/13_raft_deq_flow.ipynb
       - Point Architecture Catalog: package-notebooks/14_point_architecture_catalog.ipynb
+      - Neural Operators, ODEs, and PDEs: package-notebooks/15_neural_operators_ode_pde.ipynb
       - Implicit Layers Bridge:
           - Fixed Points as Layers: implicit-bridge-notebooks/01_introduction_fixed_points.ipynb
           - Implicit Autodiff: implicit-bridge-notebooks/02_implicit_autodiff.ipynb
@@ -189,6 +192,7 @@ nav:
       - Cortex Hierarchy: examples/cortex-hierarchy.md
       - Spatial SILVA Cortex: examples/spatial-cortex.md
       - Point Architecture Catalog: examples/point-architecture-catalog.md
+      - Full Cortex Operators: examples/full-cortex-operators.md
       - Optical Flow SILVA: examples/optical-flow-silva.md
       - Constrained Optimization: examples/constrained-optimization.md
       - Stacked Architecture: examples/stacked-architecture.md

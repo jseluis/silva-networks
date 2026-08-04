@@ -166,6 +166,7 @@ adaptations of the following architecture patterns:
 - [Attention Is All You Need](https://arxiv.org/abs/1706.03762), Vaswani et al., NeurIPS 2017. BibTeX: `vaswani2017attention`.
 - [MobileNetV2: Inverted Residuals and Linear Bottlenecks](https://arxiv.org/abs/1801.04381), Sandler et al., CVPR 2018. BibTeX: `sandler2018mobilenetv2`.
 - [Fourier Neural Operator for Parametric Partial Differential Equations](https://arxiv.org/abs/2010.08895), Li et al., ICLR 2021. BibTeX: `li2021fourier`.
+- [Neural Operator: Learning Maps Between Function Spaces With Applications to PDEs](https://www.jmlr.org/papers/v24/21-1524.html), Kovachki et al., JMLR 2023. BibTeX: `kovachki2023neuraloperator`.
 - [MLP-Mixer: An all-MLP Architecture for Vision](https://arxiv.org/abs/2105.01601), Tolstikhin et al., NeurIPS 2021. BibTeX: `tolstikhin2021mlpmixer`.
 - [ConvNeXt V2: Co-designing and Scaling ConvNets with Masked Autoencoders](https://arxiv.org/abs/2301.00808), Woo et al., CVPR 2023. BibTeX: `woo2023convnextv2`.
 

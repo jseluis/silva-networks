@@ -69,6 +69,10 @@ context, solver dynamics, diagnostics, and readout heads.
 <strong>Select a family</strong>
 <span>SILVA, DEQ, MDEQ, flow, optimization</span>
 </a>
+<a class="silva-action" href="learn/neural-operators-ode-pde/" markdown>
+<strong>Connect ODEs and PDEs</strong>
+<span>Implicit time steps, solution operators, Fourier fields, diagnostics</span>
+</a>
 <a class="silva-action" href="experiments/benchmark-cards/" markdown>
 <strong>Read benchmarks</strong>
 <span>Public smoke metrics and cards</span>
@@ -372,6 +376,7 @@ logits = model(x, edge_index=edge_index)
 | [Training Helpers Smoke](package-notebooks/10_training_helpers_smoke.ipynb) | supervised fit/evaluate, checkpoint, resume, device movement |
 | [Cortex Hierarchy](package-notebooks/11_cortex_hierarchy.ipynb) | deep MLP, residual CNN, and U-Net transitions inside linked SILVA points |
 | [Point Architecture Catalog](package-notebooks/14_point_architecture_catalog.ipynb) | all ten internal architectures, tensor contracts, gradients, residuals, and point composition |
+| [Neural Operators, ODEs, and PDEs](package-notebooks/15_neural_operators_ode_pde.ipynb) | ODE flow, implicit PDE steps, Fourier operators inside SILVA, training, and residual diagnostics |
 | [Fixed Points as Layers](implicit-bridge-notebooks/01_introduction_fixed_points.ipynb) | implicit-layer introduction through package solvers |
 | [DEQ and SILVA](implicit-bridge-notebooks/04_deq_and_silva.ipynb) | DEQ baseline and configurable SILVA graph model in one API |
 | [SILVA DEQ Engine](implicit-bridge-notebooks/07_silva_deq_engine_torchdeq_bridge.ipynb) | single-state, multi-state, and variational-dropout fixed-point systems |

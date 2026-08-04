@@ -37,4 +37,7 @@ For every entry, the script asserts that:
 See [Point Architecture Catalog](../learn/point-architecture-catalog.md) for
 selection and composition guidance, or open the
 [executable notebook](../package-notebooks/14_point_architecture_catalog.ipynb)
-for all ten modules plus single-point and linked-point composition.
+for implementation-level derivations of all ten modules, a fully populated
+point, multi-module points, linked heterogeneous points, tiny training, and
+solver-scale diagnostics. The [Full Cortex Operator Example](full-cortex-operators.md)
+shows every configurable branch in one runnable construction.

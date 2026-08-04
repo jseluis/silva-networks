@@ -43,13 +43,17 @@ REQUIRED_FILES = (
     "docs/learn/interactive-diagnostics-lab.md",
     "docs/learn/cortex-hierarchy.md",
     "docs/learn/point-architecture-catalog.md",
+    "docs/learn/neural-operators-ode-pde.md",
     "docs/examples/spatial-cortex.md",
     "docs/examples/point-architecture-catalog.md",
+    "docs/examples/full-cortex-operators.md",
+    "docs/overrides/main.html",
     "docs/learn/paper-family-adaptations.md",
     "docs/package-notebooks/11_cortex_hierarchy.ipynb",
     "docs/package-notebooks/12_paper_family_architectures.ipynb",
     "docs/package-notebooks/13_raft_deq_flow.ipynb",
     "docs/package-notebooks/14_point_architecture_catalog.ipynb",
+    "docs/package-notebooks/15_neural_operators_ode_pde.ipynb",
     "docs/experiments/benchmark-cards.md",
     "src/silva_networks/dataset_cli.py",
     "src/silva_networks/public_experiments.py",
@@ -70,13 +74,16 @@ REQUIRED_NAV_MARKERS = (
     "Interactive Diagnostics Lab: learn/interactive-diagnostics-lab.md",
     "Cortex Hierarchies: learn/cortex-hierarchy.md",
     "Point Architecture Catalog: learn/point-architecture-catalog.md",
+    "Neural Operators, ODEs, PDEs, and SILVA: learn/neural-operators-ode-pde.md",
     "Spatial SILVA Cortex: examples/spatial-cortex.md",
     "Point Architecture Catalog: examples/point-architecture-catalog.md",
+    "Full Cortex Operators: examples/full-cortex-operators.md",
     "Paper Family Adaptations: learn/paper-family-adaptations.md",
     "Cortex Hierarchy: package-notebooks/11_cortex_hierarchy.ipynb",
     "Paper Family Architectures: package-notebooks/12_paper_family_architectures.ipynb",
     "RAFT and DEQ-Flow: package-notebooks/13_raft_deq_flow.ipynb",
     "Point Architecture Catalog: package-notebooks/14_point_architecture_catalog.ipynb",
+    "Neural Operators, ODEs, and PDEs: package-notebooks/15_neural_operators_ode_pde.ipynb",
     "Generalized Cases: api/cases.md",
     "Public API: api/public-api.md",
     "Family Selection: api/families.md",
@@ -149,6 +156,7 @@ def _check_arxiv_and_bibtex(root: Path, errors: list[str]) -> None:
             "CITATION.cff",
             "mkdocs.yml",
             "*.bib",
+            "*.html",
             "scripts/smoke_test.sh",
             "docs/assets/papers/silva-networks-arxiv-2607.28989.pdf",
             "src/silva_networks/configs",
@@ -201,6 +209,7 @@ def _check_arxiv_and_bibtex(root: Path, errors: list[str]) -> None:
             "vaswani2017attention",
             "sandler2018mobilenetv2",
             "li2021fourier",
+            "kovachki2023neuraloperator",
             "tolstikhin2021mlpmixer",
             "woo2023convnextv2",
         ),
@@ -346,6 +355,18 @@ def _png_dimensions_and_dpi(data: bytes) -> tuple[int, int, tuple[float, float] 
 
 
 def _check_docs_rendering_assets(root: Path, errors: list[str]) -> None:
+    mkdocs_config = (root / "mkdocs.yml").read_text(encoding="utf-8")
+    for marker in ("custom_dir: docs/overrides", "include_source: true"):
+        if marker not in mkdocs_config:
+            errors.append(f"mkdocs.yml is missing notebook download setting: {marker}")
+
+    notebook_override = root / "docs/overrides/main.html"
+    if notebook_override.exists():
+        override_text = notebook_override.read_text(encoding="utf-8")
+        for marker in ("page.nb_url", "download", "Download notebook"):
+            if marker not in override_text:
+                errors.append(f"docs/overrides/main.html is missing marker: {marker}")
+
     mathjax = root / "docs/javascripts/mathjax.js"
     if mathjax.exists():
         config = mathjax.read_text(encoding="utf-8")

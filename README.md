@@ -288,7 +288,12 @@ The catalog includes MLP, residual MLP, residual CNN, U-Net, dense CNN,
 Transformer, inverted residual, Fourier operator, MLP-Mixer, and ConvNeXt V2
 fields. See `docs/learn/point-architecture-catalog.md` and
 `notebooks/package_api/14_point_architecture_catalog.ipynb` for tensor
-contracts, composition patterns, and executable checks.
+contracts, composition patterns, derivations, and executable checks. The
+function-space connection is developed in
+`docs/learn/neural-operators-ode-pde.md` and
+`notebooks/package_api/15_neural_operators_ode_pde.ipynb`, including ODE flow,
+implicit PDE stepping, Fourier operators inside SILVA, and separate solver and
+physical residuals.
 
 Use the family selector when you want a single choice point:
 

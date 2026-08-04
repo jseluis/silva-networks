@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if page.nb_url %}
+    <div class="silva-notebook-actions">
+      <a href="{{ page.nb_url }}" download class="md-button md-button--primary">
+        {% include ".icons/material/download.svg" %}
+        Download notebook
+      </a>
+    </div>
+  {% endif %}
+  {{ super() }}
+{% endblock content %}
