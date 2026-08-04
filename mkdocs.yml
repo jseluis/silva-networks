@@ -51,6 +51,8 @@ plugins:
           paths: [src]
           options:
             docstring_style: google
+            line_length: 88
+            separate_signature: true
             show_source: true
 
 markdown_extensions:

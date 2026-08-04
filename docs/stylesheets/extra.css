@@ -123,7 +123,7 @@
 .md-typeset .silva-hero__title {
   display: block;
   margin: 0 0 0.65rem;
-  font-size: clamp(2rem, 4.2vw, 3.7rem);
+  font-size: 3rem;
   line-height: 0.98;
   font-weight: 500;
   color: #ffffff;
@@ -581,6 +581,34 @@
   border-radius: 5px;
 }
 
+.md-typeset .doc-heading {
+  margin: 1.55rem 0 0.45rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  scroll-margin-top: 4.25rem;
+}
+
+.md-typeset .doc-heading .doc-object-name {
+  color: var(--md-default-fg-color);
+  font-weight: 700;
+}
+
+.md-typeset .doc-signature {
+  margin: 0 0 0.8rem;
+}
+
+.md-typeset .doc-signature pre,
+.md-typeset .doc-signature code {
+  font-size: 0.72rem;
+  line-height: 1.55;
+}
+
+.md-typeset .mkdocstrings-source[open] > .highlight {
+  max-height: min(32rem, 65vh);
+  overflow: auto;
+}
+
 .md-typeset .highlight {
   overflow: hidden;
   border: 1px solid var(--silva-line);
@@ -625,6 +653,11 @@
     padding-bottom: 1.35rem;
   }
 
+  .md-typeset .silva-hero h1,
+  .md-typeset .silva-hero__title {
+    font-size: 2rem;
+  }
+
   .md-typeset .silva-hero__mark {
     justify-content: flex-start;
   }
@@ -651,6 +684,37 @@
 
   .md-typeset .silva-home-equation .arithmatex {
     font-size: 0.72rem;
+  }
+
+  .md-typeset .doc-heading {
+    margin-top: 1.3rem;
+    font-size: 0.86rem;
+    scroll-margin-top: 3.75rem;
+  }
+
+  .md-typeset .doc-signature pre,
+  .md-typeset .doc-signature code {
+    font-size: 0.68rem;
+  }
+
+  .md-typeset .jupyter-wrapper .jp-CodeCell .jp-Cell-inputWrapper .jp-InputPrompt,
+  .md-typeset .jupyter-wrapper .jp-CodeCell .jp-OutputPrompt {
+    flex-basis: 2rem;
+    padding-right: 0.1rem;
+    padding-left: 0.1rem;
+    font-size: 0.58rem;
+  }
+
+  .md-typeset .jp-CodeCell .jp-InputArea-editor,
+  .md-typeset .jp-CodeCell .jp-OutputArea-child {
+    min-width: 0;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .md-typeset .jupyter-wrapper .jp-CodeCell .jp-Cell-inputWrapper .jp-InputPrompt,
+  .md-typeset .jupyter-wrapper .jp-CodeCell .jp-OutputPrompt {
+    display: none;
   }
 }
 

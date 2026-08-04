@@ -52,6 +52,7 @@ def run_documentation_audit(root: Path = ROOT) -> dict[str, list[str]]:
     _check_api_pages(docs, errors)
     _check_notebooks(root, docs, errors)
     _check_download_surface(root, errors)
+    _check_ui_configuration(root, errors)
     _check_reader_wording(docs, errors)
     return {"errors": errors, "warnings": warnings}
 
@@ -68,6 +69,28 @@ def _check_navigation(root: Path, docs: Path, errors: list[str]) -> None:
         errors.append(f"documentation file is not in navigation: docs/{target}")
     for target in sorted(targets - documents):
         errors.append(f"navigation target does not exist: docs/{target}")
+
+
+def _check_ui_configuration(root: Path, errors: list[str]) -> None:
+    config = (root / "mkdocs.yml").read_text(encoding="utf-8")
+    stylesheet = (root / "docs/stylesheets/extra.css").read_text(encoding="utf-8")
+    required_config = (
+        "line_length: 88",
+        "separate_signature: true",
+    )
+    for setting in required_config:
+        if setting not in config:
+            errors.append(f"documentation UI configuration is missing: {setting}")
+
+    required_styles = (
+        ".md-typeset .doc-heading",
+        ".md-typeset .doc-signature",
+        ".md-typeset .mkdocstrings-source[open] > .highlight",
+        ".md-typeset .jupyter-wrapper .jp-CodeCell .jp-Cell-inputWrapper .jp-InputPrompt",
+    )
+    for selector in required_styles:
+        if selector not in stylesheet:
+            errors.append(f"documentation UI stylesheet is missing: {selector}")
 
 
 def _check_next_steps(docs: Path, errors: list[str]) -> None:
