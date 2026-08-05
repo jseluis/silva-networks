@@ -75,7 +75,7 @@ $$
 
 `implicit_time_derivative` exposes three modes. `dense` forms the latent
 Jacobian and solves the displayed system directly. `matrix_free` evaluates
-((I-J_zf_\theta)v) with JVPs and solves with GMRES. `auto` selects the dense
+$\left(I-J_zf_\theta\right)v$ with JVPs and solves with GMRES. `auto` selects the dense
 path only up to `dense_derivative_threshold`, then switches to the matrix-free
 path. Both modes differentiate the same equation and avoid storing forward
 solver iterations.
@@ -223,11 +223,32 @@ model = SILVAPhysicsInformedEquilibrium(
 )
 ```
 
-The transition defines the implicit representation (z^\star(t)). The
-`dynamics(times, prediction)` callable passed to `physics_loss` defines the
-physical right-hand side (N(t,D_\theta(t))). Keeping these roles separate
-allows known physics, partially known physics, and learned closure terms to be
-combined without hard-coding one differential equation into the wrapper.
+The two callables have separate mathematical roles. For each sampled time
+$t_i$, the transition and readout produce
+
+$$
+z_i^\star=f_\theta(z_i^\star,t_i),
+\qquad
+D_\theta(t_i)=Q_\psi(z_i^\star).
+$$
+
+`implicit_time_derivative(times, state)` differentiates that equilibrium to
+obtain $dD_\theta/dt$. The user-supplied
+`dynamics(times, prediction)` callable evaluates the physical right-hand side
+$N(t_i,D_\theta(t_i))$ with the same shape as the prediction. Consequently,
+`physics_loss` forms the pointwise ODE residual
+
+$$
+r_N(t_i)
+=\frac{dD_\theta(t_i)}{dt}
+-N\!\left(t_i,D_\theta(t_i)\right).
+$$
+
+The transition therefore defines how SILVA represents a trajectory, while
+`dynamics` defines which differential equation that trajectory must satisfy.
+Keeping these roles separate allows known physics, partially known physics,
+and learned closure terms to be combined without hard-coding one differential
+equation into the wrapper.
 
 ### Verify a custom transition
 

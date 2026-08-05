@@ -12,7 +12,7 @@ validated before a compact example can be called a reproduction.
 
 ## 1. The Five-Part Contract
 
-Let (x\in\mathcal X) denote observed data and (z\in\mathcal Z) the
+Let $x\in\mathcal X$ denote observed data and $z\in\mathcal Z$ the
 equilibrium state. A conditioned SILVA model has five parts:
 
 $$
@@ -23,10 +23,10 @@ z^\star = T_\theta(z^\star,x),
 \widehat y=Q_\psi(z^\star).
 $$
 
-1. (I_\eta) constructs the initial state.
-2. (T_\theta) is the complete state-preserving transition.
-3. A root solver finds (z^\star).
-4. (Q_\psi) maps the equilibrium to the task output.
+1. $I_\eta$ constructs the initial state.
+2. $T_\theta$ is the complete state-preserving transition.
+3. A root solver finds $z^\star$.
+4. $Q_\psi$ maps the equilibrium to the task output.
 5. Diagnostics establish whether the numerical state is a sufficiently
    accurate solution of the stated equation.
 
@@ -220,9 +220,9 @@ v^\star=g+\sigma\!\left(Wv^\star+\mathcal K_\theta v^\star\right),
 u=Q_\psi(v^\star).
 $$
 
-Here (P_\eta) is the replaceable forcing lift, the repeated spectral block is
-the transition, and (Q_\psi) is the replaceable readout. Replacing
-(\mathcal K_\theta) with a graph, convolutional, wavelet, kernel-integral, or
+Here $P_\eta$ is the replaceable forcing lift, the repeated spectral block is
+the transition, and $Q_\psi$ is the replaceable readout. Replacing
+$\mathcal K_\theta$ with a graph, convolutional, wavelet, kernel-integral, or
 learned differential operator creates a new internal architecture without
 changing the equilibrium contract.
 

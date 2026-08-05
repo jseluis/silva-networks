@@ -447,6 +447,14 @@ def _check_versions(root: Path, errors: list[str]) -> None:
     changelog = (root / "CHANGELOG.md").read_text(encoding="utf-8")
     if f"## {package_version}" not in changelog:
         errors.append(f"CHANGELOG.md has no section for version {package_version}")
+    mkdocs = (root / "mkdocs.yml").read_text(encoding="utf-8")
+    expected_source_tag = f"source_release_tag: v{package_version}"
+    if expected_source_tag not in mkdocs:
+        errors.append(f"mkdocs.yml must identify the source widget tag: {expected_source_tag}")
+    override = (root / "docs/overrides/main.html").read_text(encoding="utf-8")
+    for marker in ("source_release_tag", "__source", "__source_cached_at", "expectedSourceVersion"):
+        if marker not in override:
+            errors.append(f"docs/overrides/main.html is missing source cache marker: {marker}")
     for relative in (
         "README.md",
         "docs/paper/references.md",

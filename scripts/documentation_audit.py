@@ -34,15 +34,44 @@ EXAMPLE_EXCEPTIONS = {
 }
 NEXT_STEP_LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
 FENCED_CODE_RE = re.compile(r"```.*?```|~~~.*?~~~", re.DOTALL)
+INLINE_CODE_RE = re.compile(r"`[^`\n]*`")
+DISPLAY_DOLLAR_MATH_RE = re.compile(r"(?<!\\)\$\$.*?(?<!\\)\$\$", re.DOTALL)
+INLINE_DOLLAR_MATH_RE = re.compile(r"(?<!\\)\$(?!\$).*?(?<!\\)\$", re.DOTALL)
+DISPLAY_TEX_MATH_RE = re.compile(r"\\\[.*?\\\]", re.DOTALL)
+INLINE_TEX_MATH_RE = re.compile(r"\\\(.*?\\\)", re.DOTALL)
+RAW_LATEX_RE = re.compile(
+    r"\\(?:alpha|beta|gamma|Delta|ell|frac|lambda|mathbb|mathcal|mathbf|mathrm|"
+    r"operatorname|partial|phi|psi|sigma|star|tau|theta|widehat)\b"
+)
+MISSING_LATEX_SLASH_RE = re.compile(
+    r"(?<!\\)\b(?:frac|mathbb|mathcal|mathbf|mathrm|operatorname|sqrt)\{"
+)
+PLAIN_NUMBERED_CITATION_RE = re.compile(
+    r"(?<![\w=\[])\[([1-9][0-9]?)\](?!\]|\s*\()"
+)
 NEXT_STEP_CELL_TAG = "silva-next-steps"
 SITE_PREFIX = "https://jseluis.github.io/silva-networks/"
 REFERENCE_ID_RE = re.compile(r'<li id="ref-(\d+)">(.*?)</li>')
 NUMBERED_CITATION_RE = re.compile(
     r"\[(?:\[(\d+)\]|(\d+))\]\(([^)]*#ref-(\d+))\)"
 )
+UNBRACKETED_NUMBERED_CITATION_RE = re.compile(
+    r"(?<!\[)\[([1-9][0-9]?)\]\([^)]*#ref-\1\)"
+)
 NUMBERED_CITATION_START = "<!-- silva-numbered-citations:start -->"
 NUMBERED_CITATION_END = "<!-- silva-numbered-citations:end -->"
 EXTENSION_PATH_START = "<!-- silva-extension-path:start -->"
+
+
+def _reader_prose_without_code_or_math(source: str) -> str:
+    """Return prose where citation-like brackets should be reader-facing links."""
+
+    visible = FENCED_CODE_RE.sub("", source)
+    visible = INLINE_CODE_RE.sub("", visible)
+    visible = DISPLAY_DOLLAR_MATH_RE.sub("", visible)
+    visible = DISPLAY_TEX_MATH_RE.sub("", visible)
+    visible = INLINE_TEX_MATH_RE.sub("", visible)
+    return INLINE_DOLLAR_MATH_RE.sub("", visible)
 
 
 def run_documentation_audit(root: Path = ROOT) -> dict[str, list[str]]:
@@ -89,6 +118,25 @@ def _check_math_source(docs: Path, errors: list[str]) -> None:
             errors.append(f"{label} contains a tab in reader-facing mathematical text")
         if re.search(r"\^star\b|_heta\b", visible):
             errors.append(f"{label} contains a malformed LaTeX command")
+        if MISSING_LATEX_SLASH_RE.search(visible):
+            errors.append(f"{label} contains a LaTeX command without its leading backslash")
+
+        mathless = INLINE_CODE_RE.sub("", visible)
+        if len(re.findall(r"(?<!\\)\$\$", mathless)) % 2:
+            errors.append(f"{label} contains an unmatched $$ display-math delimiter")
+        if mathless.count(r"\[") != mathless.count(r"\]"):
+            errors.append(f"{label} contains unmatched \\[ or \\] display-math delimiters")
+        if mathless.count(r"\(") != mathless.count(r"\)"):
+            errors.append(f"{label} contains unmatched \\( or \\) inline-math delimiters")
+
+        mathless = DISPLAY_DOLLAR_MATH_RE.sub("", mathless)
+        mathless = DISPLAY_TEX_MATH_RE.sub("", mathless)
+        mathless = INLINE_TEX_MATH_RE.sub("", mathless)
+        if len(re.findall(r"(?<!\\)\$", mathless)) % 2:
+            errors.append(f"{label} contains an unmatched $ inline-math delimiter")
+        mathless = INLINE_DOLLAR_MATH_RE.sub("", mathless)
+        if RAW_LATEX_RE.search(mathless):
+            errors.append(f"{label} contains a LaTeX command outside math delimiters")
 
 
 def _check_navigation(root: Path, docs: Path, errors: list[str]) -> None:
@@ -379,6 +427,34 @@ def _check_numbered_citations(root: Path, docs: Path, errors: list[str]) -> None
             if target not in valid_numbers:
                 errors.append(
                     f"{path.relative_to(root)} citation points to missing ref-{target}"
+                )
+
+    citation_units: list[tuple[str, str]] = [
+        (path.relative_to(root).as_posix(), path.read_text(encoding="utf-8"))
+        for path in sorted(docs.rglob("*.md"))
+    ]
+    for path in sorted(docs.rglob("*.ipynb")):
+        notebook = json.loads(path.read_text(encoding="utf-8"))
+        for index, cell in enumerate(notebook.get("cells", [])):
+            if cell.get("cell_type") == "markdown":
+                citation_units.append(
+                    (
+                        f"{path.relative_to(root).as_posix()}:cell{index}",
+                        "".join(cell.get("source", [])),
+                    )
+                )
+    for label, source in citation_units:
+        prose = _reader_prose_without_code_or_math(source)
+        for match in UNBRACKETED_NUMBERED_CITATION_RE.finditer(prose):
+            errors.append(
+                f"{label} citation {match.group(1)} must display its number as "
+                f"[{match.group(1)}]"
+            )
+        for match in PLAIN_NUMBERED_CITATION_RE.finditer(prose):
+            number = int(match.group(1))
+            if number in valid_numbers:
+                errors.append(
+                    f"{label} contains unresolved reader-facing citation [{number}]"
                 )
 
     notebook_roots = (

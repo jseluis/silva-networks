@@ -151,7 +151,8 @@ def test_global_numbered_citations_cover_solver_and_notebooks() -> None:
     assert "[[13]](../paper/references.md#ref-13)" in solvers
     notebook_text = "".join("".join(cell.get("source", [])) for cell in notebook["cells"])
     assert (
-        "[13](https://jseluis.github.io/silva-networks/paper/references/#ref-13)" in notebook_text
+        "[[13]](https://jseluis.github.io/silva-networks/paper/references/#ref-13)"
+        in notebook_text
     )
 
 

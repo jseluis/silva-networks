@@ -7,7 +7,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from notebook_generation import preserve_matching_cells, write_notebook
+from notebook_generation import (
+    _link_citations_in_markdown,
+    link_numbered_citations,
+    preserve_matching_cells,
+    write_notebook,
+)
 
 
 def _notebook(cells: list[dict[str, object]]) -> dict[str, object]:
@@ -113,3 +118,33 @@ def test_notebook_generators_use_the_preserving_writer() -> None:
             continue
         assert ".write_text(" not in source, path.name
         assert "write_notebook(" in source, path.name
+
+
+def test_reader_facing_citations_are_linked_without_touching_code_or_math() -> None:
+    source = (
+        "Method [48]. Existing [47](https://example.test). "
+        "Inline `$A=[1]$` and `state[2]` stay literal.\n\n"
+        "```python\nvalue = items[3]\n```\n"
+    )
+
+    linked = _link_citations_in_markdown(source)
+
+    assert "[[48]](https://jseluis.github.io/silva-networks/paper/references/#ref-48)" in linked
+    assert "[47](https://example.test)" in linked
+    assert "$A=[1]$" in linked
+    assert "`state[2]`" in linked
+    assert "items[3]" in linked
+
+
+def test_citation_linking_changes_only_markdown_cells() -> None:
+    notebook = _notebook(
+        [
+            {"cell_type": "markdown", "metadata": {}, "source": ["Source [43]."]},
+            _code("values[43]"),
+        ]
+    )
+
+    linked = link_numbered_citations(notebook)
+
+    assert "#ref-43" in "".join(linked["cells"][0]["source"])
+    assert linked["cells"][1]["source"] == ["values[43]"]

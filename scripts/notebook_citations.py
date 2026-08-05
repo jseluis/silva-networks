@@ -6,6 +6,8 @@ import argparse
 import json
 from pathlib import Path
 
+from notebook_generation import link_numbered_citations
+
 ROOT = Path(__file__).resolve().parents[1]
 SITE_REFERENCES = "https://jseluis.github.io/silva-networks/paper/references/"
 START = "<!-- silva-numbered-citations:start -->"
@@ -115,7 +117,7 @@ GROUPS = (
 
 
 def _citation_block(numbers: tuple[int, ...]) -> str:
-    links = ", ".join(f"[{number}]({SITE_REFERENCES}#ref-{number})" for number in numbers)
+    links = ", ".join(f"[[{number}]]({SITE_REFERENCES}#ref-{number})" for number in numbers)
     return (
         f"{START}\n"
         f"**Numbered literature:** {links}. Each number opens the complete "
@@ -174,6 +176,7 @@ def update_notebook(path: Path, numbers: tuple[int, ...], *, write: bool = True)
     current = "".join(first_markdown.get("source", []))
     updated = f"{_without_existing_block(current)}\n\n{_citation_block(numbers)}\n"
     first_markdown["source"] = updated.splitlines(keepends=True)
+    notebook = link_numbered_citations(notebook)
     serialized = (
         json.dumps(
             notebook,

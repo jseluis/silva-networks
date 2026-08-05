@@ -11,3 +11,46 @@
   {% endif %}
   {{ super() }}
 {% endblock content %}
+
+{% block config %}
+  {{ super() }}
+  <script>
+    (() => {
+      const expectedSourceVersion = "{{ config.extra.source_release_tag }}";
+      const maxSourceCacheAgeMs = 60 * 60 * 1000;
+      const sourceCacheKey = "__source";
+      const sourceCacheTimeKey = "__source_cached_at";
+
+      const clearSourceCache = () => {
+        try {
+          sessionStorage.removeItem(`${__md_scope.pathname}.${sourceCacheKey}`);
+          sessionStorage.removeItem(`${__md_scope.pathname}.${sourceCacheTimeKey}`);
+        } catch (error) {
+          // Storage may be unavailable in restricted browser modes.
+        }
+      };
+
+      try {
+        const sourceFacts = __md_get(sourceCacheKey, sessionStorage);
+        const cachedAt = __md_get(sourceCacheTimeKey, sessionStorage);
+        const cacheAgeMs = Number.isFinite(cachedAt) ? Date.now() - cachedAt : Infinity;
+        if (
+          sourceFacts &&
+          (sourceFacts.version !== expectedSourceVersion || cacheAgeMs > maxSourceCacheAgeMs)
+        ) {
+          clearSourceCache();
+        }
+      } catch (error) {
+        clearSourceCache();
+      }
+
+      const mdSet = window.__md_set;
+      window.__md_set = (key, value, storage = localStorage, scope = __md_scope) => {
+        mdSet(key, value, storage, scope);
+        if (key === sourceCacheKey && storage === sessionStorage) {
+          mdSet(sourceCacheTimeKey, Date.now(), sessionStorage, scope);
+        }
+      };
+    })();
+  </script>
+{% endblock config %}

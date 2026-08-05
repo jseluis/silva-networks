@@ -187,7 +187,15 @@ The bounded scaling $s$ is the compact implementation's stability envelope.
 The one-time QKV-injection mechanism follows Geng, Pokle, and Kolter
 [[48]](../paper/references.md#ref-48){ .silva-cite }.
 
-The decoder reverses patching. Teacher matching uses
+The decoder reverses patching. In the compact deterministic check, the
+"teacher" is the fixed local map
+
+$$
+x_{\mathrm{teacher}}
+=\tanh\!\left(0.65\operatorname{AvgPool}_{3\times3}(x)+0.35x\right),
+$$
+
+not an external pretrained diffusion model. Teacher matching then uses
 
 $$
 \mathcal L_{\mathrm{distill}}

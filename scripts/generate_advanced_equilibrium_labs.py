@@ -323,8 +323,11 @@ def transformer_lab() -> dict[str, object]:
 # SILVA Generative Equilibrium Transformer
 
 This lab separates one-time source encoding from the weight-tied transformer
-equilibrium, derives QKV injection, trains a tiny teacher-matching task, and
-checks optional class conditioning. The architecture mechanism follows the
+equilibrium and derives QKV injection. Its compact training check learns a
+deterministic smoothing map from generated image pairs; this exercises the
+distillation path without claiming a pretrained diffusion teacher. The class
+conditioning check verifies that integer labels add learned QKV offsets while
+preserving token and output shapes. The architecture mechanism follows the
 Generative Equilibrium Transformer [48]; SILVA supplies the general source,
 state, solver, and diagnostic contract.
 """,
@@ -405,7 +408,7 @@ $$
 $$
 \widetilde Z=Z+A_\ell,
 \qquad
-Z^+=\tanh\left(s[\widetilde Z+operatorname{FFN}(\widetilde Z)]\right).
+Z^+=\tanh\left(s[\widetilde Z+\operatorname{FFN}(\widetilde Z)]\right).
 $$
 
 $C_y$ is optional class injection. The final bounded map is SILVA's compact
@@ -445,7 +448,16 @@ print("solver residual:", result.solver_result.residual)
 
 The architectural fixed point and the distillation objective answer different
 questions. The equilibrium determines the hidden representation. The teaching
-loss matches a supplied target:
+loss matches a supplied target. In this compact check,
+`make_teacher_image_pairs` defines that target exactly as
+
+$$
+x_{\mathrm{teacher}}
+=\tanh\!\left(0.65\operatorname{AvgPool}_{3\times3}(x)+0.35x\right).
+$$
+
+This deterministic map makes the forward, gradient, and optimization paths
+testable without an external checkpoint. The loss is
 
 $$
 \mathcal L_{\mathrm{distill}}
@@ -1253,7 +1265,7 @@ def main() -> None:
         for directory in OUT_DIRS:
             directory.mkdir(parents=True, exist_ok=True)
             path = directory / name
-            write_notebook(path, notebook_payload)
+            write_notebook(path, notebook_payload, replace_changed=True)
             print(path.relative_to(ROOT))
 
 

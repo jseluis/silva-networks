@@ -13,6 +13,7 @@ broken package builds before a public release.
 | Zenodo archive | all-versions DOI: [`10.5281/zenodo.21770098`](https://doi.org/10.5281/zenodo.21770098); v1.0.0 DOI retained in release history |
 | PyPI package | release target: [`silva-networks==1.1.0`](https://pypi.org/project/silva-networks/) |
 | Release workflow | a validated `v*` tag builds distributions, creates the GitHub Release, and publishes through PyPI Trusted Publishing |
+| Docs source widget | top-right GitHub facts refresh against `source_release_tag: v1.1.0` before cached release data is reused |
 | Article citation | arXiv:2607.28989, submitted July 31, 2026 |
 | Article PDF | `docs/assets/papers/silva-networks-arxiv-2607.28989.pdf` |
 | License | MIT |
@@ -71,6 +72,7 @@ tooling such as command-line PDF utilities.
 | --- | --- |
 | Citation | arXiv ID in README, CFF, references page, and BibTeX |
 | Release metadata | `.zenodo.json`, PyPI workflow, Zenodo DOI, PyPI URL, and publishing instructions present |
+| Docs source widget | `mkdocs.yml` source release tag matches the package version and the Material source-facts cache is guarded |
 | BibTeX | `silva2026silvanetworksstructuredimplicit` and software entries present |
 | Docs | required learning, API, experiment, and audit pages exist |
 | Navigation | new release/audit/derivation pages are wired into `mkdocs.yml` |
