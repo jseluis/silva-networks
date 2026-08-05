@@ -8,10 +8,10 @@ broken package builds before a public release.
 
 | Item | Status |
 | --- | --- |
-| Package version | `1.1.0` |
+| Package version | `1.2.0` |
 | Citation metadata | `CITATION.cff`, README, references page, and BibTeX file updated |
 | Zenodo archive | all-versions DOI: [`10.5281/zenodo.21770098`](https://doi.org/10.5281/zenodo.21770098); v1.0.0 DOI retained in release history |
-| PyPI package | release target: [`silva-networks==1.1.0`](https://pypi.org/project/silva-networks/) |
+| PyPI package | release target: [`silva-networks==1.2.0`](https://pypi.org/project/silva-networks/) |
 | PyPI workflow | `.github/workflows/release.yml` builds and publishes through PyPI Trusted Publishing |
 | Article citation | arXiv:2607.28989, submitted July 31, 2026 |
 | Article PDF | `docs/assets/papers/silva-networks-arxiv-2607.28989.pdf` |
@@ -23,7 +23,9 @@ broken package builds before a public release.
 | Generalized cases | sequence, multiscale vision, Jacobian, IGNN, INR, diffusion, and coupled RAFT/DEQ-Flow APIs documented and validated |
 | Advanced equilibrium families | monotone graph, injected transformer, Poisson mirror, physics-informed ODE, implicit DAE, and adversarial residual mechanisms documented and validated |
 | Full-scale family surface | all 30 canonical families have data, literature, benchmark, scale-control, and extension guides; compact dense/scalable equivalence checks are executable |
-| Guided navigation | all 107 Markdown pages and 35 rendered notebooks include contextual question-based next steps |
+| Guided navigation | all 112 navigable Markdown pages and 36 rendered notebooks include contextual next steps and an extension/reproduction path |
+| Canonical notebook curriculum | all 62 package, bridge, and unreleased book/research notebooks include executable extension, equivalence, gradient, reproduction, and scaling material |
+| Portable test suite | 279 unit tests and 4 extended tests pass with no skipped outcomes; device checks use CUDA when available and CPU otherwise |
 | Public datasets | UCI tabular loaders plus TorchVision adapters for MNIST, FashionMNIST, KMNIST, EMNIST, CIFAR10, CIFAR100, and SVHN |
 | Public results | [Results](results.md) records measured validation metrics, tensor shapes, residuals, and reproduction commands |
 | CLI workflow | [CLI Guide](cli.md), `silva-experiment`, `silva-download-datasets`, `scripts/smoke_test.sh`, config listing, config display, device override, and dotted `--set` overrides |
@@ -44,14 +46,15 @@ run and archived separately.
 | Release audit | `python scripts/release_audit.py` | yes |
 | CLI validation | `bash scripts/smoke_test.sh` | yes |
 | Python lint | `ruff check src tests examples scripts` | yes |
-| Unit tests | `pytest` | yes |
+| Unit tests | `pytest -o addopts= -rs` | yes; every collected test must pass and none may be skipped |
+| Extended tests | `pytest -o addopts= tests_extended -rs` | yes; every collected test must pass and none may be skipped |
 | Strict docs build | `mkdocs build --strict` | yes |
 | Public results page | `silva-experiment --config <config> --output-dir outputs` | yes for published validation rows |
 | Notebook validation | `python scripts/run_notebook_smoke.py --timeout 180` | yes for selected quick notebooks |
 | Package build | `python -m build` | yes |
 | Distribution metadata | `twine check dist/*` | yes |
 | PyPI trusted publisher | PyPI publisher for `jseluis/silva-networks`, workflow `release.yml`, environment `pypi` | yes |
-| Zenodo archiving | Zenodo GitHub integration enabled for `jseluis/silva-networks`; v1.0.0 archived and v1.1.0 metadata prepared | yes |
+| Zenodo archiving | Zenodo GitHub integration enabled for `jseluis/silva-networks`; v1.0.0 archived and v1.2.0 metadata prepared | yes |
 
 For local offline validation, `python -m build --no-isolation` is acceptable
 when the active virtualenv already contains the build requirements.
@@ -72,6 +75,7 @@ tooling such as command-line PDF utilities.
 | Navigation | new release/audit/derivation pages are wired into `mkdocs.yml` |
 | Package | `pyproject.toml` and `src/silva_networks/__init__.py` versions agree |
 | Coverage | each implementation case points to docs, notebooks, tests, and public objects |
+| Test completion | test sources contain no skip markers; optional integrations must test either the installed implementation or the explicit missing-extra contract |
 | Companion assets | book/manual page lists the planned long-form learning path |
 | Stale text | no outdated citation wording remains |
 
@@ -80,7 +84,7 @@ tooling such as command-line PDF utilities.
 Use this structure when cutting a public release:
 
 ```text
-SILVA Networks 1.1.0
+SILVA Networks 1.2.0
 
 Article:
 Jose Luis Lima de Jesus Silva. SILVA Networks as Structured Implicit Layers and
@@ -121,7 +125,7 @@ Validation:
 | Vision extras may be absent | Install `.[vision]` only when running torchvision-specific examples. |
 | Full cited benchmarks are not part of the CPU release audit | Use the family guide to obtain the source protocol, then archive the resolved configuration, dataset version, hardware, checkpoint, and metrics for the selected study. |
 | Vision dataset downloads are larger than tabular downloads | CIFAR and the full TorchVision suite are opt-in public checks; cache them under `data/` and keep generated data out of commits. |
-| CUDA validation is hardware-dependent | Required CUDA checks should run on a CUDA machine; CPU checks do not replace that hardware validation. |
+| CUDA validation is hardware-dependent | Device tests always run and select CUDA when available; release performance claims and CUDA-specific kernels still require a CUDA machine. |
 | Full real TorchVision suite is opt-in | The package tests the runner route and real CIFAR10 smokes locally; the complete real image suite should run where dataset archives can be cached. |
 | Optimization extras may be absent | Install `.[optimization]` only for CVXPYlayers experiments. |
 
@@ -132,3 +136,7 @@ Validation:
 | How can I run every required check? | [Run Everything](run-everything.md) |
 | What is the publication sequence? | [Publishing](publishing.md) |
 | Which documentation changes are recorded? | [Documentation Log](documentation-log.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/project.md"
+<!-- silva-extension-path:end -->

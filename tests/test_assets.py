@@ -227,6 +227,31 @@ def test_notebook_json_and_code_cells_parse() -> None:
     assert code_cells > 100
 
 
+def test_all_canonical_notebooks_include_extension_and_reproduction_depth() -> None:
+    canonical = [
+        *sorted((ROOT / "notebooks/package_api").glob("*.ipynb")),
+        *sorted((ROOT / "notebooks/implicit_bridge").glob("*.ipynb")),
+        *sorted((ROOT / "notebooks").glob("*.ipynb")),
+    ]
+    assert len(canonical) == 62
+    for path in canonical:
+        notebook = json.loads(path.read_text(encoding="utf-8"))
+        curriculum = [
+            cell
+            for cell in notebook["cells"]
+            if "silva-extension-curriculum" in cell.get("metadata", {}).get("tags", [])
+        ]
+        assert len(curriculum) == 4, path
+        source = "\n".join("".join(cell.get("source", [])) for cell in curriculum)
+        for marker in (
+            "to a Custom SILVA Family",
+            "validate_silva_transition",
+            "Numerical Equivalence, Compact Reproduction, and Scale",
+            "notebook_reproduction_record",
+        ):
+            assert marker in source, (path, marker)
+
+
 def test_notebook_mirror_sets_are_complete() -> None:
     package_docs = sorted(path.name for path in (ROOT / "docs/package-notebooks").glob("*.ipynb"))
     bridge_docs = sorted(

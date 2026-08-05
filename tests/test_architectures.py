@@ -276,9 +276,9 @@ def test_pooling_and_device_helpers() -> None:
     assert moved["items"][0].device.type == "cpu"
 
 
-@pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA is not available in this environment")
-def test_cuda_path_keeps_state_on_gpu() -> None:
-    device = resolve_device("cuda")
+def test_device_path_keeps_state_on_selected_device() -> None:
+    requested = "cuda" if torch.cuda.is_available() else "cpu"
+    device = resolve_device(requested)
     x = torch.randn(5, 3, device=device)
     edge_index = torch.tensor([[0, 1, 2, 3], [1, 2, 3, 4]], device=device)
     model = SILVAGraphNetwork(
@@ -288,6 +288,6 @@ def test_cuda_path_keeps_state_on_gpu() -> None:
         config=SolverConfig(max_iter=2, alpha=0.5),
     ).to(device)
     output = model(x, edge_index=edge_index, return_state=True)
-    assert module_device(model).type == "cuda"
-    assert output.output.device.type == "cuda"
-    assert output.state.device.type == "cuda"
+    assert module_device(model).type == device.type
+    assert output.output.device.type == device.type
+    assert output.state.device.type == device.type

@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
+from inspect import Signature, signature
 from typing import Any, Literal
 
 from .advanced_equilibria import (
-    silva_generative_equilibrium_transformer,
-    silva_monotone_graph_equilibrium,
+    SILVAGenerativeEquilibriumTransformer,
+    SILVAMonotoneGraphEquilibrium,
 )
 from .architectures import SILVAGraphNetwork, silva_cortex_layer, silva_cortex_network
 from .cases import (
@@ -16,33 +18,33 @@ from .cases import (
     SILVAMultiscaleDEQ,
     SILVASequenceDEQ,
 )
-from .flow import silva_deq_flow, silva_raft_deq
+from .flow import SILVARAFTDEQ, SILVADEQFlow
 from .frontier import (
-    silva_distributional_deq,
-    silva_fno_deq,
-    silva_homotopy_equilibrium,
-    silva_physics_guided_graph_deq,
+    SILVAFNODEQ,
+    SILVADistributionalDEQ,
+    SILVAHomotopyEquilibrium,
+    SILVAPhysicsGuidedGraphDEQ,
 )
 from .implicit import (
-    silva_multiscale_deq_block,
-    silva_quadratic_optimization_layer,
+    SILVAMultiscaleDEQBlock,
+    SILVAQuadraticOptimizationLayer,
 )
 from .layers import (
     silva_deq_reduction_layer,
     silva_generalized_layer,
     silva_message_passing_reduction_layer,
 )
-from .optimization import silva_projected_qp_layer
+from .optimization import SILVAProjectedQPLayer
 from .physics_informed import (
-    silva_implicit_dae_step,
-    silva_physics_informed_equilibrium,
-    silva_poisson_mirror_equilibrium,
+    SILVAImplicitDAEStep,
+    SILVAPhysicsInformedEquilibrium,
+    SILVAPoissonMirrorEquilibrium,
 )
 from .presets import SILVAGraphPresetNetwork, SILVAImageCortexClassifier
 from .scientific import (
-    silva_fourier_neural_operator,
-    silva_implicit_time_step,
-    silva_operator_model,
+    SILVAFourierNeuralOperator,
+    SILVAImplicitTimeStep,
+    SILVAOperatorModel,
 )
 
 SILVAFamily = Literal[
@@ -129,6 +131,39 @@ _FAMILY_DESCRIPTIONS: dict[str, str] = {
     ),
 }
 
+_FAMILY_CONSTRUCTORS: dict[str, Callable[..., Any]] = {
+    "silva_layer": silva_generalized_layer,
+    "silva_graph": SILVAGraphNetwork,
+    "silva_graph_preset": SILVAGraphPresetNetwork,
+    "silva_cortex": silva_cortex_layer,
+    "silva_cortex_network": silva_cortex_network,
+    "silva_image_cortex": SILVAImageCortexClassifier,
+    "compact_deq": silva_deq_reduction_layer,
+    "message_passing_deq": silva_message_passing_reduction_layer,
+    "mdeq": SILVAMultiscaleDEQBlock,
+    "multiscale_vision_deq": SILVAMultiscaleDEQ,
+    "sequence_deq": SILVASequenceDEQ,
+    "implicit_graph": SILVAImplicitGraphNetwork,
+    "implicit_neural_representation": SILVAImplicitNeuralRepresentation,
+    "diffusion_equilibrium": SILVADiffusionEquilibrium,
+    "scientific_operator": SILVAOperatorModel,
+    "fourier_operator_equilibrium": SILVAFourierNeuralOperator,
+    "implicit_time_step": SILVAImplicitTimeStep,
+    "silva_deq_flow": SILVADEQFlow,
+    "raft_deq_flow": SILVARAFTDEQ,
+    "quadratic_optimization": SILVAQuadraticOptimizationLayer,
+    "silva_projected_qp": SILVAProjectedQPLayer,
+    "silva_fno_deq": SILVAFNODEQ,
+    "silva_physics_graph_deq": SILVAPhysicsGuidedGraphDEQ,
+    "silva_homotopy_equilibrium": SILVAHomotopyEquilibrium,
+    "silva_distributional_deq": SILVADistributionalDEQ,
+    "silva_monotone_graph_equilibrium": SILVAMonotoneGraphEquilibrium,
+    "silva_generative_equilibrium_transformer": SILVAGenerativeEquilibriumTransformer,
+    "silva_poisson_mirror_equilibrium": SILVAPoissonMirrorEquilibrium,
+    "silva_physics_informed_equilibrium": SILVAPhysicsInformedEquilibrium,
+    "silva_implicit_dae_step": SILVAImplicitDAEStep,
+}
+
 _FAMILY_ALIASES: dict[str, str] = {
     "silva_compact_deq": "compact_deq",
     "cortex": "silva_cortex",
@@ -209,6 +244,18 @@ def silva_family_description(family: str) -> str:
         raise KeyError(_unknown_family_message(family)) from exc
 
 
+def silva_family_constructor(family: str) -> Callable[..., Any]:
+    """Return the public constructor behind a canonical family or alias."""
+
+    return _FAMILY_CONSTRUCTORS[canonical_silva_family(family)]
+
+
+def silva_family_signature(family: str) -> Signature:
+    """Return the complete inspectable constructor signature for a family."""
+
+    return signature(silva_family_constructor(family))
+
+
 def silva_equilibrium_model(family: SILVAFamily | str, **kwargs: Any) -> Any:
     """Create a SILVA, DEQ, optimization, or flow model by family name.
 
@@ -220,68 +267,7 @@ def silva_equilibrium_model(family: SILVAFamily | str, **kwargs: Any) -> Any:
         A PyTorch module from the requested family.
     """
 
-    key = _normalize_family(family)
-    if key == "silva_layer":
-        return silva_generalized_layer(**kwargs)
-    if key == "silva_graph":
-        return SILVAGraphNetwork(**kwargs)
-    if key == "silva_graph_preset":
-        return SILVAGraphPresetNetwork(**kwargs)
-    if key == "silva_cortex":
-        return silva_cortex_layer(**kwargs)
-    if key == "silva_cortex_network":
-        return silva_cortex_network(**kwargs)
-    if key == "silva_image_cortex":
-        return SILVAImageCortexClassifier(**kwargs)
-    if key == "compact_deq":
-        return silva_deq_reduction_layer(**kwargs)
-    if key == "message_passing_deq":
-        return silva_message_passing_reduction_layer(**kwargs)
-    if key == "mdeq":
-        return silva_multiscale_deq_block(**kwargs)
-    if key == "multiscale_vision_deq":
-        return SILVAMultiscaleDEQ(**kwargs)
-    if key == "sequence_deq":
-        return SILVASequenceDEQ(**kwargs)
-    if key == "implicit_graph":
-        return SILVAImplicitGraphNetwork(**kwargs)
-    if key == "implicit_neural_representation":
-        return SILVAImplicitNeuralRepresentation(**kwargs)
-    if key == "diffusion_equilibrium":
-        return SILVADiffusionEquilibrium(**kwargs)
-    if key == "scientific_operator":
-        return silva_operator_model(**kwargs)
-    if key == "fourier_operator_equilibrium":
-        return silva_fourier_neural_operator(**kwargs)
-    if key == "implicit_time_step":
-        return silva_implicit_time_step(**kwargs)
-    if key == "silva_deq_flow":
-        return silva_deq_flow(**kwargs)
-    if key == "raft_deq_flow":
-        return silva_raft_deq(**kwargs)
-    if key == "quadratic_optimization":
-        return silva_quadratic_optimization_layer(**kwargs)
-    if key == "silva_projected_qp":
-        return silva_projected_qp_layer(**kwargs)
-    if key == "silva_fno_deq":
-        return silva_fno_deq(**kwargs)
-    if key == "silva_physics_graph_deq":
-        return silva_physics_guided_graph_deq(**kwargs)
-    if key == "silva_homotopy_equilibrium":
-        return silva_homotopy_equilibrium(**kwargs)
-    if key == "silva_distributional_deq":
-        return silva_distributional_deq(**kwargs)
-    if key == "silva_monotone_graph_equilibrium":
-        return silva_monotone_graph_equilibrium(**kwargs)
-    if key == "silva_generative_equilibrium_transformer":
-        return silva_generative_equilibrium_transformer(**kwargs)
-    if key == "silva_poisson_mirror_equilibrium":
-        return silva_poisson_mirror_equilibrium(**kwargs)
-    if key == "silva_physics_informed_equilibrium":
-        return silva_physics_informed_equilibrium(**kwargs)
-    if key == "silva_implicit_dae_step":
-        return silva_implicit_dae_step(**kwargs)
-    raise KeyError(_unknown_family_message(family))
+    return silva_family_constructor(family)(**kwargs)
 
 
 def _normalize_family(family: str) -> str:
@@ -299,5 +285,7 @@ __all__ = [
     "available_silva_families",
     "canonical_silva_family",
     "silva_equilibrium_model",
+    "silva_family_constructor",
     "silva_family_description",
+    "silva_family_signature",
 ]

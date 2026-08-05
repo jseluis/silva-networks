@@ -6,6 +6,9 @@ site_url: https://jseluis.github.io/silva-networks/
 repo_url: https://github.com/jseluis/silva-networks
 repo_name: jseluis/silva-networks
 
+exclude_docs: |
+  includes/
+
 theme:
   name: material
   custom_dir: docs/overrides
@@ -118,6 +121,8 @@ nav:
       - SILVA Operators: learn/silva-operators.md
       - Jacobians and Stability: learn/jacobians.md
       - Custom Layers: learn/custom-layers.md
+      - Extending SILVA: learn/extending-silva.md
+      - Reproducing SILVA and Source Methods: learn/reproducing-silva-and-papers.md
       - Cortex Hierarchies: learn/cortex-hierarchy.md
       - Point Architecture Catalog: learn/point-architecture-catalog.md
       - Neural Operators, ODEs, PDEs, and SILVA: learn/neural-operators-ode-pde.md
@@ -162,6 +167,7 @@ nav:
       - SILVA Physics-Informed Equilibrium: package-notebooks/24_silva_physics_informed_equilibrium.ipynb
       - SILVA Implicit DAE and Residuals: package-notebooks/25_silva_implicit_dae_and_residuals.ipynb
       - Full-Scale SILVA Families: package-notebooks/26_full_scale_silva.ipynb
+      - Reproducing SILVA and Source Methods: package-notebooks/27_reproducing_silva_and_source_methods.ipynb
       - Implicit Layers Bridge:
           - Fixed Points as Layers: implicit-bridge-notebooks/01_introduction_fixed_points.ipynb
           - Implicit Autodiff: implicit-bridge-notebooks/02_implicit_autodiff.ipynb
@@ -189,6 +195,8 @@ nav:
       - Advanced Equilibrium Data: api/advanced_data.md
       - Implicit Bridge: api/implicit.md
       - DEQ Engine: api/deq-engine.md
+      - Extensibility: api/extensibility.md
+      - Reproducibility: api/reproducibility.md
       - Optical Flow: api/flow.md
       - Generalized Cases: api/cases.md
       - Family Selection: api/families.md
@@ -232,6 +240,7 @@ nav:
       - Paper Family Cases: examples/paper-family-cases.md
       - RAFT and DEQ-Flow: examples/raft-deq-flow.md
       - Full-Scale Training: examples/full-scale-training.md
+      - Source-Aware Reproduction: examples/reproduction-registry.md
   - Cheatsheets:
       - SILVA API: cheatsheets/silva-api.md
   - Paper and References: paper/references.md

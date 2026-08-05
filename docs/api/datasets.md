@@ -247,3 +247,7 @@ dataset sources under
 | Where is a dataset passed through a model? | [Dataset Quickstart](../examples/datasets-quickstart.md) |
 | Which generated datasets have exact equation checks? | [Recent Equilibrium Dataset API](frontier_data.md) |
 | How can datasets be downloaded from the command line? | [Dataset CLI API](dataset_cli.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

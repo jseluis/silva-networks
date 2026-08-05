@@ -336,7 +336,8 @@ Four additional mechanisms are available as SILVA families:
 - reaction, graph diffusion, and directed transport branches, derived from
   [physics-guided graph equilibria](https://eurasip.org/Proceedings/Eusipco/Eusipco2024/pdfs/0000987.pdf);
 - continuous residual flows whose stationary state is a SILVA fixed point,
-  connected to [homotopy equilibrium models](https://arxiv.org/abs/2310.09583);
+  connected to [homotopy equilibrium models](https://arxiv.org/abs/2310.09583)
+  and [continuous deep equilibria](https://arxiv.org/abs/2201.12240);
 - permutation-compatible empirical-measure equilibria, derived from
   [distributional DEQs](https://proceedings.mlr.press/v258/geuter25a.html).
 
@@ -440,6 +441,34 @@ runtime contract. The full derivation and all-family matrix are in
 checks and checkpoint resume are in
 `notebooks/package_api/26_full_scale_silva.ipynb`.
 
+### Reproduction Registry
+
+Every canonical family also has an executable source-aware record containing
+its governing equation, citation numbers, research repositories, datasets,
+preprocessing requirements, metrics, notebooks, tests, replaceable parts, and
+real constructor signature:
+
+```python
+from silva_networks import build_silva_reproduction, silva_reproduction_spec
+
+spec = silva_reproduction_spec("pideq")
+print(spec.constructor_signature)
+
+model = build_silva_reproduction(
+    "pideq",
+    tier="workstation",
+    state_dim=16,
+    output_dim=2,
+    transition=my_transition,
+    readout=my_readout,
+)
+```
+
+The compact suite verifies equations, shapes, gradients, and numerical paths.
+Published benchmark values require the complete cited data release,
+preprocessing, model scale, optimization schedule, checkpoints, and metric
+protocol. See `docs/learn/reproducing-silva-and-papers.md`.
+
 The matching deterministic datasets are created inside the package:
 
 ```python
@@ -486,6 +515,32 @@ For private or unusual datasets, provide the same roles yourself: `x`,
 `edge_index`, `edge_attr`, `batch`, and targets. The package also includes image
 vector, image pixel-grid, and molecular graph adapters.
 
+## Build a New SILVA Family
+
+Every named family is a configurable default over the same conditioned
+equilibrium contract. A new construction can supply its initializer,
+state-preserving transition, readout, and solver directly:
+
+```python
+from silva_networks import (
+    SILVAConditionedEquilibrium,
+    SILVAZeroInitializer,
+    validate_silva_transition,
+)
+
+report = validate_silva_transition(transition, state0, condition)
+model = SILVAConditionedEquilibrium(
+    transition,
+    SILVAZeroInitializer(state_dim),
+    readout=readout,
+    config=solver_config,
+)
+```
+
+The complete equation-to-family derivation, replaceable-component matrix,
+numerical-equivalence tests, compact reproduction standard, and scale-up path
+are in `docs/learn/extending-silva.md`.
+
 ## What Is Included
 
 - `src/silva_networks/`: PyTorch package with solvers, Jacobian diagnostics,
@@ -496,10 +551,10 @@ vector, image pixel-grid, and molecular graph adapters.
 - `docs/`: Material for MkDocs documentation site, including the case atlas,
   derivation-first math pages, API maps, examples, and references.
 - Companion book and solutions manual: planned long-form learning assets.
-- `notebooks/`: solved progressive notebooks.
-- `notebooks/package_api/`: package-first tutorials that import
+- `notebooks/`: 26 solved mathematical and book/research notebooks.
+- `notebooks/package_api/`: 27 package-first tutorials that import
   `silva_networks` directly.
-- `notebooks/implicit_bridge/`: adapted implicit-layer, DEQ, MDEQ, ODE, and
+- `notebooks/implicit_bridge/`: 9 adapted implicit-layer, DEQ, MDEQ, ODE, and
   differentiable-optimization notebooks using the package API.
 - `colab/`: Colab-ready notebook exports for the package and bridge tracks.
 - `examples/`: small runnable examples for CPU, CUDA, or MPS PyTorch devices.
@@ -712,7 +767,7 @@ and external tutorials are cited and linked as references.
 Use the repository citation metadata in `CITATION.cff`, or cite:
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.1.0. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.2.0. MIT License.
 https://github.com/jseluis/silva-networks
 https://doi.org/10.5281/zenodo.21770098
 ```
@@ -736,7 +791,7 @@ When the work uses or discusses the SILVA methodology, cite the paper as well:
   title   = {SILVA Networks},
   author  = {Silva, Jose Luis},
   year    = {2026},
-  version = {1.1.0},
+  version = {1.2.0},
   license = {MIT},
   doi     = {10.5281/zenodo.21770098},
   url     = {https://github.com/jseluis/silva-networks}

@@ -108,3 +108,7 @@ compatibility failures. Otherwise, ranges should allow current stable releases.
 | Which installation command selects each extra? | [Installation](installation.md) |
 | Which architecture families need optional components? | [Selecting Model Families](learn/selecting-model-families.md) |
 | Which dataset routes may download external data? | [Dataset Cases](experiments/datasets.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/project.md"
+<!-- silva-extension-path:end -->

@@ -140,3 +140,7 @@ and [Equilibrium and Implicit Layers](../paper/references.md#equilibrium-and-imp
 | How are Jacobians connected to local stability? | [Jacobians and Stability](jacobians.md) |
 | Which diagnostic functions are available? | [Diagnostics API](../api/diagnostics.md) |
 | How do solver choices change residual traces? | [Solver Derivation Lab](solver-derivation-lab.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

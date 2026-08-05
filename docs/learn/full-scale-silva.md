@@ -332,3 +332,7 @@ defines the reporting record for source-faithful and extended studies.
 | How are sharded loaders constructed? | [Scaling Data API](../api/scaling_data.md) |
 | How does each paper map into SILVA? | [Method Adaptation Atlas](method-adaptation-atlas.md) |
 | Where are the executable scale checks? | [Full-Scale Family Notebook](../package-notebooks/26_full_scale_silva.ipynb) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

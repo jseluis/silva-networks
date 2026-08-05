@@ -1143,15 +1143,21 @@ class SILVAOpticalFlowDEQ(nn.Module):
         update_scale: float = 0.25,
         config: SolverConfig | None = None,
         reengage: bool = True,
+        encoder_module: nn.Module | None = None,
+        update_block: nn.Module | None = None,
+        transition_module: nn.Module | None = None,
     ):
         super().__init__()
         if corr_radius < 0:
             raise ValueError("corr_radius must be nonnegative")
         if update_scale <= 0:
             raise ValueError("update_scale must be positive")
-        self.encoder = SILVAFlowFeatureEncoder(in_channels, feature_dim)
+        self.encoder = encoder_module or SILVAFlowFeatureEncoder(in_channels, feature_dim)
         corr_channels = (2 * corr_radius + 1) ** 2
-        self.update = SILVAFlowUpdateBlock(feature_dim, hidden_dim, corr_channels)
+        self.update = update_block or SILVAFlowUpdateBlock(
+            feature_dim, hidden_dim, corr_channels
+        )
+        self.transition_module = transition_module
         self.corr_radius = corr_radius
         self.update_scale = update_scale
         self.config = config or SolverConfig(solver="anderson", max_iter=12, alpha=0.6, history=4)
@@ -1160,6 +1166,11 @@ class SILVAOpticalFlowDEQ(nn.Module):
     def transition(self, flow: Tensor, fmap1: Tensor, fmap2: Tensor, correlation: Tensor) -> Tensor:
         """Return one RAFT-style SILVA flow-refinement step."""
 
+        if self.transition_module is not None:
+            updated = self.transition_module(flow, fmap1, fmap2, correlation)
+            if updated.shape != flow.shape:
+                raise ValueError("transition_module must preserve the flow-state shape")
+            return updated
         warped = silva_flow_warp(fmap2, flow)
         residual = fmap1 - warped
         local_corr = silva_local_correlation_lookup(correlation, flow, radius=self.corr_radius)
@@ -1229,6 +1240,9 @@ def silva_optical_flow_deq(
     update_scale: float = 0.25,
     config: SolverConfig | None = None,
     reengage: bool = True,
+    encoder_module: nn.Module | None = None,
+    update_block: nn.Module | None = None,
+    transition_module: nn.Module | None = None,
 ) -> SILVAOpticalFlowDEQ:
     """Create a SILVA optical-flow DEQ model."""
 
@@ -1240,6 +1254,9 @@ def silva_optical_flow_deq(
         update_scale=update_scale,
         config=config,
         reengage=reengage,
+        encoder_module=encoder_module,
+        update_block=update_block,
+        transition_module=transition_module,
     )
 
 
@@ -1252,6 +1269,9 @@ def silva_deq_flow(
     update_scale: float = 0.25,
     config: SolverConfig | None = None,
     reengage: bool = True,
+    encoder_module: nn.Module | None = None,
+    update_block: nn.Module | None = None,
+    transition_module: nn.Module | None = None,
 ) -> SILVADEQFlow:
     """Create a SILVA DEQ-flow model.
 
@@ -1267,6 +1287,9 @@ def silva_deq_flow(
         update_scale=update_scale,
         config=config,
         reengage=reengage,
+        encoder_module=encoder_module,
+        update_block=update_block,
+        transition_module=transition_module,
     )
 
 

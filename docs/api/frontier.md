@@ -69,3 +69,7 @@ memory control, not a complexity claim.
 | Can I run all four cases together? | [Recent Equilibrium Examples](../examples/frontier-equilibria.md) |
 | Can I execute each derivation cell by cell? | [Recent Equilibrium Families Notebook](../package-notebooks/16_frontier_equilibrium_families.ipynb) |
 | Which family key should I select? | [Families API](families.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

@@ -72,3 +72,7 @@ python scripts/notebook_citations.py
 | Which documentation changes have already been recorded? | [Documentation Log](documentation-log.md) |
 | Which checks must a contribution pass? | [Release Readiness](release-readiness.md) |
 | How can contributors run the complete local workflow? | [Run Everything](run-everything.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/project.md"
+<!-- silva-extension-path:end -->

@@ -48,3 +48,7 @@ sources are listed in
 | How is this graph transition derived branch by branch? | [SILVA From Scratch](../learn/silva-from-scratch.md) |
 | Which graph-layer arguments are public? | [Layers API](../api/layers.md) |
 | How is graph pooling extended to molecules? | [Molecules Example](molecules.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

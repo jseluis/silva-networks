@@ -418,3 +418,7 @@ heads, and new solver settings.
 | How do presets correspond to scientific cases? | [Case Atlas](../learn/case-atlas.md) |
 | Where is a vision preset executed? | [Vision Channels Example](../examples/vision-channels.md) |
 | How can a preset be replaced by a custom architecture? | [Architectures API](architectures.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

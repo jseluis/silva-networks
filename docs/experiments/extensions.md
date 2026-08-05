@@ -89,3 +89,7 @@ a small training loop.
 | Where is a custom branch implemented and executed? | [Custom Layers Example](../examples/custom-layers.md) |
 | What evidence should an extended experiment report? | [Reconstructing Paper Experiments](../learn/reconstructing-paper-experiments.md) |
 | How are research architecture families represented? | [Paper Family Adaptations](../learn/paper-family-adaptations.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/experiments.md"
+<!-- silva-extension-path:end -->

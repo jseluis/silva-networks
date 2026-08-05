@@ -237,3 +237,7 @@ cortex = silva_equilibrium_model(
 | Where are complete signatures and object families listed? | [API Reference](../api/reference.md) |
 | How are these calls introduced in a small example? | [Introduction by Example](../get-started/introduction-by-example.md) |
 | Where are complete runnable programs? | [Examples](../examples/index.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/cheatsheets.md"
+<!-- silva-extension-path:end -->

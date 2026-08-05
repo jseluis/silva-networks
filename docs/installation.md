@@ -125,3 +125,7 @@ matching distribution because the published metadata declares
 | Why are dependencies separated into extras? | [Dependency Policy](dependency-policy.md) |
 | Can I verify the installation with one example? | [Introduction by Example](get-started/introduction-by-example.md) |
 | Which notebook should I run first? | [Package Quickstart Notebook](package-notebooks/01_package_quickstart.ipynb) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/project.md"
+<!-- silva-extension-path:end -->

@@ -67,3 +67,7 @@ For preprocessing equations and custom dataset adapters, continue with
 | How should downloaded tensors be validated? | [Datasets and Preprocessing](../learn/datasets-and-preprocessing.md) |
 | Which dataset objects are returned? | [Datasets API](datasets.md) |
 | Which complete commands are available? | [CLI Guide](../cli.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

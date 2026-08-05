@@ -24,3 +24,7 @@ educational path, while `build_scaled_silva` selects the matrix-free routes.
 | Where are the mechanisms executed together? | [Advanced Equilibria Example](../examples/advanced-equilibria.md) |
 | Which analytic ODE and DAE batches are available? | [Advanced Equilibrium Datasets](../learn/advanced-equilibrium-datasets.md) |
 | How are the matrix-free systems derived? | [Full-Scale SILVA](../learn/full-scale-silva.md#physics-informed-derivatives) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

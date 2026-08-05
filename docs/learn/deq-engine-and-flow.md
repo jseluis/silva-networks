@@ -297,3 +297,7 @@ the numerical behavior of the implicit layer.
 | Which objects expose general equilibrium states? | [DEQ Engine API](../api/deq-engine.md) |
 | Which objects implement equilibrium optical flow? | [Optical Flow API](../api/flow.md) |
 | Where is the coupled flow state executed? | [RAFT and DEQ-Flow Example](../examples/raft-deq-flow.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

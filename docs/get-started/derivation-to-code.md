@@ -292,3 +292,7 @@ primary method links in [Paper and References](../paper/references.md).
 | Where are the complete implementation derivations? | [Implementation Derivations](../learn/implementation-derivations.md) |
 | What fixed-point assumptions support the translation? | [Fixed Points](../learn/fixed-points.md) |
 | Can I execute the derivation cell by cell? | [Equation-to-Code Walkthrough](../package-notebooks/08_equation_to_code_walkthrough.ipynb) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/get-started.md"
+<!-- silva-extension-path:end -->

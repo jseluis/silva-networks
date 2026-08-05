@@ -134,3 +134,7 @@ That notebook walks through the same derivation and computation cell by cell.
 | How should dataset tensors be prepared? | [Datasets and Preprocessing](../learn/datasets-and-preprocessing.md) |
 | Which dataset loaders are public? | [Datasets API](../api/datasets.md) |
 | How can every configured case be run? | [Run Everything](../run-everything.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/experiments.md"
+<!-- silva-extension-path:end -->

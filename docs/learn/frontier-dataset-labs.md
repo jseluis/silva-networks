@@ -239,3 +239,7 @@ protocol.
 | Which classes and builders are public? | [Recent Dataset API](../api/frontier_data.md) |
 | How do ordinary dataset adapters work? | [Datasets and Preprocessing](datasets-and-preprocessing.md) |
 | Where are the complete citations? | [Paper and References](../paper/references.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

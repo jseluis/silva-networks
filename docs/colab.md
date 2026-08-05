@@ -114,7 +114,7 @@ installs from `https://github.com/jseluis/silva-networks`.
 If you use the package, cite:
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.1.0. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.2.0. MIT License.
 https://github.com/jseluis/silva-networks
 ```
 
@@ -136,3 +136,7 @@ The full BibTeX file is
 | Which notebooks and topics are available? | [Notebooks](notebooks.md) |
 | Which notebook should I open first? | [Package Quickstart Notebook](package-notebooks/01_package_quickstart.ipynb) |
 | How do I install the same environment locally? | [Installation](installation.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/project.md"
+<!-- silva-extension-path:end -->

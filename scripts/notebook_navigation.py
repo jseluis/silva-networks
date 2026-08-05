@@ -413,6 +413,23 @@ NOTEBOOK_NEXT_STEPS: dict[str, tuple[tuple[str, str, str], ...]] = {
             *_page("Full-Scale Training", "examples/full-scale-training"),
         ),
     ),
+    "package_api/27_reproducing_silva_and_source_methods.ipynb": (
+        (
+            "How are source methods represented without losing SILVA structure?",
+            *_page(
+                "Reproducing SILVA and Source Methods",
+                "learn/reproducing-silva-and-papers",
+            ),
+        ),
+        (
+            "Which source-aware records and builders are public?",
+            *_page("Reproducibility API", "api/reproducibility"),
+        ),
+        (
+            "How should the resulting experiment be scaled?",
+            *_page("Full-Scale SILVA", "learn/full-scale-silva"),
+        ),
+    ),
     "implicit_bridge/01_introduction_fixed_points.ipynb": (
         (
             "What does a fixed point mean operationally?",
@@ -598,7 +615,14 @@ def synchronize_notebook_navigation(root: Path = ROOT) -> int:
             second_line = original.splitlines()[1]
             indent = len(second_line) - len(second_line.lstrip())
             notebook = json.loads(original)
-            payload = json.dumps(add_navigation(notebook, key), indent=indent) + "\n"
+            payload = (
+                json.dumps(
+                    add_navigation(notebook, key),
+                    indent=indent,
+                    ensure_ascii=False,
+                )
+                + "\n"
+            )
             target.write_text(payload, encoding="utf-8")
     return len(NOTEBOOK_NEXT_STEPS)
 

@@ -141,3 +141,7 @@ and [Paper and References](../paper/references.md).
 | What evidence should a trained experiment report? | [Reconstructing Paper Experiments](../learn/reconstructing-paper-experiments.md) |
 | Which measured outputs are published? | [Results](../results.md) |
 | How do I scale data and execution? | [Full-Scale SILVA](../learn/full-scale-silva.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

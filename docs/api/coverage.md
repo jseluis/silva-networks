@@ -58,3 +58,7 @@ surface.
 | How are implemented cases organized for readers? | [Case Atlas](../learn/case-atlas.md) |
 | Which checks determine publication readiness? | [Release Readiness](../release-readiness.md) |
 | How are experiment routes represented? | [Public Experiments API](public_experiments.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

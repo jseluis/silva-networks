@@ -9,7 +9,7 @@ benchmark-scale width, depth, data, and training protocols remain user choices.
 from __future__ import annotations
 
 import math
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from typing import Literal
 
@@ -223,7 +223,7 @@ class SILVAMonotoneGraphOutput:
     output: Tensor
     state: Tensor
     solver_result: SolverResult
-    monotonicity_certificate: Tensor
+    monotonicity_certificate: Tensor | None
 
 
 class SILVAMonotoneGraphEquilibrium(nn.Module):
@@ -238,8 +238,9 @@ class SILVAMonotoneGraphEquilibrium(nn.Module):
         margin: float = 0.1,
         step_size: float = 0.8,
         operator_rank: int | None = None,
-        transition: SILVAMonotoneGraphTransition | None = None,
+        transition: nn.Module | None = None,
         readout: nn.Module | None = None,
+        certificate: Callable[[], Tensor] | None = None,
         config: SolverConfig | None = None,
     ):
         super().__init__()
@@ -251,9 +252,14 @@ class SILVAMonotoneGraphEquilibrium(nn.Module):
             step_size=step_size,
             operator_rank=operator_rank,
         )
-        if self.transition.in_dim != in_dim or self.transition.state_dim != state_dim:
+        transition_in_dim = getattr(self.transition, "in_dim", in_dim)
+        transition_state_dim = getattr(self.transition, "state_dim", state_dim)
+        if transition_in_dim != in_dim or transition_state_dim != state_dim:
             raise ValueError("transition dimensions must match in_dim and state_dim")
         self.readout = readout or nn.Linear(state_dim, out_dim)
+        self.certificate = certificate or getattr(
+            self.transition, "monotonicity_certificate", None
+        )
         self.config = config or SolverConfig(
             solver="anderson",
             max_iter=30,
@@ -285,7 +291,10 @@ class SILVAMonotoneGraphEquilibrium(nn.Module):
             raise ValueError("z0 must match the input device and dtype")
 
         def fixed_map(state: Tensor) -> Tensor:
-            return self.transition(state, inputs, edge_index, edge_weight)
+            updated = self.transition(state, inputs, edge_index, edge_weight)
+            if updated.shape != state.shape:
+                raise ValueError("transition must preserve the monotone graph state shape")
+            return updated
 
         result = solve_equilibrium(
             fixed_map,
@@ -303,7 +312,7 @@ class SILVAMonotoneGraphEquilibrium(nn.Module):
                 output,
                 result.z,
                 result,
-                self.transition.monotonicity_certificate(),
+                self.certificate() if self.certificate is not None else None,
             )
         return output
 
@@ -498,6 +507,11 @@ class SILVAGenerativeEquilibriumTransformer(nn.Module):
         classes: int | None = None,
         attention_mode: AttentionMode = "auto",
         query_chunk_size: int | None = None,
+        patch_embed: nn.Module | None = None,
+        injection_blocks: Sequence[nn.Module] | None = None,
+        injection_projection: nn.Module | None = None,
+        equilibrium_blocks: Sequence[nn.Module] | None = None,
+        decoder: nn.Module | None = None,
         config: SolverConfig | None = None,
     ):
         super().__init__()
@@ -515,14 +529,10 @@ class SILVAGenerativeEquilibriumTransformer(nn.Module):
             _positive_integer(classes, "classes")
         if hidden_dim % 4 != 0 or hidden_dim % heads != 0:
             raise ValueError("hidden_dim must be divisible by 4 and by heads")
-        self.patch_embed = nn.Conv2d(
-            in_channels,
-            hidden_dim,
-            kernel_size=patch_size,
-            stride=patch_size,
+        self.patch_embed = patch_embed or nn.Conv2d(
+            in_channels, hidden_dim, kernel_size=patch_size, stride=patch_size
         )
-        self.injection_blocks = nn.ModuleList(
-            [
+        default_injection_blocks = [
                 nn.TransformerEncoderLayer(
                     hidden_dim,
                     heads,
@@ -534,13 +544,17 @@ class SILVAGenerativeEquilibriumTransformer(nn.Module):
                 )
                 for _ in range(injection_depth)
             ]
+        if injection_blocks is not None and len(injection_blocks) != injection_depth:
+            raise ValueError("injection_blocks must match injection_depth")
+        self.injection_blocks = nn.ModuleList(
+            list(injection_blocks)
+            if injection_blocks is not None
+            else default_injection_blocks
         )
-        self.injection_projection = nn.Linear(
-            hidden_dim,
-            equilibrium_depth * 3 * hidden_dim,
+        self.injection_projection = injection_projection or nn.Linear(
+            hidden_dim, equilibrium_depth * 3 * hidden_dim
         )
-        self.equilibrium_blocks = nn.ModuleList(
-            [
+        default_equilibrium_blocks = [
                 SILVAEquilibriumTransformerBlock(
                     hidden_dim,
                     heads=heads,
@@ -551,13 +565,21 @@ class SILVAGenerativeEquilibriumTransformer(nn.Module):
                 )
                 for _ in range(equilibrium_depth)
             ]
+        if equilibrium_blocks is not None and len(equilibrium_blocks) != equilibrium_depth:
+            raise ValueError("equilibrium_blocks must match equilibrium_depth")
+        self.equilibrium_blocks = nn.ModuleList(
+            list(equilibrium_blocks)
+            if equilibrium_blocks is not None
+            else default_equilibrium_blocks
         )
         self.class_embedding = (
             nn.Embedding(classes, equilibrium_depth * 3 * hidden_dim)
             if classes is not None
             else None
         )
-        self.decoder = nn.Linear(hidden_dim, out_channels * patch_size * patch_size)
+        self.decoder = decoder or nn.Linear(
+            hidden_dim, out_channels * patch_size * patch_size
+        )
         self.config = config or SolverConfig(
             solver="anderson",
             max_iter=30,
@@ -573,6 +595,10 @@ class SILVAGenerativeEquilibriumTransformer(nn.Module):
 
     def _tokens(self, images: Tensor) -> tuple[Tensor, int, int]:
         patches = self.patch_embed(images)
+        if patches.dim() != 4 or patches.shape[1] != self.hidden_dim:
+            raise ValueError(
+                "patch_embed must return (batch, hidden_dim, patch_height, patch_width)"
+            )
         height, width = patches.shape[-2:]
         tokens = patches.flatten(2).transpose(1, 2)
         positions = _sincos_2d_position(
@@ -614,6 +640,15 @@ class SILVAGenerativeEquilibriumTransformer(nn.Module):
         for block in self.injection_blocks:
             tokens = block(tokens)
         injection = self.injection_projection(tokens)
+        expected_injection = (
+            tokens.shape[0],
+            tokens.shape[1],
+            self.equilibrium_depth * 3 * self.hidden_dim,
+        )
+        if injection.shape != expected_injection:
+            raise ValueError(
+                f"injection_projection must return shape {expected_injection}"
+            )
         chunks = injection.chunk(self.equilibrium_depth, dim=-1)
         class_chunks: tuple[Tensor, ...] | tuple[None, ...]
         if self.class_embedding is None:
@@ -640,6 +675,10 @@ class SILVAGenerativeEquilibriumTransformer(nn.Module):
                 strict=True,
             ):
                 value = block(value, qkv_source, class_source)
+                if value.shape != state.shape:
+                    raise ValueError(
+                        "equilibrium block must preserve the token-state shape"
+                    )
             return value
 
         result = solve_equilibrium(

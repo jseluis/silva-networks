@@ -160,3 +160,7 @@ to serialize compact runs with the same controls.
 | How are paper architecture families expressed in SILVA? | [Paper Family Adaptations](paper-family-adaptations.md) |
 | Which measured validation results are already published? | [Benchmark Cards](../experiments/benchmark-cards.md) |
 | How should claims and citations be reported? | [Citation-Aware Reporting](../examples/citation-aware-reporting.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

@@ -11,3 +11,7 @@ Deterministic equation-checked data for advanced SILVA labs.
 | Which equations define every generated batch? | [Advanced Equilibrium Datasets](../learn/advanced-equilibrium-datasets.md) |
 | How do the batches enter the public models? | [Advanced Equilibria Example](../examples/advanced-equilibria.md) |
 | Which graph and transformer classes consume them? | [Advanced Equilibria API](advanced_equilibria.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

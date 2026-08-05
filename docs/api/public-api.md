@@ -35,6 +35,8 @@ should normally name the objects it uses.
 | solve and inspect a fixed point | [Solvers](solvers.md), [Diagnostics](diagnostics.md) |
 | construct one structured equilibrium | [Layers](layers.md) |
 | link several equilibrium points | [Architectures](architectures.md) |
+| validate a custom transition or author a new family | [Extensibility](extensibility.md) |
+| inspect source protocols, evidence, and full-scale options for every family | [Reproducibility](reproducibility.md) |
 | choose an internal point mapping | [Point Architectures](point_architectures.md) |
 | construct a Fourier, physics-graph, homotopy, or distributional equilibrium | [Recent Equilibrium Families](frontier.md) |
 | generate equation-checked data for those four families | [Recent Equilibrium Datasets](frontier_data.md) |
@@ -58,3 +60,7 @@ transition, solver result, and diagnostics are represented for that task.
 | Where should a first-time package user begin? | [Introduction by Example](../get-started/introduction-by-example.md) |
 | How are all API modules organized? | [API Reference](reference.md) |
 | Can I execute the public imports in one notebook? | [Package Quickstart Notebook](../package-notebooks/01_package_quickstart.ipynb) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

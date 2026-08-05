@@ -22,11 +22,10 @@ def main() -> None:
     report = stability_report(lambda zz: layer.f(zz, x, edge_index=edge_index), z, samples=2, iters=10)
 
     print("state_shape", tuple(z.shape))
-    print("loss", float(loss))
+    print("loss", float(loss.detach()))
     print("residual", report.residual)
     print("spectral_radius", report.spectral_radius)
 
 
 if __name__ == "__main__":
     main()
-

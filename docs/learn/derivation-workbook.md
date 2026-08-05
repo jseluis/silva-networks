@@ -565,3 +565,7 @@ where every derived quantity is evaluated in a separate cell.
 | Where are all transitions derived directly from implementation? | [Implementation Derivations](implementation-derivations.md) |
 | Can I execute the derivation cell by cell? | [Equation-to-Code Walkthrough](../package-notebooks/08_equation_to_code_walkthrough.ipynb) |
 | Which assumptions make the fixed point meaningful? | [Fixed Points](fixed-points.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

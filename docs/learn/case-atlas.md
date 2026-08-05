@@ -646,3 +646,7 @@ those diagnostics.
 | How do I select among these model families? | [Selecting Model Families](selecting-model-families.md) |
 | How are research architectures represented in SILVA? | [Paper Family Adaptations](paper-family-adaptations.md) |
 | Where are the runnable cases? | [Examples](../examples/index.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

@@ -222,3 +222,7 @@ and [Solvers and Linear Algebra](../paper/references.md#solvers-and-linear-algeb
 | How do solver updates alter the effective Jacobian? | [Solver Derivation Lab](solver-derivation-lab.md) |
 | Which Jacobian estimators are public? | [Jacobians API](../api/jacobians.md) |
 | Where can I vary stability diagnostics interactively? | [Interactive Diagnostics Lab](interactive-diagnostics-lab.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

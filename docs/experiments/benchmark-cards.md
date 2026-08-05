@@ -108,3 +108,7 @@ flow, and OptNet/CVXPYlayers for optimization layers.
 | Where are the complete measured outputs explained? | [Results](../results.md) |
 | What evidence is required beyond compact validation? | [Reconstructing Paper Experiments](../learn/reconstructing-paper-experiments.md) |
 | How should metrics and claims be cited? | [Citation-Aware Reporting](../examples/citation-aware-reporting.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/experiments.md"
+<!-- silva-extension-path:end -->

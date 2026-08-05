@@ -83,3 +83,7 @@ family with a code target, tutorial target, notebook target, and test target.
 | Where are the equations derived from first principles? | [Mathematical Foundations](learn/mathematical-foundations.md) |
 | Which article citations and metadata have been checked? | [Research Citation Audit](research-citation-audit.md) |
 | Where is the complete bibliography? | [Paper and References](paper/references.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/project.md"
+<!-- silva-extension-path:end -->

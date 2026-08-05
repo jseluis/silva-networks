@@ -78,3 +78,7 @@ equilibrium tolerance. Architecture sources are listed in
 | How is the hierarchy derived? | [Cortex Hierarchies](../learn/cortex-hierarchy.md) |
 | How are points placed across devices? | [Stacking and Devices](../learn/stacking-and-devices.md) |
 | Which architecture containers are public? | [Architectures API](../api/architectures.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

@@ -170,3 +170,7 @@ must remain stable:
 | What arguments and result fields are public? | [Recent Equilibrium API](../api/frontier.md) |
 | How do the broader ODE/PDE cases work? | [Scientific Operators Example](scientific-operators.md) |
 | Can I execute every derivation and check? | [Recent Equilibrium Families Notebook](../package-notebooks/16_frontier_equilibrium_families.ipynb) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

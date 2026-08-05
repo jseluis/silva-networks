@@ -834,9 +834,10 @@ $$
 \frac{d\widehat y}{dt}=J_Q\frac{dz^\star}{dt}.
 $$
 
-`implicit_time_derivative` solves this system exactly with dense Jacobians. It
-is transparent and differentiable for small latent dimensions; large systems
-should replace the dense solve with matrix-free products.
+`implicit_time_derivative` solves this system with either a dense latent
+Jacobian or matrix-free JVPs and GMRES. `auto` uses the dense path only below
+the configured latent-dimension threshold. Both paths differentiate the same
+implicit equation.
 """,
             ),
             code(
@@ -856,8 +857,14 @@ model = SILVAPhysicsInformedEquilibrium(
     ),
 )
 initial = model(data.times, return_result=True)
-derivative = model.implicit_time_derivative(data.times, initial.state)
+derivative = model.implicit_time_derivative(data.times, initial.state, mode="dense")
+matrix_free_derivative = model.implicit_time_derivative(
+    data.times,
+    initial.state,
+    mode="matrix_free",
+)
 assert derivative.shape == initial.output.shape == data.target.shape
+torch.testing.assert_close(matrix_free_derivative, derivative, atol=1e-5, rtol=1e-5)
 print("equilibrium residual:", initial.solver_result.residual)
 """,
             ),

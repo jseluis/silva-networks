@@ -142,3 +142,7 @@ Solver sources are collected in
 | How are linked points organized as a cortex hierarchy? | [Cortex Hierarchies](cortex-hierarchy.md) |
 | Where is a stacked model executed? | [Stacked Architecture Example](../examples/stacked-architecture.md) |
 | Which modules and device helpers are public? | [Architectures API](../api/architectures.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

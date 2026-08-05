@@ -808,7 +808,13 @@ class SILVAMultiscaleOutput:
 
 
 class SILVAMultiscaleDEQ(nn.Module):
-    """General MDEQ image core with configurable branches and fusion."""
+    """General MDEQ image core with configurable branches and fusion.
+
+    ``transition_module`` may replace the built-in multiscale field. It must
+    accept ``(states, injections)`` and return one state-preserving tensor per
+    scale. ``injection_modules`` may similarly replace the per-scale source
+    projections when ``injection_mode='all'``.
+    """
 
     def __init__(
         self,
@@ -823,6 +829,8 @@ class SILVAMultiscaleDEQ(nn.Module):
         stem_stride: int = 1,
         injection_mode: MDEQInjectionMode = "highest",
         input_stem: nn.Module | None = None,
+        injection_modules: Sequence[nn.Module] | None = None,
+        transition_module: nn.Module | None = None,
         config: SolverConfig | None = None,
         **transition_kwargs,
     ):
@@ -835,6 +843,10 @@ class SILVAMultiscaleDEQ(nn.Module):
             raise ValueError("injection_mode must be highest or all")
         if input_stem is not None and injection_mode != "highest":
             raise ValueError("input_stem is only supported with injection_mode='highest'")
+        if injection_modules is not None and injection_mode != "all":
+            raise ValueError("injection_modules require injection_mode='all'")
+        if transition_module is not None and transition_kwargs:
+            raise ValueError("transition_kwargs cannot be used with transition_module")
         self.input_stem = input_stem or nn.Conv2d(
             in_channels,
             channels[0],
@@ -842,8 +854,7 @@ class SILVAMultiscaleDEQ(nn.Module):
             stride=stem_stride,
             padding=1,
         )
-        self.injections = nn.ModuleList(
-            [
+        default_injections = [
                 nn.Conv2d(
                     in_channels,
                     channel,
@@ -853,10 +864,14 @@ class SILVAMultiscaleDEQ(nn.Module):
                 )
                 for index, channel in enumerate(channels)
             ]
-            if injection_mode == "all"
-            else []
+        if injection_modules is not None and len(injection_modules) != len(channels):
+            raise ValueError("injection_modules must provide one module per scale")
+        self.injections = nn.ModuleList(
+            list(injection_modules)
+            if injection_modules is not None
+            else default_injections if injection_mode == "all" else []
         )
-        self.transition = SILVAMultiscaleTransition(
+        self.transition = transition_module or SILVAMultiscaleTransition(
             channels,
             blocks_per_scale=blocks_per_scale,
             expansion=expansion,
@@ -1039,11 +1054,15 @@ class SILVAMultiscaleClassifier(nn.Module):
         final_channels: int | None = None,
         head_expansion: int = 4,
         head_norm_affine: bool = False,
+        core: SILVAMultiscaleDEQ | None = None,
+        readout: nn.Module | None = None,
         **core_kwargs,
     ):
         super().__init__()
-        self.core = SILVAMultiscaleDEQ(in_channels, channels, **core_kwargs)
-        self.readout = (
+        if core is not None and core_kwargs:
+            raise ValueError("core_kwargs cannot be used with a custom core")
+        self.core = core or SILVAMultiscaleDEQ(in_channels, channels, **core_kwargs)
+        default_readout = (
             nn.Linear(sum(channels), num_classes)
             if head_channels is None
             else SILVAMultiscaleClassificationHead(
@@ -1055,6 +1074,7 @@ class SILVAMultiscaleClassifier(nn.Module):
                 norm_affine=head_norm_affine,
             )
         )
+        self.readout = readout or default_readout
 
     def forward(self, x: Tensor, *, return_result: bool = False):
         core = self.core(x, return_result=True)
@@ -1082,16 +1102,20 @@ class SILVAMultiscaleSegmenter(nn.Module):
         head_hidden_dim: int | None = None,
         final_kernel_size: Literal[1, 3] = 1,
         align_corners: bool = True,
+        core: SILVAMultiscaleDEQ | None = None,
+        readout: nn.Module | None = None,
         **core_kwargs,
     ):
         super().__init__()
-        self.core = SILVAMultiscaleDEQ(in_channels, channels, **core_kwargs)
+        if core is not None and core_kwargs:
+            raise ValueError("core_kwargs cannot be used with a custom core")
+        self.core = core or SILVAMultiscaleDEQ(in_channels, channels, **core_kwargs)
         hidden = head_hidden_dim or sum(channels)
         if hidden < 1:
             raise ValueError("head_hidden_dim must be positive")
         if final_kernel_size not in {1, 3}:
             raise ValueError("final_kernel_size must be 1 or 3")
-        self.readout = nn.Sequential(
+        self.readout = readout or nn.Sequential(
             nn.Conv2d(sum(channels), hidden, 1),
             nn.BatchNorm2d(hidden),
             nn.ReLU(),
@@ -1157,6 +1181,10 @@ class SILVAImplicitGraphNetwork(nn.Module):
         pooling: Literal["mean", "sum", "max"] = "mean",
         normalization: Literal["symmetric", "row", "none"] = "symmetric",
         activation: Callable[[Tensor], Tensor] = torch.relu,
+        input_projection: nn.Module | None = None,
+        state_projection: nn.Module | None = None,
+        transition_module: nn.Module | None = None,
+        readout: nn.Module | None = None,
         config: SolverConfig | None = None,
     ):
         super().__init__()
@@ -1168,9 +1196,15 @@ class SILVAImplicitGraphNetwork(nn.Module):
             raise ValueError("pooling must be mean, sum, or max")
         if normalization not in {"symmetric", "row", "none"}:
             raise ValueError("normalization must be symmetric, row, or none")
-        self.input_projection = nn.Linear(in_dim, state_dim)
-        self.state_projection = nn.Linear(state_dim, state_dim, bias=False)
-        self.readout = nn.Linear(state_dim, out_dim)
+        self.input_projection = input_projection or nn.Linear(in_dim, state_dim)
+        self.state_projection = state_projection or nn.Linear(
+            state_dim, state_dim, bias=False
+        )
+        self.transition_module = transition_module
+        self.readout = readout or nn.Linear(state_dim, out_dim)
+        self.in_dim = in_dim
+        self.state_dim = state_dim
+        self.out_dim = out_dim
         self.task = task
         self.pooling = pooling
         self.normalization = normalization
@@ -1184,6 +1218,11 @@ class SILVAImplicitGraphNetwork(nn.Module):
         edge_index: Tensor,
         edge_weight: Tensor | None = None,
     ) -> Tensor:
+        if self.transition_module is not None:
+            output = self.transition_module(z, x, edge_index, edge_weight)
+            if output.shape != z.shape:
+                raise ValueError("transition_module must preserve the graph state shape")
+            return output
         source, destination = edge_index
         weights = _normalized_edge_weights(
             edge_index,
@@ -1208,19 +1247,19 @@ class SILVAImplicitGraphNetwork(nn.Module):
         z0: Tensor | None = None,
         return_result: bool = False,
     ):
-        if x.dim() != 2 or x.shape[1] != self.input_projection.in_features:
+        if x.dim() != 2 or x.shape[1] != self.in_dim:
             raise ValueError("x must have shape (nodes, in_dim)")
         initial = (
             torch.zeros(
                 x.shape[0],
-                self.state_projection.in_features,
+                self.state_dim,
                 device=x.device,
                 dtype=x.dtype,
             )
             if z0 is None
             else z0
         )
-        expected_state = (x.shape[0], self.state_projection.in_features)
+        expected_state = (x.shape[0], self.state_dim)
         if initial.shape != expected_state or initial.device != x.device or initial.dtype != x.dtype:
             raise ValueError("z0 must match the graph state shape, device, and dtype")
 
@@ -1253,6 +1292,10 @@ class SILVAImplicitGraphNetwork(nn.Module):
 
         if max_norm <= 0:
             raise ValueError("max_norm must be positive")
+        if self.transition_module is not None or not hasattr(self.state_projection, "weight"):
+            raise TypeError(
+                "project_recurrent_norm requires the built-in linear state projection"
+            )
         with torch.no_grad():
             weight = self.state_projection.weight
             norm = torch.linalg.matrix_norm(weight, ord=2)
@@ -1327,6 +1370,9 @@ class SILVAImplicitNeuralRepresentation(nn.Module):
         activation: INRActivation = "sine",
         depth: int = 1,
         scale: float = 10.0,
+        injection_module: nn.Module | None = None,
+        transition_module: nn.Module | None = None,
+        readout: nn.Module | None = None,
         config: SolverConfig | None = None,
     ):
         super().__init__()
@@ -1334,19 +1380,32 @@ class SILVAImplicitNeuralRepresentation(nn.Module):
             raise ValueError("coordinate/state/output dimensions and depth must be positive")
         if activation not in {"sine", "relu", "tanh"}:
             raise ValueError(f"Unknown INR activation: {activation}")
-        self.injection = SILVACoordinateInjection(
+        self.injection = injection_module or SILVACoordinateInjection(
             coordinate_dim,
             state_dim,
             mode=injection,
             scale=scale,
         )
-        self.recurrent = nn.ModuleList([nn.Linear(state_dim, state_dim) for _ in range(depth)])
-        self.readout = nn.Linear(state_dim, output_dim)
+        self.recurrent = nn.ModuleList(
+            []
+            if transition_module is not None
+            else [nn.Linear(state_dim, state_dim) for _ in range(depth)]
+        )
+        self.transition_module = transition_module
+        self.readout = readout or nn.Linear(state_dim, output_dim)
+        self.coordinate_dim = coordinate_dim
+        self.state_dim = state_dim
+        self.output_dim = output_dim
         self.activation_name = activation
         self.scale = scale
         self.config = config or SolverConfig(solver="anderson", max_iter=40, tol=1e-5)
 
     def transition(self, z: Tensor, injected: Tensor) -> Tensor:
+        if self.transition_module is not None:
+            state = self.transition_module(z, injected)
+            if state.shape != z.shape:
+                raise ValueError("transition_module must preserve the INR state shape")
+            return state
         state = z
         for index, layer in enumerate(self.recurrent):
             state = self._activate(layer(state) + (injected if index == 0 else 0.0))
@@ -1359,10 +1418,15 @@ class SILVAImplicitNeuralRepresentation(nn.Module):
         z0: Tensor | None = None,
         return_result: bool = False,
     ):
-        if coordinates.dim() < 2 or coordinates.shape[-1] != self.injection.coordinate_dim:
+        if coordinates.dim() < 2 or coordinates.shape[-1] != self.coordinate_dim:
             raise ValueError("coordinates must end with coordinate_dim")
         injected = self.injection(coordinates)
+        expected_state = (*coordinates.shape[:-1], self.state_dim)
+        if injected.shape != expected_state:
+            raise ValueError(f"injection_module must return shape {expected_state}")
         initial = torch.zeros_like(injected) if z0 is None else z0
+        if initial.shape != injected.shape:
+            raise ValueError("z0 must match the injected coordinate-state shape")
 
         def transition(z: Tensor) -> Tensor:
             return self.transition(z, injected)
@@ -1375,6 +1439,9 @@ class SILVAImplicitNeuralRepresentation(nn.Module):
             tensors=_trainable_inputs(coordinates),
         )
         output = self.readout(result.z)
+        expected_output = (*coordinates.shape[:-1], self.output_dim)
+        if output.shape != expected_output:
+            raise ValueError(f"readout must return shape {expected_output}")
         if return_result:
             return SILVAINROutput(output, result.z, result)
         return output
@@ -1421,25 +1488,33 @@ class SILVADiffusionOutput:
 
 
 class SILVADiffusionEquilibrium(nn.Module):
-    r"""Joint DDIM trajectory represented as one triangular SILVA fixed point.
+    r"""Joint diffusion trajectory represented as one triangular SILVA fixed point.
 
     The user supplies a denoiser ``epsilon_theta(x_t, t, condition)`` and
     cumulative alpha schedule. All selected reverse-time states are updated in
     parallel from the previous solver trajectory. Fixed stochastic noise is an
     explicit input, so deterministic DDIM (`eta=0`) and stochastic variants are
-    both reproducible.
+    both reproducible. ``step_operator`` may replace the complete DDIM update,
+    and ``data_consistency`` may condition every candidate state on an observed
+    degraded sample. These two extension points cover generation and joint
+    diffusion-restoration fixed-point protocols without changing the state
+    equation.
     """
 
     def __init__(
         self,
-        denoiser: nn.Module,
+        denoiser: nn.Module | None,
         alphas_cumprod: Tensor,
         timesteps: Sequence[int],
         *,
         eta: float = 0.0,
+        step_operator: Callable[..., Tensor] | nn.Module | None = None,
+        data_consistency: Callable[..., Tensor] | nn.Module | None = None,
         config: SolverConfig | None = None,
     ):
         super().__init__()
+        if denoiser is None and step_operator is None:
+            raise ValueError("denoiser or step_operator must be provided")
         if eta < 0:
             raise ValueError("eta must be nonnegative")
         if not alphas_cumprod.is_floating_point() or not torch.isfinite(alphas_cumprod).all():
@@ -1455,6 +1530,8 @@ class SILVADiffusionEquilibrium(nn.Module):
         if torch.any(alphas_cumprod[1:] > alphas_cumprod[:-1]):
             raise ValueError("alphas_cumprod must be nonincreasing")
         self.denoiser = denoiser
+        self.step_operator = step_operator
+        self.data_consistency = data_consistency
         self.register_buffer("alphas_cumprod", alphas_cumprod.clone())
         self.register_buffer("timesteps", torch.tensor(timesteps, dtype=torch.long))
         self.eta = float(eta)
@@ -1470,11 +1547,14 @@ class SILVADiffusionEquilibrium(nn.Module):
         noise: Tensor,
         *,
         condition=None,
+        observation: Tensor | None = None,
         step_noise: Tensor | None = None,
         initial_trajectory: Tensor | None = None,
         return_result: bool = False,
     ):
         steps = self.timesteps.numel()
+        if self.data_consistency is not None and observation is None:
+            raise ValueError("observation is required when data_consistency is configured")
         if step_noise is None:
             step_noise = torch.zeros(
                 steps - 1,
@@ -1497,15 +1577,24 @@ class SILVADiffusionEquilibrium(nn.Module):
         def transition(trajectory: Tensor) -> Tensor:
             states = [noise]
             for index in range(steps - 1):
-                states.append(
-                    self.ddim_step(
-                        trajectory[index],
-                        int(self.timesteps[index].item()),
-                        int(self.timesteps[index + 1].item()),
-                        condition=condition,
-                        noise=step_noise[index],
-                    )
+                timestep = int(self.timesteps[index].item())
+                next_timestep = int(self.timesteps[index + 1].item())
+                candidate = self.diffusion_step(
+                    trajectory[index],
+                    timestep,
+                    next_timestep,
+                    condition=condition,
+                    noise=step_noise[index],
                 )
+                if self.data_consistency is not None:
+                    candidate = self.data_consistency(
+                        candidate,
+                        observation,
+                        next_timestep,
+                    )
+                if candidate.shape != noise.shape:
+                    raise ValueError("diffusion step must preserve the sample shape")
+                states.append(candidate)
             return torch.stack(states, dim=0)
 
         result = solve_equilibrium(
@@ -1513,12 +1602,39 @@ class SILVADiffusionEquilibrium(nn.Module):
             initial,
             self.config,
             params=tuple(self.parameters()),
-            tensors=_trainable_inputs(noise, step_noise, condition),
+            tensors=_trainable_inputs(noise, step_noise, condition, observation),
         )
         output = result.z[-1]
         if return_result:
             return SILVADiffusionOutput(output, result.z, result)
         return output
+
+    def diffusion_step(
+        self,
+        x_t: Tensor,
+        timestep: int,
+        next_timestep: int,
+        *,
+        condition=None,
+        noise: Tensor | None = None,
+    ) -> Tensor:
+        """Apply the configured complete step or the built-in DDIM step."""
+
+        if self.step_operator is not None:
+            return self.step_operator(
+                x_t,
+                timestep,
+                next_timestep,
+                condition,
+                noise,
+            )
+        return self.ddim_step(
+            x_t,
+            timestep,
+            next_timestep,
+            condition=condition,
+            noise=noise,
+        )
 
     def ddim_step(
         self,
@@ -1530,6 +1646,9 @@ class SILVADiffusionEquilibrium(nn.Module):
         noise: Tensor | None = None,
     ) -> Tensor:
         """Apply one generalized DDIM reverse update."""
+
+        if self.denoiser is None:
+            raise RuntimeError("ddim_step requires a denoiser")
 
         batch_times = torch.full(
             (x_t.shape[0],),

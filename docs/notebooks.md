@@ -4,6 +4,11 @@ The package ships with rendered notebook pages in the documentation and the
 same `.ipynb` files in the repository. The rendered pages are part of the docs
 navigation. The source notebooks can be opened locally in Jupyter.
 
+The repository contains **62 canonical notebooks**: 27 package/family labs, 9
+implicit-layer bridge labs, and 26 derivation-heavy book/research notebooks.
+Publication and hosted-runtime copies mirror the canonical files and are not
+counted as additional notebooks.
+
 Every rendered notebook page includes a **Download notebook** button above the
 content. The downloaded file is the same `.ipynb` artifact tracked in the
 documentation tree.
@@ -54,6 +59,7 @@ derivatives, and DAE roots.
 | [SILVA Physics-Informed Equilibrium](package-notebooks/24_silva_physics_informed_equilibrium.ipynb) | `notebooks/package_api/24_silva_physics_informed_equilibrium.ipynb` | derives the implicit time derivative and trains boundary, ODE, and Jacobian terms |
 | [SILVA Implicit DAE and Residuals](package-notebooks/25_silva_implicit_dae_and_residuals.ipynb) | `notebooks/package_api/25_silva_implicit_dae_and_residuals.ipynb` | derives one- and two-stage DAE roots, rolls out a trajectory, and distinguishes the residual objective |
 | [Full-Scale SILVA Families](package-notebooks/26_full_scale_silva.ipynb) | `notebooks/package_api/26_full_scale_silva.ipynb` | audits all 30 routes, verifies dense/scalable numerical equivalence, shards PDE data, trains with accumulation, resumes, and derives extension patterns |
+| [Reproducing SILVA and Source Methods](package-notebooks/27_reproducing_silva_and_source_methods.ipynb) | `notebooks/package_api/27_reproducing_silva_and_source_methods.ipynb` | audits source-aware records, inspects real constructors, builds a custom transition, adapts joint diffusion restoration, and emits a structured run record |
 
 ## Implicit Layers Bridge Track
 
@@ -115,6 +121,12 @@ For a quick release validation, run:
 python scripts/run_notebook_smoke.py --timeout 180
 ```
 
+Execute all 62 canonical notebooks, including the unreleased book track:
+
+```bash
+python scripts/run_notebook_smoke.py --all --timeout 300
+```
+
 Install the example dependencies and open the notebook folder:
 
 ```bash
@@ -159,7 +171,10 @@ through them is:
 
 Those notebooks complement the package API notebooks: the book track is
 derivation-heavy, while the package track is installation, usage, and
-extension-oriented.
+extension-oriented. Every canonical notebook includes an equation-to-family
+appendix, an executable custom transition, one-step equivalence validation,
+backward-gradient checks, a compact reproduction record, and a full-scale
+extension checklist.
 
 ## Where to Go Next
 
@@ -169,3 +184,7 @@ extension-oriented.
 | Which notebook gives the shortest package introduction? | [Package Quickstart Notebook](package-notebooks/01_package_quickstart.ipynb) |
 | Where is the complete conceptual learning path? | [Learn SILVA From Scratch](learn/mathematical-foundations.md) |
 | Where is the package-wide scale-up path? | [Full-Scale SILVA](learn/full-scale-silva.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/project.md"
+<!-- silva-extension-path:end -->

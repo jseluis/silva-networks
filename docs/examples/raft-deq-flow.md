@@ -76,3 +76,7 @@ Method sources are listed under [DEQ Engines and Optical Flow](../paper/referenc
 | How is the coupled flow fixed point derived? | [DEQ Engine and Optical Flow](../learn/deq-engine-and-flow.md) |
 | Which coupled-flow controls are public? | [Optical Flow API](../api/flow.md) |
 | Can I execute the same case cell by cell? | [RAFT and DEQ-Flow Notebook](../package-notebooks/13_raft_deq_flow.ipynb) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

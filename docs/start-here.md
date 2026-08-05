@@ -104,3 +104,7 @@ $$
 | Can I begin with one small executable example? | [Introduction by Example](get-started/introduction-by-example.md) |
 | Which SILVA case matches my problem? | [Case Atlas](learn/case-atlas.md) |
 | How can I validate the complete repository? | [Run Everything](run-everything.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/project.md"
+<!-- silva-extension-path:end -->

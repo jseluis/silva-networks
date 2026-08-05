@@ -95,3 +95,7 @@ Direct links and BibTeX keys are collected in
 | How does the general engine connect to SILVA and optical flow? | [DEQ Engine and Optical Flow](../learn/deq-engine-and-flow.md) |
 | Which engine state contracts are public? | [DEQ Engine API](../api/deq-engine.md) |
 | How does exact implicit backward work? | [Implicit Backward Guide](../learn/implicit-backward-guide.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

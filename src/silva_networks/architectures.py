@@ -116,6 +116,7 @@ class SILVAStack(nn.Module):
         local_kwargs: KwargsSpec = None,
         global_kwargs: KwargsSpec = None,
         self_kwargs: KwargsSpec = None,
+        layers: Sequence[nn.Module] | None = None,
     ):
         super().__init__()
         dims = _normalize_hidden_dims(hidden_dims, num_layers)
@@ -124,32 +125,39 @@ class SILVAStack(nn.Module):
         global_kwargs_by_layer = _normalize_kwargs(global_kwargs, len(dims), "global_kwargs")
         self_kwargs_by_layer = _normalize_kwargs(self_kwargs, len(dims), "self_kwargs")
 
-        layers: list[SILVALayer] = []
+        if layers is not None and len(layers) != len(dims):
+            raise ValueError("layers must match the requested number of hidden dimensions")
+        built_layers: list[nn.Module] = []
         previous = in_dim
         for index, hidden in enumerate(dims):
-            local_spec = _resolve_term_spec(local, hidden, index)
-            global_spec = _resolve_term_spec(global_term, hidden, index)
-            self_spec = _resolve_term_spec(self_term, hidden, index)
-            layers.append(
-                SILVALayer(
-                    in_dim=previous,
-                    hidden_dim=hidden,
-                    local=local_spec,  # type: ignore[arg-type]
-                    global_term=global_spec,  # type: ignore[arg-type]
-                    self_term=self_spec,  # type: ignore[arg-type]
-                    config=configs[index],
-                    normalize=normalize,
-                    local_kwargs=local_kwargs_by_layer[index]
-                    if isinstance(local_spec, str)
-                    else None,
-                    global_kwargs=global_kwargs_by_layer[index]
-                    if isinstance(global_spec, str)
-                    else None,
-                    self_kwargs=self_kwargs_by_layer[index] if isinstance(self_spec, str) else None,
+            if layers is not None:
+                built_layers.append(layers[index])
+            else:
+                local_spec = _resolve_term_spec(local, hidden, index)
+                global_spec = _resolve_term_spec(global_term, hidden, index)
+                self_spec = _resolve_term_spec(self_term, hidden, index)
+                built_layers.append(
+                    SILVALayer(
+                        in_dim=previous,
+                        hidden_dim=hidden,
+                        local=local_spec,  # type: ignore[arg-type]
+                        global_term=global_spec,  # type: ignore[arg-type]
+                        self_term=self_spec,  # type: ignore[arg-type]
+                        config=configs[index],
+                        normalize=normalize,
+                        local_kwargs=local_kwargs_by_layer[index]
+                        if isinstance(local_spec, str)
+                        else None,
+                        global_kwargs=global_kwargs_by_layer[index]
+                        if isinstance(global_spec, str)
+                        else None,
+                        self_kwargs=self_kwargs_by_layer[index]
+                        if isinstance(self_spec, str)
+                        else None,
+                    )
                 )
-            )
             previous = hidden
-        self.layers = nn.ModuleList(layers)
+        self.layers = nn.ModuleList(built_layers)
         self.in_dim = in_dim
         self.hidden_dims = tuple(dims)
         self.out_dim = dims[-1]
@@ -495,11 +503,13 @@ class SILVAGraphNetwork(nn.Module):
         local_kwargs: KwargsSpec = None,
         global_kwargs: KwargsSpec = None,
         self_kwargs: KwargsSpec = None,
+        encoder: nn.Module | None = None,
+        head: nn.Module | None = None,
     ):
         super().__init__()
         if task not in {"node", "graph"}:
             raise ValueError("task must be either 'node' or 'graph'")
-        self.encoder = SILVAStack(
+        self.encoder = encoder or SILVAStack(
             in_dim=in_dim,
             hidden_dims=hidden_dims,
             num_layers=num_layers,
@@ -512,7 +522,12 @@ class SILVAGraphNetwork(nn.Module):
             global_kwargs=global_kwargs,
             self_kwargs=self_kwargs,
         )
-        self.head = build_mlp_head(self.encoder.out_dim, out_dim, head_hidden_dims, dropout)
+        encoder_out_dim = getattr(self.encoder, "out_dim", None)
+        if head is None and encoder_out_dim is None:
+            raise ValueError("a custom encoder without out_dim requires a custom head")
+        self.head = head or build_mlp_head(
+            encoder_out_dim, out_dim, head_hidden_dims, dropout
+        )
         self.task = task
         self.pooling = pooling
 
@@ -558,17 +573,27 @@ class SILVAImageClassifier(nn.Module):
         config: SolverConfig | Sequence[SolverConfig] | None = None,
         head_hidden_dims: Sequence[int] = (),
         dropout: float = 0.0,
+        layers: Sequence[nn.Module] | None = None,
+        head: nn.Module | None = None,
     ):
         super().__init__()
         channels = _normalize_hidden_dims(hidden_channels, num_layers)
         configs = _normalize_configs(config, len(channels))
-        layers: list[SILVAImageLayer] = []
+        if layers is not None and len(layers) != len(channels):
+            raise ValueError("layers must match the requested number of hidden channels")
+        built_layers: list[nn.Module] = []
         previous = in_channels
         for index, hidden in enumerate(channels):
-            layers.append(SILVAImageLayer(previous, hidden, config=configs[index]))
+            built_layers.append(
+                layers[index]
+                if layers is not None
+                else SILVAImageLayer(previous, hidden, config=configs[index])
+            )
             previous = hidden
-        self.layers = nn.ModuleList(layers)
-        self.head = build_mlp_head(channels[-1], num_classes, head_hidden_dims, dropout)
+        self.layers = nn.ModuleList(built_layers)
+        self.head = head or build_mlp_head(
+            channels[-1], num_classes, head_hidden_dims, dropout
+        )
         self.out_channels = channels[-1]
 
     def forward(self, x: Tensor, return_state: bool = False, return_results: bool = False):

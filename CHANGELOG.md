@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.2.0 - 2026-08-05
+
+- Added public transition inspection and validation, conditioned-equilibrium
+  composition, family constructor lookup, and complete inspectable signatures
+  so custom SILVA families can replace initializer, transition, readout, and
+  solver components independently.
+- Added source-aware reproduction specifications for all 30 canonical families,
+  including equations, primary references, research repositories, datasets,
+  preprocessing obligations, metrics, local evidence, scale controls, and
+  explicit compact-versus-benchmark verification boundaries.
+- Extended joint diffusion equilibria with replaceable complete reverse steps,
+  observation-conditioned data consistency, and differentiable restoration
+  trajectories inside the SILVA state contract.
+- Expanded all 62 canonical notebooks with derivation, component replacement,
+  equivalence, gradient, reproduction, and scaling material; added a dedicated
+  source-method reproduction lab and synchronized publication copies.
+- Added complete extension and reproduction learning paths across all 112
+  navigable documentation pages, stable numbered references, runnable examples,
+  stricter documentation and release audits, and current workflow actions.
+- Fixed CPU attention higher-order gradients, modernized mixed-precision
+  scaling, stabilized notebook generation, and validated the full suite on
+  supported Python environments and current compatible dependencies.
+
 ## 1.1.0 - 2026-08-05
 
 - Added heterogeneous cortex networks and ten shape-preserving internal point

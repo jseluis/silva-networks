@@ -240,3 +240,7 @@ and graph, attention, set, and dynamic-neighborhood sources are listed in
 | Which internal architectures can define a single point? | [Point Architecture Catalog](../learn/point-architecture-catalog.md) |
 | How are several points linked into a hierarchy? | [Cortex Hierarchies](../learn/cortex-hierarchy.md) |
 | Which architecture factories are public? | [Point Architectures API](../api/point_architectures.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

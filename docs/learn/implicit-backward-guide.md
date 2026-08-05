@@ -175,3 +175,7 @@ for the implicit-function and DEQ sources. GMRES is listed under
 | Where is implicit differentiation derived? | [Mathematical Foundations](mathematical-foundations.md#implicit-differentiation) |
 | Which solver options control the backward system? | [Solvers API](../api/solvers.md) |
 | Can I run a minimal implicit-gradient notebook? | [Implicit Autodiff Notebook](../implicit-bridge-notebooks/02_implicit_autodiff.ipynb) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

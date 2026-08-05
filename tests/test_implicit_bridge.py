@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import pytest
 import torch
 
 from silva_networks import (
@@ -182,9 +181,8 @@ def test_explicit_euler_ode_block_and_multiscale_deq_are_differentiable() -> Non
     assert deq.input_low.weight.grad is not None
 
 
-@pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA is not available")
-def test_implicit_bridge_cuda_smoke() -> None:
-    device = torch.device("cuda")
+def test_implicit_bridge_selected_device_smoke() -> None:
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     x = torch.randn(4, 3, device=device)
     model = TanhFixedPointClassifier(
         in_features=3,
@@ -197,5 +195,5 @@ def test_implicit_bridge_cuda_smoke() -> None:
     loss = out.square().mean()
     loss.backward()
 
-    assert out.device.type == "cuda"
+    assert out.device.type == device.type
     assert model.readout.weight.grad is not None

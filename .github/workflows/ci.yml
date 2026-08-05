@@ -15,8 +15,8 @@ jobs:
       matrix:
         python-version: ["3.10", "3.11", "3.12"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install package
@@ -29,17 +29,17 @@ jobs:
         run: ruff check src tests examples scripts
       - name: Run tests with branch coverage
         if: matrix.python-version == '3.11'
-        run: pytest --cov=silva_networks --cov-report=term-missing
+        run: pytest tests tests_extended --cov=silva_networks --cov-report=term-missing -rs
       - name: Run tests
         if: matrix.python-version != '3.11'
-        run: pytest
+        run: pytest tests tests_extended -rs
 
   latest-dependencies:
     name: Latest Compatible Dependencies
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Install latest compatible dependencies
@@ -51,7 +51,7 @@ jobs:
       - name: Release audit
         run: python scripts/release_audit.py
       - name: Run tests
-        run: pytest
+        run: pytest tests tests_extended -rs
       - name: Notebook smoke
         run: python scripts/run_notebook_smoke.py --timeout 180
       - name: Build docs
@@ -61,8 +61,8 @@ jobs:
     name: CLI Smoke
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
       - name: Install smoke dependencies
@@ -74,8 +74,8 @@ jobs:
     name: Optimization Extra
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
       - name: Install optimization dependencies
@@ -89,8 +89,8 @@ jobs:
     name: Docs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
       - name: Install docs dependencies
@@ -108,8 +108,8 @@ jobs:
     name: Package
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
       - name: Install build tools

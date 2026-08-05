@@ -419,3 +419,7 @@ provided in [Paper Family Cases](../examples/paper-family-cases.md).
 | Where can I compare every supported case? | [Case Atlas](case-atlas.md) |
 | Which selector objects are public? | [Family Selection API](../api/families.md) |
 | Where are several selected families executed together? | [Paper Family Cases](../examples/paper-family-cases.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

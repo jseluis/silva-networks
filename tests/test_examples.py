@@ -26,5 +26,6 @@ def test_examples_import_and_run() -> None:
         "stacked_architecture.py",
         "paper_family_cases.py",
         "raft_deq_flow.py",
+        "reproduction_registry.py",
     ]:
         runpy.run_path(str(ROOT / "examples" / example), run_name="__main__")

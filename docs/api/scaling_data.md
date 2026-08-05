@@ -40,3 +40,7 @@ training pass.
 | Which runtime settings produce the loader configuration? | [Scaling API](scaling.md) |
 | Can I execute a shard round trip and checkpoint resume? | [Full-Scale Family Notebook](../package-notebooks/26_full_scale_silva.ipynb) |
 | How are deterministic teaching datasets constructed? | [Dataset-Backed Equilibrium Labs](../learn/frontier-dataset-labs.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

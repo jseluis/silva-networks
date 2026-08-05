@@ -23,6 +23,15 @@ except ModuleNotFoundError:  # Python 3.10
 ROOT = Path(__file__).resolve().parents[1]
 ARXIV_ID = "2607.28989"
 MIN_PUBLICATION_DPI = 299.0
+EXPECTED_WORKFLOW_ACTIONS = {
+    "actions/checkout": "v7",
+    "actions/setup-python": "v7",
+    "actions/upload-pages-artifact": "v5",
+    "actions/deploy-pages": "v5",
+    "actions/upload-artifact": "v7",
+    "actions/download-artifact": "v8",
+}
+WORKFLOW_USE_RE = re.compile(r"uses:\s*([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)@([^\s#]+)")
 
 REQUIRED_FILES = (
     "README.md",
@@ -30,6 +39,8 @@ REQUIRED_FILES = (
     ".zenodo.json",
     "pyproject.toml",
     "mkdocs.yml",
+    ".github/workflows/ci.yml",
+    ".github/workflows/pages.yml",
     ".github/workflows/release.yml",
     "docs/index.md",
     "docs/cli.md",
@@ -41,9 +52,13 @@ REQUIRED_FILES = (
     "docs/api/public-api.md",
     "docs/api/families.md",
     "docs/api/scientific.md",
+    "docs/api/extensibility.md",
+    "docs/api/reproducibility.md",
     "docs/assets/papers/silva-networks-arxiv-2607.28989.pdf",
     "docs/assets/bib/silva-networks.bib",
     "docs/learn/solver-derivation-lab.md",
+    "docs/learn/extending-silva.md",
+    "docs/learn/reproducing-silva-and-papers.md",
     "docs/learn/implicit-backward-guide.md",
     "docs/learn/interactive-diagnostics-lab.md",
     "docs/learn/cortex-hierarchy.md",
@@ -73,6 +88,7 @@ REQUIRED_FILES = (
     "docs/package-notebooks/24_silva_physics_informed_equilibrium.ipynb",
     "docs/package-notebooks/25_silva_implicit_dae_and_residuals.ipynb",
     "docs/package-notebooks/26_full_scale_silva.ipynb",
+    "docs/package-notebooks/27_reproducing_silva_and_source_methods.ipynb",
     "docs/api/frontier_data.md",
     "docs/learn/advanced-equilibrium-families.md",
     "docs/learn/physics-informed-equilibria.md",
@@ -83,12 +99,14 @@ REQUIRED_FILES = (
     "docs/examples/advanced-equilibria.md",
     "docs/learn/full-scale-silva.md",
     "docs/examples/full-scale-training.md",
+    "docs/examples/reproduction-registry.md",
     "docs/api/scaling.md",
     "docs/api/scaling_data.md",
     "docs/api/scale_cli.md",
     "docs/experiments/benchmark-cards.md",
     "src/silva_networks/dataset_cli.py",
     "src/silva_networks/scaling.py",
+    "src/silva_networks/reproducibility.py",
     "src/silva_networks/scaling_data.py",
     "src/silva_networks/scale_cli.py",
     "src/silva_networks/public_experiments.py",
@@ -100,6 +118,9 @@ REQUIRED_FILES = (
     "scripts/run_notebook_smoke.py",
     "scripts/notebook_navigation.py",
     "scripts/notebook_citations.py",
+    "scripts/expand_notebook_curriculum.py",
+    "scripts/expand_documentation_paths.py",
+    "scripts/generate_reproduction_registry_lab.py",
 )
 
 REQUIRED_NAV_MARKERS = (
@@ -135,8 +156,10 @@ REQUIRED_NAV_MARKERS = (
     "SILVA Physics-Informed Equilibrium: package-notebooks/24_silva_physics_informed_equilibrium.ipynb",
     "SILVA Implicit DAE and Residuals: package-notebooks/25_silva_implicit_dae_and_residuals.ipynb",
     "Full-Scale SILVA Families: package-notebooks/26_full_scale_silva.ipynb",
+    "Reproducing SILVA and Source Methods: package-notebooks/27_reproducing_silva_and_source_methods.ipynb",
     "Full-Scale SILVA: learn/full-scale-silva.md",
     "Full-Scale Training: examples/full-scale-training.md",
+    "Source-Aware Reproduction: examples/reproduction-registry.md",
     "Scaling and Family Guides: api/scaling.md",
     "Scaling Data: api/scaling_data.md",
     "Scale CLI: api/scale_cli.md",
@@ -151,6 +174,10 @@ REQUIRED_NAV_MARKERS = (
     "Family Selection: api/families.md",
     "Point Architectures: api/point_architectures.md",
     "Scientific Operators: api/scientific.md",
+    "Extensibility: api/extensibility.md",
+    "Reproducibility: api/reproducibility.md",
+    "Extending SILVA: learn/extending-silva.md",
+    "Reproducing SILVA and Source Methods: learn/reproducing-silva-and-papers.md",
     "Benchmark Cards: experiments/benchmark-cards.md",
 )
 
@@ -207,6 +234,12 @@ MATHJAX_PROCESSED_CLASSES = {
     "mathjax",
 }
 IGNORED_HTML_TAGS = {"script", "style", "code", "pre", "textarea"}
+TEST_SKIP_MARKERS = (
+    "pytest.skip(",
+    "pytest.mark.skip",
+    "pytest.importorskip(",
+    "unittest.skip",
+)
 
 
 def run_audit(root: Path = ROOT) -> dict[str, list[str]]:
@@ -217,6 +250,9 @@ def run_audit(root: Path = ROOT) -> dict[str, list[str]]:
 
     _check_required_files(root, errors)
     _check_arxiv_and_bibtex(root, errors)
+    _check_workflow_action_versions(root, errors)
+    _check_test_skip_markers(root, errors)
+    _check_notebook_curriculum(root, errors)
     _check_versions(root, errors)
     _check_nav(root, errors)
     _check_api_reference(root, errors)
@@ -236,6 +272,69 @@ def _check_required_files(root: Path, errors: list[str]) -> None:
     for relative in REQUIRED_FILES:
         if not (root / relative).exists():
             errors.append(f"missing required file: {relative}")
+
+
+def _check_workflow_action_versions(root: Path, errors: list[str]) -> None:
+    found: set[str] = set()
+    workflow_dir = root / ".github/workflows"
+    for path in sorted(workflow_dir.glob("*.yml")):
+        text = path.read_text(encoding="utf-8")
+        for action, version in WORKFLOW_USE_RE.findall(text):
+            expected = EXPECTED_WORKFLOW_ACTIONS.get(action)
+            if expected is None:
+                continue
+            found.add(action)
+            if version != expected:
+                errors.append(
+                    f"{path.relative_to(root)} uses {action}@{version}; expected {action}@{expected}"
+                )
+    for action in sorted(EXPECTED_WORKFLOW_ACTIONS.keys() - found):
+        errors.append(f"workflow action is not used: {action}@{EXPECTED_WORKFLOW_ACTIONS[action]}")
+
+
+def _check_test_skip_markers(root: Path, errors: list[str]) -> None:
+    for test_root in (root / "tests", root / "tests_extended"):
+        if not test_root.exists():
+            continue
+        for path in sorted(test_root.rglob("*.py")):
+            text = path.read_text(encoding="utf-8")
+            for marker in TEST_SKIP_MARKERS:
+                if marker in text:
+                    errors.append(f"{path.relative_to(root)} contains disallowed test skip marker: {marker}")
+
+
+def _check_notebook_curriculum(root: Path, errors: list[str]) -> None:
+    canonical = [
+        *sorted((root / "notebooks/package_api").glob("*.ipynb")),
+        *sorted((root / "notebooks/implicit_bridge").glob("*.ipynb")),
+        *sorted((root / "notebooks").glob("*.ipynb")),
+    ]
+    if len(canonical) != 62:
+        errors.append(f"expected 62 canonical notebooks; found {len(canonical)}")
+        return
+    for path in canonical:
+        notebook = json.loads(path.read_text(encoding="utf-8"))
+        source = "\n".join(
+            "".join(cell.get("source", [])) for cell in notebook.get("cells", [])
+        )
+        for stale in (
+            "Upstream references to compare with:",
+            "references/papers/recent_deq",
+        ):
+            if stale in source:
+                errors.append(
+                    f"{path.relative_to(root)} contains stale reader-facing text: {stale}"
+                )
+        cells = [
+            cell
+            for cell in notebook.get("cells", [])
+            if "silva-extension-curriculum"
+            in cell.get("metadata", {}).get("tags", [])
+        ]
+        if len(cells) != 4:
+            errors.append(
+                f"{path.relative_to(root)} has {len(cells)} extension curriculum cells; expected 4"
+            )
 
 
 def _check_arxiv_and_bibtex(root: Path, errors: list[str]) -> None:

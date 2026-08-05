@@ -77,3 +77,7 @@ and [Results](../results.md).
 | Which experiment configurations are available? | [Public Experiments](../experiments/index.md) |
 | Which measured summaries have been checked? | [Benchmark Cards](../experiments/benchmark-cards.md) |
 | How are experiments launched and overridden? | [CLI Guide](../cli.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

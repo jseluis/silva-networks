@@ -72,3 +72,7 @@ damping, and convergence claims. The relevant method sources are collected in
 | What fixed-point result does this example illustrate? | [Fixed Points](../learn/fixed-points.md) |
 | How do the iterative solvers differ? | [Solver Derivation Lab](../learn/solver-derivation-lab.md) |
 | Which solver objects reproduce the calculation? | [Solvers API](../api/solvers.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

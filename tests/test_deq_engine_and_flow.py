@@ -134,9 +134,8 @@ def test_silva_deq_flow_forward_backward() -> None:
     assert model.update.net[-1].weight.grad is not None
 
 
-@pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA is not available")
-def test_silva_flow_cuda_smoke() -> None:
-    device = torch.device("cuda")
+def test_silva_flow_selected_device_smoke() -> None:
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     batch = make_silva_translation_flow_batch(batch_size=1, height=6, width=6, device=device)
     model = silva_deq_flow(
         feature_dim=4,
@@ -144,7 +143,7 @@ def test_silva_flow_cuda_smoke() -> None:
         config=SolverConfig(max_iter=2, alpha=0.4),
     ).to(device)
     flow = model(batch.image1, batch.image2)
-    assert flow.device.type == "cuda"
+    assert flow.device.type == device.type
 
 
 def test_silva_optical_flow_compatibility_factory() -> None:

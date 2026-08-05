@@ -300,3 +300,7 @@ with the SILVA article and software citations at the top of
 | How do I define an operator that is not built in? | [Custom Layers](custom-layers.md) |
 | Which larger internal architectures can occupy one point? | [Point Architecture Catalog](point-architecture-catalog.md) |
 | Which constructor arguments select each branch? | [Layers API](../api/layers.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

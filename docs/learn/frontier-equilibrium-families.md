@@ -658,3 +658,7 @@ and [Physics-Informed Equilibria](physics-informed-equilibria.md).
 | Where is the public API for these four families? | [Recent Equilibrium API](../api/frontier.md) |
 | Where are the datasets and focused training labs derived? | [Dataset-Backed Equilibrium Labs](frontier-dataset-labs.md) |
 | Where can I run the compact reproductions? | [Recent Equilibrium Examples](../examples/frontier-equilibria.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

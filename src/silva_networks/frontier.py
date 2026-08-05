@@ -115,6 +115,8 @@ class SILVAFNODEQ(nn.Module):
         block_depth: int = 1,
         state_scale: float = 0.1,
         activation: Callable[[Tensor], Tensor] = torch.tanh,
+        forcing_lift: nn.Module | None = None,
+        block: nn.Module | None = None,
         readout: nn.Module | None = None,
         config: SolverConfig | None = None,
     ):
@@ -125,8 +127,10 @@ class SILVAFNODEQ(nn.Module):
             (out_channels, "out_channels"),
         ):
             _validate_positive_integer(value, name)
-        self.forcing_lift = nn.Conv2d(in_channels, state_channels, kernel_size=1)
-        self.block = SILVAFNODEQBlock(
+        self.forcing_lift = forcing_lift or nn.Conv2d(
+            in_channels, state_channels, kernel_size=1
+        )
+        self.block = block or SILVAFNODEQBlock(
             state_channels,
             modes_height=modes_height,
             modes_width=modes_width,
@@ -160,6 +164,16 @@ class SILVAFNODEQ(nn.Module):
         if not forcing_field.is_floating_point():
             raise TypeError("forcing_field must have a floating-point dtype")
         forcing = self.forcing_lift(forcing_field)
+        expected_forcing = (
+            forcing_field.shape[0],
+            self.state_channels,
+            *forcing_field.shape[-2:],
+        )
+        if forcing.shape != expected_forcing:
+            raise ValueError(
+                f"forcing_lift must return shape {expected_forcing}; "
+                f"received {tuple(forcing.shape)}"
+            )
         initial = torch.zeros_like(forcing) if z0 is None else z0
         if initial.shape != forcing.shape or initial.device != forcing.device:
             raise ValueError("z0 must match the lifted forcing shape and device")
@@ -167,7 +181,10 @@ class SILVAFNODEQ(nn.Module):
             raise ValueError("z0 and forcing_field must have the same dtype")
 
         def transition(state: Tensor) -> Tensor:
-            return self.block(state, forcing)
+            updated = self.block(state, forcing)
+            if updated.shape != state.shape:
+                raise ValueError("block must preserve the Fourier equilibrium state shape")
+            return updated
 
         result = solve_equilibrium(
             transition,
@@ -320,7 +337,8 @@ class SILVAPhysicsGuidedGraphDEQ(nn.Module):
         *,
         task: GraphTask = "node",
         pooling: GraphPooling = "mean",
-        transition: SILVAGraphConvectionDiffusion | None = None,
+        transition: nn.Module | None = None,
+        readout: nn.Module | None = None,
         config: SolverConfig | None = None,
     ):
         super().__init__()
@@ -331,9 +349,11 @@ class SILVAPhysicsGuidedGraphDEQ(nn.Module):
         if pooling not in {"mean", "sum", "max"}:
             raise ValueError("pooling must be mean, sum, or max")
         self.transition_module = transition or SILVAGraphConvectionDiffusion(in_dim, state_dim)
-        if self.transition_module.in_dim != in_dim or self.transition_module.state_dim != state_dim:
+        transition_in_dim = getattr(self.transition_module, "in_dim", in_dim)
+        transition_state_dim = getattr(self.transition_module, "state_dim", state_dim)
+        if transition_in_dim != in_dim or transition_state_dim != state_dim:
             raise ValueError("transition dimensions must match in_dim and state_dim")
-        self.readout = nn.Linear(state_dim, out_dim)
+        self.readout = readout or nn.Linear(state_dim, out_dim)
         self.config = config or SolverConfig(
             solver="anderson",
             max_iter=40,
@@ -345,6 +365,7 @@ class SILVAPhysicsGuidedGraphDEQ(nn.Module):
         self.pooling = pooling
         self.in_dim = in_dim
         self.state_dim = state_dim
+        self.out_dim = out_dim
 
     def forward(
         self,
@@ -366,13 +387,16 @@ class SILVAPhysicsGuidedGraphDEQ(nn.Module):
             raise ValueError("z0 must match x device and dtype")
 
         def transition(state: Tensor) -> Tensor:
-            return self.transition_module(
+            updated = self.transition_module(
                 state,
                 x,
                 edge_index,
                 edge_weight=edge_weight,
                 edge_velocity=edge_velocity,
             )
+            if updated.shape != state.shape:
+                raise ValueError("transition must preserve the graph equilibrium state shape")
+            return updated
 
         tensors = [x]
         for values in (edge_weight, edge_velocity):
@@ -387,6 +411,9 @@ class SILVAPhysicsGuidedGraphDEQ(nn.Module):
         )
         features = result.z if self.task == "node" else self._pool(result.z, batch)
         output = self.readout(features)
+        expected_output = (features.shape[0], self.out_dim)
+        if output.shape != expected_output:
+            raise ValueError(f"readout must return shape {expected_output}")
         if return_result:
             return SILVAPhysicsGraphOutput(output, result.z, result)
         return output
@@ -791,12 +818,16 @@ class SILVADistributionalTransition(nn.Module):
             name="context_mask",
         )
         encoded = self.context_projection(context)
+        # The weight-returning path uses differentiable matmul/softmax attention.
+        # Fused CPU attention kernels do not consistently implement double backward,
+        # which the distributional particle descent requires during training.
+        need_weights = torch.is_grad_enabled()
         context_update, _ = self.context_attention(
             encoded,
             encoded,
             encoded,
             key_padding_mask=~valid_context,
-            need_weights=False,
+            need_weights=need_weights,
         )
         encoded = self.context_norm(encoded + context_update)
         latent_update, _ = self.latent_attention(
@@ -804,7 +835,7 @@ class SILVADistributionalTransition(nn.Module):
             latent,
             latent,
             key_padding_mask=~valid_latent,
-            need_weights=False,
+            need_weights=need_weights,
         )
         state = self.latent_norm(latent + latent_update)
         cross_update, _ = self.cross_attention(
@@ -812,7 +843,7 @@ class SILVADistributionalTransition(nn.Module):
             encoded,
             encoded,
             key_padding_mask=~valid_context,
-            need_weights=False,
+            need_weights=need_weights,
         )
         context_weights = valid_context.to(encoded.dtype).unsqueeze(-1)
         context_mean = (encoded * context_weights).sum(dim=1)

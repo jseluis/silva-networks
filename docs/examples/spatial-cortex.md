@@ -83,3 +83,7 @@ solved. U-Net, residual, and other internal architecture sources are listed in
 | How do linked spatial points form a hierarchy? | [Cortex Hierarchies](../learn/cortex-hierarchy.md) |
 | Which internal spatial mappings can replace this field? | [Point Architecture Catalog](../learn/point-architecture-catalog.md) |
 | Which layer constructors define this point? | [Layers API](../api/layers.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

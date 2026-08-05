@@ -329,3 +329,7 @@ every branch family. Primary architecture sources are listed in
 | How are several equilibrium points composed and placed on devices? | [Stacking and Devices](stacking-and-devices.md) |
 | Where is the hierarchy executed end to end? | [Cortex Hierarchy Example](../examples/cortex-hierarchy.md) |
 | Which API objects build the hierarchy? | [Architectures API](../api/architectures.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

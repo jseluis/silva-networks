@@ -197,3 +197,7 @@ artifacts used for the article-scale runs.
 | What evidence is needed for a paper-level claim? | [Reconstructing Paper Experiments](learn/reconstructing-paper-experiments.md) |
 | How should metrics and citations be reported? | [Citation-Aware Reporting](examples/citation-aware-reporting.md) |
 | How can I reproduce these outputs? | [Run Everything](run-everything.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/project.md"
+<!-- silva-extension-path:end -->

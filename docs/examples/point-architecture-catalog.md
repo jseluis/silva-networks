@@ -64,3 +64,7 @@ Primary publications for all ten internal mappings are listed in
 | Where is every internal mapping derived? | [Point Architecture Catalog](../learn/point-architecture-catalog.md) |
 | Which factory names and parameters are public? | [Point Architectures API](../api/point_architectures.md) |
 | How can all branch operators be combined? | [Full Cortex Operators](full-cortex-operators.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

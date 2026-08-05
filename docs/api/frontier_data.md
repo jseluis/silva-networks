@@ -20,3 +20,7 @@ training examples, and benchmark handoff guidance.
 | How is each generated dataset derived? | [Dataset-Backed Equilibrium Labs](../learn/frontier-dataset-labs.md) |
 | Which models consume these tensors? | [Recent Equilibrium API](frontier.md) |
 | How are the four mechanisms related? | [Recent Equilibrium Families](../learn/frontier-equilibrium-families.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

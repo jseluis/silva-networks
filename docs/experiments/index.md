@@ -109,3 +109,7 @@ plt.yscale("log")
 | Which measured summaries are available? | [Benchmark Cards](benchmark-cards.md) |
 | Which public datasets are configured? | [Dataset Cases](datasets.md) |
 | Which API runs and overrides configurations? | [Public Experiments API](../api/public_experiments.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/experiments.md"
+<!-- silva-extension-path:end -->

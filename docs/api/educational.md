@@ -120,3 +120,7 @@ derivations and tensor notation.
 | Where is the underlying fixed-point mathematics derived? | [Mathematical Foundations](../learn/mathematical-foundations.md) |
 | Where is a scalar equilibrium checked exactly? | [Scalar Equilibrium Example](../examples/scalar-deq.md) |
 | Which tensor solvers implement the same ideas? | [Solvers API](solvers.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

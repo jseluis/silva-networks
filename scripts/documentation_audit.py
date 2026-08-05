@@ -42,6 +42,7 @@ NUMBERED_CITATION_RE = re.compile(
 )
 NUMBERED_CITATION_START = "<!-- silva-numbered-citations:start -->"
 NUMBERED_CITATION_END = "<!-- silva-numbered-citations:end -->"
+EXTENSION_PATH_START = "<!-- silva-extension-path:start -->"
 
 
 def run_documentation_audit(root: Path = ROOT) -> dict[str, list[str]]:
@@ -62,6 +63,7 @@ def run_documentation_audit(root: Path = ROOT) -> dict[str, list[str]]:
     _check_numbered_citations(root, docs, errors)
     _check_reader_wording(docs, errors)
     _check_math_source(docs, errors)
+    _check_extension_paths(docs, errors)
     return {"errors": errors, "warnings": warnings}
 
 
@@ -96,11 +98,27 @@ def _check_navigation(root: Path, docs: Path, errors: list[str]) -> None:
         path.relative_to(docs).as_posix()
         for path in docs.rglob("*")
         if path.suffix in {".md", ".ipynb"}
+        and "includes" not in path.relative_to(docs).parts
     }
     for target in sorted(documents - targets):
         errors.append(f"documentation file is not in navigation: docs/{target}")
     for target in sorted(targets - documents):
         errors.append(f"navigation target does not exist: docs/{target}")
+
+
+def _check_extension_paths(docs: Path, errors: list[str]) -> None:
+    for path in sorted(docs.rglob("*.md")):
+        relative = path.relative_to(docs)
+        if relative.parts[0] in {"includes", "paper"} or relative.as_posix() == "index.md":
+            continue
+        if relative.as_posix() in {"learn/extending-silva.md", "api/extensibility.md"}:
+            continue
+        text = path.read_text(encoding="utf-8")
+        if EXTENSION_PATH_START not in text:
+            errors.append(
+                "documentation page is missing the extension and reproduction path: "
+                f"docs/{relative.as_posix()}"
+            )
 
 
 def _check_ui_configuration(root: Path, errors: list[str]) -> None:
@@ -129,6 +147,8 @@ def _check_ui_configuration(root: Path, errors: list[str]) -> None:
 
 def _check_next_steps(docs: Path, errors: list[str]) -> None:
     for path in sorted(docs.rglob("*.md")):
+        if "includes" in path.relative_to(docs).parts:
+            continue
         label = path.relative_to(ROOT).as_posix()
         rows = _next_step_rows(path.read_text(encoding="utf-8"), label, errors)
         destinations: list[str] = []

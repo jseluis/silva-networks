@@ -78,3 +78,7 @@ are listed in [Graphs, Attention, and Messages](../paper/references.md#graphs-at
 | How should molecular tensors be prepared? | [Datasets and Preprocessing](../learn/datasets-and-preprocessing.md) |
 | Which molecular adapters are public? | [Datasets API](../api/datasets.md) |
 | How does the underlying graph layer work? | [Graph SILVA Example](graph-silva.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

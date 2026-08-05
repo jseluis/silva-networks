@@ -163,3 +163,7 @@ steps that did not increase.
 | How should residual and stability traces be interpreted? | [Interactive Diagnostics Lab](../learn/interactive-diagnostics-lab.md) |
 | Which Jacobian estimates support the diagnostics? | [Jacobians API](jacobians.md) |
 | Which solver result fields supply the traces? | [Solvers API](solvers.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

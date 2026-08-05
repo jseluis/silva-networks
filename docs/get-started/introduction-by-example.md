@@ -201,3 +201,7 @@ References: [PyTorch Geometric documentation](https://pytorch-geometric.readthed
 | How do tensors and batches enter the transition? | [Data Objects and Batching](data-and-batching.md) |
 | How does each equation become package code? | [Derivations to Code](derivation-to-code.md) |
 | How is a complete SILVA layer assembled? | [SILVA From Scratch](../learn/silva-from-scratch.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/get-started.md"
+<!-- silva-extension-path:end -->

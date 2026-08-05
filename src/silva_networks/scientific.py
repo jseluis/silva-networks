@@ -329,6 +329,7 @@ class SILVAImplicitTimeStep(nn.Module):
         *,
         config: SolverConfig | None = None,
         projector: nn.Module | None = None,
+        transition_module: nn.Module | None = None,
     ):
         super().__init__()
         if step_size <= 0:
@@ -337,6 +338,7 @@ class SILVAImplicitTimeStep(nn.Module):
         self.step_size = float(step_size)
         self.config = config or SolverConfig(max_iter=40, tol=1e-6, alpha=1.0)
         self.projector = projector or nn.Identity()
+        self.transition_module = transition_module
 
     def transition(
         self,
@@ -344,6 +346,11 @@ class SILVAImplicitTimeStep(nn.Module):
         previous: Tensor,
         context: Tensor | None = None,
     ) -> Tensor:
+        if self.transition_module is not None:
+            updated = self.transition_module(state, previous, context)
+            if updated.shape != state.shape:
+                raise ValueError("transition_module must preserve the time-step state shape")
+            return updated
         field = self.rhs(state, context)
         if field.shape != state.shape:
             raise ValueError("rhs must preserve the state shape")
@@ -420,6 +427,7 @@ class SILVAOperatorModel(nn.Module):
         *,
         architecture: SILVAPointArchitectureName | str | nn.Module = "fourier_operator",
         architecture_kwargs: Mapping[str, object] | None = None,
+        input_encoder: nn.Module | None = None,
         self_terms: nn.Module | Sequence[nn.Module] | None = None,
         local_terms: nn.Module | Sequence[nn.Module] | None = None,
         global_terms: nn.Module | Sequence[nn.Module] | None = None,
@@ -462,7 +470,8 @@ class SILVAOperatorModel(nn.Module):
             normalizer = nn.GroupNorm(1, state_channels)
         self.point = SILVACortexLayer(
             state_dim=state_channels,
-            input_encoder=nn.Conv2d(in_channels, state_channels, kernel_size=1),
+            input_encoder=input_encoder
+            or nn.Conv2d(in_channels, state_channels, kernel_size=1),
             state_network=state_network,
             self_terms=self_terms,
             local_terms=local_terms,

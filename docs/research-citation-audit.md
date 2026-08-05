@@ -201,3 +201,7 @@ For an optical-flow DEQ validation experiment, cite:
 | How should methods and results be cited in reports? | [Citation-Aware Reporting](examples/citation-aware-reporting.md) |
 | Which generated datasets support the recent family labs? | [Dataset-Backed Equilibrium Labs](learn/frontier-dataset-labs.md) |
 | Where is the front-page citation presented? | [Home](index.md#how-to-cite) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/project.md"
+<!-- silva-extension-path:end -->

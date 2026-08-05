@@ -116,3 +116,7 @@ general disciplined convex-program bridge.
 | Which projected and differentiable layers are public? | [Optimization API](../api/optimization.md) |
 | How do optimization layers relate to implicit layers? | [Implicit Layers Bridge](../learn/implicit-bridge.md) |
 | Can I execute the quadratic-layer derivation? | [Optimization Layers Notebook](../implicit-bridge-notebooks/05_differentiable_optimization.ipynb) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

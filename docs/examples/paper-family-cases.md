@@ -61,3 +61,7 @@ sources.
 | How does each research family connect to SILVA? | [Paper Family Adaptations](../learn/paper-family-adaptations.md) |
 | Which generalized case classes are public? | [Generalized Cases API](../api/cases.md) |
 | Can I execute every family in one notebook? | [Paper Family Architectures Notebook](../package-notebooks/12_paper_family_architectures.ipynb) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

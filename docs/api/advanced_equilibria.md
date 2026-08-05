@@ -18,3 +18,7 @@ equation and are covered by numerical-equivalence tests.
 | Where are all six mechanisms run together? | [Advanced Equilibria Example](../examples/advanced-equilibria.md) |
 | Which exact datasets exercise these classes? | [Advanced Equilibrium Datasets](../learn/advanced-equilibrium-datasets.md) |
 | How do these operators run at larger scale? | [Full-Scale SILVA](../learn/full-scale-silva.md#memory-aware-operators) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

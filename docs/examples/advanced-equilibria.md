@@ -90,3 +90,7 @@ reproduce the large experiments from the cited papers.
 | How are physics-informed and DAE equations constructed? | [Physics-Informed Equilibria](../learn/physics-informed-equilibria.md) |
 | Which generated relations are checked? | [Advanced Equilibrium Datasets](../learn/advanced-equilibrium-datasets.md) |
 | Where are the full executable labs? | [Notebooks](../notebooks.md#advanced-equilibrium-and-physics-track) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

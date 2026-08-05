@@ -7,7 +7,7 @@ used in connection with the SILVA methodology.
 ## Software Citation
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.1.0. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.2.0. MIT License.
 https://github.com/jseluis/silva-networks
 https://doi.org/10.5281/zenodo.21770098
 ```
@@ -66,7 +66,7 @@ optimization-layer papers.
   title   = {SILVA Networks},
   author  = {Silva, Jose Luis},
   year    = {2026},
-  version = {1.1.0},
+  version = {1.2.0},
   license = {MIT},
   doi     = {10.5281/zenodo.21770098},
   url     = {https://github.com/jseluis/silva-networks}
@@ -103,7 +103,7 @@ continued reading.
 
 <ol class="silva-reference-list">
   <li id="ref-1">Silva, Jose Luis Lima de Jesus. <em>SILVA Networks as Structured Implicit Layers and Vector Attractors via Dynamic Interaction Fields</em>. arXiv:2607.28989, 2026. <a href="https://arxiv.org/abs/2607.28989" target="_blank" rel="noopener">Primary source</a>. BibTeX: <code>silva2026silvanetworksstructuredimplicit</code>.</li>
-  <li id="ref-2">Silva, Jose Luis. <em>SILVA Networks</em>, version 1.1.0. Software archive, 2026. All-versions DOI: 10.5281/zenodo.21770098. <a href="https://doi.org/10.5281/zenodo.21770098" target="_blank" rel="noopener">Archive record</a>. BibTeX: <code>silva2026silvanetworkssoftware</code>.</li>
+  <li id="ref-2">Silva, Jose Luis. <em>SILVA Networks</em>, version 1.2.0. Software archive, 2026. All-versions DOI: 10.5281/zenodo.21770098. <a href="https://doi.org/10.5281/zenodo.21770098" target="_blank" rel="noopener">Archive record</a>. BibTeX: <code>silva2026silvanetworkssoftware</code>.</li>
   <li id="ref-3">Kolter, Zico; Duvenaud, David; and Johnson, Matt. <em>Deep Implicit Layers</em>. NeurIPS tutorial, 2020. <a href="https://implicit-layers-tutorial.org/" target="_blank" rel="noopener">Primary source</a>. BibTeX: <code>kolter2020deepimplicitlayers</code>.</li>
   <li id="ref-4">Bai, Shaojie; Kolter, J. Zico; and Koltun, Vladlen. <em>Deep Equilibrium Models</em>. Advances in Neural Information Processing Systems, 2019. <a href="https://arxiv.org/abs/1909.01377" target="_blank" rel="noopener">Primary source</a>. BibTeX: <code>bai2019deep</code>.</li>
   <li id="ref-5">Bai, Shaojie; Koltun, Vladlen; and Kolter, J. Zico. <em>Multiscale Deep Equilibrium Models</em>. Advances in Neural Information Processing Systems, 2020. <a href="https://arxiv.org/abs/2006.08656" target="_blank" rel="noopener">Primary source</a>. BibTeX: <code>bai2020multiscale</code>.</li>
@@ -149,7 +149,7 @@ continued reading.
   <li id="ref-45">Geuter, Jonathan; Bonet, Clement; Korba, Anna; and Alvarez-Melis, David. <em>DDEQs: Distributional Deep Equilibrium Models through Wasserstein Gradient Flows</em>. AISTATS, PMLR 258, 3988-3996, 2025. <a href="https://proceedings.mlr.press/v258/geuter25a.html" target="_blank" rel="noopener">Primary source</a>. <a href="https://github.com/j-geuter/DDEQs" target="_blank" rel="noopener">Research repository</a>. BibTeX: <code>geuter2025ddeq</code>.</li>
   <li id="ref-46">Ding, Shutong; Cui, Tianyu; Wang, Jingya; and Shi, Ye. <em>Two Sides of The Same Coin: Bridging Deep Equilibrium Models and Neural ODEs via Homotopy Continuation</em>. Advances in Neural Information Processing Systems, 2023. <a href="https://arxiv.org/abs/2310.09583" target="_blank" rel="noopener">Primary source</a>. <a href="https://github.com/wadx2019/homoode" target="_blank" rel="noopener">Research repository</a>. BibTeX: <code>ding2023homoode</code>.</li>
   <li id="ref-47">Baker, Justin; Wang, Qingsong; Hauck, Cory; and Wang, Bao. <em>Implicit Graph Neural Networks: A Monotone Operator Viewpoint</em>. International Conference on Machine Learning, PMLR 202, 1521-1548, 2023. <a href="https://proceedings.mlr.press/v202/baker23a.html" target="_blank" rel="noopener">Primary source</a>. <a href="https://github.com/Utah-Math-Data-Science/MIGNN" target="_blank" rel="noopener">Research repository</a>. BibTeX: <code>baker2023mignn</code>.</li>
-  <li id="ref-48">Geng, Zhengyang; Pokle, Ashwini; and Kolter, J. Zico. <em>One-Step Diffusion Distillation via Deep Equilibrium Models</em>. Advances in Neural Information Processing Systems, 2023. <a href="https://arxiv.org/abs/2401.08639" target="_blank" rel="noopener">Primary source</a>. BibTeX: <code>geng2023get</code>.</li>
+  <li id="ref-48">Geng, Zhengyang; Pokle, Ashwini; and Kolter, J. Zico. <em>One-Step Diffusion Distillation via Deep Equilibrium Models</em>. Advances in Neural Information Processing Systems, 2023. <a href="https://arxiv.org/abs/2401.08639" target="_blank" rel="noopener">Primary source</a>. <a href="https://github.com/locuslab/get" target="_blank" rel="noopener">Research repository</a>. BibTeX: <code>geng2023get</code>.</li>
   <li id="ref-49">Cao, Jiezhang; Shi, Yue; Zhang, Kai; Zhang, Yulun; Timofte, Radu; and Van Gool, Luc. <em>Deep Equilibrium Diffusion Restoration with Parallel Sampling</em>. IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2024. <a href="https://arxiv.org/abs/2311.11600" target="_blank" rel="noopener">Primary source</a>. <a href="https://github.com/caojiezhang/DeqIR" target="_blank" rel="noopener">Research repository</a>. BibTeX: <code>cao2024deqir</code>.</li>
   <li id="ref-50">Daniele, Christian; Villa, Silvia; Vaiter, Samuel; and Calatroni, Luca. <em>Deep Equilibrium Models for Poisson Imaging Inverse Problems via Mirror Descent</em>. arXiv:2507.11461, 2025. <a href="https://arxiv.org/abs/2507.11461" target="_blank" rel="noopener">Primary source</a>. <a href="https://github.com/christiandaniele/DEQ-MD" target="_blank" rel="noopener">Research repository</a>. BibTeX: <code>daniele2025deqmd</code>.</li>
   <li id="ref-51">Pacheco, Bruno M., and Camponogara, Eduardo. <em>Solving Differential Equations using Physics-Informed Deep Equilibrium Models</em>. arXiv:2406.03472, 2024. <a href="https://arxiv.org/abs/2406.03472" target="_blank" rel="noopener">Primary source</a>. <a href="https://github.com/brunompacheco/pideq" target="_blank" rel="noopener">Research repository</a>. BibTeX: <code>pacheco2024pideq</code>.</li>
@@ -159,6 +159,7 @@ continued reading.
   <li id="ref-55">PyTorch Contributors. <em>DistributedDataParallel</em>. PyTorch documentation, 2026. <a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html" target="_blank" rel="noopener">API documentation</a>. BibTeX: <code>pytorch2026ddp</code>.</li>
   <li id="ref-56">PyTorch Contributors. <em>Automatic Mixed Precision</em>. PyTorch documentation, 2026. <a href="https://docs.pytorch.org/docs/stable/amp.html" target="_blank" rel="noopener">API documentation</a>. BibTeX: <code>pytorch2026amp</code>.</li>
   <li id="ref-57">PyTorch Contributors. <em>Jacobian-Vector Product</em>. PyTorch documentation, 2026. <a href="https://docs.pytorch.org/docs/stable/generated/torch.autograd.functional.jvp.html" target="_blank" rel="noopener">API documentation</a>. BibTeX: <code>pytorch2026jvp</code>.</li>
+  <li id="ref-58">Pal, Avik; Edelman, Alan; and Rackauckas, Christopher. <em>Continuous Deep Equilibrium Models: Training Neural ODEs Faster by Integrating Them to Infinity</em>. IEEE High Performance Extreme Computing Conference, 2023. <a href="https://arxiv.org/abs/2201.12240" target="_blank" rel="noopener">Primary source</a>. <a href="https://github.com/SciML/DeepEquilibriumNetworks.jl" target="_blank" rel="noopener">Research repository</a>. BibTeX: <code>pal2023continuousdeq</code>.</li>
 </ol>
 
 ## Method Citation Matrix
@@ -179,15 +180,16 @@ continued reading.
 | general DEQ engine | `SILVADEQEngine`, `silva_deq`, `pack_state`, `SILVAVariationalDropout` | TorchDEQ, DEQ, SILVA |
 | SILVA DEQ flow | `SILVADEQFlow`, `silva_deq_flow`, all-pairs correlation, flow warping | RAFT, DEQ-Flow, SILVA |
 | sequence and multiscale cases | `SILVASequenceDEQ`, `SILVAMultiscaleDEQ` and task heads | DEQ, MDEQ, SILVA |
-| graph, INR, and diffusion cases | `SILVAImplicitGraphNetwork`, `SILVAImplicitNeuralRepresentation`, `SILVADiffusionEquilibrium` | IGNN, DEQ-INR, DEQ-DDIM, SILVA |
+| graph, INR, and diffusion cases | `SILVAImplicitGraphNetwork`, `SILVAImplicitNeuralRepresentation`, `SILVADiffusionEquilibrium` | IGNN, DEQ-INR, DEQ-DDIM, DeqIR, SILVA |
 | scientific operators and implicit PDE steps | `SILVAOperatorModel`, `SILVAFourierNeuralOperator`, `SILVAImplicitTimeStep`, scientific residual helpers | Neural ODEs, FNO, neural operators, SILVA |
 | steady neural operators | `SILVAFNODEQ`, `silva_fno_deq` | FNO-DEQ, Fourier neural operators, SILVA input injection |
 | physics graph equilibria | `SILVAGraphConvectionDiffusion`, `SILVAPhysicsGuidedGraphDEQ` | pGCN-DEQ, graph convection-diffusion operators, SILVA |
-| continuous equilibrium paths | `SILVAHomotopyEquilibrium` | fixed-point homotopy, conditioned ODE flows, SILVA residual flow |
+| continuous equilibrium paths | `SILVAHomotopyEquilibrium` | HomoODE, continuous deep equilibria, conditioned ODE flows, SILVA residual flow |
 | empirical-measure equilibria | `SILVADistributionalTransition`, `SILVADistributionalDEQ` | DDEQ, Wasserstein gradient flows, MMD, energy distance, SILVA |
 | recent equilibrium teaching data | `make_periodic_elliptic_dataset`, `make_graph_transport_dataset`, `make_affine_homotopy_dataset`, `make_variable_measure_dataset` | FNO/FNO-DEQ, pGCN-DEQ, homotopy equilibrium, or DDEQ according to the generated problem; SILVA for the typed equation checks |
 | coupled RAFT/DEQ-Flow | `SILVARAFTDEQ`, correlation pyramid, update block, correction loss | RAFT, DEQ-Flow, SILVA |
 | scalable SILVA execution | `build_scaled_silva`, `full_scale_solver_config`, `runtime_for_tier`, `prepare_silva_model` | SILVA families, implicit differentiation, scaled dot-product attention, distributed data parallelism, mixed precision |
+| source-aware reproduction | `silva_reproduction_spec`, `build_silva_reproduction`, `silva_family_signature` | SILVA article and all cited family adaptations with explicit evidence boundaries |
 | lazy sharded data | `SILVAShardedTensorDataset`, `write_silva_tensor_shards`, `make_silva_dataloader` | package-native tensor-shard contract and PyTorch data loading |
 
 ## Equilibrium and Implicit Layers

@@ -261,3 +261,7 @@ layer = SILVALayer(
 | How is a SILVA layer assembled from first principles? | [SILVA From Scratch](../learn/silva-from-scratch.md) |
 | Where is the graph layer executed? | [Graph SILVA Example](../examples/graph-silva.md) |
 | How are several layers organized? | [Architectures API](architectures.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

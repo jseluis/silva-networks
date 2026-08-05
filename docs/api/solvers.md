@@ -266,3 +266,7 @@ fields except that the solution field is named `x`.
 | What mathematical problem do these solvers address? | [Fixed Points](../learn/fixed-points.md) |
 | How is each update derived? | [Solver Derivation Lab](../learn/solver-derivation-lab.md) |
 | Where is a solver checked against a closed form? | [Scalar Equilibrium Example](../examples/scalar-deq.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

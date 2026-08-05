@@ -116,3 +116,7 @@ mapping preserves the state shape.
 | How is FNO-DEQ derived? | [Recent Equilibrium Families](../learn/frontier-equilibrium-families.md#silva-fourier-equilibrium) |
 | How do I build custom internal points? | [Point Architecture Catalog](point-architecture-catalog.md) |
 | Which diagnostics should I retain? | [Interactive Diagnostics Lab](../learn/interactive-diagnostics-lab.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

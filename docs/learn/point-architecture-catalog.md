@@ -600,3 +600,7 @@ for complete signatures.
 | How do Fourier mappings connect to ODEs and PDEs? | [Neural Operators, ODEs, PDEs, and SILVA](neural-operators-ode-pde.md) |
 | Can I execute all ten internal mappings? | [Point Architecture Catalog Notebook](../package-notebooks/14_point_architecture_catalog.ipynb) |
 | Which factory names and arguments are public? | [Point Architectures API](../api/point_architectures.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

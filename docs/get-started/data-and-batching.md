@@ -204,3 +204,7 @@ sources and reporting rules are collected in
 | How are these tensors consumed by a complete layer? | [SILVA From Scratch](../learn/silva-from-scratch.md) |
 | Which dataset adapters and preprocessing rules are available? | [Datasets and Preprocessing](../learn/datasets-and-preprocessing.md) |
 | Where is a runnable dataset example? | [Dataset Quickstart](../examples/datasets-quickstart.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/get-started.md"
+<!-- silva-extension-path:end -->

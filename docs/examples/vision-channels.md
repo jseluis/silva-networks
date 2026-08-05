@@ -45,3 +45,7 @@ for convolutional and U-Net references.
 | How do spatial operators enter the transition? | [SILVA Operators](../learn/silva-operators.md) |
 | Which vision presets are public? | [Presets API](../api/presets.md) |
 | Where is a spatial equilibrium point constructed? | [Spatial SILVA Cortex](spatial-cortex.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

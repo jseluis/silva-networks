@@ -93,3 +93,7 @@ path follows CVXPYlayers and is separate from the core projected-QP layer.
 | Where is a constrained layer executed? | [Constrained Optimization Example](../examples/constrained-optimization.md) |
 | How do optimization layers fit the implicit-layer viewpoint? | [Implicit Layers Bridge](../learn/implicit-bridge.md) |
 | Can I run the quadratic derivation? | [Optimization Layers Notebook](../implicit-bridge-notebooks/05_differentiable_optimization.ipynb) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

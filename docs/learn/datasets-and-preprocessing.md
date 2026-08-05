@@ -250,3 +250,7 @@ and the end-to-end command is shown in
 | What are the basic batching contracts? | [Data Objects and Batching](../get-started/data-and-batching.md) |
 | Where is a dataset passed through SILVA? | [Dataset Quickstart](../examples/datasets-quickstart.md) |
 | Which loaders and adapters are public? | [Datasets API](../api/datasets.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

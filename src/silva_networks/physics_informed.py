@@ -146,11 +146,17 @@ class SILVAPoissonMirrorEquilibrium(nn.Module):
     def __init__(
         self,
         *,
-        transition: SILVABurgMirrorTransition | None = None,
+        transition: nn.Module | None = None,
+        initializer: nn.Module | None = None,
+        intensity_operator: Callable[[Tensor], Tensor] | None = None,
         config: SolverConfig | None = None,
     ):
         super().__init__()
         self.transition = transition or SILVABurgMirrorTransition()
+        self.initializer = initializer
+        self.intensity_operator = intensity_operator or getattr(
+            self.transition, "forward_operator", lambda value: value
+        )
         self.config = config or SolverConfig(
             solver="picard",
             max_iter=20,
@@ -170,11 +176,14 @@ class SILVAPoissonMirrorEquilibrium(nn.Module):
             raise TypeError("observation must have a floating-point dtype")
         if torch.any(observation < 0):
             raise ValueError("observation must be nonnegative")
-        initial = (
-            observation.clamp(self.transition.minimum, self.transition.maximum)
-            if z0 is None
-            else z0
-        )
+        if z0 is not None:
+            initial = z0
+        elif self.initializer is not None:
+            initial = self.initializer(observation)
+        else:
+            minimum = float(getattr(self.transition, "minimum", 1e-4))
+            maximum = float(getattr(self.transition, "maximum", 10.0))
+            initial = observation.clamp(minimum, maximum)
         if initial.shape != observation.shape:
             raise ValueError("z0 must match observation shape")
         if initial.device != observation.device or initial.dtype != observation.dtype:
@@ -190,7 +199,9 @@ class SILVAPoissonMirrorEquilibrium(nn.Module):
             params=tuple(self.transition.parameters()),
             tensors=(observation,),
         )
-        intensity = self.transition.forward_operator(result.z)
+        intensity = self.intensity_operator(result.z)
+        if intensity.shape != observation.shape:
+            raise ValueError("intensity_operator must return the observation shape")
         if return_result:
             return SILVAPoissonMirrorOutput(result.z, intensity, result)
         return result.z
@@ -277,7 +288,7 @@ class SILVAPhysicsInformedEquilibrium(nn.Module):
         time_dim: int = 1,
         hidden_dim: int | None = None,
         state_scale: float = 0.2,
-        transition: SILVAPhysicsInformedTransition | None = None,
+        transition: nn.Module | None = None,
         readout: nn.Module | None = None,
         derivative_mode: DerivativeMode = "auto",
         dense_derivative_threshold: int = 64,
@@ -293,7 +304,9 @@ class SILVAPhysicsInformedEquilibrium(nn.Module):
             hidden_dim=hidden_dim,
             state_scale=state_scale,
         )
-        if self.transition.time_dim != time_dim or self.transition.state_dim != state_dim:
+        transition_time_dim = getattr(self.transition, "time_dim", time_dim)
+        transition_state_dim = getattr(self.transition, "state_dim", state_dim)
+        if transition_time_dim != time_dim or transition_state_dim != state_dim:
             raise ValueError("transition dimensions must match time_dim and state_dim")
         if derivative_mode not in {"auto", "dense", "matrix_free"}:
             raise ValueError("derivative_mode must be auto, dense, or matrix_free")
@@ -336,7 +349,10 @@ class SILVAPhysicsInformedEquilibrium(nn.Module):
             raise ValueError("z0 must match times device and dtype")
 
         def fixed_map(state: Tensor) -> Tensor:
-            return self.transition(state, times)
+            updated = self.transition(state, times)
+            if updated.shape != state.shape:
+                raise ValueError("transition must preserve the physics equilibrium state shape")
+            return updated
 
         result = solve_equilibrium(
             fixed_map,

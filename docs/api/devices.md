@@ -44,3 +44,7 @@ buffers on the device of the current state.
 | How are several points placed across devices? | [Stacking and Devices](../learn/stacking-and-devices.md) |
 | Which optional backends can be installed? | [Installation](../installation.md) |
 | Which model containers use these helpers? | [Architectures API](architectures.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

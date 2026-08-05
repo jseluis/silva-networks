@@ -73,11 +73,12 @@ $$
 =J_Q(z^\star)\frac{dz^\star}{dt}.
 $$
 
-`implicit_time_derivative` forms these Jacobians and solves the dense system.
-It avoids differentiation through stored forward iterations and is exact for
-the evaluated transition up to numerical solve error. Its dense matrix makes
-it an educational implementation for modest latent dimensions; larger systems
-should use JVP/VJP products and a matrix-free solve.
+`implicit_time_derivative` exposes three modes. `dense` forms the latent
+Jacobian and solves the displayed system directly. `matrix_free` evaluates
+((I-J_zf_\theta)v) with JVPs and solves with GMRES. `auto` selects the dense
+path only up to `dense_derivative_threshold`, then switches to the matrix-free
+path. Both modes differentiate the same equation and avoid storing forward
+solver iterations.
 
 ### Three-term objective
 
@@ -150,8 +151,105 @@ print(terms.initial, terms.residual, terms.jacobian)
 
 The ordinary prediction path uses SILVA's implicit adjoint. The physical time
 derivative uses the implicit-function formula above. Memory is independent of
-the number of forward iterations, but the dense teaching derivative is not
-independent of latent dimension.
+the number of forward iterations. Dense derivative memory grows with latent
+dimension; the matrix-free path replaces that matrix with repeated products
+and a separately controlled linear-solver tolerance.
+
+### Define the internal architecture
+
+The built-in transition is
+
+$$
+f_\theta(z,t)
+=\tanh\!\left[W_t t+b_t
++s_z W_2\tanh(W_1z+b_1)+b_2\right].
+$$
+
+It is a compact default, not a restriction on the physics-informed family. A
+custom transition may contain residual MLPs, temporal convolutions, graph
+operators, Fourier operators, U-Nets, or coupled known/learned fields. It must
+implement
+
+$$
+f_\theta:\mathbb R^{M\times d_z}\times
+\mathbb R^{M\times d_t}\longrightarrow\mathbb R^{M\times d_z}.
+$$
+
+```python
+import torch
+from torch import nn
+
+from silva_networks import SILVAPhysicsInformedEquilibrium, SolverConfig
+
+
+class ReactionDiffusionTransition(nn.Module):
+    time_dim = 1
+    state_dim = 64
+
+    def __init__(self):
+        super().__init__()
+        self.time_source = nn.Sequential(
+            nn.Linear(1, 64),
+            nn.Tanh(),
+            nn.Linear(64, 64),
+        )
+        self.learned_field = nn.Sequential(
+            nn.Linear(64, 128),
+            nn.GELU(),
+            nn.Linear(128, 64),
+        )
+
+    def forward(self, state, times):
+        source = self.time_source(times)
+        return torch.tanh(source + 0.15 * self.learned_field(state))
+
+
+model = SILVAPhysicsInformedEquilibrium(
+    state_dim=64,
+    output_dim=2,
+    transition=ReactionDiffusionTransition(),
+    readout=nn.Linear(64, 2),
+    derivative_mode="matrix_free",
+    derivative_max_iter=100,
+    derivative_tol=1e-7,
+    config=SolverConfig(
+        solver="anderson",
+        max_iter=60,
+        tol=1e-7,
+        backward_mode="implicit",
+        backward_solver="gmres",
+        anderson_batch_dims=1,
+    ),
+)
+```
+
+The transition defines the implicit representation (z^\star(t)). The
+`dynamics(times, prediction)` callable passed to `physics_loss` defines the
+physical right-hand side (N(t,D_\theta(t))). Keeping these roles separate
+allows known physics, partially known physics, and learned closure terms to be
+combined without hard-coding one differential equation into the wrapper.
+
+### Verify a custom transition
+
+For a scalar affine transition
+
+$$
+f(z,t)=az+bt,
+\qquad |a|<1,
+$$
+
+the exact equilibrium and derivative are
+
+$$
+z^\star(t)=\frac{b}{1-a}t,
+\qquad
+\frac{dz^\star}{dt}=\frac{b}{1-a}.
+$$
+
+Retain this manufactured case as a unit test for every derivative
+implementation. On small latent states, compare dense and matrix-free results;
+on larger states, report the GMRES residual and iteration count separately from
+the forward fixed-point residual and ODE residual.
 
 ## Differential-Algebraic Equations
 
@@ -359,3 +457,7 @@ the physics solve.
 | Which classes implement these equations? | [Physics-Informed API](../api/physics_informed.md) |
 | How do implicit ODE and PDE steps work generally? | [Neural Operators, ODEs, PDEs, and SILVA](neural-operators-ode-pde.md) |
 | How are implicit gradients derived? | [Mathematical Foundations](mathematical-foundations.md#implicit-differentiation) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

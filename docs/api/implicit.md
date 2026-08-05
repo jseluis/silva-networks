@@ -133,3 +133,7 @@ in `result.info` as well as the forward residual.
 | How do these compact objects connect to the learning path? | [Implicit Layers Bridge](../learn/implicit-bridge.md) |
 | Where is a fixed-point block executed? | [DEQ Engine Bridge Example](../examples/deq-engine-bridge.md) |
 | Which optimization layers share the implicit viewpoint? | [Optimization API](optimization.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

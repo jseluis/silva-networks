@@ -93,3 +93,7 @@ sources are collected in [Paper and References](../paper/references.md).
 | How does each case connect to a research architecture? | [Paper Family Adaptations](../learn/paper-family-adaptations.md) |
 | Where are the compact cases executed? | [Paper Family Cases](../examples/paper-family-cases.md) |
 | How can a case be selected from one interface? | [Family Selection API](families.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

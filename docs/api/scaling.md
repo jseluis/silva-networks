@@ -30,3 +30,7 @@ complete forward/loss/backward/checkpoint path before selecting a larger tier.
 | How is sharded and distributed data loaded? | [Scaling Data API](scaling_data.md) |
 | Can I execute the equivalence checks and training path? | [Full-Scale Family Notebook](../package-notebooks/26_full_scale_silva.ipynb) |
 | Which family key and constructor should I use? | [Families API](families.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

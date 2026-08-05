@@ -300,12 +300,38 @@ _IMPLEMENTATION_CASES: tuple[SILVAImplementationCase, ...] = (
     ),
     SILVAImplementationCase(
         key="families",
-        public_objects=("available_silva_families", "silva_equilibrium_model", "silva_family_description"),
+        public_objects=(
+            "available_silva_families",
+            "silva_equilibrium_model",
+            "silva_family_constructor",
+            "silva_family_description",
+            "silva_family_signature",
+        ),
         tutorial="docs/learn/selecting-model-families.md",
         notebooks=("docs/package-notebooks/09_family_selector_and_projected_qp.ipynb",),
         smoke_tests=("tests/test_families.py",),
         examples=("examples/constrained_optimization.py",),
         scope="Selectable factory for SILVA, DEQ, MDEQ, flow, and optimization families.",
+    ),
+    SILVAImplementationCase(
+        key="reproducibility",
+        public_objects=(
+            "SILVAReproductionSpec",
+            "all_silva_reproduction_specs",
+            "audit_silva_reproduction_specs",
+            "build_silva_reproduction",
+            "silva_reproduction_spec",
+        ),
+        tutorial="docs/learn/reproducing-silva-and-papers.md",
+        notebooks=(
+            "docs/package-notebooks/27_reproducing_silva_and_source_methods.ipynb",
+        ),
+        smoke_tests=("tests/test_reproducibility.py",),
+        examples=("examples/reproduction_registry.py",),
+        scope=(
+            "Source-aware equations, data protocols, metrics, evidence paths, "
+            "constructor signatures, and full-scale builders for every canonical family."
+        ),
     ),
     SILVAImplementationCase(
         key="training",

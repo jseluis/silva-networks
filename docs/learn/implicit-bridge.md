@@ -458,3 +458,7 @@ with the same cells able to use CUDA when the runtime provides it.
 | How does each source method map into SILVA? | [Method Adaptation Atlas](method-adaptation-atlas.md) |
 | Which compact bridge objects are public? | [Implicit Bridge API](../api/implicit.md) |
 | Where should I begin executing the bridge material? | [Fixed Points as Layers Notebook](../implicit-bridge-notebooks/01_introduction_fixed_points.ipynb) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

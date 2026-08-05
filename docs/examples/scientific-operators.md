@@ -142,3 +142,7 @@ runtime, and resolution or mesh transfer.
 | Where are all equations and branch assignments derived? | [Neural Operators, ODEs, PDEs, and SILVA](../learn/neural-operators-ode-pde.md) |
 | Which numerical and model objects are public? | [Scientific Operators API](../api/scientific.md) |
 | Where is the trained source-to-solution example? | [Neural Operators, ODEs, and PDEs Notebook](../package-notebooks/15_neural_operators_ode_pde.ipynb) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

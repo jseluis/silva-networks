@@ -327,3 +327,7 @@ executes the scalar-to-graph construction in separate cells.
 | How do I implement a new branch? | [Custom Layers](custom-layers.md) |
 | Where is a complete graph layer executed? | [Graph SILVA Example](../examples/graph-silva.md) |
 | How do I compose several equilibrium points? | [Stacking and Devices](stacking-and-devices.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

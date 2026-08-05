@@ -110,3 +110,7 @@ probes.
 | How do these estimates support stability claims? | [Jacobians and Stability](../learn/jacobians.md) |
 | Where can I compare diagnostics interactively? | [Interactive Diagnostics Lab](../learn/interactive-diagnostics-lab.md) |
 | Which higher-level diagnostics use these functions? | [Diagnostics API](diagnostics.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

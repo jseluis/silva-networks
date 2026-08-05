@@ -96,3 +96,7 @@ table above when the state is not an ordinary `(batch, features)` matrix.
 | Which sources and citation fields have been audited? | [Research Citation Audit](../research-citation-audit.md) |
 | Which measured outputs can be reported? | [Results](../results.md) |
 | Where is the complete bibliography? | [Paper and References](../paper/references.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

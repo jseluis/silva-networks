@@ -799,3 +799,7 @@ BibTeX entries are collected in [`silva-networks.bib`](../assets/bib/silva-netwo
 | Which spatial internal mappings are available? | [Point Architecture Catalog](point-architecture-catalog.md) |
 | Can I execute the operator, ODE, and PDE examples? | [Neural Operators, ODEs, and PDEs Notebook](../package-notebooks/15_neural_operators_ode_pde.ipynb) |
 | How is the Fourier mapping constructed through the API? | [Point Architectures API](../api/point_architectures.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

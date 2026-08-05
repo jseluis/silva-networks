@@ -125,3 +125,7 @@ The underlying equilibrium and implicit-layer sources are listed in
 [Equilibrium and Implicit Layers](../paper/references.md#equilibrium-and-implicit-layers).
 The [Scalar Equilibrium](../examples/scalar-deq.md) example checks the solver,
 Jacobian, and spectral radius against a closed-form fixed point.
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

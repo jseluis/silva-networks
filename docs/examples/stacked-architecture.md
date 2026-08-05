@@ -91,3 +91,7 @@ for the numerical-method sources.
 | How do multiple fixed points differ from depth inside one point? | [Stacking and Devices](../learn/stacking-and-devices.md) |
 | How are heterogeneous points linked? | [Cortex Hierarchies](../learn/cortex-hierarchy.md) |
 | Which architecture containers are public? | [Architectures API](../api/architectures.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

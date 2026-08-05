@@ -58,3 +58,7 @@ equilibrium layer. Dataset sources and reporting rules are listed in
 | How should datasets be validated before solving? | [Datasets and Preprocessing](../learn/datasets-and-preprocessing.md) |
 | Which loaders and tensor objects are public? | [Datasets API](../api/datasets.md) |
 | Which public dataset experiments are configured? | [Dataset Cases](../experiments/datasets.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

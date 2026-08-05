@@ -27,3 +27,7 @@ provide the task-specific dimensions, modules, schedules, and constraints.
 | Which Python objects expose the same information? | [Scaling API](scaling.md) |
 | Where is the family selection taxonomy? | [Selecting Model Families](../learn/selecting-model-families.md) |
 | Can I run the scale checks in a notebook? | [Full-Scale Family Notebook](../package-notebooks/26_full_scale_silva.ipynb) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

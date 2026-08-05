@@ -437,3 +437,7 @@ print(result.z.shape, result.residual, report.spectral_radius)
 | How do the equations become named SILVA branches? | [Derivation Workbook](derivation-workbook.md) |
 | How is the backward linear system implemented? | [Implicit Backward Guide](implicit-backward-guide.md) |
 | Which solver contracts implement these iterations? | [Solvers API](../api/solvers.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

@@ -146,3 +146,7 @@ Direct source links are collected in
 | How is equilibrium optical flow connected to the SILVA transition? | [DEQ Engine and Optical Flow](../learn/deq-engine-and-flow.md) |
 | Which compact flow objects are public? | [Optical Flow API](../api/flow.md) |
 | Where is the coupled recurrent flow state implemented? | [RAFT and DEQ-Flow Example](raft-deq-flow.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

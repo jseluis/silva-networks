@@ -169,3 +169,7 @@ assert dae.constraint_residual().abs().max() == 0
 | How are ODE, DAE, and residual objectives derived? | [Physics-Informed Equilibria](physics-informed-equilibria.md) |
 | Which batch fields and methods are public? | [Advanced Data API](../api/advanced_data.md) |
 | Where are the executable experiments? | [Notebooks](../notebooks.md#advanced-equilibrium-and-physics-track) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

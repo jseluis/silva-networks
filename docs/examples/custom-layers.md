@@ -76,3 +76,7 @@ operator sources under
 | How are custom branches derived and validated? | [Custom Layers](../learn/custom-layers.md) |
 | Which base-layer contracts must a branch preserve? | [Layers API](../api/layers.md) |
 | How can several operators be combined in one cortex? | [Full Cortex Operators](full-cortex-operators.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/examples.md"
+<!-- silva-extension-path:end -->

@@ -1461,3 +1461,7 @@ When reporting a SILVA experiment, include:
 | How are the supported scientific cases organized? | [Case Atlas](case-atlas.md) |
 | Where can I execute the implicit-layer derivations? | [Implicit Layers Bridge](implicit-bridge.md) |
 | Which package signatures implement these equations? | [API Reference](../api/reference.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

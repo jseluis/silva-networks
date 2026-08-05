@@ -271,9 +271,11 @@ def fit_supervised(
     _validate_precision(cfg.mixed_precision, resolved)
     model.to(resolved)
     opt = optimizer or _make_optimizer(model, cfg)
-    scaler = torch.cuda.amp.GradScaler(
-        enabled=cfg.mixed_precision == "float16" and resolved.type == "cuda"
-    )
+    scaler_enabled = cfg.mixed_precision == "float16" and resolved.type == "cuda"
+    if hasattr(torch.amp, "GradScaler"):
+        scaler = torch.amp.GradScaler("cuda", enabled=scaler_enabled)
+    else:
+        scaler = torch.cuda.amp.GradScaler(enabled=scaler_enabled)
     active_scheduler = scheduler if scheduler is not None else _make_scheduler(opt, cfg)
     checkpoint_path = Path(cfg.checkpoint_path) if cfg.checkpoint_path is not None else None
     start_epoch = 1

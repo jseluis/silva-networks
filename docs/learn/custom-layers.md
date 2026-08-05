@@ -114,3 +114,7 @@ and set operators are collected in
 | Which built-in operators can fill the same branches? | [SILVA Operators](silva-operators.md) |
 | Where is a custom branch executed? | [Custom Layers Example](../examples/custom-layers.md) |
 | What contracts do the layer classes expose? | [Layers API](../api/layers.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

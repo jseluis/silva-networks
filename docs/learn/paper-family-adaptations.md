@@ -240,3 +240,7 @@ identified by the source paper.
 | Where are the compact family cases executed? | [Paper Family Cases](../examples/paper-family-cases.md) |
 | Where are the newer field, graph-physics, flow, and measure families derived? | [Recent Equilibrium Families Inside SILVA](frontier-equilibrium-families.md) |
 | Can I execute their small-scale reproductions? | [Recent Equilibrium Families Notebook](../package-notebooks/16_frontier_equilibrium_families.ipynb) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

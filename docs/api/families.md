@@ -125,3 +125,7 @@ model = silva_equilibrium_model(
 | Which classes implement ODE, PDE, and learned operators? | [Scientific Operators API](scientific.md) |
 | Which classes implement the recent operator, graph, flow, and measure families? | [Recent Equilibrium API](frontier.md) |
 | Which classes implement monotone, transformer, mirror, physics, and DAE mechanisms? | [Advanced Equilibria API](advanced_equilibria.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

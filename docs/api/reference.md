@@ -29,9 +29,11 @@ inputs, outputs, and source links.
 | [Advanced Equilibrium Data](advanced_data.md) | exact chain, teacher-map, Poisson, ODE, and DAE teaching problems |
 | [Implicit Bridge](implicit.md) | SILVA-named DEQ transition, fixed-point classifier, Euler flow, quadratic optimization, MDEQ bridge |
 | [DEQ Engine](deq-engine.md) | general single-state and multi-state SILVA DEQ engine, variational dropout, state packing |
+| [Extensibility](extensibility.md) | generic conditioned equilibrium, transition reports, contract validation, and custom-family construction |
+| [Reproducibility](reproducibility.md) | source relationships, equations, datasets, metrics, evidence paths, constructor signatures, and scale-aware builders |
 | [Optical Flow](flow.md) | RAFT-style correlation, warping, DEQ-flow fixed point, synthetic flow data |
 | [Generalized Cases](cases.md) | sequence DEQ, multiscale vision DEQ, IGNN, implicit representations, and diffusion equilibria |
-| [Family Selection](families.md) | `available_silva_families`, `silva_family_description`, `silva_equilibrium_model`, family aliases |
+| [Family Selection](families.md) | `available_silva_families`, `silva_family_description`, `silva_family_constructor`, `silva_family_signature`, `silva_equilibrium_model`, family aliases |
 | [Optimization](optimization.md) | constrained quadratic projections and optional CVXPYlayers bridge |
 | [SILVA Presets](presets.md) | SILVA-style graph, vision, convolutional, and molecular presets |
 | [Datasets](datasets.md) | download helpers, tensor adapters, `GraphTensorBatch`, validation |
@@ -45,6 +47,7 @@ inputs, outputs, and source links.
 | Case | Classes/functions |
 | --- | --- |
 | Scalar DEQ | `fixed_point`, `DEQLayer`, `np_picard` |
+| New conditioned family | `SILVAConditionedEquilibrium`, `SILVAZeroInitializer`, `validate_silva_transition` |
 | Generic SILVA layer | `SILVALayer`, `silva_generalized_layer`, `make_local_operator`, `make_global_operator`, `make_self_operator` |
 | Cortex hierarchy | `SILVACortexLayer`, `SILVACortexNetwork`, `SILVAImageCortexClassifier`, `silva_cortex_layer`, `silva_cortex_network` |
 | Internal point architectures | `available_silva_point_architectures`, `silva_point_architecture`, and ten `SILVA...PointArchitecture` modules |
@@ -70,7 +73,8 @@ inputs, outputs, and source links.
 | Optical-flow compatibility names | `SILVAOpticalFlowDEQ`, `silva_optical_flow_deq` |
 | Projected QP | `SILVAProjectedQPLayer`, `silva_projected_qp_layer`, projection helpers |
 | Constrained optimization compatibility | `SILVAConstrainedQuadraticLayer`, `silva_constrained_quadratic_layer`, `silva_cvxpy_layer` |
-| Family selection | `available_silva_families`, `silva_equilibrium_model`, `silva_family_description`; see [Family Selection](families.md) |
+| Family selection | `available_silva_families`, `silva_equilibrium_model`, `silva_family_description`, `silva_family_constructor`, `silva_family_signature`; see [Family Selection](families.md) |
+| Reproduction | `silva_reproduction_spec`, `all_silva_reproduction_specs`, `audit_silva_reproduction_specs`, `build_silva_reproduction`; see [Reproducibility](reproducibility.md) |
 | Dataset conversion | `GraphTensorBatch`, `tabular_to_silva_graph`, `images_to_silva_vectors`, `images_to_silva_pixel_graph`, `pyg_data_to_silva_graph` |
 | Custom training objectives | `BatchStep`, `fit_supervised(..., step_fn=...)`, `evaluate(..., step_fn=...)` |
 | Optional training loop | `TrainConfig`, `fit_supervised`, `evaluate`, `seed_everything` |
@@ -101,6 +105,7 @@ from silva_networks import (
     SolverConfig,
     SILVACortexLayer,
     SILVACortexNetwork,
+    SILVAConditionedEquilibrium,
     SILVADEQFlow,
     SILVADiffusionEquilibrium,
     SILVAGraphNetwork,
@@ -126,6 +131,7 @@ from silva_networks import (
     fit_supervised,
     TrainConfig,
     stability_report,
+    validate_silva_transition,
 )
 ```
 
@@ -136,6 +142,7 @@ The package has three layers of abstraction:
 | Level | Use when |
 | --- | --- |
 | `SILVALayer` and operator modules | building a new interaction field directly |
+| `SILVAConditionedEquilibrium` | wrapping a completely custom conditioned transition, initializer, and readout |
 | `SILVACortexLayer` and `SILVACortexNetwork` | putting deep internal modules inside one equilibrium point and linking several points |
 | `SILVAStack` and `SILVAGraphNetwork` | stacking equilibrium layers with custom operators |
 | reference presets | reproducing or varying the public SILVA configurations |
@@ -151,3 +158,7 @@ same `x`, `edge_index`, `edge_attr`, `batch`, `y` structure.
 | Which names form the stable import surface? | [Public API](public-api.md) |
 | How are objects organized by scientific case? | [Case Atlas](../learn/case-atlas.md) |
 | Where are complete runnable programs? | [Examples](../examples/index.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

@@ -170,6 +170,7 @@ The package API track:
 | [Point Architecture Catalog](package-notebooks/14_point_architecture_catalog.ipynb) | ten internal architectures plus composition inside one point and across linked points |
 | [Neural Operators, ODEs, and PDEs](package-notebooks/15_neural_operators_ode_pde.ipynb) | ODE trajectories, implicit PDE steps, reaction-diffusion, Burgers, variable-coefficient learning, Fourier fields, graph PDEs, and separate numerical/physical diagnostics |
 | [Full-Scale SILVA Families](package-notebooks/26_full_scale_silva.ipynb) | all 30 routes, dense/scalable equivalence checks, lazy shards, trained Fourier equilibrium, checkpoint resume, and extension contracts |
+| [Reproducing SILVA and Source Methods](package-notebooks/27_reproducing_silva_and_source_methods.ipynb) | source-aware registry audit, constructor inspection, custom family construction, joint diffusion restoration, and structured run records |
 
 The implicit bridge track:
 
@@ -345,6 +346,16 @@ Run the quick notebook validation set:
 python scripts/run_notebook_smoke.py --timeout 180
 ```
 
+Run every canonical package, bridge, and unreleased book/research notebook:
+
+```bash
+python scripts/run_notebook_smoke.py --all --timeout 300
+```
+
+The all-notebook run executes 61 independent notebooks once each. Documentation
+and hosted-runtime mirrors are checked for source synchronization rather than
+executed as duplicate workloads.
+
 The default release validation includes the generalized paper-family, coupled
 RAFT/DEQ-Flow, and point-architecture notebooks. To run them directly:
 
@@ -441,3 +452,7 @@ print(out.shape, float(loss.detach()))
 | Which executable notebooks are available? | [Notebooks](notebooks.md) |
 | Which public experiment configurations can I run? | [Public Experiments](experiments/index.md) |
 | Which checks determine release readiness? | [Release Readiness](release-readiness.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/project.md"
+<!-- silva-extension-path:end -->

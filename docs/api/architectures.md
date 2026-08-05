@@ -279,3 +279,7 @@ wheel determines which accelerators are available.
 | How are linked points derived? | [Cortex Hierarchies](../learn/cortex-hierarchy.md) |
 | Where is a hierarchy executed? | [Cortex Hierarchy Example](../examples/cortex-hierarchy.md) |
 | Which objects define an individual point? | [Layers API](layers.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

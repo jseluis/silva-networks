@@ -222,3 +222,7 @@ The executable comparison is in
 | Which solver configurations are public? | [Solvers API](../api/solvers.md) |
 | What mathematical assumptions support convergence? | [Fixed Points](fixed-points.md) |
 | Where can I inspect residual and stability traces? | [Interactive Diagnostics Lab](interactive-diagnostics-lab.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import importlib.util
+import builtins
 
 import pytest
 import torch
@@ -97,22 +97,35 @@ def test_constrained_quadratic_affine_layer_satisfies_equality() -> None:
     assert torch.allclose(z @ equality_matrix.T, equality_rhs.expand(3, 1), atol=1e-5)
 
 
-def test_cvxpy_bridge_reports_missing_optional_dependency() -> None:
-    pytest.importorskip("cvxpy")
-    if importlib.util.find_spec("cvxpylayers") is not None:
-        pytest.skip("cvxpylayers is installed; this smoke only checks the missing dependency path")
-    import cvxpy as cp
+def test_cvxpy_bridge_reports_missing_optional_dependency(monkeypatch: pytest.MonkeyPatch) -> None:
+    real_import = builtins.__import__
 
-    x = cp.Variable(1)
-    p = cp.Parameter(1)
-    problem = cp.Problem(cp.Minimize(cp.sum_squares(x - p)), [])
+    def blocked_import(
+        name: str,
+        globals_: dict[str, object] | None = None,
+        locals_: dict[str, object] | None = None,
+        fromlist: tuple[str, ...] = (),
+        level: int = 0,
+    ) -> object:
+        if name == "cvxpylayers.torch":
+            raise ImportError("simulated missing cvxpylayers")
+        return real_import(name, globals_, locals_, fromlist, level)
+
+    monkeypatch.setattr(builtins, "__import__", blocked_import)
     with pytest.raises(ImportError, match="optimization extra"):
-        silva_cvxpy_layer(problem, parameters=[p], variables=[x])
+        silva_cvxpy_layer(object(), parameters=[], variables=[])
 
 
-def test_cvxpy_bridge_solves_nonnegative_projection_when_installed() -> None:
-    cp = pytest.importorskip("cvxpy")
-    pytest.importorskip("cvxpylayers")
+def test_cvxpy_bridge_solves_projection_or_reports_missing_extra() -> None:
+    try:
+        import cvxpy as cp
+        from cvxpylayers.torch import CvxpyLayer
+    except ImportError:
+        with pytest.raises(ImportError, match="optimization extra"):
+            silva_cvxpy_layer(object(), parameters=[], variables=[])
+        return
+
+    assert CvxpyLayer is not None
 
     z = cp.Variable(2)
     p = cp.Parameter(2)

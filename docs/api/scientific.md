@@ -110,3 +110,7 @@ print(result.output.shape, result.solver_result.residual)
 | How are the equations derived and mapped into SILVA branches? | [Neural Operators, ODEs, PDEs, and SILVA](../learn/neural-operators-ode-pde.md) |
 | Where do all constructions run together? | [Scientific Operators Example](../examples/scientific-operators.md) |
 | Can I execute the derivations cell by cell? | [Neural Operators, ODEs, and PDEs Notebook](../package-notebooks/15_neural_operators_ode_pde.ipynb) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/api.md"
+<!-- silva-extension-path:end -->

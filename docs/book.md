@@ -66,3 +66,7 @@ book and solved manual are developed.
 | Where can I study the fixed-point mathematics now? | [Mathematical Foundations](learn/mathematical-foundations.md) |
 | Which derivations connect equations to implementation? | [Derivation Workbook](learn/derivation-workbook.md) |
 | Which executable learning materials are available? | [Notebooks](notebooks.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/project.md"
+<!-- silva-extension-path:end -->

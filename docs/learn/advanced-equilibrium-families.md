@@ -361,3 +361,7 @@ does not establish a well-solved equilibrium.
 | Which generated equations define the teaching datasets? | [Advanced Equilibrium Datasets](advanced-equilibrium-datasets.md) |
 | Which classes are public? | [Advanced Equilibria API](../api/advanced_equilibria.md) |
 | Where are recent mechanisms compared? | [Recent Equilibrium Families](frontier-equilibrium-families.md) |
+
+<!-- silva-extension-path:start -->
+--8<-- "includes/extension/learn.md"
+<!-- silva-extension-path:end -->

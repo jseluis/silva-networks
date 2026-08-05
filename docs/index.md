@@ -62,6 +62,10 @@ branches, solvers, diagnostics, and readouts.
 <strong>Adapt papers</strong>
 <span>Sources, equations, citations, scope</span>
 </a>
+<a class="silva-action" href="learn/reproducing-silva-and-papers/" markdown>
+<strong>Reproduce a method</strong>
+<span>All families, protocols, data, metrics, tests, full-scale options</span>
+</a>
 <a class="silva-action" href="equation-and-pdf-audit/" markdown>
 <strong>Audit equations</strong>
 <span>Companion assets, code map, citation state</span>
@@ -176,6 +180,9 @@ extend the same source/state/solver contract. Implicit DAE stages
 [[52]](paper/references.md#ref-52){ .silva-cite } are represented as root layers,
 while adversarial equation residuals [[53]](paper/references.md#ref-53){ .silva-cite }
 remain an optional loss rather than a deep-equilibrium family.
+Joint diffusion trajectories also accept a complete restoration step and a
+measurement-consistency operator, providing the SILVA adaptation path for
+parallel diffusion restoration [[49]](paper/references.md#ref-49){ .silva-cite }.
 
 | Construction | SILVA state and transition | Public entry point | Full treatment |
 | --- | --- | --- | --- |
@@ -187,6 +194,7 @@ remain an optional loss rather than a deep-equilibrium family.
 | physics graph equilibrium | reaction, diffusion, and directed transport are named graph branches | `SILVAPhysicsGuidedGraphDEQ` | [Physics graph derivation](learn/frontier-equilibrium-families.md#silva-physics-guided-graph-equilibrium) |
 | homotopy equilibrium | continuous residual flow approaches a SILVA stationary state | `SILVAHomotopyEquilibrium` | [Homotopy derivation](learn/frontier-equilibrium-families.md#silva-homotopy-equilibrium) |
 | distributional equilibrium | empirical-measure discrepancy moves permutation-compatible particles | `SILVADistributionalDEQ` | [Distributional derivation](learn/frontier-equilibrium-families.md#silva-distributional-equilibrium) |
+| joint diffusion restoration | complete reverse steps and measurement consistency act on one trajectory state | `SILVADiffusionEquilibrium` | [Reproduction protocol](learn/reproducing-silva-and-papers.md#joint-diffusion-restoration) |
 | monotone graph equilibrium | constrained channel operator and forward-backward graph step | `SILVAMonotoneGraphEquilibrium` | [Monotone derivation](learn/advanced-equilibrium-families.md#monotone-graph-equilibrium) |
 | generative equilibrium transformer | one-time source path injects QKV fields into tied token blocks | `SILVAGenerativeEquilibriumTransformer` | [Transformer derivation](learn/advanced-equilibrium-families.md#generative-equilibrium-transformer) |
 | Poisson mirror equilibrium | Burg mirror geometry preserves a positive inverse state | `SILVAPoissonMirrorEquilibrium` | [Mirror derivation](learn/advanced-equilibrium-families.md#poisson-mirror-equilibrium) |
@@ -225,6 +233,15 @@ and explicit extension points. Its
 dense and matrix-free paths and demonstrates how to move from an equation-checked
 small problem to a configurable research run.
 
+The [reproduction registry](learn/reproducing-silva-and-papers.md) connects
+every family to its equation, source relationship, datasets, preprocessing,
+metrics, notebooks, tests, real constructor signature, and full-scale builder.
+It distinguishes compact verified evidence from source benchmark values that
+still require the complete cited protocol and compute budget. The
+[executable reproduction lab](package-notebooks/27_reproducing_silva_and_source_methods.ipynb)
+audits the registry, builds a custom transition, and runs an
+observation-conditioned joint diffusion trajectory.
+
 The package is meant to be read, imported, extended, and tested. It contains
 reference SILVA presets, generic custom layers, fixed-point solvers,
 Jacobian diagnostics, Lyapunov-style diagnostics, dataset adapters, examples,
@@ -261,7 +278,7 @@ Primary category: cs.LG. DOI:
 <div class="silva-citation-card" markdown>
 <strong>Software</strong>
 
-Dr. Jose Luis Silva. *SILVA Networks*. Version 1.1.0. MIT License.
+Dr. Jose Luis Silva. *SILVA Networks*. Version 1.2.0. MIT License.
 All-versions DOI: [10.5281/zenodo.21770098](https://doi.org/10.5281/zenodo.21770098).
 
 [Repository](https://github.com/jseluis/silva-networks) |
@@ -483,6 +500,7 @@ residual, boundary error, and resolution or mesh transfer separately.
 | [Scientific Operators](api/scientific.md) | finite differences, physical residuals, implicit steps, reaction-diffusion, Burgers, and Fourier equilibrium operators |
 | [Implicit Bridge](api/implicit.md) | tutorial DEQ, ODE, optimization, MDEQ, Jacobian-regularization modules |
 | [DEQ Engine](api/deq-engine.md) | TorchDEQ-style single-state and multi-state engine helpers |
+| [Extensibility](api/extensibility.md) | transition validation and generic conditioned equilibria assembled from custom modules |
 | [Optical Flow](api/flow.md) | RAFT/DEQ-Flow-style package-native optical-flow utilities |
 | [Generalized Cases](api/cases.md) | sequence, multiscale vision, implicit graph, coordinate representation, and diffusion equilibria |
 | [Family Selection](api/families.md) | 30 canonical constructors and compatibility aliases through one configuration surface |
@@ -539,6 +557,7 @@ residual, boundary error, and resolution or mesh transfer separately.
 - [Book and solutions manual](book.md) <span class="silva-coming-soon" title="The companion book and solutions manual are planned public learning assets.">Planned</span>
 - [Run everything](run-everything.md)
 - [Derivation workbook](learn/derivation-workbook.md)
+- [Extending SILVA from an equation to a new family](learn/extending-silva.md)
 - [Solved notebooks](notebooks.md)
 - [Implicit layers bridge](learn/implicit-bridge.md)
 - [Documentation log](documentation-log.md)
@@ -557,9 +576,12 @@ residual, boundary error, and resolution or mesh transfer separately.
 
 ## Where to Go Next
 
+Citation metadata and the complete bibliography remain available on the
+[Paper and References](paper/references.md) page.
+
 | Question | Page |
 | --- | --- |
 | Where should I begin learning SILVA? | [Start Here](start-here.md) |
 | How does a SILVA layer emerge from fixed-point mathematics? | [SILVA From Scratch](learn/silva-from-scratch.md) |
+| How do I build and validate a new SILVA family? | [Extending SILVA](learn/extending-silva.md) |
 | How are the available scientific cases organized? | [Case Atlas](learn/case-atlas.md) |
-| How should the software and article be cited? | [Paper and References](paper/references.md) |
