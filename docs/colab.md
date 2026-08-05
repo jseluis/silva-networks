@@ -114,7 +114,7 @@ installs from `https://github.com/jseluis/silva-networks`.
 If you use the package, cite:
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.0.0. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.1.0. MIT License.
 https://github.com/jseluis/silva-networks
 ```
 

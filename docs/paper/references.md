@@ -7,15 +7,15 @@ used in connection with the SILVA methodology.
 ## Software Citation
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.0.0. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.1.0. MIT License.
 https://github.com/jseluis/silva-networks
-https://doi.org/10.5281/zenodo.21770099
+https://doi.org/10.5281/zenodo.21770098
 ```
 
-Version 1.0.0 is archived at Zenodo:
-[10.5281/zenodo.21770099](https://doi.org/10.5281/zenodo.21770099).
-The all-versions concept DOI is
+Use the all-versions concept DOI for the current software citation:
 [10.5281/zenodo.21770098](https://doi.org/10.5281/zenodo.21770098).
+The historical version 1.0.0 archive remains available at
+[10.5281/zenodo.21770099](https://doi.org/10.5281/zenodo.21770099).
 
 ## SILVA Paper Citation
 
@@ -66,9 +66,9 @@ optimization-layer papers.
   title   = {SILVA Networks},
   author  = {Silva, Jose Luis},
   year    = {2026},
-  version = {1.0.0},
+  version = {1.1.0},
   license = {MIT},
-  doi     = {10.5281/zenodo.21770099},
+  doi     = {10.5281/zenodo.21770098},
   url     = {https://github.com/jseluis/silva-networks}
 }
 ```
@@ -103,7 +103,7 @@ continued reading.
 
 <ol class="silva-reference-list">
   <li id="ref-1">Silva, Jose Luis Lima de Jesus. <em>SILVA Networks as Structured Implicit Layers and Vector Attractors via Dynamic Interaction Fields</em>. arXiv:2607.28989, 2026. <a href="https://arxiv.org/abs/2607.28989" target="_blank" rel="noopener">Primary source</a>. BibTeX: <code>silva2026silvanetworksstructuredimplicit</code>.</li>
-  <li id="ref-2">Silva, Jose Luis. <em>SILVA Networks</em>, version 1.0.0. Software archive, 2026. DOI: 10.5281/zenodo.21770099. <a href="https://doi.org/10.5281/zenodo.21770099" target="_blank" rel="noopener">Archive record</a>. BibTeX: <code>silva2026silvanetworkssoftware</code>.</li>
+  <li id="ref-2">Silva, Jose Luis. <em>SILVA Networks</em>, version 1.1.0. Software archive, 2026. All-versions DOI: 10.5281/zenodo.21770098. <a href="https://doi.org/10.5281/zenodo.21770098" target="_blank" rel="noopener">Archive record</a>. BibTeX: <code>silva2026silvanetworkssoftware</code>.</li>
   <li id="ref-3">Kolter, Zico; Duvenaud, David; and Johnson, Matt. <em>Deep Implicit Layers</em>. NeurIPS tutorial, 2020. <a href="https://implicit-layers-tutorial.org/" target="_blank" rel="noopener">Primary source</a>. BibTeX: <code>kolter2020deepimplicitlayers</code>.</li>
   <li id="ref-4">Bai, Shaojie; Kolter, J. Zico; and Koltun, Vladlen. <em>Deep Equilibrium Models</em>. Advances in Neural Information Processing Systems, 2019. <a href="https://arxiv.org/abs/1909.01377" target="_blank" rel="noopener">Primary source</a>. BibTeX: <code>bai2019deep</code>.</li>
   <li id="ref-5">Bai, Shaojie; Koltun, Vladlen; and Kolter, J. Zico. <em>Multiscale Deep Equilibrium Models</em>. Advances in Neural Information Processing Systems, 2020. <a href="https://arxiv.org/abs/2006.08656" target="_blank" rel="noopener">Primary source</a>. BibTeX: <code>bai2020multiscale</code>.</li>

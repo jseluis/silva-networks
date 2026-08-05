@@ -8,10 +8,10 @@ broken package builds before a public release.
 
 | Item | Status |
 | --- | --- |
-| Package version | `1.0.0` |
+| Package version | `1.1.0` |
 | Citation metadata | `CITATION.cff`, README, references page, and BibTeX file updated |
-| Zenodo archive | v1.0.0 DOI: [`10.5281/zenodo.21770099`](https://doi.org/10.5281/zenodo.21770099) |
-| PyPI package | [`silva-networks==1.0.0`](https://pypi.org/project/silva-networks/) |
+| Zenodo archive | all-versions DOI: [`10.5281/zenodo.21770098`](https://doi.org/10.5281/zenodo.21770098); v1.0.0 DOI retained in release history |
+| PyPI package | release target: [`silva-networks==1.1.0`](https://pypi.org/project/silva-networks/) |
 | PyPI workflow | `.github/workflows/release.yml` builds and publishes through PyPI Trusted Publishing |
 | Article citation | arXiv:2607.28989, submitted July 31, 2026 |
 | Article PDF | `docs/assets/papers/silva-networks-arxiv-2607.28989.pdf` |
@@ -51,7 +51,7 @@ run and archived separately.
 | Package build | `python -m build` | yes |
 | Distribution metadata | `twine check dist/*` | yes |
 | PyPI trusted publisher | PyPI publisher for `jseluis/silva-networks`, workflow `release.yml`, environment `pypi` | yes |
-| Zenodo archiving | Zenodo GitHub integration enabled for `jseluis/silva-networks`; v1.0.0 archived | yes |
+| Zenodo archiving | Zenodo GitHub integration enabled for `jseluis/silva-networks`; v1.0.0 archived and v1.1.0 metadata prepared | yes |
 
 For local offline validation, `python -m build --no-isolation` is acceptable
 when the active virtualenv already contains the build requirements.
@@ -80,7 +80,7 @@ tooling such as command-line PDF utilities.
 Use this structure when cutting a public release:
 
 ```text
-SILVA Networks 1.0.0
+SILVA Networks 1.1.0
 
 Article:
 Jose Luis Lima de Jesus Silva. SILVA Networks as Structured Implicit Layers and
@@ -89,12 +89,16 @@ Vector Attractors via Dynamic Interaction Fields. 2026. arXiv:2607.28989.
 Package highlights:
 - Structured SILVA equilibrium layers and presets.
 - Cortex hierarchies with independently configured per-point architectures and a ten-entry vector, token, spatial, attention, and spectral catalog.
+- Thirty canonical family routes with explicit data contracts, primary sources, benchmark paths, scale controls, and extension points.
+- Fourier, graph-physics, homotopy, distributional, monotone graph, generative transformer, Poisson mirror, physics-informed ODE, and implicit DAE equilibria inside SILVA.
+- Matrix-free derivatives and Newton-Krylov stages, fused or chunked attention, factorized graph maps, and chunked measure discrepancies.
+- Lazy tensor shards, distributed loading, mixed precision, gradient accumulation, and complete checkpoint resume state.
 - ODE, implicit PDE-step, Poisson, and Fourier-operator derivations connected directly to SILVA fields and solver diagnostics.
 - Picard, Anderson, Broyden, and GMRES diagnostics.
 - DEQ, MDEQ, Neural ODE, optimization, and optical-flow bridge material.
 - Configurable sequence, multiscale, graph, INR, diffusion, and coupled RAFT/DEQ-Flow cases.
 - Exact implicit, finite-unrolled, and phantom gradients with indexed trajectory supervision.
-- Package-native notebooks, examples, public experiment cards, and citation audit.
+- Package-native notebooks, examples, public experiment cards, numbered references, citation audit, and full-scale training guidance.
 - Companion book and solutions manual roadmap.
 
 Validation:

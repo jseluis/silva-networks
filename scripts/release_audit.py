@@ -258,7 +258,7 @@ def _check_arxiv_and_bibtex(root: Path, errors: list[str]) -> None:
             "silva-download-datasets",
             "configs/*.json",
             "https://pypi.org/project/silva-networks/",
-            "10.5281/zenodo.21770099",
+            "10.5281/zenodo.21770098",
         ),
         ".zenodo.json": (
             "Silva, Jose Luis",
@@ -280,6 +280,7 @@ def _check_arxiv_and_bibtex(root: Path, errors: list[str]) -> None:
             "Workflow filename",
             "release.yml",
             ".zenodo.json",
+            "10.5281/zenodo.21770098",
             "10.5281/zenodo.21770099",
         ),
         "docs/paper/references.md": (ARXIV_ID, "docs/assets/bib/silva-networks.bib"),
@@ -331,6 +332,26 @@ def _check_versions(root: Path, errors: list[str]) -> None:
     expected = f'__version__ = "{package_version}"'
     if expected not in init_text:
         errors.append(f"package version mismatch: expected {expected}")
+    citation = (root / "CITATION.cff").read_text(encoding="utf-8")
+    if f'version: "{package_version}"' not in citation:
+        errors.append(f"CITATION.cff does not identify version {package_version}")
+    zenodo = json.loads((root / ".zenodo.json").read_text(encoding="utf-8"))
+    if zenodo.get("version") != package_version:
+        errors.append(
+            ".zenodo.json version does not match package version: "
+            f"{zenodo.get('version')!r} != {package_version!r}"
+        )
+    changelog = (root / "CHANGELOG.md").read_text(encoding="utf-8")
+    if f"## {package_version}" not in changelog:
+        errors.append(f"CHANGELOG.md has no section for version {package_version}")
+    for relative in (
+        "README.md",
+        "docs/paper/references.md",
+        "docs/assets/bib/silva-networks.bib",
+    ):
+        text = (root / relative).read_text(encoding="utf-8")
+        if package_version not in text:
+            errors.append(f"{relative} does not identify version {package_version}")
 
 
 def _check_nav(root: Path, errors: list[str]) -> None:

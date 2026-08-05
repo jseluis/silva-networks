@@ -13,7 +13,9 @@ OUT_DIRS = [
 ]
 _CELL_COUNTER = 0
 _INLINE_MATH_RE = re.compile(r"\\\((.*?)\\\)")
-_MATPLOTLIB_IMPORT_RE = re.compile(r"^(?P<indent>[ \t]*)import matplotlib\.pyplot as plt$", re.MULTILINE)
+_MATPLOTLIB_IMPORT_RE = re.compile(
+    r"^(?P<indent>[ \t]*)import matplotlib\.pyplot as plt$", re.MULTILINE
+)
 
 
 def _next_cell_id() -> str:
@@ -129,9 +131,9 @@ CITATION = r"""
 If this package or notebook is used, cite:
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.0.0. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.1.0. MIT License.
 https://github.com/jseluis/silva-networks
-https://doi.org/10.5281/zenodo.21770099
+https://doi.org/10.5281/zenodo.21770098
 ```
 
 When the work uses SILVA methodology, also cite:

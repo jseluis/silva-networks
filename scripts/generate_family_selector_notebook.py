@@ -14,7 +14,9 @@ OUT_DIRS = [
 NAME = "09_family_selector_and_projected_qp.ipynb"
 _CELL_COUNTER = 0
 _INLINE_MATH_RE = re.compile(r"\\\((.*?)\\\)")
-_MATPLOTLIB_IMPORT_RE = re.compile(r"^(?P<indent>[ \t]*)import matplotlib\.pyplot as plt$", re.MULTILINE)
+_MATPLOTLIB_IMPORT_RE = re.compile(
+    r"^(?P<indent>[ \t]*)import matplotlib\.pyplot as plt$", re.MULTILINE
+)
 
 
 def _next_cell_id() -> str:
@@ -334,9 +336,9 @@ print(tuple(flow_result.flow.shape), float(epe.detach().cpu()), flow_result.solv
 If this notebook or package is used, cite:
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.0.0. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.1.0. MIT License.
 https://github.com/jseluis/silva-networks
-https://doi.org/10.5281/zenodo.21770099
+https://doi.org/10.5281/zenodo.21770098
 ```
 
 When the work is connected to the SILVA Networks paper, cite the paper as well.

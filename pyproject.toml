@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "silva-networks"
-version = "1.0.0"
+version = "1.1.0"
 description = "PyTorch layers, solvers, tutorials, and documentation for SILVA networks and deep equilibrium models."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -90,7 +90,7 @@ Documentation = "https://jseluis.github.io/silva-networks"
 Repository = "https://github.com/jseluis/silva-networks"
 Issues = "https://github.com/jseluis/silva-networks/issues"
 PyPI = "https://pypi.org/project/silva-networks/"
-Archive = "https://doi.org/10.5281/zenodo.21770099"
+Archive = "https://doi.org/10.5281/zenodo.21770098"
 Article = "https://doi.org/10.48550/arXiv.2607.28989"
 
 [project.scripts]

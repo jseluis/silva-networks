@@ -261,12 +261,12 @@ Primary category: cs.LG. DOI:
 <div class="silva-citation-card" markdown>
 <strong>Software</strong>
 
-Dr. Jose Luis Silva. *SILVA Networks*. Version 1.0.0. MIT License.
-DOI: [10.5281/zenodo.21770099](https://doi.org/10.5281/zenodo.21770099).
+Dr. Jose Luis Silva. *SILVA Networks*. Version 1.1.0. MIT License.
+All-versions DOI: [10.5281/zenodo.21770098](https://doi.org/10.5281/zenodo.21770098).
 
 [Repository](https://github.com/jseluis/silva-networks) |
 [PyPI](https://pypi.org/project/silva-networks/) |
-[Zenodo](https://zenodo.org/records/21770099) |
+[Zenodo](https://doi.org/10.5281/zenodo.21770098) |
 [Citation Metadata](https://github.com/jseluis/silva-networks/blob/main/CITATION.cff)
 </div>
 </div>

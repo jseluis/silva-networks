@@ -80,7 +80,8 @@ API token is stored in GitHub. PyPI's trusted-publisher flow exchanges a
 GitHub Actions identity token for a short-lived publishing credential during
 the release job.
 
-The v1.0.0 release used this PyPI trusted-publisher configuration:
+The v1.0.0 release established this PyPI trusted-publisher configuration, and
+v1.1.0 uses the same publisher identity:
 
 1. Open PyPI and sign in.
 2. Open **Account settings**.
@@ -125,15 +126,26 @@ To enable the archive:
 1. Open Zenodo and sign in with GitHub.
 2. Open the GitHub integration page.
 3. Enable archiving for `jseluis/silva-networks`.
-4. Create the GitHub Release from tag `v1.0.0`.
+4. Create the GitHub Release from the version tag, currently `v1.1.0`.
 
-Zenodo archived v1.0.0 as:
+Use the concept DOI for the living software citation:
+
+```text
+All-versions DOI: 10.5281/zenodo.21770098
+Latest record: https://doi.org/10.5281/zenodo.21770098
+```
+
+The immutable v1.0.0 archive remains:
 
 ```text
 Version DOI: 10.5281/zenodo.21770099
 Concept DOI: 10.5281/zenodo.21770098
 Record: https://zenodo.org/records/21770099
 ```
+
+Publishing the `v1.1.0` GitHub release creates a new version record under the
+same concept DOI. Record its minted version DOI in the release readiness page
+after the integration finishes.
 
 Official setup references:
 

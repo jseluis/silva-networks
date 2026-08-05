@@ -294,7 +294,7 @@ def architecture_notebook() -> dict:
                 Cite the SILVA package and the source paper whose architecture or
                 experimental protocol you instantiate:
                 https://github.com/jseluis/silva-networks
-                https://doi.org/10.5281/zenodo.21770099
+                https://doi.org/10.5281/zenodo.21770098
                 """,
                 prefix=prefix,
             ),
@@ -433,7 +433,7 @@ def raft_notebook() -> dict:
                 correction/reuse strategy, and SILVA Networks for this generalized
                 package API:
                 https://github.com/jseluis/silva-networks
-                https://doi.org/10.5281/zenodo.21770099
+                https://doi.org/10.5281/zenodo.21770098
                 """,
                 prefix=prefix,
             ),

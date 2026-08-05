@@ -11,7 +11,9 @@ DOCS_OUT = ROOT / "docs/package-notebooks"
 COLAB_OUT = ROOT / "colab"
 _CELL_COUNTER = 0
 _INLINE_MATH_RE = re.compile(r"\\\((.*?)\\\)")
-_MATPLOTLIB_IMPORT_RE = re.compile(r"^(?P<indent>[ \t]*)import matplotlib\.pyplot as plt$", re.MULTILINE)
+_MATPLOTLIB_IMPORT_RE = re.compile(
+    r"^(?P<indent>[ \t]*)import matplotlib\.pyplot as plt$", re.MULTILINE
+)
 
 
 def md(source: str) -> dict:
@@ -113,9 +115,9 @@ CITATION_SOURCE = r"""
 If this notebook or package is used, cite the software repository:
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.0.0. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.1.0. MIT License.
 https://github.com/jseluis/silva-networks
-https://doi.org/10.5281/zenodo.21770099
+https://doi.org/10.5281/zenodo.21770098
 ```
 
 When the work is connected to the SILVA Networks paper, cite the paper as well:
@@ -664,12 +666,12 @@ plt.ylabel("custom-operator loss")
 plt.tight_layout()
 """
             ),
-            ]
-        ),
-        "06_silva_operator_options.ipynb": notebook(
-            [
-                md(
-                    r"""
+        ]
+    ),
+    "06_silva_operator_options.ipynb": notebook(
+        [
+            md(
+                r"""
     # SILVA Operator Options
     
     The reference graph model keeps the Figure 1 decomposition explicit:
@@ -685,10 +687,10 @@ plt.tight_layout()
     `hidden_dim`, `stack_alphas`, `graph_mode`, `attention_mode`, solver settings,
     and readout dimensions are constructor arguments.
     """
-                ),
-                code(BOOTSTRAP),
-                code(
-                    """
+            ),
+            code(BOOTSTRAP),
+            code(
+                """
     import torch
     import matplotlib.pyplot as plt
     from silva_networks import (
@@ -710,9 +712,9 @@ plt.tight_layout()
         dtype=torch.long,
     )
     """
-                ),
-                md(
-                    r"""
+            ),
+            md(
+                r"""
     The SILVA ablations are available through operator names. Each row below
     uses the same input graph and changes only the local or global interaction.
     The ablation value is the string `"none"`: it removes that branch from
@@ -720,9 +722,9 @@ plt.tight_layout()
     \((1-\alpha)z_k\) is still present, so the no-local/no-global case is
     stimulus plus damped recurrent persistence.
     """
-                ),
-                code(
-                    """
+            ),
+            code(
+                """
     cases = [
         ("full", "GAT", "simple"),
         ("local_only", "GAT", "none"),
@@ -751,31 +753,31 @@ plt.tight_layout()
         print(name, tuple(result.output.shape), [round(value, 5) for value in residuals])
     case_rows
     """
-                ),
-                md(
-                    r"""
+            ),
+            md(
+                r"""
     The bar plot compares the largest final residual across the ablation stack.
     It is a quick numerical check that changing an operator still produces a
     finite solved state on the same input.
     """
-                ),
-                code(
-                    """
+            ),
+            code(
+                """
     plt.figure(figsize=(6, 3))
     plt.bar([row["case"] for row in case_rows], [max(row["residuals"]) for row in case_rows])
     plt.xticks(rotation=30, ha="right")
     plt.ylabel("max final residual")
     plt.tight_layout()
     """
-                ),
-                md(
-                    r"""
+            ),
+            md(
+                r"""
     The generic API accepts per-layer solvers and custom branches. A custom branch
     only has to return a tensor shaped like the recurrent state.
     """
-                ),
-                code(
-                    """
+            ),
+            code(
+                """
     class BiasLocal(torch.nn.Module):
         def __init__(self, dim):
             super().__init__()
@@ -803,15 +805,15 @@ plt.tight_layout()
     )
     custom(x, edge_index=edge_index).shape
     """
-                ),
-                md(
-                    r"""
+            ),
+            md(
+                r"""
     Molecular SILVA accepts categorical atom/bond ids or continuous feature
     vectors. The continuous path uses explicit input projectors.
     """
-                ),
-                code(
-                    """
+            ),
+            code(
+                """
     mol = molecular_to_silva_graph(
         x=torch.randn(5, 3),
         edge_index=torch.tensor([[0, 1, 2, 3, 4, 1], [1, 2, 0, 4, 3, 0]]),
@@ -831,15 +833,15 @@ plt.tight_layout()
     )
     molecular_model(**mol.model_kwargs(), return_results=True).output
     """
-                ),
-                md(
-                    r"""
+            ),
+            md(
+                r"""
     Lyapunov-style and Jacobian diagnostics can be run on any transition. Here the
     spectral-radius estimate is applied to the first SILVA layer transition.
     """
-                ),
-                code(
-                    """
+            ),
+            code(
+                """
     layer = SILVAGraphPresetNetwork(
         in_dim=5,
         hidden_dim=8,
@@ -853,10 +855,10 @@ plt.tight_layout()
     rho = damped_spectral_radius(lambda z: layer.f(z, x, edge_index=edge_index), z_star, alpha=0.5, iters=3)
     rho
     """
-                ),
-            ]
-        ),
-    }
+            ),
+        ]
+    ),
+}
 
 
 def main() -> None:

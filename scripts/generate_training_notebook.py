@@ -10,7 +10,9 @@ OUT_DIRS = [ROOT / "notebooks/package_api", ROOT / "docs/package-notebooks", ROO
 NAME = "10_training_helpers_smoke.ipynb"
 _CELL_COUNTER = 0
 _INLINE_MATH_RE = re.compile(r"\\\((.*?)\\\)")
-_MATPLOTLIB_IMPORT_RE = re.compile(r"^(?P<indent>[ \t]*)import matplotlib\.pyplot as plt$", re.MULTILINE)
+_MATPLOTLIB_IMPORT_RE = re.compile(
+    r"^(?P<indent>[ \t]*)import matplotlib\.pyplot as plt$", re.MULTILINE
+)
 
 
 def _next_cell_id() -> str:
@@ -240,9 +242,9 @@ with tempfile.TemporaryDirectory() as tmp:
 If this notebook or package is used, cite:
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.0.0. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.1.0. MIT License.
 https://github.com/jseluis/silva-networks
-https://doi.org/10.5281/zenodo.21770099
+https://doi.org/10.5281/zenodo.21770098
 ```
 
 When training SILVA models in connection with the SILVA Networks paper, cite

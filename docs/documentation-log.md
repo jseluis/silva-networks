@@ -6,6 +6,28 @@ paper, book sources, or production code outside the package.
 
 <div class="silva-doclog" markdown>
 <div class="silva-doclog__date" markdown>
+<strong>August 5, 2026</strong>
+<span>SILVA Networks 1.1.0 release preparation</span>
+</div>
+<div class="silva-doclog__body" markdown>
+## Version 1.1.0
+
+Synchronized package, citation, archive, notebook, and publication metadata for
+the first feature release after 1.0.0. The living software citation now uses
+the Zenodo concept DOI, while the immutable 1.0.0 version DOI remains in the
+release history.
+
+| Area | Change |
+| --- | --- |
+| Versioning | Advanced the package, import surface, CFF record, Zenodo metadata, changelog, and user-facing citations to 1.1.0. |
+| Citation durability | Moved the current software citation to the all-versions concept DOI so it resolves to the latest archived release. |
+| Notebook consistency | Updated repository, documentation, and portable notebook copies together with their generators. |
+| Release controls | Extended the release audit to require matching package, CFF, Zenodo, changelog, README, references, and BibTeX versions. |
+</div>
+</div>
+
+<div class="silva-doclog" markdown>
+<div class="silva-doclog__date" markdown>
 <strong>August 4, 2026</strong>
 <span>All-family scaling, matrix-free execution, and full-scale learning path</span>
 </div>
