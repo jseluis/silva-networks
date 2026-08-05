@@ -11,6 +11,7 @@ from __future__ import annotations
 import math
 from collections.abc import Callable
 from dataclasses import dataclass
+from typing import Literal
 
 import torch
 import torch.nn.functional as F
@@ -19,6 +20,7 @@ from torch import nn
 from .solvers import SolverConfig, SolverResult, solve_equilibrium
 
 Tensor = torch.Tensor
+AttentionMode = Literal["auto", "sdpa", "chunked", "manual"]
 
 
 def _positive_integer(value: int, name: str) -> None:
@@ -114,6 +116,7 @@ class SILVAMonotoneGraphTransition(nn.Module):
         *,
         margin: float = 0.1,
         step_size: float = 0.8,
+        operator_rank: int | None = None,
         activation: Callable[[Tensor], Tensor] = F.relu,
     ):
         super().__init__()
@@ -123,11 +126,24 @@ class SILVAMonotoneGraphTransition(nn.Module):
             raise ValueError("margin must satisfy 0 < margin < 1")
         if not 0.0 < step_size <= 1.0:
             raise ValueError("step_size must satisfy 0 < step_size <= 1")
+        if operator_rank is not None:
+            _positive_integer(operator_rank, "operator_rank")
+            if operator_rank > state_dim:
+                raise ValueError("operator_rank cannot exceed state_dim")
+        rank = state_dim if operator_rank is None else operator_rank
         self.source = nn.Linear(in_dim, state_dim)
-        self.c_factor = nn.Parameter(0.05 * torch.randn(state_dim, state_dim))
-        self.skew_factor = nn.Parameter(0.05 * torch.randn(state_dim, state_dim))
+        self.c_factor = nn.Parameter(0.05 * torch.randn(state_dim, rank))
+        if operator_rank is None:
+            self.skew_factor = nn.Parameter(0.05 * torch.randn(state_dim, state_dim))
+            self.register_parameter("skew_left", None)
+            self.register_parameter("skew_right", None)
+        else:
+            self.register_parameter("skew_factor", None)
+            self.skew_left = nn.Parameter(0.05 * torch.randn(state_dim, rank))
+            self.skew_right = nn.Parameter(0.05 * torch.randn(state_dim, rank))
         self.margin = float(margin)
         self.step_size = float(step_size)
+        self.operator_rank = operator_rank
         self.activation = activation
         self.in_dim = in_dim
         self.state_dim = state_dim
@@ -141,8 +157,33 @@ class SILVAMonotoneGraphTransition(nn.Module):
             dtype=self.c_factor.dtype,
         )
         symmetric = self.c_factor @ self.c_factor.transpose(0, 1)
-        skew = self.skew_factor - self.skew_factor.transpose(0, 1)
+        if self.skew_factor is not None:
+            skew = self.skew_factor - self.skew_factor.transpose(0, 1)
+        else:
+            assert self.skew_left is not None and self.skew_right is not None
+            skew = self.skew_left @ self.skew_right.transpose(0, 1)
+            skew = skew - self.skew_right @ self.skew_left.transpose(0, 1)
         return (1.0 - self.margin) * identity - symmetric + skew
+
+    def apply_channel_weight(self, values: Tensor) -> Tensor:
+        """Apply ``values @ W.T`` without materializing ``W`` when factorized."""
+
+        if values.shape[-1] != self.state_dim:
+            raise ValueError(f"values must have final dimension {self.state_dim}")
+        symmetric = (values @ self.c_factor) @ self.c_factor.transpose(0, 1)
+        if self.skew_factor is not None:
+            skew = values @ self.skew_factor.transpose(0, 1)
+            skew = skew - values @ self.skew_factor
+        else:
+            assert self.skew_left is not None and self.skew_right is not None
+            skew = (values @ self.skew_right) @ self.skew_left.transpose(0, 1)
+            skew = skew - (values @ self.skew_left) @ self.skew_right.transpose(0, 1)
+        return (1.0 - self.margin) * values - symmetric + skew
+
+    def monotonicity_lower_bound(self) -> Tensor:
+        """Return the analytic lower bound supplied by the positive margin."""
+
+        return self.c_factor.new_tensor(self.margin)
 
     def monotonicity_certificate(self) -> Tensor:
         r"""Return the smallest eigenvalue of ``I-(W+W^T)/2``."""
@@ -169,7 +210,7 @@ class SILVAMonotoneGraphTransition(nn.Module):
         if inputs.device != state.device or inputs.dtype != state.dtype:
             raise ValueError("inputs must match the state device and dtype")
         graph_state = normalized_laplacian_field(state, edge_index, edge_weight)
-        field = graph_state @ self.channel_weight().transpose(0, 1)
+        field = self.apply_channel_weight(graph_state)
         proposal = (1.0 - self.step_size) * state
         proposal = proposal + self.step_size * (field + self.source(inputs))
         return self.activation(proposal)
@@ -196,6 +237,7 @@ class SILVAMonotoneGraphEquilibrium(nn.Module):
         *,
         margin: float = 0.1,
         step_size: float = 0.8,
+        operator_rank: int | None = None,
         transition: SILVAMonotoneGraphTransition | None = None,
         readout: nn.Module | None = None,
         config: SolverConfig | None = None,
@@ -207,6 +249,7 @@ class SILVAMonotoneGraphEquilibrium(nn.Module):
             state_dim,
             margin=margin,
             step_size=step_size,
+            operator_rank=operator_rank,
         )
         if self.transition.in_dim != in_dim or self.transition.state_dim != state_dim:
             raise ValueError("transition dimensions must match in_dim and state_dim")
@@ -276,15 +319,30 @@ class SILVAInjectedSelfAttention(nn.Module):
     $$
     """
 
-    def __init__(self, dim: int, heads: int = 4):
+    def __init__(
+        self,
+        dim: int,
+        heads: int = 4,
+        *,
+        attention_mode: AttentionMode = "auto",
+        query_chunk_size: int | None = None,
+    ):
         super().__init__()
         if dim < 1 or heads < 1 or dim % heads != 0:
             raise ValueError("dim must be positive and divisible by heads")
+        if attention_mode not in {"auto", "sdpa", "chunked", "manual"}:
+            raise ValueError("attention_mode must be auto, sdpa, chunked, or manual")
+        if query_chunk_size is not None:
+            _positive_integer(query_chunk_size, "query_chunk_size")
+        if attention_mode == "chunked" and query_chunk_size is None:
+            query_chunk_size = 256
         self.qkv = nn.Linear(dim, 3 * dim, bias=False)
         self.output = nn.Linear(dim, dim)
         self.dim = dim
         self.heads = heads
         self.head_dim = dim // heads
+        self.attention_mode = attention_mode
+        self.query_chunk_size = query_chunk_size
 
     def forward(
         self,
@@ -306,9 +364,26 @@ class SILVAInjectedSelfAttention(nn.Module):
         q = q.view(batch, tokens, self.heads, self.head_dim).transpose(1, 2)
         k = k.view(batch, tokens, self.heads, self.head_dim).transpose(1, 2)
         v = v.view(batch, tokens, self.heads, self.head_dim).transpose(1, 2)
-        scores = torch.matmul(q, k.transpose(-2, -1)) / math.sqrt(self.head_dim)
-        weights = torch.softmax(scores, dim=-1)
-        attended = torch.matmul(weights, v)
+        mode = "sdpa" if self.attention_mode == "auto" else self.attention_mode
+        if mode == "manual":
+            scores = torch.matmul(q, k.transpose(-2, -1)) / math.sqrt(self.head_dim)
+            attended = torch.matmul(torch.softmax(scores, dim=-1), v)
+        elif mode == "sdpa":
+            attended = F.scaled_dot_product_attention(q, k, v, dropout_p=0.0)
+        else:
+            chunk_size = self.query_chunk_size or tokens
+            attended = torch.cat(
+                [
+                    F.scaled_dot_product_attention(
+                        q[:, :, start : start + chunk_size],
+                        k,
+                        v,
+                        dropout_p=0.0,
+                    )
+                    for start in range(0, tokens, chunk_size)
+                ],
+                dim=2,
+            )
         attended = attended.transpose(1, 2).reshape(batch, tokens, self.dim)
         return self.output(attended)
 
@@ -323,13 +398,20 @@ class SILVAEquilibriumTransformerBlock(nn.Module):
         heads: int = 4,
         expansion: int = 4,
         state_scale: float = 0.2,
+        attention_mode: AttentionMode = "auto",
+        query_chunk_size: int | None = None,
     ):
         super().__init__()
         _positive_integer(expansion, "expansion")
         if not 0.0 < state_scale <= 1.0:
             raise ValueError("state_scale must satisfy 0 < state_scale <= 1")
         self.attention_norm = nn.LayerNorm(dim)
-        self.attention = SILVAInjectedSelfAttention(dim, heads)
+        self.attention = SILVAInjectedSelfAttention(
+            dim,
+            heads,
+            attention_mode=attention_mode,
+            query_chunk_size=query_chunk_size,
+        )
         self.feed_forward_norm = nn.LayerNorm(dim)
         self.feed_forward = nn.Sequential(
             nn.Linear(dim, expansion * dim),
@@ -414,6 +496,8 @@ class SILVAGenerativeEquilibriumTransformer(nn.Module):
         expansion: int = 4,
         state_scale: float = 0.2,
         classes: int | None = None,
+        attention_mode: AttentionMode = "auto",
+        query_chunk_size: int | None = None,
         config: SolverConfig | None = None,
     ):
         super().__init__()
@@ -462,6 +546,8 @@ class SILVAGenerativeEquilibriumTransformer(nn.Module):
                     heads=heads,
                     expansion=expansion,
                     state_scale=state_scale,
+                    attention_mode=attention_mode,
+                    query_chunk_size=query_chunk_size,
                 )
                 for _ in range(equilibrium_depth)
             ]
@@ -592,6 +678,7 @@ def silva_generative_equilibrium_transformer(
 
 
 __all__ = [
+    "AttentionMode",
     "SILVAEquilibriumTransformerBlock",
     "SILVAGenerativeEquilibriumOutput",
     "SILVAGenerativeEquilibriumTransformer",

@@ -99,9 +99,7 @@ def test_physics_guided_graph_deq_is_equivariant_to_node_relabeling() -> None:
         config=SolverConfig(max_iter=20, tol=1e-7, alpha=0.8),
     )
     x = torch.randn(5, 2)
-    edge_index = torch.tensor(
-        [[0, 1, 1, 2, 2, 3, 3, 4, 4, 0], [1, 0, 2, 1, 3, 2, 4, 3, 0, 4]]
-    )
+    edge_index = torch.tensor([[0, 1, 1, 2, 2, 3, 3, 4, 4, 0], [1, 0, 2, 1, 3, 2, 4, 3, 0, 4]])
     edge_weight = torch.linspace(0.4, 1.0, edge_index.shape[1])
     edge_velocity = torch.linspace(-0.3, 0.3, edge_index.shape[1])
     permutation = torch.tensor([2, 4, 0, 3, 1])
@@ -248,6 +246,37 @@ def test_energy_discrepancy_returns_per_sample_values_and_gradients() -> None:
     assert torch.all(values >= 0)
     assert left.grad is not None
     assert torch.isfinite(left.grad).all()
+
+
+@pytest.mark.parametrize("kernel", ["energy", "gaussian"])
+def test_chunked_distributional_discrepancy_matches_dense(kernel: str) -> None:
+    torch.manual_seed(106)
+    left = torch.randn(2, 9, 3, requires_grad=True)
+    right = torch.randn(2, 7, 3)
+    left_mask = torch.rand(2, 9) > 0.2
+    right_mask = torch.rand(2, 7) > 0.2
+
+    dense = distributional_discrepancy(
+        left,
+        right,
+        kernel=kernel,
+        left_mask=left_mask,
+        right_mask=right_mask,
+        reduction="none",
+    )
+    chunked = distributional_discrepancy(
+        left,
+        right,
+        kernel=kernel,
+        left_mask=left_mask,
+        right_mask=right_mask,
+        pairwise_chunk_size=3,
+        reduction="none",
+    )
+    chunked.sum().backward()
+
+    assert torch.allclose(chunked, dense, atol=1e-6, rtol=1e-6)
+    assert left.grad is not None
 
 
 def test_distributional_transition_has_the_ei_permutation_property() -> None:

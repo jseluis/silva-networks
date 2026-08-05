@@ -37,6 +37,25 @@ PACKAGE_CITATIONS = {
     "23_silva_poisson_mirror_equilibrium.ipynb": (1, 4, 50),
     "24_silva_physics_informed_equilibrium.ipynb": (1, 4, 6, 14, 51),
     "25_silva_implicit_dae_and_residuals.ipynb": (1, 52, 53),
+    "26_full_scale_silva.ipynb": (
+        1,
+        4,
+        5,
+        13,
+        27,
+        29,
+        31,
+        32,
+        36,
+        43,
+        45,
+        51,
+        52,
+        54,
+        55,
+        56,
+        57,
+    ),
 }
 
 BRIDGE_CITATIONS = {
@@ -68,9 +87,7 @@ GROUPS = (
 
 
 def _citation_block(numbers: tuple[int, ...]) -> str:
-    links = ", ".join(
-        f"[{number}]({SITE_REFERENCES}#ref-{number})" for number in numbers
-    )
+    links = ", ".join(f"[{number}]({SITE_REFERENCES}#ref-{number})" for number in numbers)
     return (
         f"{START}\n"
         f"**Numbered literature:** {links}. Each number opens the complete "
@@ -92,20 +109,25 @@ def _without_existing_block(source: str) -> str:
 def _json_indent(path: Path) -> int:
     if path.name == "02_implicit_autodiff.ipynb":
         return 2
-    if path.name in {
-        "14_point_architecture_catalog.ipynb",
-        "15_neural_operators_ode_pde.ipynb",
-        "16_frontier_equilibrium_families.ipynb",
-        "17_silva_fno_equilibrium_lab.ipynb",
-        "18_silva_graph_transport_lab.ipynb",
-        "19_silva_homotopy_equilibrium_lab.ipynb",
-        "20_silva_distributional_equilibrium_lab.ipynb",
-        "21_silva_monotone_graph_equilibrium.ipynb",
-        "22_silva_generative_equilibrium_transformer.ipynb",
-        "23_silva_poisson_mirror_equilibrium.ipynb",
-        "24_silva_physics_informed_equilibrium.ipynb",
-        "25_silva_implicit_dae_and_residuals.ipynb",
-    } and path.parent != ROOT / "docs/package-notebooks":
+    if (
+        path.name
+        in {
+            "14_point_architecture_catalog.ipynb",
+            "15_neural_operators_ode_pde.ipynb",
+            "16_frontier_equilibrium_families.ipynb",
+            "17_silva_fno_equilibrium_lab.ipynb",
+            "18_silva_graph_transport_lab.ipynb",
+            "19_silva_homotopy_equilibrium_lab.ipynb",
+            "20_silva_distributional_equilibrium_lab.ipynb",
+            "21_silva_monotone_graph_equilibrium.ipynb",
+            "22_silva_generative_equilibrium_transformer.ipynb",
+            "23_silva_poisson_mirror_equilibrium.ipynb",
+            "24_silva_physics_informed_equilibrium.ipynb",
+            "25_silva_implicit_dae_and_residuals.ipynb",
+            "26_full_scale_silva.ipynb",
+        }
+        and path.parent != ROOT / "docs/package-notebooks"
+    ):
         return 2
     return 1
 
@@ -123,11 +145,14 @@ def update_notebook(path: Path, numbers: tuple[int, ...], *, write: bool = True)
     current = "".join(first_markdown.get("source", []))
     updated = f"{_without_existing_block(current)}\n\n{_citation_block(numbers)}\n"
     first_markdown["source"] = updated.splitlines(keepends=True)
-    serialized = json.dumps(
-        notebook,
-        indent=_json_indent(path),
-        ensure_ascii=False,
-    ) + "\n"
+    serialized = (
+        json.dumps(
+            notebook,
+            indent=_json_indent(path),
+            ensure_ascii=False,
+        )
+        + "\n"
+    )
     if original == serialized:
         return False
     if write:

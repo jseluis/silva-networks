@@ -301,6 +301,39 @@ print(terms.generator, terms.discriminator)
 An adversarial objective does not guarantee a low pointwise residual, solved
 DAE root, or stable equilibrium. Report direct residuals alongside it.
 
+## Matrix-Free Scaling
+
+For the physics-informed equilibrium, `derivative_mode="matrix_free"` solves
+
+$$
+\left(I-J_zf_\theta\right)\dot z=J_tf_\theta
+$$
+
+with the JVP operator
+
+$$
+v\longmapsto v-J_zf_\theta v.
+$$
+
+GMRES receives that operator without a dense latent Jacobian. The readout
+derivative is another JVP [[57]](../paper/references.md#ref-57){ .silva-cite }.
+`derivative_mode="auto"` retains a dense solve for modest states so the
+matrix-free result can be checked against it before increasing width.
+
+For DAE stages, `linear_solver="gmres"` applies Newton-Krylov to the packed
+stage residual. Its matrix-vector product is
+
+$$
+v\longmapsto J_R(q_k)v+\rho v.
+$$
+
+Increasing state dimension no longer requires a stored square Jacobian, but it
+does require reporting Krylov tolerance, iteration budget, Newton damping,
+stage residual, endpoint constraint, and step-size study. The
+[full-scale notebook](../package-notebooks/26_full_scale_silva.ipynb) compares
+both matrix-free paths with their dense equations and differentiates through
+the physics solve.
+
 ## Choosing a Construction
 
 | Need | Use |

@@ -19,6 +19,9 @@ This path goes from first principles to a usable PyTorch model.
 8. Open [Introduction by Example](get-started/introduction-by-example.md).
 9. Read [Data Objects and Batching](get-started/data-and-batching.md).
 10. Run `python examples/scalar_deq.py` and `python examples/graph_silva.py`.
+11. Open [Full-Scale SILVA](learn/full-scale-silva.md) when the compact path is
+    working and you are ready to choose sharding, precision, accumulation,
+    matrix-free operators, or distributed execution.
 
 The main equation is
 
@@ -47,6 +50,7 @@ $$
 | Cortex hierarchy | [Cortex Hierarchies](learn/cortex-hierarchy.md) | build linked SILVA points with independently configured MLP, convolutional, U-Net, attention, or graph internals |
 | Internal architecture selection | [Point Architecture Catalog](learn/point-architecture-catalog.md) | choose among ten vector, token, and spatial fields and compose them inside or across points |
 | Scientific models | [Neural Operators, ODEs, PDEs, and SILVA](learn/neural-operators-ode-pde.md) | derive explicit flow, implicit time stepping, PDE residuals, FNO fields, and graph discretizations |
+| Scale and reproduce | [Full-Scale SILVA](learn/full-scale-silva.md) | move all 30 families from equation checks to benchmark-ready execution |
 | Stability | [Jacobians and Stability](learn/jacobians.md) | compute Jacobians, products, spectral-radius diagnostics |
 | Dataset adaptation | [Datasets and Preprocessing](learn/datasets-and-preprocessing.md) | convert public or private data into the engine |
 
@@ -67,6 +71,7 @@ $$
 | Use constrained optimization layers | [Optimization API](api/optimization.md) |
 | Adapt datasets | [Datasets API](api/datasets.md) |
 | Check GPU behavior | [Devices API](api/devices.md) |
+| Configure full-scale execution | [Scaling API](api/scaling.md) |
 
 ## Long-Form Study
 

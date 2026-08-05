@@ -190,6 +190,15 @@ def available_silva_families() -> tuple[str, ...]:
     return tuple(_FAMILY_DESCRIPTIONS)
 
 
+def canonical_silva_family(family: str) -> str:
+    """Resolve a family name or documented alias to its canonical SILVA key."""
+
+    key = _normalize_family(family)
+    if key not in _FAMILY_DESCRIPTIONS:
+        raise KeyError(_unknown_family_message(family))
+    return key
+
+
 def silva_family_description(family: str) -> str:
     """Return a short description for a selectable model family."""
 
@@ -288,6 +297,7 @@ def _unknown_family_message(family: str) -> str:
 __all__ = [
     "SILVAFamily",
     "available_silva_families",
+    "canonical_silva_family",
     "silva_equilibrium_model",
     "silva_family_description",
 ]

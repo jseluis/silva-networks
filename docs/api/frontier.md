@@ -44,6 +44,14 @@ Canonical keys are `silva_fno_deq`, `silva_physics_graph_deq`,
 
 These quantities are numerical diagnostics. A task loss, PDE residual, physical
 conservation error, or benchmark metric must be computed separately.
+The [Full-Scale SILVA guide](../learn/full-scale-silva.md) carries these
+families from compact checks to sharded and distributed dataset runs.
+
+For large empirical measures, `distributional_discrepancy` and
+`SILVADistributionalDEQ` accept `pairwise_chunk_size`. This retains the exact
+energy-distance or Gaussian-MMD arithmetic while bounding the largest explicit
+pair block. The arithmetic remains quadratic in particle count; chunking is a
+memory control, not a complexity claim.
 
 ## API
 

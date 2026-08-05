@@ -58,6 +58,18 @@ def test_monotone_parameterization_has_positive_certificate() -> None:
     assert certificate >= 0.15 - 1e-6
 
 
+def test_factorized_monotone_operator_matches_materialized_weight() -> None:
+    transition = SILVAMonotoneGraphTransition(2, 6, operator_rank=2)
+    values = torch.randn(9, 6)
+
+    factorized = transition.apply_channel_weight(values)
+    materialized = values @ transition.channel_weight().transpose(0, 1)
+
+    assert transition.c_factor.shape == (6, 2)
+    assert transition.monotonicity_lower_bound() == pytest.approx(0.1)
+    assert torch.allclose(factorized, materialized, atol=1e-6, rtol=1e-6)
+
+
 def test_monotone_graph_equilibrium_has_gradients_and_diagnostics() -> None:
     torch.manual_seed(2)
     inputs = torch.randn(5, 2)
@@ -86,6 +98,27 @@ def test_injected_attention_checks_and_uses_injection() -> None:
     assert not torch.allclose(attention(state, zero), attention(state, shifted))
     with pytest.raises(ValueError, match="qkv_injection"):
         attention(state, torch.zeros(2, 4, 8))
+
+
+def test_injected_attention_scalable_paths_match_manual_attention() -> None:
+    torch.manual_seed(31)
+    manual = SILVAInjectedSelfAttention(8, heads=2, attention_mode="manual")
+    fused = SILVAInjectedSelfAttention(8, heads=2, attention_mode="sdpa")
+    chunked = SILVAInjectedSelfAttention(
+        8,
+        heads=2,
+        attention_mode="chunked",
+        query_chunk_size=3,
+    )
+    fused.load_state_dict(manual.state_dict())
+    chunked.load_state_dict(manual.state_dict())
+    state = torch.randn(2, 7, 8)
+    injection = torch.randn(2, 7, 24)
+
+    expected = manual(state, injection)
+
+    assert torch.allclose(fused(state, injection), expected, atol=2e-6, rtol=2e-6)
+    assert torch.allclose(chunked(state, injection), expected, atol=2e-6, rtol=2e-6)
 
 
 def test_generative_equilibrium_transformer_shape_and_gradient() -> None:
@@ -205,6 +238,30 @@ def test_physics_informed_implicit_derivative_matches_affine_solution() -> None:
     assert torch.allclose(result.output, times * expected, atol=1e-5)
 
 
+def test_matrix_free_physics_derivative_matches_dense_and_backpropagates() -> None:
+    transition = AffineTimeTransition(state_factor=0.2, time_factor=0.4)
+    model = SILVAPhysicsInformedEquilibrium(
+        1,
+        1,
+        transition=transition,
+        readout=nn.Identity(),
+        derivative_mode="matrix_free",
+        derivative_max_iter=5,
+        derivative_tol=1e-8,
+        config=SolverConfig(max_iter=30, tol=1e-8, anderson_batch_dims=1),
+    )
+    times = torch.tensor([[0.3], [0.8]])
+    result = model(times, return_result=True)
+
+    matrix_free = model.implicit_time_derivative(times, result.state)
+    dense = model.implicit_time_derivative(times, result.state, mode="dense")
+    matrix_free.sum().backward()
+
+    assert torch.allclose(matrix_free, dense, atol=1e-6, rtol=1e-6)
+    assert transition.state_factor.grad is not None
+    assert transition.time_factor.grad is not None
+
+
 def test_physics_loss_decomposition_backpropagates() -> None:
     torch.manual_seed(5)
     model = SILVAPhysicsInformedEquilibrium(
@@ -264,6 +321,38 @@ def test_implicit_dae_step_accepts_multistage_tableau() -> None:
     )
     assert result.stage_differential.shape == (1, 2, 1)
     assert result.residual < 1e-5
+
+
+def test_newton_krylov_dae_path_matches_dense_step() -> None:
+    dense = SILVAImplicitDAEStep(max_iter=6, tol=1e-8, linear_solver="dense")
+    krylov = SILVAImplicitDAEStep(
+        max_iter=6,
+        tol=1e-8,
+        linear_solver="gmres",
+        linear_max_iter=8,
+        linear_tol=1e-8,
+    )
+    y0 = torch.tensor([[1.0], [0.4]])
+    z0 = 0.5 * y0
+    dynamics = lambda y, z: -y + z
+    constraint = lambda y, z: z - 0.5 * y
+
+    dense_result = dense(y0, z0, 0.1, dynamics, constraint)
+    krylov_result = krylov(y0, z0, 0.1, dynamics, constraint)
+
+    assert krylov_result.converged
+    assert torch.allclose(
+        krylov_result.differential,
+        dense_result.differential,
+        atol=2e-6,
+        rtol=2e-6,
+    )
+    assert torch.allclose(
+        krylov_result.algebraic,
+        dense_result.algebraic,
+        atol=2e-6,
+        rtol=2e-6,
+    )
 
 
 def test_adversarial_residual_losses_have_separate_gradient_paths() -> None:

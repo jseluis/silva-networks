@@ -260,6 +260,23 @@ silva-download-datasets --torchvision CIFAR10 MNIST SVHN
 
 Large image archives should remain under `data/`, which is ignored by git.
 
+## Family Scale Guidance
+
+Inspect the data contract, literature, benchmark route, numerical controls, and
+extension points for every canonical SILVA family:
+
+```bash
+silva-scale --list
+silva-scale silva_fno_deq --tier full
+silva-scale pideq --json
+silva-scale --audit
+```
+
+The command reports constructor defaults without choosing task-specific widths,
+datasets, schedules, or constraints. Instantiate the model through
+`build_scaled_silva` after selecting those scientific or task parameters. The
+complete workflow is in [Full-Scale SILVA](learn/full-scale-silva.md).
+
 ## Results And Metrics
 
 For a classification run, the metrics file records the loss trace and accuracy:

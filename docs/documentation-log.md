@@ -7,6 +7,29 @@ paper, book sources, or production code outside the package.
 <div class="silva-doclog" markdown>
 <div class="silva-doclog__date" markdown>
 <strong>August 4, 2026</strong>
+<span>All-family scaling, matrix-free execution, and full-scale learning path</span>
+</div>
+<div class="silva-doclog__body" markdown>
+## Full-Scale SILVA Pass
+
+Connected all 30 canonical SILVA families to executable scale controls while
+keeping the existing constructors and ordinary runtime defaults compatible.
+
+| Area | Change |
+| --- | --- |
+| Family guidance | Added data contracts, primary references, research repositories, benchmark routes, scale controls, and extension points for all canonical families. |
+| Numerical scaling | Added factorized monotone graph maps, fused or chunked injected attention, chunked exact measure discrepancies, matrix-free physics derivatives, and Newton-Krylov DAE stages. |
+| Training | Added mixed precision, gradient accumulation, distributed synchronization control, scaler checkpoint state, and sampler epochs. |
+| Data | Added atomic tensor shards, a lazy one-shard dataset, and ordinary or distributed loader construction. |
+| Learning | Added the Full-Scale SILVA derivation guide, complete training example, scaling API pages, and executable notebook 26. |
+| Citations | Added numbered links for the runtime APIs and extended the method-to-citation matrix. |
+| Validation | Added all-family coverage, equivalence, gradient, shard, CLI, notebook synchronization, execution, and 300 DPI checks. |
+</div>
+</div>
+
+<div class="silva-doclog" markdown>
+<div class="silva-doclog__date" markdown>
+<strong>August 4, 2026</strong>
 <span>Advanced equilibrium and physics-informed SILVA families</span>
 </div>
 <div class="silva-doclog__body" markdown>
@@ -290,7 +313,7 @@ PDFs are treated as sources and references, not as files to rewrite here.
 | Companion book/manual | Planned public learning assets connected to the package roadmap. |
 | External papers | References are cited and linked from the documentation. |
 
-All 102 Markdown pages and 34 rendered notebooks use contextual `Where to Go
+All 107 Markdown pages and 35 rendered notebooks use contextual `Where to Go
 Next` tables. Each table connects the current page to the most relevant
 derivation, executable material, example, or API contract, and the
 documentation audit checks this coverage during release validation.

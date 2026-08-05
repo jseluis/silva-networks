@@ -70,6 +70,10 @@ branches, solvers, diagnostics, and readouts.
 <strong>Select a family</strong>
 <span>SILVA, DEQ, MDEQ, flow, optimization</span>
 </a>
+<a class="silva-action" href="learn/full-scale-silva/" markdown>
+<strong>Scale a SILVA model</strong>
+<span>All 30 families, sharded data, distributed training, resume, extensions</span>
+</a>
 <a class="silva-action" href="learn/neural-operators-ode-pde/" markdown>
 <strong>Connect ODEs and PDEs</strong>
 <span>Implicit time steps, solution operators, Fourier fields, diagnostics</span>
@@ -212,6 +216,14 @@ The [advanced equilibrium guide](learn/advanced-equilibrium-families.md) and
 families or implicit layers. Their [dataset guide](learn/advanced-equilibrium-datasets.md)
 states the exact chain, image-pair, Poisson, ODE, and DAE equations, while
 notebooks 21 through 25 execute every derivation and gradient path.
+
+The [full-scale guide](learn/full-scale-silva.md) connects all 30 canonical
+families to scale-aware operators, sharded data, mixed precision, gradient
+accumulation, distributed execution, checkpoint resume, benchmark handoffs,
+and explicit extension points. Its
+[executable notebook](package-notebooks/26_full_scale_silva.ipynb) verifies the
+dense and matrix-free paths and demonstrates how to move from an equation-checked
+small problem to a configurable research run.
 
 The package is meant to be read, imported, extended, and tested. It contains
 reference SILVA presets, generic custom layers, fixed-point solvers,

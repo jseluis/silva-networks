@@ -85,6 +85,33 @@ The callback receives the device-moved batch and must return scalar `loss`,
 `prediction`, and `target` tensors. The same callback is accepted by `evaluate`,
 which keeps paper-specific losses outside the general engine.
 
+## Scale-Aware Training
+
+`TrainConfig` supports microbatch accumulation and autocast without changing
+the task loss:
+
+```python
+config = TrainConfig(
+    task="regression",
+    epochs=100,
+    optimizer="adamw",
+    gradient_accumulation_steps=4,
+    mixed_precision="bfloat16",
+    checkpoint_path="runs/checkpoint.pt",
+    resume=True,
+)
+```
+
+For per-device batch (B), accumulation count (K), and process count (P),
+the effective batch is (BKP). A final partial accumulation group is rescaled
+to preserve the batch-mean gradient. Distributed wrappers use `no_sync()` for
+intermediate microbatches, and distributed samplers receive the current epoch.
+The checkpoint also stores gradient-scaler state when CUDA float16 is active.
+
+Sharded and distributed loader construction is documented in
+[Scaling Data](scaling_data.md). The complete model/data/training route is in
+[Full-Scale SILVA](../learn/full-scale-silva.md).
+
 Classification is not restricted to matrix logits. The default
 `class_dim=-1` supports ordinary `(batch, classes)` and sequence
 `(batch, length, classes)` outputs. Set `class_dim=1` for dense image logits
@@ -113,3 +140,4 @@ and [Paper and References](../paper/references.md).
 | Can I execute fitting, evaluation, checkpointing, and resume? | [Training Helpers Validation Notebook](../package-notebooks/10_training_helpers_smoke.ipynb) |
 | What evidence should a trained experiment report? | [Reconstructing Paper Experiments](../learn/reconstructing-paper-experiments.md) |
 | Which measured outputs are published? | [Results](../results.md) |
+| How do I scale data and execution? | [Full-Scale SILVA](../learn/full-scale-silva.md) |

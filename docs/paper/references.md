@@ -155,6 +155,10 @@ continued reading.
   <li id="ref-51">Pacheco, Bruno M., and Camponogara, Eduardo. <em>Solving Differential Equations using Physics-Informed Deep Equilibrium Models</em>. arXiv:2406.03472, 2024. <a href="https://arxiv.org/abs/2406.03472" target="_blank" rel="noopener">Primary source</a>. <a href="https://github.com/brunompacheco/pideq" target="_blank" rel="noopener">Research repository</a>. BibTeX: <code>pacheco2024pideq</code>.</li>
   <li id="ref-52">Moya, Christian, and Lin, Guang. <em>DAE-PINN: A Physics-Informed Neural Network Model for Simulating Differential Algebraic Equations with Application to Power Networks</em>. arXiv:2109.04304, 2021. <a href="https://arxiv.org/abs/2109.04304" target="_blank" rel="noopener">Primary source</a>. BibTeX: <code>moya2021daepinn</code>.</li>
   <li id="ref-53">Bullwinkel, Blake; Randle, Dylan; Protopapas, Pavlos; and Sondak, David. <em>DEQGAN: Learning the Loss Function for PINNs with Generative Adversarial Networks</em>. AI4Science Workshop at ICML, 2022. In this title, DEQ means Differential Equation. <a href="https://arxiv.org/abs/2209.07081" target="_blank" rel="noopener">Primary source</a>. <a href="https://github.com/dylanrandle/denn" target="_blank" rel="noopener">Research repository</a>. BibTeX: <code>bullwinkel2022deqgan</code>.</li>
+  <li id="ref-54">PyTorch Contributors. <em>Scaled Dot Product Attention</em>. PyTorch documentation, 2026. <a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html" target="_blank" rel="noopener">API documentation</a>. BibTeX: <code>pytorch2026sdpa</code>.</li>
+  <li id="ref-55">PyTorch Contributors. <em>DistributedDataParallel</em>. PyTorch documentation, 2026. <a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html" target="_blank" rel="noopener">API documentation</a>. BibTeX: <code>pytorch2026ddp</code>.</li>
+  <li id="ref-56">PyTorch Contributors. <em>Automatic Mixed Precision</em>. PyTorch documentation, 2026. <a href="https://docs.pytorch.org/docs/stable/amp.html" target="_blank" rel="noopener">API documentation</a>. BibTeX: <code>pytorch2026amp</code>.</li>
+  <li id="ref-57">PyTorch Contributors. <em>Jacobian-Vector Product</em>. PyTorch documentation, 2026. <a href="https://docs.pytorch.org/docs/stable/generated/torch.autograd.functional.jvp.html" target="_blank" rel="noopener">API documentation</a>. BibTeX: <code>pytorch2026jvp</code>.</li>
 </ol>
 
 ## Method Citation Matrix
@@ -183,6 +187,8 @@ continued reading.
 | empirical-measure equilibria | `SILVADistributionalTransition`, `SILVADistributionalDEQ` | DDEQ, Wasserstein gradient flows, MMD, energy distance, SILVA |
 | recent equilibrium teaching data | `make_periodic_elliptic_dataset`, `make_graph_transport_dataset`, `make_affine_homotopy_dataset`, `make_variable_measure_dataset` | FNO/FNO-DEQ, pGCN-DEQ, homotopy equilibrium, or DDEQ according to the generated problem; SILVA for the typed equation checks |
 | coupled RAFT/DEQ-Flow | `SILVARAFTDEQ`, correlation pyramid, update block, correction loss | RAFT, DEQ-Flow, SILVA |
+| scalable SILVA execution | `build_scaled_silva`, `full_scale_solver_config`, `runtime_for_tier`, `prepare_silva_model` | SILVA families, implicit differentiation, scaled dot-product attention, distributed data parallelism, mixed precision |
+| lazy sharded data | `SILVAShardedTensorDataset`, `write_silva_tensor_shards`, `make_silva_dataloader` | package-native tensor-shard contract and PyTorch data loading |
 
 ## Equilibrium and Implicit Layers
 

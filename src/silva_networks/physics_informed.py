@@ -11,10 +11,12 @@ import torch.nn.functional as F
 from torch import nn
 
 from .jacobian import hutchinson_jacobian_norm
-from .solvers import SolverConfig, SolverResult, solve_equilibrium
+from .solvers import SolverConfig, SolverResult, gmres, solve_equilibrium
 
 Tensor = torch.Tensor
 Reduction = Literal["none", "mean", "sum"]
+DerivativeMode = Literal["auto", "dense", "matrix_free"]
+DAELinearSolver = Literal["auto", "dense", "gmres"]
 
 
 def _positive_integer(value: int, name: str) -> None:
@@ -262,8 +264,9 @@ class SILVAPhysicsInformedEquilibrium(nn.Module):
     =(I-J_zf_\theta)^{-1}J_tf_\theta,
     $$
 
-    rather than by differentiating through stored solver iterates. The exact
-    dense solve is intended for modest latent dimensions and teaching cases.
+    rather than by differentiating through stored solver iterates. Dense and
+    matrix-free derivative solves share the same equation; ``auto`` uses the
+    dense path only for modest latent dimensions.
     """
 
     def __init__(
@@ -276,6 +279,10 @@ class SILVAPhysicsInformedEquilibrium(nn.Module):
         state_scale: float = 0.2,
         transition: SILVAPhysicsInformedTransition | None = None,
         readout: nn.Module | None = None,
+        derivative_mode: DerivativeMode = "auto",
+        dense_derivative_threshold: int = 64,
+        derivative_max_iter: int = 50,
+        derivative_tol: float = 1e-6,
         config: SolverConfig | None = None,
     ):
         super().__init__()
@@ -288,6 +295,12 @@ class SILVAPhysicsInformedEquilibrium(nn.Module):
         )
         if self.transition.time_dim != time_dim or self.transition.state_dim != state_dim:
             raise ValueError("transition dimensions must match time_dim and state_dim")
+        if derivative_mode not in {"auto", "dense", "matrix_free"}:
+            raise ValueError("derivative_mode must be auto, dense, or matrix_free")
+        _positive_integer(dense_derivative_threshold, "dense_derivative_threshold")
+        _positive_integer(derivative_max_iter, "derivative_max_iter")
+        if derivative_tol <= 0:
+            raise ValueError("derivative_tol must be positive")
         self.readout = readout or nn.Linear(state_dim, output_dim)
         self.config = config or SolverConfig(
             solver="anderson",
@@ -300,6 +313,10 @@ class SILVAPhysicsInformedEquilibrium(nn.Module):
         self.time_dim = time_dim
         self.state_dim = state_dim
         self.output_dim = output_dim
+        self.derivative_mode = derivative_mode
+        self.dense_derivative_threshold = dense_derivative_threshold
+        self.derivative_max_iter = derivative_max_iter
+        self.derivative_tol = float(derivative_tol)
 
     def forward(
         self,
@@ -336,13 +353,26 @@ class SILVAPhysicsInformedEquilibrium(nn.Module):
             return SILVAPhysicsInformedOutput(output, result.z, result)
         return output
 
-    def implicit_time_derivative(self, times: Tensor, state: Tensor) -> Tensor:
-        """Compute ``d readout(z_star(t)) / dt`` by dense implicit solves."""
+    def implicit_time_derivative(
+        self,
+        times: Tensor,
+        state: Tensor,
+        *,
+        mode: DerivativeMode | None = None,
+    ) -> Tensor:
+        """Compute ``d readout(z_star(t)) / dt`` by implicit linear solves."""
 
         if self.time_dim != 1:
             raise ValueError("ODE time derivatives currently require time_dim=1")
         if times.shape != (state.shape[0], 1) or state.shape[-1] != self.state_dim:
             raise ValueError("times and state have incompatible shapes")
+        selected = self.derivative_mode if mode is None else mode
+        if selected not in {"auto", "dense", "matrix_free"}:
+            raise ValueError("mode must be auto, dense, or matrix_free")
+        if selected == "auto":
+            selected = (
+                "dense" if self.state_dim <= self.dense_derivative_threshold else "matrix_free"
+            )
         derivatives = []
         for index in range(times.shape[0]):
             time = times[index].reshape(1).requires_grad_(True)
@@ -354,39 +384,63 @@ class SILVAPhysicsInformedEquilibrium(nn.Module):
                     current_time.unsqueeze(0),
                 ).squeeze(0)
 
-            state_jacobian = torch.autograd.functional.jacobian(
-                state_map,
-                latent,
-                create_graph=True,
-            )
-
             def time_map(value: Tensor, current_latent: Tensor = latent) -> Tensor:
                 return self.transition(
                     current_latent.unsqueeze(0),
                     value.unsqueeze(0),
                 ).squeeze(0)
 
-            time_jacobian = torch.autograd.functional.jacobian(
+            _, time_jacobian = torch.autograd.functional.jvp(
                 time_map,
                 time,
+                torch.ones_like(time),
                 create_graph=True,
             )
-            identity = torch.eye(
-                self.state_dim,
-                device=state.device,
-                dtype=state.dtype,
-            )
-            dz_dt = torch.linalg.solve(identity - state_jacobian, time_jacobian)
+            if selected == "dense":
+                state_jacobian = torch.autograd.functional.jacobian(
+                    state_map,
+                    latent,
+                    create_graph=True,
+                )
+                identity = torch.eye(
+                    self.state_dim,
+                    device=state.device,
+                    dtype=state.dtype,
+                )
+                dz_dt = torch.linalg.solve(identity - state_jacobian, time_jacobian)
+            else:
+
+                def matvec(
+                    direction: Tensor,
+                    current_map: Callable[[Tensor], Tensor] = state_map,
+                    current_latent: Tensor = latent,
+                ) -> Tensor:
+                    _, product = torch.autograd.functional.jvp(
+                        current_map,
+                        current_latent,
+                        direction,
+                        create_graph=True,
+                    )
+                    return direction - product
+
+                dz_dt = gmres(
+                    matvec,
+                    time_jacobian,
+                    max_iter=self.derivative_max_iter,
+                    tol=self.derivative_tol,
+                    stop_mode="relative",
+                ).x
 
             def readout_map(value: Tensor) -> Tensor:
                 return self.readout(value.unsqueeze(0)).squeeze(0)
 
-            readout_jacobian = torch.autograd.functional.jacobian(
+            _, output_derivative = torch.autograd.functional.jvp(
                 readout_map,
                 latent,
+                dz_dt,
                 create_graph=True,
             )
-            derivatives.append((readout_jacobian @ dz_dt).squeeze(-1))
+            derivatives.append(output_derivative)
         return torch.stack(derivatives)
 
     def physics_loss(
@@ -478,6 +532,10 @@ class SILVAImplicitDAEStep(nn.Module):
         tol: float = 1e-7,
         damping: float = 1.0,
         ridge: float = 1e-6,
+        linear_solver: DAELinearSolver = "auto",
+        dense_linear_threshold: int = 64,
+        linear_max_iter: int = 50,
+        linear_tol: float = 1e-6,
     ):
         super().__init__()
         a = torch.tensor([[1.0]]) if a is None else torch.as_tensor(a)
@@ -491,6 +549,12 @@ class SILVAImplicitDAEStep(nn.Module):
         _positive_integer(max_iter, "max_iter")
         if tol <= 0 or damping <= 0 or ridge < 0:
             raise ValueError("tol and damping must be positive and ridge nonnegative")
+        if linear_solver not in {"auto", "dense", "gmres"}:
+            raise ValueError("linear_solver must be auto, dense, or gmres")
+        _positive_integer(dense_linear_threshold, "dense_linear_threshold")
+        _positive_integer(linear_max_iter, "linear_max_iter")
+        if linear_tol <= 0:
+            raise ValueError("linear_tol must be positive")
         dtype = torch.get_default_dtype()
         self.register_buffer("a", a.to(dtype=dtype))
         self.register_buffer("b", b.to(dtype=dtype))
@@ -500,6 +564,10 @@ class SILVAImplicitDAEStep(nn.Module):
         self.damping = float(damping)
         self.ridge = float(ridge)
         self.stages = stages
+        self.linear_solver = linear_solver
+        self.dense_linear_threshold = dense_linear_threshold
+        self.linear_max_iter = linear_max_iter
+        self.linear_tol = float(linear_tol)
 
     @staticmethod
     def _split_unknown(
@@ -586,17 +654,49 @@ class SILVAImplicitDAEStep(nn.Module):
                 current_differential = differential[index]
                 residual = residual_one(unknown, current_differential)
                 norms.append(torch.linalg.norm(residual))
-                jacobian = torch.autograd.functional.jacobian(
-                    lambda value, y_n=current_differential: residual_one(value, y_n),
-                    unknown,
-                    create_graph=torch.is_grad_enabled(),
-                )
-                identity = torch.eye(
-                    jacobian.shape[0],
-                    device=jacobian.device,
-                    dtype=jacobian.dtype,
-                )
-                correction = torch.linalg.solve(jacobian + self.ridge * identity, residual)
+                residual_map = lambda value, y_n=current_differential: residual_one(value, y_n)
+                selected_solver = self.linear_solver
+                if selected_solver == "auto":
+                    selected_solver = (
+                        "dense" if unknown.numel() <= self.dense_linear_threshold else "gmres"
+                    )
+                if selected_solver == "dense":
+                    jacobian = torch.autograd.functional.jacobian(
+                        residual_map,
+                        unknown,
+                        create_graph=torch.is_grad_enabled(),
+                    )
+                    identity = torch.eye(
+                        jacobian.shape[0],
+                        device=jacobian.device,
+                        dtype=jacobian.dtype,
+                    )
+                    correction = torch.linalg.solve(
+                        jacobian + self.ridge * identity,
+                        residual,
+                    )
+                else:
+
+                    def matvec(
+                        direction: Tensor,
+                        current_map: Callable[[Tensor], Tensor] = residual_map,
+                        current_unknown: Tensor = unknown,
+                    ) -> Tensor:
+                        _, product = torch.autograd.functional.jvp(
+                            current_map,
+                            current_unknown,
+                            direction,
+                            create_graph=torch.is_grad_enabled(),
+                        )
+                        return product + self.ridge * direction
+
+                    correction = gmres(
+                        matvec,
+                        residual,
+                        max_iter=self.linear_max_iter,
+                        tol=self.linear_tol,
+                        stop_mode="relative",
+                    ).x
                 updated.append(unknown - self.damping * correction)
             maximum = torch.stack(norms).max()
             residuals.append(float(maximum.detach().cpu()))
@@ -735,6 +835,8 @@ def silva_implicit_dae_step(**kwargs) -> SILVAImplicitDAEStep:
 
 
 __all__ = [
+    "DAELinearSolver",
+    "DerivativeMode",
     "SILVAAdversarialResidualLoss",
     "SILVABurgMirrorTransition",
     "SILVADAEOutput",

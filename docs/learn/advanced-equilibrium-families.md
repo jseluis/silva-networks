@@ -307,6 +307,33 @@ print(result.solver_result.residual)
 another shape-preserving SILVA point. If it is described as the gradient of a
 scalar potential, that integrability claim needs a separate check.
 
+## Scaling These Families
+
+For a monotone graph state width $d$, the dense channel map stores $O(d^2)$
+parameters. Setting `operator_rank=r` uses
+
+$$
+W=(1-m)I-CC^\top+UV^\top-VU^\top,
+\qquad C,U,V\in\mathbb R^{d\times r},
+$$
+
+and `apply_channel_weight` applies the factors without constructing $W$.
+The monotonicity lower bound $m$ is unchanged. Sparse graph edges still govern
+the node interaction cost.
+
+For the injected transformer, `attention_mode="sdpa"` uses scaled dot-product
+attention [[54]](../paper/references.md#ref-54){ .silva-cite } and
+`attention_mode="chunked"` divides the query axis. The latter preserves the
+same attention map while bounding the largest explicit query block. Patch size,
+token count, head width, and source-pair storage must be reported together.
+
+Poisson mirror models scale through the supplied forward/adjoint operators.
+Use operators that act lazily on tiles or measurement batches, verify the
+adjoint identity, and keep positivity, KL fidelity, fixed-point residual, and
+reconstruction quality as separate checks. The
+[full-scale notebook](../package-notebooks/26_full_scale_silva.ipynb) verifies
+the graph and attention equivalences directly.
+
 ## Diagnostics
 
 | Family | Numerical diagnostic | Structural diagnostic | Task diagnostic |

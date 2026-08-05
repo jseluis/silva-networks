@@ -24,6 +24,7 @@ DEFAULT_NOTEBOOKS = (
     "docs/package-notebooks/23_silva_poisson_mirror_equilibrium.ipynb",
     "docs/package-notebooks/24_silva_physics_informed_equilibrium.ipynb",
     "docs/package-notebooks/25_silva_implicit_dae_and_residuals.ipynb",
+    "docs/package-notebooks/26_full_scale_silva.ipynb",
     "docs/implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb",
 )
 
@@ -65,9 +66,13 @@ def _resolve_notebooks(paths: list[str]) -> list[Path]:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("notebooks", nargs="*", help="notebooks to execute; defaults to quick smoke set")
+    parser.add_argument(
+        "notebooks", nargs="*", help="notebooks to execute; defaults to quick smoke set"
+    )
     parser.add_argument("--timeout", type=int, default=180, help="per-cell timeout in seconds")
-    parser.add_argument("--output-dir", type=Path, help="optional directory for executed notebook copies")
+    parser.add_argument(
+        "--output-dir", type=Path, help="optional directory for executed notebook copies"
+    )
     parser.add_argument("--list", action="store_true", help="list default notebooks and exit")
     args = parser.parse_args(argv)
 

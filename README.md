@@ -91,6 +91,16 @@ The default validation avoids CUDA and large image downloads. Use `--with-vision
 for a small CIFAR10 check and run the full TorchVision suite only when the
 image archives can be cached locally.
 
+Inspect the data, literature, benchmark, scale controls, and extension route
+for any of the 30 canonical SILVA families:
+
+```bash
+silva-scale --list
+silva-scale silva_fno_deq --tier workstation
+silva-scale pideq --tier full --json
+silva-scale --audit
+```
+
 List and run public configs directly:
 
 ```bash
@@ -394,6 +404,41 @@ deep-equilibrium family. Full derivations are in
 `docs/learn/physics-informed-equilibria.md`. Equation-checked data are in
 `src/silva_networks/advanced_data.py`; focused notebooks are numbered `21`
 through `25`.
+
+### Full-Scale SILVA Execution
+
+Every canonical family has an executable scale guide. `build_scaled_silva`
+adds family-specific numerical controls such as implicit GMRES backward solves,
+fused or chunked attention, factorized monotone graph maps, chunked empirical
+measure losses, matrix-free physics derivatives, and Newton-Krylov DAE stages.
+Task dimensions and user-provided modules remain explicit and always override
+the tier defaults.
+
+```python
+from silva_networks import build_scaled_silva, runtime_for_tier
+
+runtime = runtime_for_tier(
+    "workstation",
+    checkpoint_path="runs/fno-deq/checkpoint.pt",
+)
+model = build_scaled_silva(
+    "silva_fno_deq",
+    tier=runtime.tier,
+    in_channels=1,
+    state_channels=48,
+    out_channels=1,
+    modes_height=12,
+    modes_width=12,
+)
+```
+
+Lazy tensor shards, distributed samplers, mixed precision, gradient
+accumulation, checkpoint resume, and model preparation use the same public
+runtime contract. The full derivation and all-family matrix are in
+`docs/learn/full-scale-silva.md`; the complete PDE training program is in
+`docs/examples/full-scale-training.md`; executable dense/scalable equivalence
+checks and checkpoint resume are in
+`notebooks/package_api/26_full_scale_silva.ipynb`.
 
 The matching deterministic datasets are created inside the package:
 

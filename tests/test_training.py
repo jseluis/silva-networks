@@ -66,6 +66,51 @@ def test_fit_supervised_trains_evaluates_and_checkpoints(tmp_path) -> None:
     assert len(resumed.history) == 14
 
 
+def test_gradient_accumulation_matches_a_larger_batch() -> None:
+    seed_everything(18)
+    x = torch.randn(8, 3)
+    y = torch.randn(8, 1)
+    initial = nn.Linear(3, 1)
+    accumulated = nn.Linear(3, 1)
+    large_batch = nn.Linear(3, 1)
+    accumulated.load_state_dict(initial.state_dict())
+    large_batch.load_state_dict(initial.state_dict())
+
+    fit_supervised(
+        accumulated,
+        DataLoader(TensorDataset(x, y), batch_size=2, shuffle=False),
+        config=TrainConfig(
+            task="regression",
+            epochs=1,
+            optimizer="sgd",
+            lr=0.1,
+            gradient_accumulation_steps=2,
+        ),
+    )
+    fit_supervised(
+        large_batch,
+        DataLoader(TensorDataset(x, y), batch_size=4, shuffle=False),
+        config=TrainConfig(task="regression", epochs=1, optimizer="sgd", lr=0.1),
+    )
+
+    for first, second in zip(accumulated.parameters(), large_batch.parameters(), strict=True):
+        assert torch.allclose(first, second, atol=1e-7, rtol=1e-7)
+
+
+def test_training_validates_mixed_precision_device() -> None:
+    with pytest.raises(ValueError, match="requires a CUDA"):
+        fit_supervised(
+            nn.Linear(1, 1),
+            [(torch.ones(2, 1), torch.ones(2, 1))],
+            config=TrainConfig(
+                task="regression",
+                epochs=1,
+                mixed_precision="float16",
+                device="cpu",
+            ),
+        )
+
+
 def test_evaluate_accepts_graph_tensor_batch() -> None:
     class NodeClassifier(nn.Module):
         def __init__(self):
@@ -220,9 +265,7 @@ def test_training_engine_custom_step_supports_auxiliary_batch_fields() -> None:
     def masked_step(model: nn.Module, batch):
         first, second, expected, mask = batch
         prediction = model(first, second)
-        loss = ((prediction - expected).abs() * mask).sum() / (
-            mask.sum() * prediction.shape[1]
-        )
+        loss = ((prediction - expected).abs() * mask).sum() / (mask.sum() * prediction.shape[1])
         return loss, prediction, expected
 
     model = PairField()

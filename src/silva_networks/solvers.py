@@ -684,7 +684,7 @@ def gmres(
         return LinearSolveResult(x0.reshape(shape), residuals, 0, True, "gmres")
 
     basis: list[Tensor] = [r0 / beta.clamp_min(torch.finfo(b.dtype).tiny)]
-    hessenberg = torch.zeros(max_iter + 1, max_iter, device=b.device, dtype=b.dtype)
+    hessenberg_columns: list[Tensor] = []
     x_flat = x0
     converged = False
     iteration = 0
@@ -694,17 +694,30 @@ def gmres(
         matvec_out = matvec(basis[j].reshape(shape))
         _validate_transition_output(matvec_out, b)
         w = matvec_out.reshape(-1)
+        column_entries: list[Tensor] = []
         for i in range(iteration):
-            hessenberg[i, j] = torch.vdot(basis[i], w)
-            w = w - hessenberg[i, j] * basis[i]
-        hessenberg[iteration, j] = torch.linalg.norm(w)
-        arnoldi_norm = hessenberg[iteration, j]
+            coefficient = torch.vdot(basis[i], w)
+            column_entries.append(coefficient)
+            w = w - coefficient * basis[i]
+        arnoldi_norm = torch.linalg.norm(w)
+        column_entries.append(arnoldi_norm)
+        hessenberg_columns.append(torch.stack(column_entries))
         if arnoldi_norm > torch.finfo(b.dtype).eps and iteration < max_iter:
-            basis.append(w / hessenberg[iteration, j])
+            basis.append(w / arnoldi_norm)
 
-        rhs = torch.zeros(iteration + 1, device=b.device, dtype=b.dtype)
-        rhs[0] = beta
-        y = torch.linalg.lstsq(hessenberg[: iteration + 1, :iteration], rhs).solution
+        rows = iteration + 1
+        padded_columns = [
+            torch.cat(
+                [
+                    column,
+                    column.new_zeros(rows - column.numel()),
+                ]
+            )
+            for column in hessenberg_columns
+        ]
+        hessenberg = torch.stack(padded_columns, dim=1)
+        rhs = torch.cat([beta.reshape(1), beta.new_zeros(iteration)])
+        y = torch.linalg.lstsq(hessenberg, rhs).solution
         v_mat = torch.stack(basis[:iteration], dim=1)
         x_flat = v_mat @ y
         matvec_out = matvec(x_flat.reshape(shape))

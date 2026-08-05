@@ -11,7 +11,8 @@ from __future__ import annotations
 
 import math
 import random
-from collections.abc import Callable, Iterable, Mapping
+from collections.abc import Callable, Iterable, Mapping, Sized
+from contextlib import nullcontext
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Literal
@@ -30,6 +31,7 @@ LossName = Literal["auto", "cross_entropy", "mse", "mae"]
 MetricName = Literal["auto", "accuracy", "mae", "mse", "loss"]
 SchedulerName = Literal["none", "step"]
 MetricMode = Literal["auto", "min", "max"]
+PrecisionName = Literal["none", "float16", "bfloat16"]
 MetricFunction = Callable[[torch.Tensor, torch.Tensor], torch.Tensor | float]
 BatchStep = Callable[[nn.Module, Any], tuple[torch.Tensor, torch.Tensor, torch.Tensor]]
 EpochHook = Callable[["EpochMetrics", nn.Module, torch.optim.Optimizer], None]
@@ -57,6 +59,9 @@ class TrainConfig:
             handles `(batch, classes)` and sequence logits `(batch, length,
             classes)`. Use `1` for dense logits `(batch, classes, height, width)`.
         gradient_clipping: Optional global norm clipping threshold.
+        gradient_accumulation_steps: Number of microbatches per optimizer step.
+        mixed_precision: Autocast precision. ``float16`` requires CUDA;
+            ``bfloat16`` is supported on devices with a matching backend.
         scheduler: Learning-rate scheduler family.
         scheduler_step_size: Epoch period for step scheduling.
         scheduler_gamma: Multiplicative step-scheduler factor.
@@ -78,6 +83,8 @@ class TrainConfig:
     metric_mode: MetricMode = "auto"
     class_dim: int = -1
     gradient_clipping: float | None = None
+    gradient_accumulation_steps: int = 1
+    mixed_precision: PrecisionName = "none"
     scheduler: SchedulerName = "none"
     scheduler_step_size: int = 10
     scheduler_gamma: float = 0.5
@@ -98,6 +105,10 @@ class TrainConfig:
             raise ValueError("weight_decay must be nonnegative")
         if self.gradient_clipping is not None and self.gradient_clipping <= 0:
             raise ValueError("gradient_clipping must be positive")
+        if self.gradient_accumulation_steps < 1:
+            raise ValueError("gradient_accumulation_steps must be positive")
+        if self.mixed_precision not in {"none", "float16", "bfloat16"}:
+            raise ValueError("mixed_precision must be none, float16, or bfloat16")
         if self.metric_mode not in {"auto", "min", "max"}:
             raise ValueError(f"Unsupported metric_mode: {self.metric_mode}")
         if self.class_dim == 0:
@@ -170,10 +181,12 @@ def evaluate(
     step_fn: BatchStep | None = None,
     class_dim: int = -1,
     device: str | torch.device | None = "auto",
+    mixed_precision: PrecisionName = "none",
 ) -> EvaluationResult:
     """Evaluate a supervised model on an iterable of batches."""
 
     resolved = resolve_device(device)
+    _validate_precision(mixed_precision, resolved)
     model.to(resolved)
     was_training = model.training
     model.eval()
@@ -185,15 +198,16 @@ def evaluate(
         with torch.no_grad():
             for batch in data_loader:
                 moved = _move_batch(batch, resolved)
-                loss_value, prediction, target = _batch_step_values(
-                    model,
-                    moved,
-                    task=task,
-                    loss=loss,
-                    loss_fn=loss_fn,
-                    class_dim=class_dim,
-                    step_fn=step_fn,
-                )
+                with _autocast_context(resolved, mixed_precision):
+                    loss_value, prediction, target = _batch_step_values(
+                        model,
+                        moved,
+                        task=task,
+                        loss=loss,
+                        loss_fn=loss_fn,
+                        class_dim=class_dim,
+                        step_fn=step_fn,
+                    )
                 batch_metric = (
                     _as_metric_tensor(metric_fn(prediction, target), prediction)
                     if metric_fn is not None
@@ -254,8 +268,12 @@ def fit_supervised(
         seed_everything(cfg.seed, deterministic=cfg.deterministic)
 
     resolved = resolve_device(cfg.device)
+    _validate_precision(cfg.mixed_precision, resolved)
     model.to(resolved)
     opt = optimizer or _make_optimizer(model, cfg)
+    scaler = torch.cuda.amp.GradScaler(
+        enabled=cfg.mixed_precision == "float16" and resolved.type == "cuda"
+    )
     active_scheduler = scheduler if scheduler is not None else _make_scheduler(opt, cfg)
     checkpoint_path = Path(cfg.checkpoint_path) if cfg.checkpoint_path is not None else None
     start_epoch = 1
@@ -270,6 +288,8 @@ def fit_supervised(
         opt.load_state_dict(payload["optimizer_state"])
         if active_scheduler is not None and payload.get("scheduler_state") is not None:
             active_scheduler.load_state_dict(payload["scheduler_state"])
+        if scaler.is_enabled() and payload.get("scaler_state") is not None:
+            scaler.load_state_dict(payload["scaler_state"])
         history = [EpochMetrics(**row) for row in payload.get("history", [])]
         best_epoch = payload.get("best_epoch")
         best_metric = payload.get("best_metric")
@@ -277,6 +297,9 @@ def fit_supervised(
         _restore_rng_state(payload.get("rng_state"))
 
     for epoch in range(start_epoch, cfg.epochs + 1):
+        sampler = getattr(train_loader, "sampler", None)
+        if sampler is not None and hasattr(sampler, "set_epoch"):
+            sampler.set_epoch(epoch)
         train_loss = _train_one_epoch(
             model,
             train_loader,
@@ -285,6 +308,7 @@ def fit_supervised(
             loss_fn,
             step_fn,
             resolved,
+            scaler,
         )
         val_loss: float | None = None
         val_metric: float | None = None
@@ -300,6 +324,7 @@ def fit_supervised(
                 step_fn=step_fn,
                 class_dim=cfg.class_dim,
                 device=resolved,
+                mixed_precision=cfg.mixed_precision,
             )
             val_loss = val.loss
             val_metric = val.metric
@@ -334,6 +359,7 @@ def fit_supervised(
                 history,
                 best_epoch,
                 best_metric,
+                scaler,
             )
 
     return TrainResult(
@@ -353,32 +379,96 @@ def _train_one_epoch(
     loss_fn: nn.Module | None,
     step_fn: BatchStep | None,
     device: torch.device,
+    scaler: torch.cuda.amp.GradScaler,
 ) -> float:
     model.train()
     total_loss = 0.0
     total_examples = 0
-    for batch in data_loader:
+    accumulation = config.gradient_accumulation_steps
+    total_batches = len(data_loader) if isinstance(data_loader, Sized) else None
+    microbatches = 0
+    optimizer.zero_grad(set_to_none=True)
+    for batch_index, batch in enumerate(data_loader, start=1):
         moved = _move_batch(batch, device)
-        optimizer.zero_grad(set_to_none=True)
-        loss_value, _prediction, target = _batch_step_values(
-            model,
-            moved,
-            task=config.task,
-            loss=config.loss,
-            loss_fn=loss_fn,
-            class_dim=config.class_dim,
-            step_fn=step_fn,
+        is_last = total_batches is not None and batch_index == total_batches
+        should_step = batch_index % accumulation == 0 or is_last
+        synchronization = (
+            model.no_sync()
+            if total_batches is not None and not should_step and hasattr(model, "no_sync")
+            else nullcontext()
         )
-        loss_value.backward()
-        if config.gradient_clipping is not None:
-            torch.nn.utils.clip_grad_norm_(model.parameters(), config.gradient_clipping)
-        optimizer.step()
+        with synchronization:
+            with _autocast_context(device, config.mixed_precision):
+                loss_value, _prediction, target = _batch_step_values(
+                    model,
+                    moved,
+                    task=config.task,
+                    loss=config.loss,
+                    loss_fn=loss_fn,
+                    class_dim=config.class_dim,
+                    step_fn=step_fn,
+                )
+            scaler.scale(loss_value / accumulation).backward()
+        microbatches += 1
+        if should_step:
+            _optimizer_step(
+                model,
+                optimizer,
+                scaler,
+                config.gradient_clipping,
+                gradient_scale=(
+                    accumulation / microbatches if microbatches < accumulation else 1.0
+                ),
+            )
+            microbatches = 0
         count = _num_examples(target)
         total_loss += float(loss_value.detach().cpu()) * count
         total_examples += count
+    if microbatches:
+        _optimizer_step(
+            model,
+            optimizer,
+            scaler,
+            config.gradient_clipping,
+            gradient_scale=accumulation / microbatches,
+        )
     if total_examples == 0:
         raise ValueError("train_loader produced no examples")
     return total_loss / total_examples
+
+
+def _optimizer_step(
+    model: nn.Module,
+    optimizer: torch.optim.Optimizer,
+    scaler: torch.cuda.amp.GradScaler,
+    gradient_clipping: float | None,
+    *,
+    gradient_scale: float,
+) -> None:
+    scaler.unscale_(optimizer)
+    if gradient_scale != 1.0:
+        for parameter in model.parameters():
+            if parameter.grad is not None:
+                parameter.grad.mul_(gradient_scale)
+    if gradient_clipping is not None:
+        torch.nn.utils.clip_grad_norm_(model.parameters(), gradient_clipping)
+    scaler.step(optimizer)
+    scaler.update()
+    optimizer.zero_grad(set_to_none=True)
+
+
+def _validate_precision(precision: PrecisionName, device: torch.device) -> None:
+    if precision not in {"none", "float16", "bfloat16"}:
+        raise ValueError("mixed_precision must be none, float16, or bfloat16")
+    if precision == "float16" and device.type != "cuda":
+        raise ValueError("float16 mixed precision requires a CUDA device")
+
+
+def _autocast_context(device: torch.device, precision: PrecisionName):
+    if precision == "none":
+        return nullcontext()
+    dtype = torch.float16 if precision == "float16" else torch.bfloat16
+    return torch.autocast(device_type=device.type, dtype=dtype)
 
 
 def _move_batch(batch: Any, device: torch.device) -> Any:
@@ -405,9 +495,7 @@ def _call_model(model: nn.Module, batch: Any) -> tuple[Any, torch.Tensor]:
     if isinstance(batch, (tuple, list)) and len(batch) >= 2:
         inputs = batch[:-1]
         return model(*inputs), batch[-1]
-    raise TypeError(
-        "batch must be GraphTensorBatch, mapping, or (*model_inputs, target)"
-    )
+    raise TypeError("batch must be GraphTensorBatch, mapping, or (*model_inputs, target)")
 
 
 def _prediction_tensor(output: Any) -> torch.Tensor:
@@ -568,6 +656,7 @@ def _save_checkpoint(
     history: list[EpochMetrics],
     best_epoch: int | None,
     best_metric: float | None,
+    scaler: torch.cuda.amp.GradScaler,
 ) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
@@ -575,6 +664,7 @@ def _save_checkpoint(
         "model_state": model.state_dict(),
         "optimizer_state": optimizer.state_dict(),
         "scheduler_state": None if scheduler is None else scheduler.state_dict(),
+        "scaler_state": scaler.state_dict() if scaler.is_enabled() else None,
         "history": [row.__dict__ for row in history],
         "best_epoch": best_epoch,
         "best_metric": best_metric,
@@ -658,6 +748,7 @@ __all__ = [
     "EpochMetrics",
     "EvaluationResult",
     "MetricFunction",
+    "PrecisionName",
     "TrainConfig",
     "TrainResult",
     "evaluate",

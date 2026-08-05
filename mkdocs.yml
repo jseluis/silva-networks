@@ -129,6 +129,7 @@ nav:
       - Stacking and Devices: learn/stacking-and-devices.md
       - Datasets and Preprocessing: learn/datasets-and-preprocessing.md
       - Reconstructing Paper Experiments: learn/reconstructing-paper-experiments.md
+      - Full-Scale SILVA: learn/full-scale-silva.md
       - Paper Family Adaptations: learn/paper-family-adaptations.md
   - Book and Solutions Manual: book.md
   - Research Citation Audit: research-citation-audit.md
@@ -160,6 +161,7 @@ nav:
       - SILVA Poisson Mirror Equilibrium: package-notebooks/23_silva_poisson_mirror_equilibrium.ipynb
       - SILVA Physics-Informed Equilibrium: package-notebooks/24_silva_physics_informed_equilibrium.ipynb
       - SILVA Implicit DAE and Residuals: package-notebooks/25_silva_implicit_dae_and_residuals.ipynb
+      - Full-Scale SILVA Families: package-notebooks/26_full_scale_silva.ipynb
       - Implicit Layers Bridge:
           - Fixed Points as Layers: implicit-bridge-notebooks/01_introduction_fixed_points.ipynb
           - Implicit Autodiff: implicit-bridge-notebooks/02_implicit_autodiff.ipynb
@@ -190,6 +192,9 @@ nav:
       - Optical Flow: api/flow.md
       - Generalized Cases: api/cases.md
       - Family Selection: api/families.md
+      - Scaling and Family Guides: api/scaling.md
+      - Scaling Data: api/scaling_data.md
+      - Scale CLI: api/scale_cli.md
       - Optimization: api/optimization.md
       - SILVA Presets: api/presets.md
       - Datasets: api/datasets.md
@@ -226,6 +231,7 @@ nav:
       - Citation-Aware Reporting: examples/citation-aware-reporting.md
       - Paper Family Cases: examples/paper-family-cases.md
       - RAFT and DEQ-Flow: examples/raft-deq-flow.md
+      - Full-Scale Training: examples/full-scale-training.md
   - Cheatsheets:
       - SILVA API: cheatsheets/silva-api.md
   - Paper and References: paper/references.md

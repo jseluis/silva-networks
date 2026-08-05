@@ -22,12 +22,20 @@ broken package builds before a public release.
 | Point architecture catalog | ten vector, token, and spatial modules with shape, gradient, fixed-point, tiny-data, example, and notebook checks |
 | Generalized cases | sequence, multiscale vision, Jacobian, IGNN, INR, diffusion, and coupled RAFT/DEQ-Flow APIs documented and validated |
 | Advanced equilibrium families | monotone graph, injected transformer, Poisson mirror, physics-informed ODE, implicit DAE, and adversarial residual mechanisms documented and validated |
-| Guided navigation | all 102 Markdown pages and 34 rendered notebooks include contextual question-based next steps |
+| Full-scale family surface | all 30 canonical families have data, literature, benchmark, scale-control, and extension guides; compact dense/scalable equivalence checks are executable |
+| Guided navigation | all 107 Markdown pages and 35 rendered notebooks include contextual question-based next steps |
 | Public datasets | UCI tabular loaders plus TorchVision adapters for MNIST, FashionMNIST, KMNIST, EMNIST, CIFAR10, CIFAR100, and SVHN |
 | Public results | [Results](results.md) records measured validation metrics, tensor shapes, residuals, and reproduction commands |
 | CLI workflow | [CLI Guide](cli.md), `silva-experiment`, `silva-download-datasets`, `scripts/smoke_test.sh`, config listing, config display, device override, and dotted `--set` overrides |
 | Release audit script | `scripts/release_audit.py` |
 | Notebook validation script | `scripts/run_notebook_smoke.py` |
+
+The release checks establish package behavior, numerical equivalence on compact
+problems, notebook execution, documentation integrity, and distribution
+installability. They do not claim that every cited paper benchmark has been
+rerun at its original compute scale. A benchmark result is publishable only
+after its official data, split, preprocessing, metric, and compute protocol are
+run and archived separately.
 
 ## Release Checklist
 
@@ -107,6 +115,7 @@ Validation:
 | Optional PDF command-line tools missing | Minimal machines may omit these tools; `pdfinfo` is enough for the package release audit. |
 | Isolated package build cannot download build requirements | Use `python -m build --no-isolation` in a prepared local virtualenv, or run the isolated build where package indexes are reachable. |
 | Vision extras may be absent | Install `.[vision]` only when running torchvision-specific examples. |
+| Full cited benchmarks are not part of the CPU release audit | Use the family guide to obtain the source protocol, then archive the resolved configuration, dataset version, hardware, checkpoint, and metrics for the selected study. |
 | Vision dataset downloads are larger than tabular downloads | CIFAR and the full TorchVision suite are opt-in public checks; cache them under `data/` and keep generated data out of commits. |
 | CUDA validation is hardware-dependent | Required CUDA checks should run on a CUDA machine; CPU checks do not replace that hardware validation. |
 | Full real TorchVision suite is opt-in | The package tests the runner route and real CIFAR10 smokes locally; the complete real image suite should run where dataset archives can be cached. |

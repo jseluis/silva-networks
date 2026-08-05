@@ -172,9 +172,9 @@ def test_mathjax_loader_supports_docs_and_notebook_math() -> None:
     ]:
         assert marker in loader
     assert (ROOT / "docs/javascripts/vendor/mathjax/tex-mml-chtml.js").stat().st_size > 1_000_000
-    assert "Apache License" in (
-        ROOT / "docs/javascripts/vendor/mathjax/LICENSE.txt"
-    ).read_text(encoding="utf-8")
+    assert "Apache License" in (ROOT / "docs/javascripts/vendor/mathjax/LICENSE.txt").read_text(
+        encoding="utf-8"
+    )
     assert len(required_fonts) >= 20
     missing_fonts = [font for font in required_fonts if not (font_dir / font).exists()]
     assert missing_fonts == []
@@ -197,8 +197,7 @@ def test_docs_notebook_embedded_png_outputs_are_publication_dpi() -> None:
     assert len(png_outputs) >= 20
     assert any(path.name == "04_deq_and_silva.ipynb" for path, *_ in png_outputs)
     low_resolution = [
-        f"{path.relative_to(ROOT)}:cell{cell_index}:output{output_index} "
-        f"{width}x{height} dpi={dpi}"
+        f"{path.relative_to(ROOT)}:cell{cell_index}:output{output_index} {width}x{height} dpi={dpi}"
         for path, cell_index, output_index, width, height, dpi in png_outputs
         if dpi is None or min(dpi) < MIN_PUBLICATION_DPI
     ]
@@ -236,10 +235,19 @@ def test_notebook_mirror_sets_are_complete() -> None:
 
     assert len(package_docs) >= 13
     assert len(bridge_docs) >= 9
-    assert sorted(path.name for path in (ROOT / "notebooks/package_api").glob("*.ipynb")) == package_docs
+    assert (
+        sorted(path.name for path in (ROOT / "notebooks/package_api").glob("*.ipynb"))
+        == package_docs
+    )
     assert sorted(path.name for path in (ROOT / "colab").glob("*.ipynb")) == package_docs
-    assert sorted(path.name for path in (ROOT / "notebooks/implicit_bridge").glob("*.ipynb")) == bridge_docs
-    assert sorted(path.name for path in (ROOT / "colab/implicit_bridge").glob("*.ipynb")) == bridge_docs
+    assert (
+        sorted(path.name for path in (ROOT / "notebooks/implicit_bridge").glob("*.ipynb"))
+        == bridge_docs
+    )
+    assert (
+        sorted(path.name for path in (ROOT / "colab/implicit_bridge").glob("*.ipynb"))
+        == bridge_docs
+    )
 
 
 def test_expanded_notebooks_are_synchronized_and_substantive() -> None:
@@ -361,6 +369,18 @@ def test_expanded_notebooks_are_synchronized_and_substantive() -> None:
                 "Choosing the Physics Construction",
             ),
         ),
+        "26_full_scale_silva.ipynb": (
+            30,
+            (
+                "Every Canonical Family Has an Actionable Route",
+                "Factorized Monotone Graph Operator",
+                "Distributional Equilibria and Exact Pair Chunking",
+                "Physics-Informed Equilibrium Derivative",
+                "Implicit DAE Stage as Newton-Krylov SILVA",
+                "Train a Fourier Equilibrium and Resume",
+                "Reproduce, Then Go Beyond",
+            ),
+        ),
     }
 
     for name, (minimum_cells, markers) in requirements.items():
@@ -369,10 +389,7 @@ def test_expanded_notebooks_are_synchronized_and_substantive() -> None:
             for folder in ("notebooks/package_api", "docs/package-notebooks", "colab")
         ]
         signatures = [
-            [
-                (cell["cell_type"], "".join(cell.get("source", [])))
-                for cell in notebook["cells"]
-            ]
+            [(cell["cell_type"], "".join(cell.get("source", []))) for cell in notebook["cells"]]
             for notebook in notebooks
         ]
         assert signatures[0] == signatures[1] == signatures[2]

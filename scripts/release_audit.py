@@ -72,6 +72,7 @@ REQUIRED_FILES = (
     "docs/package-notebooks/23_silva_poisson_mirror_equilibrium.ipynb",
     "docs/package-notebooks/24_silva_physics_informed_equilibrium.ipynb",
     "docs/package-notebooks/25_silva_implicit_dae_and_residuals.ipynb",
+    "docs/package-notebooks/26_full_scale_silva.ipynb",
     "docs/api/frontier_data.md",
     "docs/learn/advanced-equilibrium-families.md",
     "docs/learn/physics-informed-equilibria.md",
@@ -80,8 +81,16 @@ REQUIRED_FILES = (
     "docs/api/physics_informed.md",
     "docs/api/advanced_data.md",
     "docs/examples/advanced-equilibria.md",
+    "docs/learn/full-scale-silva.md",
+    "docs/examples/full-scale-training.md",
+    "docs/api/scaling.md",
+    "docs/api/scaling_data.md",
+    "docs/api/scale_cli.md",
     "docs/experiments/benchmark-cards.md",
     "src/silva_networks/dataset_cli.py",
+    "src/silva_networks/scaling.py",
+    "src/silva_networks/scaling_data.py",
+    "src/silva_networks/scale_cli.py",
     "src/silva_networks/public_experiments.py",
     "src/silva_networks/configs/solver_sweep.json",
     "experiments/public/configs/cifar10_cortex_smoke.json",
@@ -125,6 +134,12 @@ REQUIRED_NAV_MARKERS = (
     "SILVA Poisson Mirror Equilibrium: package-notebooks/23_silva_poisson_mirror_equilibrium.ipynb",
     "SILVA Physics-Informed Equilibrium: package-notebooks/24_silva_physics_informed_equilibrium.ipynb",
     "SILVA Implicit DAE and Residuals: package-notebooks/25_silva_implicit_dae_and_residuals.ipynb",
+    "Full-Scale SILVA Families: package-notebooks/26_full_scale_silva.ipynb",
+    "Full-Scale SILVA: learn/full-scale-silva.md",
+    "Full-Scale Training: examples/full-scale-training.md",
+    "Scaling and Family Guides: api/scaling.md",
+    "Scaling Data: api/scaling_data.md",
+    "Scale CLI: api/scale_cli.md",
     "Advanced Equilibrium Families: learn/advanced-equilibrium-families.md",
     "Physics-Informed Equilibria and DAEs: learn/physics-informed-equilibria.md",
     "Advanced Equilibrium Datasets: learn/advanced-equilibrium-datasets.md",
@@ -339,7 +354,9 @@ def _check_api_reference(root: Path, errors: list[str]) -> None:
         page_name = API_PAGE_NAMES.get(module, module)
         page = api_dir / f"{page_name}.md"
         if not page.exists():
-            errors.append(f"missing API reference page for silva_networks.{module}: {page.relative_to(root)}")
+            errors.append(
+                f"missing API reference page for silva_networks.{module}: {page.relative_to(root)}"
+            )
             continue
         text = page.read_text(encoding="utf-8")
         if f"silva_networks.{module}" not in text:
@@ -391,9 +408,7 @@ def _provenance_text(path: Path) -> str:
     if path.suffix == ".ipynb":
         notebook = json.loads(path.read_text(encoding="utf-8"))
         chunks = [json.dumps(notebook.get("metadata", {}), sort_keys=True)]
-        chunks.extend(
-            "".join(cell.get("source", [])) for cell in notebook.get("cells", [])
-        )
+        chunks.extend("".join(cell.get("source", [])) for cell in notebook.get("cells", []))
         return "\n".join(chunks)
     return path.read_text(encoding="utf-8", errors="ignore")
 
@@ -436,7 +451,9 @@ def _check_coverage_registry(root: Path, errors: list[str]) -> None:
                 errors.append(f"coverage case {case.key} points to missing file: {relative}")
         for public_object in case.public_objects:
             if not hasattr(sn, public_object):
-                errors.append(f"coverage case {case.key} names missing public object: {public_object}")
+                errors.append(
+                    f"coverage case {case.key} names missing public object: {public_object}"
+                )
 
 
 def _check_companion_asset_policy(root: Path, errors: list[str], warnings: list[str]) -> None:
@@ -476,7 +493,9 @@ def _check_companion_asset_policy(root: Path, errors: list[str], warnings: list[
         root / "docs/assets/pdfs/silva_deq_solutions_manual.pdf",
     ]
     if any(pdf.exists() for pdf in local_drafts):
-        warnings.append("companion book/manual PDF workspace exists outside public documentation links")
+        warnings.append(
+            "companion book/manual PDF workspace exists outside public documentation links"
+        )
 
 
 def _png_dimensions_and_dpi(data: bytes) -> tuple[int, int, tuple[float, float] | None]:
@@ -544,8 +563,9 @@ def _check_docs_rendering_assets(root: Path, errors: list[str]) -> None:
             errors.append("local MathJax bundle did not expose the expected webfont list")
         if missing_fonts:
             errors.append("local MathJax webfonts are missing: " + ", ".join(missing_fonts))
-    if not local_mathjax_license.exists() or "Apache License" not in local_mathjax_license.read_text(
-        encoding="utf-8"
+    if (
+        not local_mathjax_license.exists()
+        or "Apache License" not in local_mathjax_license.read_text(encoding="utf-8")
     ):
         errors.append("local MathJax license is missing")
     mkdocs = root / "mkdocs.yml"

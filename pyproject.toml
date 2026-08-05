@@ -96,6 +96,7 @@ Article = "https://doi.org/10.48550/arXiv.2607.28989"
 [project.scripts]
 silva-download-datasets = "silva_networks.dataset_cli:main"
 silva-experiment = "silva_networks.public_experiments:main"
+silva-scale = "silva_networks.scale_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

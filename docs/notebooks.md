@@ -53,6 +53,7 @@ derivatives, and DAE roots.
 | [SILVA Poisson Mirror Equilibrium](package-notebooks/23_silva_poisson_mirror_equilibrium.ipynb) | `notebooks/package_api/23_silva_poisson_mirror_equilibrium.ipynb` | derives Poisson KL and Burg geometry, checks the adjoint pair, positivity, and reconstruction fidelity |
 | [SILVA Physics-Informed Equilibrium](package-notebooks/24_silva_physics_informed_equilibrium.ipynb) | `notebooks/package_api/24_silva_physics_informed_equilibrium.ipynb` | derives the implicit time derivative and trains boundary, ODE, and Jacobian terms |
 | [SILVA Implicit DAE and Residuals](package-notebooks/25_silva_implicit_dae_and_residuals.ipynb) | `notebooks/package_api/25_silva_implicit_dae_and_residuals.ipynb` | derives one- and two-stage DAE roots, rolls out a trajectory, and distinguishes the residual objective |
+| [Full-Scale SILVA Families](package-notebooks/26_full_scale_silva.ipynb) | `notebooks/package_api/26_full_scale_silva.ipynb` | audits all 30 routes, verifies dense/scalable numerical equivalence, shards PDE data, trains with accumulation, resumes, and derives extension patterns |
 
 ## Implicit Layers Bridge Track
 
@@ -167,3 +168,4 @@ extension-oriented.
 | How can notebooks be opened in a hosted environment? | [Run in Colab](colab.md) |
 | Which notebook gives the shortest package introduction? | [Package Quickstart Notebook](package-notebooks/01_package_quickstart.ipynb) |
 | Where is the complete conceptual learning path? | [Learn SILVA From Scratch](learn/mathematical-foundations.md) |
+| Where is the package-wide scale-up path? | [Full-Scale SILVA](learn/full-scale-silva.md) |

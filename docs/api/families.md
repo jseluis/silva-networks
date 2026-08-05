@@ -66,6 +66,11 @@ represented by variable-size particles.
 | `silva_physics_graph_deq` | SILVA graph equilibrium with reaction, diffusion, and directed transport |
 | `silva_homotopy_equilibrium` | conditioned SILVA residual flow with a fixed-point stationary state |
 | `silva_distributional_deq` | empirical-measure SILVA equilibrium using discrepancy descent |
+| `silva_monotone_graph_equilibrium` | monotone forward-backward graph equilibrium |
+| `silva_generative_equilibrium_transformer` | one-time-injected token equilibrium |
+| `silva_poisson_mirror_equilibrium` | positive Poisson mirror-descent equilibrium |
+| `silva_physics_informed_equilibrium` | physics-informed ODE solution equilibrium |
+| `silva_implicit_dae_step` | implicit Runge-Kutta DAE root layer |
 
 ## Minimal Use
 
@@ -91,6 +96,11 @@ use before dispatch.
 
 Full reductions and source links are in
 [Selecting Model Families](../learn/selecting-model-families.md).
+
+`canonical_silva_family` resolves aliases without constructing a model.
+`build_scaled_silva` then adds scalable numerical defaults while leaving all
+task dimensions and modules explicit. See [Full-Scale SILVA](../learn/full-scale-silva.md)
+for the all-family data, benchmark, and extension matrix.
 
 For heterogeneous SILVA equilibrium points:
 

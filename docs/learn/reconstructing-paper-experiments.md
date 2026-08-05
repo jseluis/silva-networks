@@ -107,6 +107,25 @@ The package tests include small graph, vision, and molecular validation runs for
 both finite-solver and implicit-adjoint training paths. They establish API and
 numerical behavior, not the metrics of a long training study.
 
+## Scale Without Changing the Method
+
+Start with `runtime_for_tier("smoke")` and complete one forward, loss, backward,
+and checkpoint-resume cycle. Then change runtime controls separately from model
+controls:
+
+| Runtime control | Method control |
+| --- | --- |
+| workers, pinning, sharding, process count | state width and internal architecture |
+| mixed precision and gradient accumulation | solver tolerance and iteration budget |
+| distributed wrapping and compilation | loss weights and physical constraints |
+| checkpoint frequency | dataset split and metric protocol |
+
+This separation prevents a throughput change from being mistaken for an
+architectural result. `silva-scale FAMILY --tier full` reports the package
+defaults, while [Full-Scale SILVA](full-scale-silva.md) explains their equations
+and [Full-Scale Training](../examples/full-scale-training.md) gives a complete
+sharded PDE program.
+
 ## Experiment Equation and Evidence
 
 Write the configured model as

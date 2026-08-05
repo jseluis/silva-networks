@@ -608,6 +608,26 @@ loss [[53]](../paper/references.md#ref-53){ .silva-cite }. Its “DEQ” abbrevi
 does not mean deep equilibrium, so it is intentionally not registered as a
 selectable equilibrium family.
 
+## Scaling the Frontier Families
+
+`build_scaled_silva` keeps the family equations above and selects their
+memory-aware numerical path:
+
+| Family | Full-scale control | What remains task-specific |
+| --- | --- | --- |
+| Fourier equilibrium | implicit backward GMRES and relative residuals | modes, grid, boundary encoding, official PDE split |
+| physics graph equilibrium | sparse edges and implicit backward | graph construction, coefficients, sensor split, physical metric |
+| homotopy equilibrium | solver horizon and integration budget | path parameterization, initial state, benchmark protocol |
+| distributional equilibrium | `pairwise_chunk_size` | particle sampling, masks, discrepancy, point-cloud task |
+
+For distributional losses, chunking changes peak storage, not the exact pair
+sum or its $O(NM)$ arithmetic. For Fourier fields, resolution transfer is a
+claim only after evaluation on a withheld grid. For graph physics, a task
+metric must be accompanied by the discrete transport residual and node
+relabeling check. The [Full-Scale SILVA guide](full-scale-silva.md) contains the
+all-family data and benchmark matrix, and notebook 26 verifies the new
+numerical paths.
+
 ## Validation in the Repository
 
 | Property | Test or artifact |

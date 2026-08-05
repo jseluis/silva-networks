@@ -39,6 +39,9 @@ The audit was checked against the package source under `src/silva_networks`:
 | `advanced_equilibria.py` | monotone graph and one-time-injected transformer equilibria |
 | `physics_informed.py` | Poisson mirror equilibrium, physics-informed ODE equilibrium, implicit DAE stages, and residual adversarial training |
 | `advanced_data.py` | equation-checked chain, image-pair, Poisson, ODE, and DAE teaching batches |
+| `scaling.py` | all-family execution guides, scale-aware constructors, solver tiers, and distributed model preparation |
+| `scaling_data.py` | lazy tensor shards and ordinary or distributed data loaders |
+| `training.py` | supervised evaluation, mixed precision, gradient accumulation, distributed synchronization, and checkpoint resume |
 
 ## Method-to-Citation Matrix
 
@@ -65,6 +68,11 @@ The audit was checked against the package source under `src/silva_networks`:
 | `graph_convection_diffusion`, `SILVAGraphConvectionDiffusion`, `SILVAPhysicsGuidedGraphDEQ` | separated graph source, reaction, normalized diffusion, and directed transport branches | Rodrigo-Bonet and Deligiannis, physics-guided graph DEQ [[44]](paper/references.md#ref-44){ .silva-cite }; graph convolution literature; SILVA paper/package |
 | `SILVAHomotopyTransition`, `SILVAHomotopyEquilibrium` | continuous residual path $\dot z=T(z;x)-z$ toward a SILVA fixed point | Ding et al., HomoODE [[46]](paper/references.md#ref-46){ .silva-cite }; Neural ODEs [[7]](paper/references.md#ref-7){ .silva-cite }; SILVA paper/package |
 | `distributional_discrepancy`, `SILVADistributionalTransition`, `SILVADistributionalDEQ` | empirical-measure discrepancy and differentiable particle descent with variable-size masks | Geuter et al., DDEQ [[45]](paper/references.md#ref-45){ .silva-cite }; SILVA paper/package |
+| `SILVAInjectedSelfAttention` | manual, fused, or query-chunked injected attention with one shared equation | GET [[48]](paper/references.md#ref-48){ .silva-cite }; scaled dot-product attention [[54]](paper/references.md#ref-54){ .silva-cite }; SILVA paper/package |
+| `SILVAMonotoneGraphTransition(operator_rank=...)` | factorized constrained channel map with the same monotonicity lower bound | MIGNN [[47]](paper/references.md#ref-47){ .silva-cite }; SILVA paper/package |
+| `SILVAPhysicsInformedEquilibrium(derivative_mode="matrix_free")` | JVP/GMRES implicit time derivative without a dense latent Jacobian | PIDEQ [[51]](paper/references.md#ref-51){ .silva-cite }; JVP API [[57]](paper/references.md#ref-57){ .silva-cite }; GMRES [[13]](paper/references.md#ref-13){ .silva-cite } |
+| `SILVAImplicitDAEStep(linear_solver="gmres")` | Newton-Krylov implicit Runge-Kutta stage root | DAE-PINN [[52]](paper/references.md#ref-52){ .silva-cite }; GMRES [[13]](paper/references.md#ref-13){ .silva-cite }; SILVA package |
+| `runtime_for_tier`, `prepare_silva_model`, `fit_supervised` scale controls | mixed precision, process distribution, accumulation, and resumable training for the unchanged SILVA model | PyTorch distributed and precision APIs [[55]](paper/references.md#ref-55){ .silva-cite } [[56]](paper/references.md#ref-56){ .silva-cite }; SILVA package |
 | `make_periodic_elliptic_dataset`, `make_graph_transport_dataset`, `make_affine_homotopy_dataset`, `make_variable_measure_dataset` | deterministic teaching problems with exact spectral, graph, fixed-point, or empirical-moment checks | FNO and neural operators [[31]](paper/references.md#ref-31){ .silva-cite } [[32]](paper/references.md#ref-32){ .silva-cite }, FNO-DEQ [[43]](paper/references.md#ref-43){ .silva-cite }, physics-guided graph DEQ [[44]](paper/references.md#ref-44){ .silva-cite }, DDEQ [[45]](paper/references.md#ref-45){ .silva-cite }, and HomoODE [[46]](paper/references.md#ref-46){ .silva-cite }, according to the builder used |
 | `QuadraticOptimizationLayer`, `SILVAQuadraticOptimizationLayer` | differentiable quadratic argmin and fixed-point KKT solve | Amos and Kolter, [OptNet](https://arxiv.org/abs/1703.00443); Agrawal et al., [Differentiable Convex Optimization Layers](https://arxiv.org/abs/1910.12430); Deep Implicit Layers tutorial |
 | `SILVAProjectedQPLayer`, `silva_projected_qp_layer`, `SILVAConstrainedQuadraticLayer`, `silva_cvxpy_layer` | projected constrained quadratic programs and optional CVXPYlayers bridge | OptNet for optimization-layer framing; Agrawal et al. differentiable convex optimization layers; CVXPYlayers when the optional bridge is used |
@@ -91,6 +99,9 @@ Use the narrowest citation set that supports the claim.
 | "Convection-diffusion physics is represented inside a graph equilibrium." | physics-guided graph DEQ [[44]](paper/references.md#ref-44), the graph discretization source, and SILVA paper/package |
 | "A continuous residual path approaches the SILVA fixed point." | HomoODE [[46]](paper/references.md#ref-46), Neural ODEs, and SILVA paper/package |
 | "The SILVA state is an empirical measure optimized by particle descent." | DDEQ [[45]](paper/references.md#ref-45) and SILVA paper/package |
+| "Injected attention used a fused scaled-dot-product kernel." | GET when using its injected equilibrium mechanism, PyTorch scaled dot-product attention [[54]](paper/references.md#ref-54), and SILVA paper/package |
+| "Physics derivatives or DAE Newton steps were matrix free." | the corresponding PIDEQ or DAE-PINN source, GMRES, JVP documentation [[57]](paper/references.md#ref-57), and SILVA package |
+| "Training used mixed precision or distributed data parallelism." | PyTorch AMP or DDP [[55]](paper/references.md#ref-55) [[56]](paper/references.md#ref-56), plus the SILVA package version and resolved runtime configuration |
 | "A generated SILVA teaching dataset was used." | SILVA paper/package, the corresponding method citation, and the builder name, seed, shape, and equation-check tolerance; do not present it as an external benchmark |
 | "A Jacobian Frobenius penalty was used." | Hutchinson 1989 and Bai-Koltun-Kolter 2021 |
 | "The graph local operator is attention-based." | GAT and Attention Is All You Need |
@@ -128,6 +139,8 @@ repository, then cite the relevant building blocks only as background:
 | implicit DAE stage layer | solves one- or multistage Runge-Kutta DAE equations as a differentiable SILVA root layer |
 | adversarial equation-residual objective | exposes separate generator/discriminator losses and records that the cited DEQGAN abbreviation means Differential Equation |
 | advanced equilibrium teaching datasets | provides deterministic targets with directly evaluated graph, teacher-map, intensity, ODE, or DAE equations |
+| all-family scale contract | maps all 30 canonical SILVA families to data, literature, benchmark, numerical controls, runtime tiers, and extension points |
+| package tensor-shard format | stores aligned tensor samples in lazy independently loadable shards with an atomic JSON manifest |
 
 ## Example Citation Checklist
 

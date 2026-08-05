@@ -89,6 +89,10 @@ def test_bibtex_contains_silva_article_and_related_sources() -> None:
         "pacheco2024pideq",
         "moya2021daepinn",
         "bullwinkel2022deqgan",
+        "pytorch2026sdpa",
+        "pytorch2026ddp",
+        "pytorch2026amp",
+        "pytorch2026jvp",
     ]:
         assert f"{{{key}," in bibtex
     assert "2607.28989" in bibtex
@@ -114,27 +118,28 @@ def test_notebook_smoke_script_lists_defaults() -> None:
     assert "docs/package-notebooks/19_silva_homotopy_equilibrium_lab.ipynb" in result.stdout
     assert "docs/package-notebooks/20_silva_distributional_equilibrium_lab.ipynb" in result.stdout
     assert "docs/package-notebooks/21_silva_monotone_graph_equilibrium.ipynb" in result.stdout
-    assert "docs/package-notebooks/22_silva_generative_equilibrium_transformer.ipynb" in result.stdout
+    assert (
+        "docs/package-notebooks/22_silva_generative_equilibrium_transformer.ipynb" in result.stdout
+    )
     assert "docs/package-notebooks/23_silva_poisson_mirror_equilibrium.ipynb" in result.stdout
     assert "docs/package-notebooks/24_silva_physics_informed_equilibrium.ipynb" in result.stdout
     assert "docs/package-notebooks/25_silva_implicit_dae_and_residuals.ipynb" in result.stdout
+    assert "docs/package-notebooks/26_full_scale_silva.ipynb" in result.stdout
 
 
 def test_global_numbered_citations_cover_solver_and_notebooks() -> None:
     references = (ROOT / "docs/paper/references.md").read_text(encoding="utf-8")
     solvers = (ROOT / "docs/api/solvers.md").read_text(encoding="utf-8")
     notebook = json.loads(
-        (ROOT / "notebooks/package_api/02_solvers_and_jacobians.ipynb").read_text(
-            encoding="utf-8"
-        )
+        (ROOT / "notebooks/package_api/02_solvers_and_jacobians.ipynb").read_text(encoding="utf-8")
     )
     assert '<li id="ref-13">' in references
     assert 'target="_blank" rel="noopener"' in references
     assert "[[13]](../paper/references.md#ref-13)" in solvers
-    notebook_text = "".join(
-        "".join(cell.get("source", [])) for cell in notebook["cells"]
+    notebook_text = "".join("".join(cell.get("source", [])) for cell in notebook["cells"])
+    assert (
+        "[13](https://jseluis.github.io/silva-networks/paper/references/#ref-13)" in notebook_text
     )
-    assert "[13](https://jseluis.github.io/silva-networks/paper/references/#ref-13)" in notebook_text
 
 
 def test_api_reference_covers_every_source_module() -> None:

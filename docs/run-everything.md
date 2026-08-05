@@ -91,6 +91,14 @@ Inspect a config:
 silva-experiment --show-config fully_configurable_graph
 ```
 
+Inspect all scalable family routes and one selected constructor profile:
+
+```bash
+silva-scale --list
+silva-scale silva_fno_deq --tier full
+silva-scale --audit
+```
+
 ## Run the Core Examples
 
 ```bash
@@ -132,6 +140,7 @@ Use the example pages for explanations:
 | [Optical Flow SILVA](examples/optical-flow-silva.md) | synthetic fixed-point flow validation |
 | [Constrained Optimization](examples/constrained-optimization.md) | projected simplex QP solve through the family selector |
 | [Citation-Aware Reporting](examples/citation-aware-reporting.md) | methods paragraph and citation checklist |
+| [Full-Scale Training](examples/full-scale-training.md) | lazy PDE shards, Fourier equilibrium, accumulation, and checkpoint resume |
 
 ## Open the Notebook Tracks
 
@@ -160,6 +169,7 @@ The package API track:
 | [RAFT and DEQ-Flow](package-notebooks/13_raft_deq_flow.ipynb) | coupled hidden/flow state, exact implicit gradients, corrections, upsampling, and reuse |
 | [Point Architecture Catalog](package-notebooks/14_point_architecture_catalog.ipynb) | ten internal architectures plus composition inside one point and across linked points |
 | [Neural Operators, ODEs, and PDEs](package-notebooks/15_neural_operators_ode_pde.ipynb) | ODE trajectories, implicit PDE steps, reaction-diffusion, Burgers, variable-coefficient learning, Fourier fields, graph PDEs, and separate numerical/physical diagnostics |
+| [Full-Scale SILVA Families](package-notebooks/26_full_scale_silva.ipynb) | all 30 routes, dense/scalable equivalence checks, lazy shards, trained Fourier equilibrium, checkpoint resume, and extension contracts |
 
 The implicit bridge track:
 
@@ -326,6 +336,7 @@ pytest tests/test_scientific.py
 pytest tests/test_implementation_coverage.py
 pytest tests/test_release_readiness.py
 pytest tests/test_training.py
+pytest tests/test_scaling.py tests/test_scaling_data.py tests/test_scale_cli.py
 ```
 
 Run the quick notebook validation set:

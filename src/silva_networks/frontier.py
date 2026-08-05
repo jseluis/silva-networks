@@ -155,8 +155,7 @@ class SILVAFNODEQ(nn.Module):
     ) -> Tensor | SILVAOperatorOutput:
         if forcing_field.dim() != 4 or forcing_field.shape[1] != self.in_channels:
             raise ValueError(
-                "forcing_field must have shape "
-                f"(batch, {self.in_channels}, height, width)"
+                f"forcing_field must have shape (batch, {self.in_channels}, height, width)"
             )
         if not forcing_field.is_floating_point():
             raise TypeError("forcing_field must have a floating-point dtype")
@@ -180,7 +179,9 @@ class SILVAFNODEQ(nn.Module):
         output = self.readout(result.z)
         expected = (forcing.shape[0], self.out_channels, *forcing.shape[-2:])
         if output.shape != expected:
-            raise ValueError(f"readout must return shape {expected}; received {tuple(output.shape)}")
+            raise ValueError(
+                f"readout must return shape {expected}; received {tuple(output.shape)}"
+            )
         if return_result:
             return SILVAOperatorOutput(output, result.z, result)
         return output
@@ -540,9 +541,7 @@ class SILVAHomotopyEquilibrium(nn.Module):
                 k4 = self.residual_field(state + step_size * k3, condition)
                 state = state + (step_size / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
         terminal = self.residual_field(state, condition)
-        terminal_residual = float(
-            torch.linalg.vector_norm(terminal, dim=-1).max().detach().cpu()
-        )
+        terminal_residual = float(torch.linalg.vector_norm(terminal, dim=-1).max().detach().cpu())
         output = self.readout(state)
         if return_result:
             return SILVAHomotopyOutput(
@@ -583,6 +582,31 @@ def _masked_pair_mean(values: Tensor, left_mask: Tensor, right_mask: Tensor) -> 
     return (values * weights.to(values.dtype)).sum(dim=(-2, -1)) / denominator
 
 
+def _chunked_pair_mean(
+    left: Tensor,
+    right: Tensor,
+    left_mask: Tensor,
+    right_mask: Tensor,
+    *,
+    kernel: DistributionKernel,
+    bandwidth: float,
+    chunk_size: int,
+) -> Tensor:
+    numerator = left.new_zeros(left.shape[0])
+    factor = 2.0 * bandwidth * bandwidth
+    for start in range(0, left.shape[1], chunk_size):
+        stop = min(start + chunk_size, left.shape[1])
+        differences = left[:, start:stop, None, :] - right[:, None, :, :]
+        if kernel == "gaussian":
+            values = torch.exp(-differences.square().sum(dim=-1) / factor)
+        else:
+            values = torch.linalg.vector_norm(differences, dim=-1)
+        weights = left_mask[:, start:stop, None] & right_mask[:, None, :]
+        numerator = numerator + (values * weights.to(values.dtype)).sum(dim=(-2, -1))
+    denominator = left_mask.sum(dim=1) * right_mask.sum(dim=1)
+    return numerator / denominator.clamp_min(1)
+
+
 def distributional_discrepancy(
     left: Tensor,
     right: Tensor,
@@ -591,6 +615,7 @@ def distributional_discrepancy(
     bandwidth: float = 1.0,
     left_mask: Tensor | None = None,
     right_mask: Tensor | None = None,
+    pairwise_chunk_size: int | None = None,
     reduction: Literal["mean", "none"] = "mean",
 ) -> Tensor:
     r"""Measure discrepancy between batches of empirical distributions.
@@ -612,6 +637,8 @@ def distributional_discrepancy(
         raise ValueError("kernel must be gaussian or energy")
     if bandwidth <= 0:
         raise ValueError("bandwidth must be positive")
+    if pairwise_chunk_size is not None:
+        _validate_positive_integer(pairwise_chunk_size, "pairwise_chunk_size")
     if reduction not in {"mean", "none"}:
         raise ValueError("reduction must be mean or none")
     batch = left.shape[0]
@@ -629,28 +656,62 @@ def distributional_discrepancy(
         device=right.device,
         name="right_mask",
     )
-    left_left = left.unsqueeze(2) - left.unsqueeze(1)
-    right_right = right.unsqueeze(2) - right.unsqueeze(1)
-    left_right = left.unsqueeze(2) - right.unsqueeze(1)
-    if kernel == "gaussian":
-        factor = 2.0 * bandwidth * bandwidth
-        kernel_left = torch.exp(-left_left.square().sum(dim=-1) / factor)
-        kernel_right = torch.exp(-right_right.square().sum(dim=-1) / factor)
-        kernel_cross = torch.exp(-left_right.square().sum(dim=-1) / factor)
+    if pairwise_chunk_size is not None:
+        left_term = _chunked_pair_mean(
+            left,
+            left,
+            valid_left,
+            valid_left,
+            kernel=kernel,
+            bandwidth=bandwidth,
+            chunk_size=pairwise_chunk_size,
+        )
+        right_term = _chunked_pair_mean(
+            right,
+            right,
+            valid_right,
+            valid_right,
+            kernel=kernel,
+            bandwidth=bandwidth,
+            chunk_size=pairwise_chunk_size,
+        )
+        cross_term = _chunked_pair_mean(
+            left,
+            right,
+            valid_left,
+            valid_right,
+            kernel=kernel,
+            bandwidth=bandwidth,
+            chunk_size=pairwise_chunk_size,
+        )
         discrepancy = (
-            _masked_pair_mean(kernel_left, valid_left, valid_left)
-            + _masked_pair_mean(kernel_right, valid_right, valid_right)
-            - 2.0 * _masked_pair_mean(kernel_cross, valid_left, valid_right)
+            left_term + right_term - 2.0 * cross_term
+            if kernel == "gaussian"
+            else 2.0 * cross_term - left_term - right_term
         )
     else:
-        distance_left = torch.linalg.vector_norm(left_left, dim=-1)
-        distance_right = torch.linalg.vector_norm(right_right, dim=-1)
-        distance_cross = torch.linalg.vector_norm(left_right, dim=-1)
-        discrepancy = (
-            2.0 * _masked_pair_mean(distance_cross, valid_left, valid_right)
-            - _masked_pair_mean(distance_left, valid_left, valid_left)
-            - _masked_pair_mean(distance_right, valid_right, valid_right)
-        )
+        left_left = left.unsqueeze(2) - left.unsqueeze(1)
+        right_right = right.unsqueeze(2) - right.unsqueeze(1)
+        left_right = left.unsqueeze(2) - right.unsqueeze(1)
+        if kernel == "gaussian":
+            factor = 2.0 * bandwidth * bandwidth
+            kernel_left = torch.exp(-left_left.square().sum(dim=-1) / factor)
+            kernel_right = torch.exp(-right_right.square().sum(dim=-1) / factor)
+            kernel_cross = torch.exp(-left_right.square().sum(dim=-1) / factor)
+            discrepancy = (
+                _masked_pair_mean(kernel_left, valid_left, valid_left)
+                + _masked_pair_mean(kernel_right, valid_right, valid_right)
+                - 2.0 * _masked_pair_mean(kernel_cross, valid_left, valid_right)
+            )
+        else:
+            distance_left = torch.linalg.vector_norm(left_left, dim=-1)
+            distance_right = torch.linalg.vector_norm(right_right, dim=-1)
+            distance_cross = torch.linalg.vector_norm(left_right, dim=-1)
+            discrepancy = (
+                2.0 * _masked_pair_mean(distance_cross, valid_left, valid_right)
+                - _masked_pair_mean(distance_left, valid_left, valid_left)
+                - _masked_pair_mean(distance_right, valid_right, valid_right)
+            )
     discrepancy = discrepancy.clamp_min(0.0)
     return discrepancy.mean() if reduction == "mean" else discrepancy
 
@@ -708,17 +769,13 @@ class SILVADistributionalTransition(nn.Module):
         context_mask: Tensor | None = None,
     ) -> Tensor:
         if latent.dim() != 3 or latent.shape[-1] != self.latent_dim:
-            raise ValueError(
-                f"latent must have shape (batch, particles, {self.latent_dim})"
-            )
+            raise ValueError(f"latent must have shape (batch, particles, {self.latent_dim})")
         if (
             context.dim() != 3
             or context.shape[0] != latent.shape[0]
             or context.shape[-1] != self.input_dim
         ):
-            raise ValueError(
-                f"context must have shape (batch, particles, {self.input_dim})"
-            )
+            raise ValueError(f"context must have shape (batch, particles, {self.input_dim})")
         valid_latent = _validated_mask(
             latent_mask,
             batch=latent.shape[0],
@@ -808,6 +865,7 @@ class SILVADistributionalDEQ(nn.Module):
         step_size: float = 1.0,
         max_iter: int = 20,
         tol: float = 1e-5,
+        pairwise_chunk_size: int | None = None,
     ):
         super().__init__()
         for value, name in (
@@ -821,6 +879,8 @@ class SILVADistributionalDEQ(nn.Module):
             raise ValueError("kernel must be gaussian or energy")
         if bandwidth <= 0 or step_size <= 0 or tol <= 0:
             raise ValueError("bandwidth, step_size, and tol must be positive")
+        if pairwise_chunk_size is not None:
+            _validate_positive_integer(pairwise_chunk_size, "pairwise_chunk_size")
         self.transition = transition or SILVADistributionalTransition(
             input_dim,
             latent_dim,
@@ -832,6 +892,7 @@ class SILVADistributionalDEQ(nn.Module):
         self.step_size = float(step_size)
         self.max_iter = max_iter
         self.tol = float(tol)
+        self.pairwise_chunk_size = pairwise_chunk_size
         self.input_dim = input_dim
         self.latent_dim = latent_dim
 
@@ -846,16 +907,10 @@ class SILVADistributionalDEQ(nn.Module):
         return_result: bool = False,
     ) -> Tensor | SILVADistributionalResult:
         if context.dim() != 3 or context.shape[-1] != self.input_dim:
-            raise ValueError(
-                f"context must have shape (batch, particles, {self.input_dim})"
-            )
+            raise ValueError(f"context must have shape (batch, particles, {self.input_dim})")
         if not context.is_floating_point():
             raise TypeError("context must have a floating-point dtype")
-        initial = (
-            self.initial_particles.expand(context.shape[0], -1, -1)
-            if z0 is None
-            else z0
-        )
+        initial = self.initial_particles.expand(context.shape[0], -1, -1) if z0 is None else z0
         if initial.dim() != 3 or initial.shape[0] != context.shape[0]:
             raise ValueError("z0 must have shape (batch, latent_particles, latent_dim)")
         if initial.shape[-1] != self.latent_dim:
@@ -913,6 +968,7 @@ class SILVADistributionalDEQ(nn.Module):
                     bandwidth=self.bandwidth,
                     left_mask=valid_latent,
                     right_mask=valid_latent,
+                    pairwise_chunk_size=self.pairwise_chunk_size,
                 )
                 (gradient,) = torch.autograd.grad(
                     objective,
@@ -946,6 +1002,7 @@ class SILVADistributionalDEQ(nn.Module):
                     bandwidth=self.bandwidth,
                     left_mask=valid_latent,
                     right_mask=valid_latent,
+                    pairwise_chunk_size=self.pairwise_chunk_size,
                 )
             )
             .detach()
