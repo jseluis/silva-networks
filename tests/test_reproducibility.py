@@ -29,6 +29,10 @@ def test_reproduction_registry_covers_every_canonical_family() -> None:
     assert all(spec.verification_level == "compact-verified" for spec in specs)
     assert all(spec.constructor_signature.startswith("(") for spec in specs)
     assert all("0x" not in spec.constructor_signature for spec in specs)
+    assert all(spec.preserved_mechanisms for spec in specs)
+    assert all(spec.silva_extensions for spec in specs)
+    assert all(spec.benchmark_requirements for spec in specs)
+    assert all(not spec.equation.startswith("z_star = T_theta") for spec in specs)
 
 
 def test_reproduction_evidence_paths_and_reference_anchors_exist() -> None:
@@ -39,6 +43,14 @@ def test_reproduction_evidence_paths_and_reference_anchors_exist() -> None:
             assert (ROOT / path).exists(), (spec.family, path)
         for reference in spec.paper_refs:
             assert f'id="ref-{reference}"' in references, (spec.family, reference)
+
+
+def test_every_family_has_a_distinct_source_conformance_contract() -> None:
+    specs = all_silva_reproduction_specs()
+
+    assert len({spec.preserved_mechanisms for spec in specs}) == len(specs)
+    assert len({spec.silva_extensions for spec in specs}) == len(specs)
+    assert len({spec.benchmark_requirements for spec in specs}) == len(specs)
 
 
 def test_aliases_expose_real_constructor_and_signature() -> None:

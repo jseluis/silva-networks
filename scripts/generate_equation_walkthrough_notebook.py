@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-import json
 import re
 import textwrap
 from pathlib import Path
+
+from notebook_generation import write_notebook
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIRS = [
@@ -324,7 +325,7 @@ plt.tight_layout()
 If this notebook or package is used, cite:
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.2.0. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.1.0. MIT License.
 https://github.com/jseluis/silva-networks
 https://doi.org/10.5281/zenodo.21770098
 ```
@@ -352,7 +353,7 @@ Related sources:
 def main() -> None:
     for out_dir in OUT_DIRS:
         out_dir.mkdir(parents=True, exist_ok=True)
-        (out_dir / NAME).write_text(json.dumps(NB, indent=2) + "\n")
+        write_notebook(out_dir / NAME, NB)
     print(f"Wrote {NAME} into {len(OUT_DIRS)} locations.")
 
 

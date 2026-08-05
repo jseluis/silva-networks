@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-import json
 import re
 import textwrap
 from pathlib import Path
+
+from notebook_generation import write_notebook
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIRS = [ROOT / "notebooks/package_api", ROOT / "docs/package-notebooks", ROOT / "colab"]
@@ -449,7 +450,7 @@ def main() -> None:
     for directory in OUT_DIRS:
         directory.mkdir(parents=True, exist_ok=True)
         for name, payload in generated.items():
-            (directory / name).write_text(json.dumps(payload, indent=1) + "\n", encoding="utf-8")
+            write_notebook(directory / name, payload, indent=1)
             print(directory / name)
 
 

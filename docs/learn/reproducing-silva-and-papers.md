@@ -5,9 +5,11 @@ nickname. The package separates the state, condition, repeated transition,
 readout, numerical solver, and experimental protocol:
 
 $$
-z_0=I_\eta(x),\qquad
-z^\star=T_\theta(z^\star,x),\qquad
-\widehat y=Q_\psi(z^\star).
+\begin{aligned}
+z_0 &= I_\eta(x), \\
+z^\star &= T_\theta(z^\star,x), \\
+\widehat y &= Q_\psi(z^\star).
+\end{aligned}
 $$
 
 The native SILVA transition further resolves into named fields:
@@ -52,12 +54,29 @@ print(spec.datasets)
 print(spec.metrics)
 print(spec.notebooks)
 print(spec.tests)
+print(spec.preserved_mechanisms)
+print(spec.silva_extensions)
+print(spec.benchmark_requirements)
 print(spec.constructor_signature)
 ```
 
 The constructor signature is obtained from the real public class or factory.
 It therefore shows required dimensions, solver controls, internal modules,
 readout choices, and family-specific numerical options.
+
+The three source-conformance fields answer separate questions for every family:
+
+| Field | Meaning |
+| --- | --- |
+| `preserved_mechanisms` | Mathematical and architectural mechanisms retained from the native SILVA definition or cited source |
+| `silva_extensions` | Operators, modules, solvers, readouts, and scale routes that may be varied inside SILVA |
+| `benchmark_requirements` | Source-specific data, preprocessing, optimization, checkpoints, and metrics still required before claiming benchmark equivalence |
+
+These fields are deliberately family-specific. The FNO equilibrium record names
+the tied Fourier operator, the monotone graph record names its constrained
+operator and proximal step, and the physics-informed record names its implicit
+time derivative and residual terms. They are not inferred from a generic family
+label.
 
 The same information is available at the command line:
 
@@ -106,12 +125,12 @@ forward residual, backward residual, runtime, and memory separately.
 | --- | --- | --- |
 | `silva_layer` | Native structured point [[1]](../paper/references.md#ref-1) | Declared tensor/graph task; task error and residual |
 | `silva_graph` | Native stacked graph equilibria [[1]](../paper/references.md#ref-1) | Node/graph data; accuracy or regression error |
-| `silva_graph_preset` | Native graph reference architecture | Citation or molecular graphs; accuracy/error |
-| `silva_cortex` | Native point with arbitrary internal modules | Vector, image, field, or graph task |
-| `silva_cortex_network` | Linked heterogeneous SILVA points | Multistage or multimodal task |
-| `silva_image_cortex` | Image retina and linked points | CIFAR-10/ImageNet-style classification |
+| `silva_graph_preset` | Native graph reference architecture [[1]](../paper/references.md#ref-1), [[16]](../paper/references.md#ref-16), [[17]](../paper/references.md#ref-17) | Citation or molecular graphs; accuracy/error |
+| `silva_cortex` | Native point with arbitrary internal modules [[1]](../paper/references.md#ref-1), [[4]](../paper/references.md#ref-4) | Vector, image, field, or graph task |
+| `silva_cortex_network` | Linked heterogeneous SILVA points [[1]](../paper/references.md#ref-1), [[4]](../paper/references.md#ref-4) | Multistage or multimodal task |
+| `silva_image_cortex` | Image retina and linked points [[1]](../paper/references.md#ref-1), [[27]](../paper/references.md#ref-27), [[29]](../paper/references.md#ref-29) | CIFAR-10/ImageNet-style classification |
 | `compact_deq` | Foundational DEQ adaptation [[4]](../paper/references.md#ref-4) | Sequence or affine case; loss/perplexity/residual |
-| `message_passing_deq` | Graph-message DEQ adaptation | Graph task; accuracy and residual |
+| `message_passing_deq` | Graph-message DEQ adaptation [[4]](../paper/references.md#ref-4), [[16]](../paper/references.md#ref-16) | Graph task; accuracy and residual |
 | `mdeq` | Compact MDEQ bridge [[5]](../paper/references.md#ref-5) | CIFAR-10 teaching protocol |
 | `multiscale_vision_deq` | Multiscale vision equilibrium [[5]](../paper/references.md#ref-5) | ImageNet/Cityscapes; top-1 or mean IoU |
 | `sequence_deq` | Relative-attention or trellis DEQ [[4]](../paper/references.md#ref-4) | WikiText-103; loss and perplexity |
@@ -134,6 +153,34 @@ forward residual, backward residual, runtime, and memory separately.
 | `silva_poisson_mirror_equilibrium` | Mirror-descent inverse equilibrium [[50]](../paper/references.md#ref-50) | Poisson imaging; PSNR/SSIM/divergence |
 | `silva_physics_informed_equilibrium` | Physics-informed equilibrium [[51]](../paper/references.md#ref-51) | Van der Pol/IVP; integral and equation error |
 | `silva_implicit_dae_step` | Implicit DAE mechanism [[52]](../paper/references.md#ref-52) | Three-bus/index-1 DAE; trajectory/constraint error |
+
+## Audit Every Source Contract
+
+The complete one-by-one contract is executable rather than duplicated as a
+second static registry. This loop prints the governing equation, retained
+mechanism, SILVA extensions, benchmark requirements, sources, notebooks, tests,
+and constructor for all 30 families:
+
+```python
+from silva_networks import all_silva_reproduction_specs
+
+for spec in all_silva_reproduction_specs():
+    print(f"\n{spec.family}: {spec.equation}")
+    print("  preserves:", *spec.preserved_mechanisms)
+    print("  extends:", *spec.silva_extensions)
+    print("  benchmark requires:", *spec.benchmark_requirements)
+    print("  references:", *spec.paper_refs)
+    print("  repositories:", *spec.repositories)
+    print("  notebooks:", *spec.notebooks)
+    print("  tests:", *spec.tests)
+    print("  constructor:", spec.constructor_signature)
+```
+
+This gives two valid routes without conflating them. A source-conforming run
+keeps the preserved mechanism and satisfies the benchmark requirements. A new
+SILVA experiment keeps the equilibrium state contract while deliberately
+changing one or more entries from `silva_extensions`, then records those changes
+as protocol deviations.
 
 ## Joint Diffusion Restoration
 

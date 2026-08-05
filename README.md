@@ -34,6 +34,48 @@ designed for two audiences:
 - developers who want a small, readable PyTorch package for building
   stimulus/local/global equilibrium layers.
 
+## What SILVA Solves
+
+A SILVA layer is an equilibrium model whose transition is separated into
+named, independently configurable mechanisms:
+
+$$
+z^\star = \sigma\!\left(
+S_\theta(x)
++ H_\theta(z^\star)
++ L_\theta(z^\star;\mathcal E)
++ G_\theta(z^\star;\mathcal B)
+\right).
+$$
+
+Here, $S_\theta$ injects the observed data, $H_\theta$ is an optional learned
+self-interaction, $L_\theta$ carries local structure such as graph messages or
+dynamic neighborhoods, and $G_\theta$ supplies global context such as a mean
+field or bounded attention. The solver searches for $z^\star$; a readout maps
+that equilibrium state to the task output.
+
+Classical affine DEQs, graph equilibria, multiscale image models, Fourier
+operators, ODE and PDE states, constrained optimization layers, distributional
+states, and physics-informed systems are therefore selectable cases inside the
+same SILVA contract. A single equilibrium point may contain a user-provided
+MLP, convolutional network, residual block, U-Net, attention module, graph
+operator, Fourier operator, or another shape-preserving PyTorch module.
+Multiple points may then be linked into heterogeneous stacked architectures,
+with separate transitions, state dimensions, solvers, damping values, and
+readouts at each point.
+
+## Choose a Learning Path
+
+| Question | Documentation | Executable material |
+| --- | --- | --- |
+| What is the smallest working SILVA layer? | [SILVA From Scratch](docs/learn/silva-from-scratch.md) | [Package Quickstart](notebooks/package_api/01_package_quickstart.ipynb) |
+| How do the branches and tensor shapes fit together? | [Derivation to Code](docs/get-started/derivation-to-code.md) | [Equation-to-Code Walkthrough](notebooks/package_api/08_equation_to_code_walkthrough.ipynb) |
+| What can live inside one equilibrium point? | [Point Architecture Catalog](docs/learn/point-architecture-catalog.md) | [Architecture Catalog Lab](notebooks/package_api/14_point_architecture_catalog.ipynb) |
+| How are ODEs, PDEs, and Fourier operators connected to SILVA? | [Neural Operators, ODEs, and PDEs](docs/learn/neural-operators-ode-pde.md) | [Scientific Operator Lab](notebooks/package_api/15_neural_operators_ode_pde.ipynb) |
+| How do I reproduce or extend a cited family? | [Reproducing SILVA and Source Methods](docs/learn/reproducing-silva-and-papers.md) | [All-Family Reproduction Registry](notebooks/package_api/27_reproducing_silva_and_source_methods.ipynb) |
+| How do I scale a construction beyond the compact examples? | [Full-Scale SILVA](docs/learn/full-scale-silva.md) | [Full-Scale Execution Lab](notebooks/package_api/26_full_scale_silva.ipynb) |
+| Where can I find every notebook and download route? | [Notebook Library](docs/notebooks.md) | [Run Everything](docs/run-everything.md) |
+
 The code is released under the MIT License. If you use this package, cite the
 all-versions software DOI `10.5281/zenodo.21770098` or the GitHub repository at
 `https://github.com/jseluis/silva-networks`. If the work is used in connection
@@ -446,13 +488,18 @@ checks and checkpoint resume are in
 Every canonical family also has an executable source-aware record containing
 its governing equation, citation numbers, research repositories, datasets,
 preprocessing requirements, metrics, notebooks, tests, replaceable parts, and
-real constructor signature:
+real constructor signature. Each record additionally states the mechanism
+preserved from its cited source, the extra choices exposed by SILVA, and the
+requirements that must be restored for a publication-scale benchmark:
 
 ```python
 from silva_networks import build_silva_reproduction, silva_reproduction_spec
 
 spec = silva_reproduction_spec("pideq")
 print(spec.constructor_signature)
+print(spec.preserved_mechanisms)
+print(spec.silva_extensions)
+print(spec.benchmark_requirements)
 
 model = build_silva_reproduction(
     "pideq",
@@ -468,6 +515,14 @@ The compact suite verifies equations, shapes, gradients, and numerical paths.
 Published benchmark values require the complete cited data release,
 preprocessing, model scale, optimization schedule, checkpoints, and metric
 protocol. See `docs/learn/reproducing-silva-and-papers.md`.
+
+This distinction is deliberate: a passing compact reproduction establishes
+that the mechanism is implemented and differentiable inside SILVA; a benchmark
+reproduction additionally establishes agreement under the cited experiment's
+data, split, preprocessing, scale, training, and evaluation protocol. The
+registry keeps both levels visible so advanced users can replace individual
+modules, reconstruct the cited configuration, or define a new family without
+changing the equilibrium engine.
 
 The matching deterministic datasets are created inside the package:
 
@@ -767,7 +822,7 @@ and external tutorials are cited and linked as references.
 Use the repository citation metadata in `CITATION.cff`, or cite:
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.2.0. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.1.0. MIT License.
 https://github.com/jseluis/silva-networks
 https://doi.org/10.5281/zenodo.21770098
 ```
@@ -791,7 +846,7 @@ When the work uses or discusses the SILVA methodology, cite the paper as well:
   title   = {SILVA Networks},
   author  = {Silva, Jose Luis},
   year    = {2026},
-  version = {1.2.0},
+  version = {1.1.0},
   license = {MIT},
   doi     = {10.5281/zenodo.21770098},
   url     = {https://github.com/jseluis/silva-networks}
@@ -810,6 +865,21 @@ pytest tests_extended
 python -m build
 twine check dist/*
 mkdocs build --strict
+```
+
+The complete release-candidate validation executes the core and extended tests
+without skips, all 62 canonical notebooks, the documentation audit, the
+content-preservation audit, the strict site build, and both distribution
+artifacts:
+
+```bash
+python scripts/release_audit.py
+ruff check src tests tests_extended examples scripts
+pytest tests tests_extended --cov=silva_networks --cov-report=term-missing -rs
+python scripts/run_notebook_smoke.py --all --timeout 180
+mkdocs build --strict
+python -m build
+twine check dist/*
 ```
 
 ## Documentation

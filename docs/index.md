@@ -278,7 +278,7 @@ Primary category: cs.LG. DOI:
 <div class="silva-citation-card" markdown>
 <strong>Software</strong>
 
-Dr. Jose Luis Silva. *SILVA Networks*. Version 1.2.0. MIT License.
+Dr. Jose Luis Silva. *SILVA Networks*. Version 1.1.0. MIT License.
 All-versions DOI: [10.5281/zenodo.21770098](https://doi.org/10.5281/zenodo.21770098).
 
 [Repository](https://github.com/jseluis/silva-networks) |

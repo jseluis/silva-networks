@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-import json
 import textwrap
 from pathlib import Path
+
+from notebook_generation import write_notebook
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIRS = (
@@ -1301,10 +1302,10 @@ LABS = {
 
 def main() -> None:
     for name, build in LABS.items():
-        payload = json.dumps(build(), indent=2, ensure_ascii=False) + "\n"
+        notebook_payload = build()
         for directory in OUT_DIRS:
             directory.mkdir(parents=True, exist_ok=True)
-            (directory / name).write_text(payload, encoding="utf-8")
+            write_notebook(directory / name, notebook_payload)
         print(name)
 
 

@@ -76,13 +76,14 @@ import silva_networks
 
 Publishing is configured through the `Release` workflow in
 `.github/workflows/release.yml`. Pushing a validated `v*` tag builds and checks
-the distributions, creates the GitHub Release with those artifacts, and starts
-the PyPI publishing job. It uses PyPI Trusted Publishing, so no PyPI API token
-is stored in GitHub. PyPI's trusted-publisher flow exchanges a GitHub Actions
-identity token for a short-lived publishing credential during the release job.
+the distributions, publishes them to PyPI after environment approval, and then
+creates the GitHub Release with the same artifacts. It uses PyPI Trusted
+Publishing, so no PyPI API token is stored in GitHub. PyPI's trusted-publisher
+flow exchanges a GitHub Actions identity token for a short-lived publishing
+credential during the release job.
 
 The v1.0.0 release established this PyPI trusted-publisher configuration, and
-v1.2.0 uses the same publisher identity:
+v1.1.0 uses the same publisher identity:
 
 1. Open PyPI and sign in.
 2. Open **Account settings**.
@@ -107,8 +108,8 @@ Then configure the matching GitHub environment:
 
 The environment gate keeps package upload as an explicit release action. The
 release workflow builds the source distribution and wheel, runs `twine check`,
-publishes the GitHub Release, and publishes the package to PyPI after deployment
-approval.
+publishes the package to PyPI after deployment approval, and creates the GitHub
+Release only after the package upload succeeds.
 
 After the workflow succeeds:
 
@@ -128,7 +129,7 @@ To enable the archive:
 1. Open Zenodo and sign in with GitHub.
 2. Open the GitHub integration page.
 3. Enable archiving for `jseluis/silva-networks`.
-4. Push the validated version tag, currently `v1.2.0`; the release workflow
+4. Push the validated version tag, currently `v1.1.0`; the release workflow
    creates the corresponding GitHub Release.
 
 Use the concept DOI for the living software citation:
@@ -146,7 +147,7 @@ Concept DOI: 10.5281/zenodo.21770098
 Record: https://zenodo.org/records/21770099
 ```
 
-Publishing the `v1.2.0` GitHub release creates a new version record under the
+Publishing the `v1.1.0` GitHub release creates a new version record under the
 same concept DOI. Record its minted version DOI in the release readiness page
 after the integration finishes.
 

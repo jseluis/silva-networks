@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-import json
 import textwrap
 from pathlib import Path
+
+from notebook_generation import write_notebook
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIRS = [
@@ -1148,7 +1149,7 @@ def main() -> None:
     for directory in OUT_DIRS:
         directory.mkdir(parents=True, exist_ok=True)
         path = directory / NAME
-        path.write_text(json.dumps(NB, indent=2) + "\n", encoding="utf-8")
+        write_notebook(path, NB)
         print(path.relative_to(ROOT))
 
 

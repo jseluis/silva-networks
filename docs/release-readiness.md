@@ -8,10 +8,10 @@ broken package builds before a public release.
 
 | Item | Status |
 | --- | --- |
-| Package version | `1.2.0` |
+| Package version | `1.1.0` |
 | Citation metadata | `CITATION.cff`, README, references page, and BibTeX file updated |
 | Zenodo archive | all-versions DOI: [`10.5281/zenodo.21770098`](https://doi.org/10.5281/zenodo.21770098); v1.0.0 DOI retained in release history |
-| PyPI package | release target: [`silva-networks==1.2.0`](https://pypi.org/project/silva-networks/) |
+| PyPI package | release target: [`silva-networks==1.1.0`](https://pypi.org/project/silva-networks/) |
 | Release workflow | a validated `v*` tag builds distributions, creates the GitHub Release, and publishes through PyPI Trusted Publishing |
 | Article citation | arXiv:2607.28989, submitted July 31, 2026 |
 | Article PDF | `docs/assets/papers/silva-networks-arxiv-2607.28989.pdf` |
@@ -25,7 +25,7 @@ broken package builds before a public release.
 | Full-scale family surface | all 30 canonical families have data, literature, benchmark, scale-control, and extension guides; compact dense/scalable equivalence checks are executable |
 | Guided navigation | all 112 navigable Markdown pages and 36 rendered notebooks include contextual next steps and an extension/reproduction path |
 | Canonical notebook curriculum | all 62 package, bridge, and unreleased book/research notebooks include executable extension, equivalence, gradient, reproduction, and scaling material |
-| Portable test suite | 279 unit tests and 4 extended tests pass with no skipped outcomes; device checks use CUDA when available and CPU otherwise |
+| Portable test suite | 288 core tests and 4 extended tests pass with no skipped outcomes; device checks use CUDA when available and CPU otherwise |
 | Public datasets | UCI tabular loaders plus TorchVision adapters for MNIST, FashionMNIST, KMNIST, EMNIST, CIFAR10, CIFAR100, and SVHN |
 | Public results | [Results](results.md) records measured validation metrics, tensor shapes, residuals, and reproduction commands |
 | CLI workflow | [CLI Guide](cli.md), `silva-experiment`, `silva-download-datasets`, `scripts/smoke_test.sh`, config listing, config display, device override, and dotted `--set` overrides |
@@ -50,12 +50,12 @@ run and archived separately.
 | Extended tests | `pytest -o addopts= tests_extended -rs` | yes; every collected test must pass and none may be skipped |
 | Strict docs build | `mkdocs build --strict` | yes |
 | Public results page | `silva-experiment --config <config> --output-dir outputs` | yes for published validation rows |
-| Notebook validation | `python scripts/run_notebook_smoke.py --timeout 180` | yes for selected quick notebooks |
+| Notebook validation | `python scripts/run_notebook_smoke.py notebooks/*.ipynb notebooks/package_api/*.ipynb notebooks/implicit_bridge/*.ipynb --timeout 180` | yes; all 62 canonical notebooks must execute |
 | Package build | `python -m build` | yes |
 | Distribution metadata | `twine check dist/*` | yes |
 | PyPI trusted publisher | PyPI publisher for `jseluis/silva-networks`, workflow `release.yml`, environment `pypi` | yes |
-| Zenodo archiving | Zenodo GitHub integration enabled for `jseluis/silva-networks`; v1.0.0 archived and v1.2.0 metadata prepared | yes |
-| Release trigger | push the validated annotated `v1.2.0` tag after `main` CI and Pages pass | yes |
+| Zenodo archiving | Zenodo GitHub integration enabled for `jseluis/silva-networks`; v1.0.0 archived and v1.1.0 metadata prepared | yes |
+| Release trigger | push the validated annotated `v1.1.0` tag after `main` CI and Pages pass | yes |
 
 For local offline validation, `python -m build --no-isolation` is acceptable
 when the active virtualenv already contains the build requirements.
@@ -85,7 +85,7 @@ tooling such as command-line PDF utilities.
 Use this structure when cutting a public release:
 
 ```text
-SILVA Networks 1.2.0
+SILVA Networks 1.1.0
 
 Article:
 Jose Luis Lima de Jesus Silva. SILVA Networks as Structured Implicit Layers and
@@ -108,7 +108,7 @@ Package highlights:
 
 Validation:
 - python scripts/release_audit.py
-- python scripts/run_notebook_smoke.py --timeout 180
+- python scripts/run_notebook_smoke.py notebooks/*.ipynb notebooks/package_api/*.ipynb notebooks/implicit_bridge/*.ipynb --timeout 180
 - pytest
 - mkdocs build --strict
 - python -m build

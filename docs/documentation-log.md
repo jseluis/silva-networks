@@ -7,10 +7,10 @@ paper, book sources, or production code outside the package.
 <div class="silva-doclog" markdown>
 <div class="silva-doclog__date" markdown>
 <strong>August 5, 2026</strong>
-<span>SILVA Networks 1.2.0 extension and reproduction release</span>
+<span>SILVA Networks 1.1.0 extension and reproduction release</span>
 </div>
 <div class="silva-doclog__body" markdown>
-## Version 1.2.0
+## Version 1.1.0
 
 Made the complete SILVA construction contract inspectable and executable from
 custom transition modules through source-aware compact and scaled reproduction.
@@ -31,7 +31,7 @@ custom transition modules through source-aware compact and scaled reproduction.
 <span>SILVA Networks 1.1.0 release preparation</span>
 </div>
 <div class="silva-doclog__body" markdown>
-## Version 1.1.0
+## Version Metadata Preparation
 
 Synchronized package, citation, archive, notebook, and publication metadata for
 the first feature release after 1.0.0. The living software citation now uses

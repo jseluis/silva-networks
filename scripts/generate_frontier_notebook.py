@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-import json
 import textwrap
 from pathlib import Path
+
+from notebook_generation import write_notebook
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIRS = [
@@ -879,11 +880,10 @@ SILVA decomposition open to further internal mappings.
 
 
 def main() -> None:
-    serialized = json.dumps(NB, indent=2, ensure_ascii=False) + "\n"
     for directory in OUT_DIRS:
         directory.mkdir(parents=True, exist_ok=True)
         path = directory / NAME
-        path.write_text(serialized, encoding="utf-8")
+        write_notebook(path, NB)
         print(path.relative_to(ROOT))
 
 

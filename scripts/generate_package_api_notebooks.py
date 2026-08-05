@@ -5,6 +5,8 @@ import re
 import textwrap
 from pathlib import Path
 
+from notebook_generation import write_notebook
+
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "notebooks/package_api"
 DOCS_OUT = ROOT / "docs/package-notebooks"
@@ -115,7 +117,7 @@ CITATION_SOURCE = r"""
 If this notebook or package is used, cite the software repository:
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.2.0. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.1.0. MIT License.
 https://github.com/jseluis/silva-networks
 https://doi.org/10.5281/zenodo.21770098
 ```
@@ -870,13 +872,12 @@ def main() -> None:
             **nb,
             "cells": [*nb["cells"], md(CITATION_SOURCE)],
         }
-        payload = json.dumps(nb_with_citation, indent=2) + "\n"
         for target in (OUT, DOCS_OUT, COLAB_OUT):
-            (target / name).write_text(payload)
+            write_notebook(target / name, nb_with_citation)
     for name in STATIC_MIRRORED_NOTEBOOKS:
-        payload = (DOCS_OUT / name).read_text(encoding="utf-8")
+        payload = json.loads((DOCS_OUT / name).read_text(encoding="utf-8"))
         for target in (OUT, COLAB_OUT):
-            (target / name).write_text(payload, encoding="utf-8")
+            write_notebook(target / name, payload)
 
 
 if __name__ == "__main__":

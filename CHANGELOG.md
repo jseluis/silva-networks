@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.0 - 2026-08-05
+## 1.1.0 - 2026-08-05
 
 - Added public transition inspection and validation, conditioned-equilibrium
   composition, family constructor lookup, and complete inspectable signatures
@@ -22,8 +22,6 @@
 - Fixed CPU attention higher-order gradients, modernized mixed-precision
   scaling, stabilized notebook generation, and validated the full suite on
   supported Python environments and current compatible dependencies.
-
-## 1.1.0 - 2026-08-05
 
 - Added heterogeneous cortex networks and ten shape-preserving internal point
   architectures spanning vector, token, convolutional, multiscale, attention,

@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-import json
 import textwrap
 from pathlib import Path
+
+from notebook_generation import write_notebook
 
 ROOT = Path(__file__).resolve().parents[1]
 NAME = "26_full_scale_silva.ipynb"
@@ -742,11 +743,11 @@ def build_notebook() -> dict[str, object]:
 
 
 def main() -> int:
-    payload = json.dumps(build_notebook(), indent=2, ensure_ascii=False) + "\n"
+    notebook_payload = build_notebook()
     for directory in OUT_DIRS:
         directory.mkdir(parents=True, exist_ok=True)
         path = directory / NAME
-        path.write_text(payload, encoding="utf-8")
+        write_notebook(path, notebook_payload)
         print(path.relative_to(ROOT))
     return 0
 

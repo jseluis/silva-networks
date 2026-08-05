@@ -13,6 +13,7 @@ import sys
 from html.parser import HTMLParser
 from pathlib import Path
 
+from content_preservation_audit import run_content_preservation_audit
 from documentation_audit import run_documentation_audit
 
 try:
@@ -264,6 +265,9 @@ def run_audit(root: Path = ROOT) -> dict[str, list[str]]:
     documentation_report = run_documentation_audit(root)
     errors.extend(documentation_report["errors"])
     warnings.extend(documentation_report["warnings"])
+    preservation_report = run_content_preservation_audit(root)
+    errors.extend(preservation_report["errors"])
+    warnings.extend(preservation_report["warnings"])
 
     return {"errors": errors, "warnings": warnings}
 
@@ -781,6 +785,9 @@ def _check_math_source_delimiters(root: Path, errors: list[str]) -> None:
         source = _without_code(raw_source)
         if source.count("$$") % 2:
             errors.append(f"{label} has unbalanced $$ math delimiters")
+        display_parts = source.split("$$")
+        if any(not display_parts[index].strip() for index in range(1, len(display_parts), 2)):
+            errors.append(f"{label} has an empty $$ display-math block")
         if source.count(r"\[") != source.count(r"\]"):
             errors.append(f"{label} has unbalanced \\[...\\] math delimiters")
         if source.count(r"\(") != source.count(r"\)"):

@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
+
+from notebook_generation import write_notebook
 
 ROOT = Path(__file__).resolve().parents[1]
 NAME = "27_reproducing_silva_and_source_methods.ipynb"
@@ -46,8 +47,11 @@ observation-conditioned restoration step, and emits a structured run record.
 The universal equation is
 
 $$
-z_0=I_\eta(x),\qquad z^\star=T_\theta(z^\star,x),\qquad
-\widehat y=Q_\psi(z^\star).
+\begin{aligned}
+z_0 &= I_\eta(x), \\
+z^\star &= T_\theta(z^\star,x), \\
+\widehat y &= Q_\psi(z^\star).
+\end{aligned}
 $$
 
 A source method is reproduced only when its equation, data release,
@@ -93,6 +97,9 @@ The record separates scientific and numerical responsibilities:
 | `metrics` | What must be measured besides solver residual? |
 | `notebooks` and `tests` | What executable evidence exists locally? |
 | `configurable_parts` | Which operators and scale axes may be changed? |
+| `preserved_mechanisms` | Which source mechanisms remain present? |
+| `silva_extensions` | Which components may be replaced or enlarged inside SILVA? |
+| `benchmark_requirements` | Which source-protocol obligations remain for benchmark equivalence? |
 | `constructor_signature` | Which exact public arguments are accepted? |
 
 The residual
@@ -110,10 +117,39 @@ field error, physical residual, FID, endpoint error, or reconstruction quality."
     spec = silva_reproduction_spec(family)
     print("\\n", spec.family)
     print(" equation:", spec.equation)
+    print(" preserves:", spec.preserved_mechanisms)
+    print(" SILVA extensions:", spec.silva_extensions)
+    print(" benchmark requires:", spec.benchmark_requirements)
     print(" data:", spec.datasets)
     print(" metrics:", spec.metrics)
     print(" signature:", spec.constructor_signature)""",
             "inspect-families",
+        ),
+        _markdown(
+            r"""## Audit All 30 Source-Conformance Records
+
+Every family has a distinct governing equation and three additional records:
+what is retained from the source mechanism, what SILVA allows the user to
+replace or scale, and what must still be reproduced before comparing with the
+source benchmark. This avoids treating a compact mechanism check as a full
+paper result while keeping the architecture open for new experiments.""",
+            "all-source-contracts",
+        ),
+        _code(
+            """assert all(spec.equation for spec in specs)
+assert len({spec.preserved_mechanisms for spec in specs}) == len(specs)
+assert len({spec.silva_extensions for spec in specs}) == len(specs)
+assert len({spec.benchmark_requirements for spec in specs}) == len(specs)
+
+for spec in specs:
+    print(f"\\n{spec.family}")
+    print(" equation:", spec.equation)
+    print(" preserves:", *spec.preserved_mechanisms)
+    print(" extends:", *spec.silva_extensions)
+    print(" benchmark requires:", *spec.benchmark_requirements)
+    print(" references:", *spec.paper_refs)
+    print(" repositories:", *spec.repositories)""",
+            "all-source-contracts-code",
         ),
         _markdown(
             r"""## Build a New Transition From Its Equation
@@ -290,13 +326,13 @@ run_record""",
 
 
 def main() -> int:
-    payload = json.dumps(notebook(), indent=2, ensure_ascii=False) + "\n"
+    notebook_payload = notebook()
     for path in (
         ROOT / "notebooks/package_api" / NAME,
         ROOT / "docs/package-notebooks" / NAME,
         ROOT / "colab" / NAME,
     ):
-        path.write_text(payload, encoding="utf-8")
+        write_notebook(path, notebook_payload)
     print(f"generated {NAME} and publication mirrors")
     return 0
 

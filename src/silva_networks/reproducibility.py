@@ -33,6 +33,9 @@ class SILVAReproductionSpec:
     notebooks: tuple[str, ...]
     tests: tuple[str, ...]
     configurable_parts: tuple[str, ...]
+    preserved_mechanisms: tuple[str, ...]
+    silva_extensions: tuple[str, ...]
+    benchmark_requirements: tuple[str, ...]
     verification_level: VerificationLevel
     benchmark_note: str
 
@@ -51,6 +54,18 @@ class SILVAReproductionSpec:
 _GENERIC_EQUATION = "z_star = T_theta(z_star, x); y_hat = Q_psi(z_star)"
 
 _EQUATIONS: dict[str, str] = {
+    "silva_layer": "z_star = sigma(S(x) + H(z_star) + L(z_star; E) + G(z_star; b))",
+    "silva_graph": "Z[l]_star = T[l](Z[l]_star, Z[l-1]_star; E, batch)",
+    "silva_graph_preset": (
+        "Z[l]_star = sigma(S[l](X[l]) + L_graph[l](Z[l]_star; E) + G[l](Z[l]_star; b))"
+    ),
+    "silva_cortex": "z_star = sigma(E_x(x) + A_theta(z_star, x) + L(z_star) + G(z_star))",
+    "silva_cortex_network": (
+        "z[1]_star=C[1](z[1]_star,x); z[k]_star=C[k](z[k]_star,lambda[k-1](z[k-1]_star))"
+    ),
+    "silva_image_cortex": (
+        "r=Retina(x); z[1]_star=C[1](z[1]_star,r); z[k]_star=C[k](z[k]_star,lambda[k-1](z[k-1]_star)); y=Q(z[K]_star)"
+    ),
     "compact_deq": "z_star = tanh(W_z z_star + W_x x + b)",
     "message_passing_deq": "Z_star = sigma(S(X) + L_G(Z_star))",
     "mdeq": "Z_star[r] = T_r(Z_star[1:R], X) for every resolution r",
@@ -82,6 +97,162 @@ _EQUATIONS: dict[str, str] = {
     ),
     "silva_implicit_dae_step": (
         "Y_i=y_n+dt sum_j a_ij f(Y_j,Z_j); 0=g(Y_i,Z_i)"
+    ),
+}
+
+_SOURCE_DETAILS: dict[
+    str,
+    tuple[tuple[str, ...], tuple[str, ...], tuple[str, ...]],
+] = {
+    "silva_layer": (
+        ("named stimulus, self, local, and global fields in one equilibrium point",),
+        ("replace any field, activation, normalization, readout, or solver independently",),
+        ("article task, operator choices, initialization, training schedule, seeds, and metrics",),
+    ),
+    "silva_graph": (
+        ("sparse graph-conditioned local fields and independently solved stacked points",),
+        ("mix local, attention, self, and graph-level global fields by layer",),
+        ("graph split, edge preprocessing, pooling, depth, optimizer, seeds, and task metric",),
+    ),
+    "silva_graph_preset": (
+        ("configured graph stimulus, message, attention, and pooling route",),
+        ("replace preset points or interaction modes while retaining the graph contract",),
+        ("dataset split, feature encoding, graph batching, preset options, and task metric",),
+    ),
+    "silva_cortex": (
+        ("one shape-preserving equilibrium point with a user-defined internal module graph",),
+        ("compose dense, convolutional, U-Net, attention, spectral, or custom modules",),
+        ("declared internal graph, tensor contract, solver, training schedule, and task data",),
+    ),
+    "silva_cortex_network": (
+        ("ordered heterogeneous equilibrium points connected by explicit link maps",),
+        ("give every point a distinct architecture, state shape, solver, and link projection",),
+        ("complete point/link graph, per-point settings, data route, optimizer, and metrics",),
+    ),
+    "silva_image_cortex": (
+        ("image retina followed by linked fast/slow spatial equilibrium points",),
+        ("replace retina, point operators, links, pooling, and classification head",),
+        ("image preprocessing, resolution, augmentation, point widths, schedule, and accuracy",),
+    ),
+    "compact_deq": (
+        ("weight-tied affine-tanh fixed point and implicit differentiation",),
+        ("replace the affine map or solver while retaining the equilibrium contract",),
+        ("source sequence data, adaptive embeddings, memory, optimizer, and perplexity protocol",),
+    ),
+    "message_passing_deq": (
+        ("weight-tied graph message aggregation inside a fixed point",),
+        ("add edge features, physics fields, global context, or alternative aggregation",),
+        ("source graph, normalization, split, message map, training schedule, and accuracy",),
+    ),
+    "mdeq": (
+        ("simultaneously solved states with learned cross-resolution fusion",),
+        ("replace scale blocks, add resolutions, or attach a task-specific head",),
+        ("source stem, branch widths, fusion graph, augmentation, schedule, and metric",),
+    ),
+    "multiscale_vision_deq": (
+        ("full multiresolution equilibrium with every-to-every scale fusion",),
+        ("change the resolution pyramid, residual blocks, fusion, or dense-prediction head",),
+        ("source image data, crop/augmentation, branch layout, training budget, and metric",),
+    ),
+    "sequence_deq": (
+        ("weight-tied sequence equilibrium with relative-attention or trellis transition",),
+        ("replace attention, memory, injection, vocabulary bands, or sequence readout",),
+        ("source corpus, tokenization, memory schedule, adaptive bands, training, and perplexity",),
+    ),
+    "implicit_graph": (
+        ("implicit graph propagation with a constrained well-posed channel map",),
+        ("replace normalization, graph operator, constraint parameterization, or readout",),
+        ("source graph splits, adjacency processing, constraint rule, optimizer, and accuracy",),
+    ),
+    "implicit_neural_representation": (
+        ("coordinate-conditioned injection and a shared implicit feature state",),
+        ("select sinusoidal, Fourier, Gabor, or custom coordinate encodings and readouts",),
+        ("source signal, coordinate sampling, encoding bandwidth, optimization, and PSNR",),
+    ),
+    "diffusion_equilibrium": (
+        ("joint reverse trajectory represented and solved as one equilibrium state",),
+        ("replace the complete reverse step, schedule, denoiser, and data-consistency map",),
+        ("source checkpoint, noise schedule, initialization, data operator, data, and metric",),
+    ),
+    "scientific_operator": (
+        ("source-to-field injection plus a shape-preserving repeated field operator",),
+        ("insert convolutional, U-Net, Fourier, graph, or custom physical operators",),
+        ("PDE data generator, mesh/grid, normalization, boundaries, training, and field metric",),
+    ),
+    "fourier_operator_equilibrium": (
+        ("truncated Fourier convolution combined with local channel mixing at equilibrium",),
+        ("mix spectral, local, boundary, geometry, and conservation fields",),
+        ("source PDE data, resolution, modes, normalization, boundaries, and relative error",),
+    ),
+    "implicit_time_step": (
+        ("backward implicit time step solved through a fixed-point residual",),
+        ("replace the dynamics, spatial discretization, projector, or nonlinear solver",),
+        ("governing dynamics, discretization, step schedule, initial data, and trajectory error",),
+    ),
+    "silva_deq_flow": (
+        ("weight-tied optical-flow update solved to an equilibrium flow field",),
+        ("replace feature, correlation, update, and correction modules",),
+        ("source image pairs, preprocessing, correlation settings, training stages, and EPE",),
+    ),
+    "raft_deq_flow": (
+        ("coupled hidden-state and flow equilibrium with RAFT-style correlation lookup",),
+        ("replace encoders, correlation implementation, update block, or correction route",),
+        ("source datasets, stage schedule, augmentations, checkpoint, iterations, and EPE",),
+    ),
+    "quadratic_optimization": (
+        ("first-order equilibrium whose root is an unconstrained quadratic minimizer",),
+        ("parameterize the Hessian, linear term, initializer, solver, or downstream loss",),
+        ("problem distribution, conditioning, objective definition, solver tolerance, and error",),
+    ),
+    "silva_projected_qp": (
+        ("projected first-order fixed point for a constrained quadratic program",),
+        ("replace the projection, constraints, objective parameterization, or root solver",),
+        ("source QP distribution, constraints, feasibility tolerance, KKT metric, and gradients",),
+    ),
+    "silva_fno_deq": (
+        ("input-injected weight-tied Fourier operator solved at infinite-depth equilibrium",),
+        ("replace forcing lift, tied block, boundary field, geometry field, or readout",),
+        ("source Darcy/Navier-Stokes data, modes, widths, training budget, seeds, and relative L2",),
+    ),
+    "silva_physics_graph_deq": (
+        ("diffusion and advection laws embedded as graph transition fields",),
+        ("add or replace source, reaction, diffusion, advection, and observation branches",),
+        ("source sensor graph, physical coefficients, units, split, schedule, and field metric",),
+    ),
+    "silva_homotopy_equilibrium": (
+        ("continuous residual flow whose stationary endpoint satisfies the fixed-point equation",),
+        ("replace residual field, continuation schedule, integrator, or terminal readout",),
+        ("source architecture, ODE solver/tolerances, horizon, data, training, and accuracy",),
+    ),
+    "silva_distributional_deq": (
+        ("permutation-compatible equilibrium over masked empirical measures",),
+        ("replace equivariant transition, discrepancy, particle encoder, or aggregation",),
+        ("source point-cloud conversion, masks, discrepancy, model scale, training, and metric",),
+    ),
+    "silva_monotone_graph_equilibrium": (
+        ("monotone graph equilibrium with a constrained channel operator and proximal step",),
+        ("replace proximal map, factorization, graph operator, or head under the margin contract",),
+        ("source graph splits, normalization, monotonicity parameterization, training, and accuracy",),
+    ),
+    "silva_generative_equilibrium_transformer": (
+        ("one-time condition injection followed by a weight-tied token equilibrium",),
+        ("replace injector, attention core, patch geometry, decoder, or distillation objective",),
+        ("source teacher, teacher pairs, labels, training recipe, sampling protocol, and FID",),
+    ),
+    "silva_poisson_mirror_equilibrium": (
+        ("positive Burg-geometry mirror step for Poisson data fidelity",),
+        ("replace forward/adjoint maps, regularizer gradient, mirror step, or tiling",),
+        ("source forward model, count statistics, regularizer, training, initialization, and PSNR",),
+    ),
+    "silva_physics_informed_equilibrium": (
+        ("equilibrium state with implicit time derivative and physics-informed residual terms",),
+        ("replace dynamics, transition, readout, derivative mode, and residual weights",),
+        ("source IVP, collocation, initial conditions, optimizer, Jacobian weight, and IAE",),
+    ),
+    "silva_implicit_dae_step": (
+        ("implicit Runge-Kutta stage root with differential and algebraic constraints",),
+        ("replace tableau, dynamics, constraints, learned closures, or Newton-Krylov controls",),
+        ("source DAE, index assumptions, consistent initialization, time grid, tolerances, and error",),
     ),
 }
 
@@ -277,6 +448,9 @@ def _default_tests(family: str) -> tuple[str, ...]:
 
 def _spec(family: str) -> SILVAReproductionSpec:
     guide = silva_family_guide(family)
+    preserved_mechanisms, silva_extensions, benchmark_requirements = (
+        _SOURCE_DETAILS[family]
+    )
     source_relation: SourceRelation = (
         "silva-native" if 1 in guide.paper_refs else "paper-adaptation"
     )
@@ -300,6 +474,9 @@ def _spec(family: str) -> SILVAReproductionSpec:
         notebooks=_NOTEBOOKS.get(family, _default_notebooks(family)),
         tests=_TESTS.get(family, _default_tests(family)),
         configurable_parts=guide.extension_points + guide.scale_controls,
+        preserved_mechanisms=preserved_mechanisms,
+        silva_extensions=silva_extensions,
+        benchmark_requirements=benchmark_requirements,
         verification_level="compact-verified",
         benchmark_note=(
             "Compact mechanism, shape, solver, and gradient checks run in the package suite. "
@@ -332,10 +509,15 @@ def audit_silva_reproduction_specs() -> tuple[str, ...]:
     errors: list[str] = []
     expected = set(available_silva_families())
     actual = set(_REPRODUCTION_SPECS)
+    source_details = set(_SOURCE_DETAILS)
     for missing in sorted(expected - actual):
         errors.append(f"missing reproduction spec: {missing}")
     for extra in sorted(actual - expected):
         errors.append(f"unknown reproduction spec: {extra}")
+    for missing in sorted(expected - source_details):
+        errors.append(f"missing source-conformance details: {missing}")
+    for extra in sorted(source_details - expected):
+        errors.append(f"unknown source-conformance details: {extra}")
     for spec in _REPRODUCTION_SPECS.values():
         for field in (
             "paper_refs",
@@ -347,6 +529,9 @@ def audit_silva_reproduction_specs() -> tuple[str, ...]:
             "notebooks",
             "tests",
             "configurable_parts",
+            "preserved_mechanisms",
+            "silva_extensions",
+            "benchmark_requirements",
             "benchmark_note",
         ):
             if not getattr(spec, field):

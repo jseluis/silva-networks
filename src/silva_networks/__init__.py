@@ -777,4 +777,4 @@ __all__ = [
     "write_silva_tensor_shards",
 ]
 
-__version__ = "1.2.0"
+__version__ = "1.1.0"
