@@ -75,10 +75,11 @@ import silva_networks
 ```
 
 Publishing is configured through the `Release` workflow in
-`.github/workflows/release.yml`. It uses PyPI Trusted Publishing, so no PyPI
-API token is stored in GitHub. PyPI's trusted-publisher flow exchanges a
-GitHub Actions identity token for a short-lived publishing credential during
-the release job.
+`.github/workflows/release.yml`. Pushing a validated `v*` tag builds and checks
+the distributions, creates the GitHub Release with those artifacts, and starts
+the PyPI publishing job. It uses PyPI Trusted Publishing, so no PyPI API token
+is stored in GitHub. PyPI's trusted-publisher flow exchanges a GitHub Actions
+identity token for a short-lived publishing credential during the release job.
 
 The v1.0.0 release established this PyPI trusted-publisher configuration, and
 v1.2.0 uses the same publisher identity:
@@ -106,7 +107,8 @@ Then configure the matching GitHub environment:
 
 The environment gate keeps package upload as an explicit release action. The
 release workflow builds the source distribution and wheel, runs `twine check`,
-and publishes the package to PyPI after deployment approval.
+publishes the GitHub Release, and publishes the package to PyPI after deployment
+approval.
 
 After the workflow succeeds:
 
@@ -126,7 +128,8 @@ To enable the archive:
 1. Open Zenodo and sign in with GitHub.
 2. Open the GitHub integration page.
 3. Enable archiving for `jseluis/silva-networks`.
-4. Create the GitHub Release from the version tag, currently `v1.2.0`.
+4. Push the validated version tag, currently `v1.2.0`; the release workflow
+   creates the corresponding GitHub Release.
 
 Use the concept DOI for the living software citation:
 
