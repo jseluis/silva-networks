@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.1 - 2026-08-08
+
+- Fixed the README equilibrium display so GitHub, PyPI, and other package
+  pages show the SILVA operator terms consistently without relying on MathJax.
+- Synchronized package, citation, documentation, notebook footer, and archive
+  metadata for the 1.2.1 patch release.
+
 ## 1.2.0 - 2026-08-08
 
 - Added emerging and structured equilibrium families, expanding the canonical

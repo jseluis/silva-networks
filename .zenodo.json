@@ -10,7 +10,7 @@
   "description": "SILVA Networks is a PyTorch package for structured implicit layers, fixed-point solvers, configurable stimulus/local/global operators, Jacobian diagnostics, heterogeneous cortex hierarchies, scientific and physics-informed equilibrium families, scalable training and data utilities, examples, and executable notebooks.",
   "access_right": "open",
   "license": "mit",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "language": "eng",
   "keywords": [
     "SILVA networks",

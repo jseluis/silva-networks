@@ -13,7 +13,7 @@ Use one of two setup paths:
 If the package is used, cite:
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.2.0. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.2.1. MIT License.
 https://github.com/jseluis/silva-networks
 ```
 

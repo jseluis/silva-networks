@@ -7,6 +7,25 @@ paper, book sources, or production code outside the package.
 <div class="silva-doclog" markdown>
 <div class="silva-doclog__date" markdown>
 <strong>August 8, 2026</strong>
+<span>SILVA Networks 1.2.1 patch release</span>
+</div>
+<div class="silva-doclog__body" markdown>
+## Version 1.2.1
+
+Prepared a patch release for package-page rendering consistency while
+preserving the 1.2.0 package surface.
+
+| Area | Change |
+| --- | --- |
+| README rendering | Replaced the public README equilibrium display with a renderer-safe plain equation block for GitHub, PyPI, and archive pages. |
+| Release metadata | Advanced package, citation, archive, documentation, notebook footer, and source-tag metadata to 1.2.1. |
+| Validation path | Re-ran the release audit and package rendering checks before tagging the patch release. |
+</div>
+</div>
+
+<div class="silva-doclog" markdown>
+<div class="silva-doclog__date" markdown>
+<strong>August 8, 2026</strong>
 <span>SILVA Networks 1.2.0 release preparation</span>
 </div>
 <div class="silva-doclog__body" markdown>

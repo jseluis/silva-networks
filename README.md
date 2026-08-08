@@ -926,7 +926,7 @@ and external tutorials are cited and linked as references.
 Use the repository citation metadata in `CITATION.cff`, or cite:
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.2.0. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.2.1. MIT License.
 https://github.com/jseluis/silva-networks
 https://doi.org/10.5281/zenodo.21770098
 ```
@@ -950,7 +950,7 @@ When the work uses or discusses the SILVA methodology, cite the paper as well:
   title   = {SILVA Networks},
   author  = {Silva, Jose Luis},
   year    = {2026},
-  version = {1.2.0},
+  version = {1.2.1},
   license = {MIT},
   doi     = {10.5281/zenodo.21770098},
   url     = {https://github.com/jseluis/silva-networks}

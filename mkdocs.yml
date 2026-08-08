@@ -7,7 +7,7 @@ repo_url: https://github.com/jseluis/silva-networks
 repo_name: jseluis/silva-networks
 
 extra:
-  source_release_tag: v1.2.0
+  source_release_tag: v1.2.1
 
 exclude_docs: |
   includes/

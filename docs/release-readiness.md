@@ -8,12 +8,12 @@ broken package builds before a public release.
 
 | Item | Status |
 | --- | --- |
-| Package version | `1.2.0` |
+| Package version | `1.2.1` |
 | Citation metadata | `CITATION.cff`, README, references page, and BibTeX file updated |
 | Zenodo archive | all-versions DOI: [`10.5281/zenodo.21770098`](https://doi.org/10.5281/zenodo.21770098); v1.0.0 DOI retained in release history |
-| PyPI package | release target: [`silva-networks==1.2.0`](https://pypi.org/project/silva-networks/) |
+| PyPI package | release target: [`silva-networks==1.2.1`](https://pypi.org/project/silva-networks/) |
 | Release workflow | a validated `v*` tag builds distributions, creates the GitHub Release, and publishes through PyPI Trusted Publishing |
-| Docs source widget | top-right GitHub facts refresh against `source_release_tag: v1.2.0` before cached release data is reused |
+| Docs source widget | top-right GitHub facts refresh against `source_release_tag: v1.2.1` before cached release data is reused |
 | Article citation | arXiv:2607.28989, submitted July 31, 2026 |
 | Article PDF | `docs/assets/papers/silva-networks-arxiv-2607.28989.pdf` |
 | License | MIT |
@@ -55,8 +55,8 @@ run and archived separately.
 | Package build | `python -m build` | yes |
 | Distribution metadata | `twine check dist/*` | yes |
 | PyPI trusted publisher | PyPI publisher for `jseluis/silva-networks`, workflow `release.yml`, environment `pypi` | yes |
-| Zenodo archiving | Zenodo GitHub integration enabled for `jseluis/silva-networks`; v1.0.0 and v1.1.0 archived, and v1.2.0 metadata prepared | yes |
-| Release trigger | push the validated annotated `v1.2.0` tag after `main` CI and Pages pass | yes |
+| Zenodo archiving | Zenodo GitHub integration enabled for `jseluis/silva-networks`; v1.0.0, v1.1.0, and v1.2.0 archived, and v1.2.1 metadata prepared | yes |
+| Release trigger | push the validated annotated `v1.2.1` tag after `main` CI and Pages pass | yes |
 
 For local offline validation, `python -m build --no-isolation` is acceptable
 when the active virtualenv already contains the build requirements.
@@ -87,7 +87,7 @@ tooling such as command-line PDF utilities.
 Use this structure when cutting a public release:
 
 ```text
-SILVA Networks 1.2.0
+SILVA Networks 1.2.1
 
 Article:
 Jose Luis Lima de Jesus Silva. SILVA Networks as Structured Implicit Layers and
