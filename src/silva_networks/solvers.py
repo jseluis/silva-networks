@@ -582,6 +582,7 @@ def solve_equilibrium(
     *,
     params: Iterable[Tensor] = (),
     tensors: Iterable[Tensor] = (),
+    backward_map: Callable[[Tensor], Tensor] | None = None,
 ) -> SolverResult:
     r"""Solve an equilibrium with the configured forward and backward mode.
 
@@ -598,6 +599,13 @@ def solve_equilibrium(
     the implicit mode. `backward_mode="phantom"` instead performs a detached
     solve followed by `phantom_steps` differentiable refinements with damping
     `phantom_tau`; one step is the one-step-gradient special case.
+
+    ``backward_map`` optionally separates the numerical forward approximation
+    from the equilibrium map used for implicit or phantom differentiation. It
+    is useful when the forward solve uses a source-compatible acceleration,
+    such as thresholded delta updates, while the derivative is defined by the
+    original equilibrium equation. Unrolled differentiation always follows
+    ``f`` directly.
     """
 
     cfg = config or SolverConfig()
@@ -606,13 +614,14 @@ def solve_equilibrium(
         reengage_result(result, f, cfg)
         result.info.setdefault("backward_mode", "unrolled")
         return result
+    sensitivity_map = f if backward_map is None else backward_map
     with torch.no_grad():
         result = fixed_point(f, z0.detach(), cfg)
 
     if cfg.backward_mode == "phantom":
         z = result.z.detach()
         for _ in range(cfg.phantom_steps):
-            fz = f(z)
+            fz = sensitivity_map(z)
             _validate_transition_output(fz, z)
             z = (1.0 - cfg.phantom_tau) * z + cfg.phantom_tau * fz
         result.z = z
@@ -623,7 +632,7 @@ def solve_equilibrium(
 
     backward_tensors = _unique_trainable_tensors(params, tensors)
     context = _ImplicitBackwardContext(
-        f=f,
+        f=sensitivity_map,
         alpha=cfg.alpha,
         max_iter=cfg.backward_max_iter,
         tol=cfg.backward_tol,

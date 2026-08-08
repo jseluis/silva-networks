@@ -51,6 +51,11 @@ spec = silva_reproduction_spec("fno_deq")
 print(spec.family)
 print(spec.equation)
 print(spec.datasets)
+print(spec.data_sources)
+print(spec.data_access)
+print(spec.storage_plan)
+print(spec.compact_data)
+print(spec.source_scale_steps)
 print(spec.metrics)
 print(spec.notebooks)
 print(spec.tests)
@@ -71,6 +76,11 @@ The three source-conformance fields answer separate questions for every family:
 | `preserved_mechanisms` | Mathematical and architectural mechanisms retained from the native SILVA definition or cited source |
 | `silva_extensions` | Operators, modules, solvers, readouts, and scale routes that may be varied inside SILVA |
 | `benchmark_requirements` | Source-specific data, preprocessing, optimization, checkpoints, and metrics still required before claiming benchmark equivalence |
+| `data_sources` | Authoritative repository, generator, or registered dataset routes |
+| `data_access` | Public, generated, or licensed acquisition conditions that must be retained in the run record |
+| `storage_plan` | Family-specific byte formula or measured-shard planning rule |
+| `compact_data` | Deterministic package fixture that validates the mechanism before a large run |
+| `source_scale_steps` | Ordered acquisition, adaptation, training, and evaluation route for the cited experiment |
 
 These fields are deliberately family-specific. The FNO equilibrium record names
 the tied Fourier operator, the monotone graph record names its constrained
@@ -153,13 +163,27 @@ forward residual, backward residual, runtime, and memory separately.
 | `silva_poisson_mirror_equilibrium` | Mirror-descent inverse equilibrium [[50]](../paper/references.md#ref-50) | Poisson imaging; PSNR/SSIM/divergence |
 | `silva_physics_informed_equilibrium` | Physics-informed equilibrium [[51]](../paper/references.md#ref-51) | Van der Pol/IVP; integral and equation error |
 | `silva_implicit_dae_step` | Implicit DAE mechanism [[52]](../paper/references.md#ref-52) | Three-bus/index-1 DAE; trajectory/constraint error |
+| `silva_consistency_deq` | Solver-trajectory consistency distillation [[59]](../paper/references.md#ref-59) | WikiText-103, ImageNet, or OGB; task metric, one/few-step error, latency |
+| `silva_psi_gnn` | Mixed-boundary Poisson graph equilibrium [[60]](../paper/references.md#ref-60) | Unstructured Poisson meshes; solution, boundary, algebraic, and root residuals |
+| `silva_ifno` | Tied implicit Fourier material operator [[61]](../paper/references.md#ref-61) | Material simulations or DIC fields; displacement/damage error and transfer |
+| `silva_snarf` | Differentiable forward skinning roots [[62]](../paper/references.md#ref-62) | 2D Stick, DFaust/AMASS, or CAPE; IoU and correspondence success |
+| `silva_mesh_inference` | Typed distributed relaxation [[63]](../paper/references.md#ref-63) | Carrier/lineage cases; centralized agreement and convergence certificate |
+| `silva_physics_guided_diffusion_pde` | Physics-guided reverse diffusion [[64]](../paper/references.md#ref-64) | Poisson, diffusion, or Burgers fields; solution, PDE, and boundary error |
+| `silva_therino` | Thermodynamic physical-strain equilibrium [[73]](../paper/references.md#ref-73) | Periodic elastic localization; strain, stress, energy, homogenized response, and residual |
+| `silva_fixed_point_diffusion` | Timestep-conditioned implicit denoiser [[74]](../paper/references.md#ref-74) | Image generation; FID-50K, block evaluations, time, memory, and per-step residual |
+| `silva_monotone_operator_equilibrium` | Strongly monotone operator and splitting [[75]](../paper/references.md#ref-75) | MNIST/CIFAR/ImageNet-scale classification; accuracy, certificate, residual, evaluations, memory |
+| `silva_positive_concave_equilibrium` | Positive-concave fixed-point layer [[76]](../paper/references.md#ref-76) | MNIST, SVHN, CIFAR-10; accuracy, positivity, residual, convergence rate, runtime |
+| `silva_non_euclidean_equilibrium` | Weighted-infinity well-posed implicit network [[77]](../paper/references.md#ref-77) | MNIST/CIFAR-10 clean and perturbed accuracy; certificate and Lipschitz bound |
+| `silva_efficient_infinite_graph` | Spectral infinite-depth graph model [[78]](../paper/references.md#ref-78) | Synthetic long-range and citation graphs; accuracy, robustness, time, memory |
+| `silva_multiscale_graph_implicit` | Graph-power implicit modules and scale attention [[79]](../paper/references.md#ref-79) | Node/graph classification; task metric, per-scale residuals, fusion statistics |
+| `silva_delta_equilibrium` | Thresholded cached equilibrium updates [[80]](../paper/references.md#ref-80) | Implicit image representation and optical flow; PSNR/EPE, FLOPs, time, activity, exact residual |
 
 ## Audit Every Source Contract
 
 The complete one-by-one contract is executable rather than duplicated as a
 second static registry. This loop prints the governing equation, retained
 mechanism, SILVA extensions, benchmark requirements, sources, notebooks, tests,
-and constructor for all 30 families:
+and constructor for all 44 families:
 
 ```python
 from silva_networks import all_silva_reproduction_specs
@@ -276,6 +300,36 @@ run_record = {
 The record is intentionally granular. It lets another user replace one
 operator, preserve everything else, and determine whether a result changed due
 to architecture, solver, data, or training.
+
+## From Registry to Real Tensors
+
+The reproduction registry states obligations; the source-data layer executes
+them at two scales. `load_source_snapshot` opens the attributed compact
+CIFAR-10, Cora, and real-motion records used by notebooks 36-41.
+`load_vision_source_subset`, `load_planetoid_source_subset`,
+`load_optical_flow_source_subset`, and `load_darcy_source_subset` open local
+source collections for larger runs.
+
+```python
+from silva_networks import load_planetoid_source_subset
+
+cora = load_planetoid_source_subset(
+    "Cora",
+    root="data/planetoid",
+    subset_nodes=None,
+    download=False,
+)
+run_record["dataset_receipt"] = cora.receipt.as_dict()
+```
+
+For Cora, CiteSeer, and PubMed, `subset_nodes=None` preserves the official
+transductive graph and Planetoid masks [[82]](../paper/references.md#ref-82).
+For optical flow, the complete local loader preserves flow vectors and rescales
+their horizontal and vertical components when images are resized. The
+[Real-Dataset Reproduction guide](real-dataset-reproduction.md) gives the
+family-by-family code, storage estimates, access rules, and claim boundaries.
+The complete bibliography and external article routes remain collected in
+[References](../paper/references.md).
 
 <!-- silva-extension-path:start -->
 --8<-- "includes/extension/learn.md"

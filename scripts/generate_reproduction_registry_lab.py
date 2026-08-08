@@ -80,7 +80,7 @@ from silva_networks import (
 torch.manual_seed(27)
 assert audit_silva_reproduction_specs() == ()
 specs = all_silva_reproduction_specs()
-assert len(specs) == 30
+assert len(specs) == 44
 [(spec.family, spec.source_relation, spec.verification_level) for spec in specs]""",
             "registry-audit",
         ),
@@ -94,6 +94,10 @@ The record separates scientific and numerical responsibilities:
 | `equation` | What state-preserving map is solved? |
 | `source_relation` | Is this native SILVA or a cited mechanism adaptation? |
 | `datasets` and `preprocessing` | What observations enter the experiment? |
+| `data_sources` and `data_access` | Where can the data be obtained or regenerated, and under which conditions? |
+| `storage_plan` | How should raw data, processed shards, trajectories, and checkpoints be budgeted? |
+| `compact_data` | Which deterministic package fixture validates the mechanism first? |
+| `source_scale_steps` | Which ordered steps turn that fixture into a cited full experiment? |
 | `metrics` | What must be measured besides solver residual? |
 | `notebooks` and `tests` | What executable evidence exists locally? |
 | `configurable_parts` | Which operators and scale axes may be changed? |
@@ -113,7 +117,18 @@ field error, physical residual, FID, endpoint error, or reconstruction quality."
             "inspect-contract",
         ),
         _code(
-            """for family in ("fno_deq", "mignn", "pideq", "deq_ddim"):
+            """for family in (
+    "fno_deq",
+    "mignn",
+    "pideq",
+    "deq_ddim",
+    "mondeq",
+    "pcdeq",
+    "nemon",
+    "eignn",
+    "mgnni",
+    "deltadeq",
+):
     spec = silva_reproduction_spec(family)
     print("\\n", spec.family)
     print(" equation:", spec.equation)
@@ -121,12 +136,16 @@ field error, physical residual, FID, endpoint error, or reconstruction quality."
     print(" SILVA extensions:", spec.silva_extensions)
     print(" benchmark requires:", spec.benchmark_requirements)
     print(" data:", spec.datasets)
+    print(" data sources:", spec.data_sources)
+    print(" access:", spec.data_access)
+    print(" storage:", spec.storage_plan)
+    print(" source-scale steps:", spec.source_scale_steps)
     print(" metrics:", spec.metrics)
     print(" signature:", spec.constructor_signature)""",
             "inspect-families",
         ),
         _markdown(
-            r"""## Audit All 30 Source-Conformance Records
+            r"""## Audit All 44 Source-Conformance Records
 
 Every family has a distinct governing equation and three additional records:
 what is retained from the source mechanism, what SILVA allows the user to
@@ -140,6 +159,11 @@ paper result while keeping the architecture open for new experiments.""",
 assert len({spec.preserved_mechanisms for spec in specs}) == len(specs)
 assert len({spec.silva_extensions for spec in specs}) == len(specs)
 assert len({spec.benchmark_requirements for spec in specs}) == len(specs)
+assert all(spec.data_sources for spec in specs)
+assert all(spec.data_access for spec in specs)
+assert all(spec.storage_plan for spec in specs)
+assert all(spec.compact_data for spec in specs)
+assert all(spec.source_scale_steps for spec in specs)
 
 for spec in specs:
     print(f"\\n{spec.family}")
@@ -147,6 +171,8 @@ for spec in specs:
     print(" preserves:", *spec.preserved_mechanisms)
     print(" extends:", *spec.silva_extensions)
     print(" benchmark requires:", *spec.benchmark_requirements)
+    print(" data sources:", *spec.data_sources)
+    print(" source-scale steps:", *spec.source_scale_steps)
     print(" references:", *spec.paper_refs)
     print(" repositories:", *spec.repositories)""",
             "all-source-contracts-code",
@@ -332,7 +358,7 @@ def main() -> int:
         ROOT / "docs/package-notebooks" / NAME,
         ROOT / "colab" / NAME,
     ):
-        write_notebook(path, notebook_payload)
+        write_notebook(path, notebook_payload, replace_changed=True)
     print(f"generated {NAME} and publication mirrors")
     return 0
 

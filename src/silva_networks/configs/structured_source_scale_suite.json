@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "purpose": "Complete-data experiment obligations and scalable SILVA starting profiles.",
+  "claims": {
+    "source_exact_defaults": false,
+    "note": "These are explicit scalable starting profiles. Match every source paper table, repository revision, split, augmentation, optimizer, stopping rule, seed, and metric before making a reproduction claim."
+  },
+  "common": {
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "checkpoint_fields": [
+      "model",
+      "optimizer",
+      "scheduler",
+      "epoch",
+      "seed",
+      "dataset_receipt",
+      "solver_config",
+      "source_revision"
+    ],
+    "required_reports": [
+      "task metric by split and seed",
+      "forward residual distribution",
+      "forward iterations and wall time",
+      "backward iterations and wall time",
+      "peak accelerator memory",
+      "parameter count",
+      "convergence failures"
+    ]
+  },
+  "families": {
+    "silva_monotone_operator_equilibrium": {
+      "source_method": "monDEQ",
+      "datasets": [
+        "MNIST",
+        "SVHN",
+        "CIFAR10"
+      ],
+      "data_adapter": "load_vision_source_subset",
+      "full_protocol": "Use complete source train/test splits and the source validation policy.",
+      "model": {
+        "operator": "convolutional monotone operator",
+        "state_channels": 128,
+        "splittings": [
+          "forward_backward",
+          "peaceman_rachford"
+        ]
+      },
+      "optimization": {
+        "epochs": 200,
+        "batch_size": 128,
+        "optimizer": "Adam",
+        "learning_rate": 0.001,
+        "weight_decay": 0.0
+      }
+    },
+    "silva_positive_concave_equilibrium": {
+      "source_method": "pcDEQ",
+      "datasets": [
+        "MNIST",
+        "SVHN",
+        "CIFAR10"
+      ],
+      "data_adapter": "load_vision_source_subset",
+      "full_protocol": "Preserve source positivity transforms, model variant, and evaluation split.",
+      "model": {
+        "operator": "conv2d",
+        "state_channels": 128,
+        "variants": [
+          1,
+          2
+        ]
+      },
+      "optimization": {
+        "epochs": 200,
+        "batch_size": 128,
+        "optimizer": "Adam",
+        "learning_rate": 0.001,
+        "post_step": "project_nonnegative_"
+      }
+    },
+    "silva_non_euclidean_equilibrium": {
+      "source_method": "NEMON",
+      "datasets": [
+        "MNIST",
+        "SVHN",
+        "CIFAR10"
+      ],
+      "data_adapter": "load_vision_source_subset",
+      "full_protocol": "Report clean accuracy, certified or bounded sensitivity, and matched perturbation evaluations.",
+      "model": {
+        "operator": "weighted-infinity convolutional or dense operator",
+        "state_channels": 128,
+        "one_sided_bound": 0.05
+      },
+      "optimization": {
+        "epochs": 200,
+        "batch_size": 128,
+        "optimizer": "Adam",
+        "learning_rate": 0.001
+      }
+    },
+    "silva_efficient_infinite_graph": {
+      "source_method": "EIGNN",
+      "datasets": [
+        "Cora",
+        "CiteSeer",
+        "PubMed"
+      ],
+      "data_adapter": "load_planetoid_source_subset",
+      "full_protocol": "Use the complete transductive graph and fixed Planetoid masks; never replace it with the induced teaching subset.",
+      "model": {
+        "state_dim": 128,
+        "gamma": 0.8,
+        "solve_modes": [
+          "closed_form",
+          "iterative"
+        ],
+        "precompute_spectrum": true
+      },
+      "optimization": {
+        "epochs": 1500,
+        "optimizer": "Adam",
+        "learning_rate": 0.01,
+        "weight_decay": 0.0005,
+        "early_stopping_metric": "validation accuracy"
+      }
+    },
+    "silva_multiscale_graph_implicit": {
+      "source_method": "MGNNI",
+      "datasets": [
+        "Cora",
+        "CiteSeer",
+        "PubMed"
+      ],
+      "data_adapter": "load_planetoid_source_subset",
+      "full_protocol": "Use the complete graph, source scale set, source fusion rule, and fixed split masks.",
+      "model": {
+        "state_dim": 128,
+        "scales": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "fusion": "learned softmax"
+      },
+      "optimization": {
+        "epochs": 1500,
+        "optimizer": "Adam",
+        "learning_rate": 0.01,
+        "weight_decay": 0.0005,
+        "early_stopping_metric": "validation accuracy"
+      }
+    },
+    "silva_delta_equilibrium": {
+      "source_method": "DeltaDEQ",
+      "datasets": [
+        "MPI Sintel",
+        "KITTI Flow 2015",
+        "FlyingChairs"
+      ],
+      "data_adapter": "load_optical_flow_source_subset",
+      "full_protocol": "Train and evaluate the source optical-flow backbone with the published data schedule; enable delta caching for the specified evaluation protocol.",
+      "model": {
+        "operator": "convolutional recurrent flow update",
+        "threshold_sweep": [
+          0.0,
+          0.000001,
+          0.00001,
+          0.0001,
+          0.001,
+          0.01
+        ]
+      },
+      "optimization": {
+        "optimizer": "AdamW",
+        "learning_rate": 0.0002,
+        "batch_size": 6,
+        "precision": "mixed"
+      },
+      "required_metrics": [
+        "endpoint error",
+        "outlier rate when defined",
+        "exact-map residual",
+        "active fraction",
+        "measured latency",
+        "peak memory"
+      ]
+    }
+  }
+}

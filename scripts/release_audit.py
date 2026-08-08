@@ -55,6 +55,10 @@ REQUIRED_FILES = (
     "docs/api/scientific.md",
     "docs/api/extensibility.md",
     "docs/api/reproducibility.md",
+    "docs/api/emerging_equilibria.md",
+    "docs/api/emerging_data.md",
+    "docs/api/structured_equilibria.md",
+    "docs/api/structured_data.md",
     "docs/assets/papers/silva-networks-arxiv-2607.28989.pdf",
     "docs/assets/bib/silva-networks.bib",
     "docs/learn/solver-derivation-lab.md",
@@ -67,10 +71,14 @@ REQUIRED_FILES = (
     "docs/learn/neural-operators-ode-pde.md",
     "docs/learn/frontier-equilibrium-families.md",
     "docs/learn/frontier-dataset-labs.md",
+    "docs/learn/emerging-equilibrium-methods.md",
+    "docs/learn/structured-equilibrium-families.md",
     "docs/examples/spatial-cortex.md",
     "docs/examples/point-architecture-catalog.md",
     "docs/examples/full-cortex-operators.md",
     "docs/examples/scientific-operators.md",
+    "docs/examples/emerging-equilibria.md",
+    "docs/examples/structured-equilibria.md",
     "docs/overrides/main.html",
     "docs/learn/paper-family-adaptations.md",
     "docs/package-notebooks/11_cortex_hierarchy.ipynb",
@@ -90,6 +98,20 @@ REQUIRED_FILES = (
     "docs/package-notebooks/25_silva_implicit_dae_and_residuals.ipynb",
     "docs/package-notebooks/26_full_scale_silva.ipynb",
     "docs/package-notebooks/27_reproducing_silva_and_source_methods.ipynb",
+    "docs/package-notebooks/28_silva_consistency_deq.ipynb",
+    "docs/package-notebooks/29_silva_psi_gnn.ipynb",
+    "docs/package-notebooks/30_silva_ifno_materials.ipynb",
+    "docs/package-notebooks/31_silva_snarf_forward_skinning.ipynb",
+    "docs/package-notebooks/32_silva_mesh_inference.ipynb",
+    "docs/package-notebooks/33_silva_physics_guided_diffusion_pde.ipynb",
+    "docs/package-notebooks/34_silva_therino_mechanics.ipynb",
+    "docs/package-notebooks/35_silva_fixed_point_diffusion.ipynb",
+    "docs/package-notebooks/36_silva_monotone_operator_equilibrium.ipynb",
+    "docs/package-notebooks/37_silva_positive_concave_equilibrium.ipynb",
+    "docs/package-notebooks/38_silva_non_euclidean_equilibrium.ipynb",
+    "docs/package-notebooks/39_silva_efficient_infinite_graph.ipynb",
+    "docs/package-notebooks/40_silva_multiscale_graph_implicit.ipynb",
+    "docs/package-notebooks/41_silva_delta_equilibrium.ipynb",
     "docs/api/frontier_data.md",
     "docs/learn/advanced-equilibrium-families.md",
     "docs/learn/physics-informed-equilibria.md",
@@ -122,6 +144,12 @@ REQUIRED_FILES = (
     "scripts/expand_notebook_curriculum.py",
     "scripts/expand_documentation_paths.py",
     "scripts/generate_reproduction_registry_lab.py",
+    "scripts/generate_emerging_equilibrium_labs.py",
+    "scripts/generate_structured_equilibrium_labs.py",
+    "src/silva_networks/emerging_equilibria.py",
+    "src/silva_networks/emerging_data.py",
+    "src/silva_networks/structured_equilibria.py",
+    "src/silva_networks/structured_data.py",
 )
 
 REQUIRED_NAV_MARKERS = (
@@ -136,10 +164,14 @@ REQUIRED_NAV_MARKERS = (
     "Neural Operators, ODEs, PDEs, and SILVA: learn/neural-operators-ode-pde.md",
     "Recent Equilibrium Families: learn/frontier-equilibrium-families.md",
     "Dataset-Backed Equilibrium Labs: learn/frontier-dataset-labs.md",
+    "Emerging Equilibrium Methods: learn/emerging-equilibrium-methods.md",
+    "Structured Equilibrium Families: learn/structured-equilibrium-families.md",
     "Spatial SILVA Cortex: examples/spatial-cortex.md",
     "Point Architecture Catalog: examples/point-architecture-catalog.md",
     "Full Cortex Operators: examples/full-cortex-operators.md",
     "Scientific Operators: examples/scientific-operators.md",
+    "Emerging Equilibria: examples/emerging-equilibria.md",
+    "Structured Equilibria: examples/structured-equilibria.md",
     "Paper Family Adaptations: learn/paper-family-adaptations.md",
     "Cortex Hierarchy: package-notebooks/11_cortex_hierarchy.ipynb",
     "Paper Family Architectures: package-notebooks/12_paper_family_architectures.ipynb",
@@ -158,6 +190,20 @@ REQUIRED_NAV_MARKERS = (
     "SILVA Implicit DAE and Residuals: package-notebooks/25_silva_implicit_dae_and_residuals.ipynb",
     "Full-Scale SILVA Families: package-notebooks/26_full_scale_silva.ipynb",
     "Reproducing SILVA and Source Methods: package-notebooks/27_reproducing_silva_and_source_methods.ipynb",
+    "SILVA Consistency DEQ: package-notebooks/28_silva_consistency_deq.ipynb",
+    "SILVA Psi-GNN: package-notebooks/29_silva_psi_gnn.ipynb",
+    "SILVA IFNO Materials: package-notebooks/30_silva_ifno_materials.ipynb",
+    "SILVA SNARF Forward Skinning: package-notebooks/31_silva_snarf_forward_skinning.ipynb",
+    "SILVA Mesh Inference: package-notebooks/32_silva_mesh_inference.ipynb",
+    "SILVA Physics-Guided Diffusion PDE: package-notebooks/33_silva_physics_guided_diffusion_pde.ipynb",
+    "SILVA TherINO Mechanics: package-notebooks/34_silva_therino_mechanics.ipynb",
+    "SILVA Fixed-Point Diffusion: package-notebooks/35_silva_fixed_point_diffusion.ipynb",
+    "SILVA Monotone Operator Equilibrium: package-notebooks/36_silva_monotone_operator_equilibrium.ipynb",
+    "SILVA Positive-Concave Equilibrium: package-notebooks/37_silva_positive_concave_equilibrium.ipynb",
+    "SILVA Non-Euclidean Equilibrium: package-notebooks/38_silva_non_euclidean_equilibrium.ipynb",
+    "SILVA Efficient Infinite Graph: package-notebooks/39_silva_efficient_infinite_graph.ipynb",
+    "SILVA Multiscale Graph Implicit Network: package-notebooks/40_silva_multiscale_graph_implicit.ipynb",
+    "SILVA Delta Equilibrium: package-notebooks/41_silva_delta_equilibrium.ipynb",
     "Full-Scale SILVA: learn/full-scale-silva.md",
     "Full-Scale Training: examples/full-scale-training.md",
     "Source-Aware Reproduction: examples/reproduction-registry.md",
@@ -177,6 +223,10 @@ REQUIRED_NAV_MARKERS = (
     "Scientific Operators: api/scientific.md",
     "Extensibility: api/extensibility.md",
     "Reproducibility: api/reproducibility.md",
+    "Emerging Equilibria: api/emerging_equilibria.md",
+    "Emerging Equilibrium Data: api/emerging_data.md",
+    "Structured Equilibria: api/structured_equilibria.md",
+    "Structured Equilibrium Data: api/structured_data.md",
     "Extending SILVA: learn/extending-silva.md",
     "Reproducing SILVA and Source Methods: learn/reproducing-silva-and-papers.md",
     "Benchmark Cards: experiments/benchmark-cards.md",
@@ -199,7 +249,7 @@ STALE_PATTERNS = (
 
 TEXT_SUFFIXES = {".md", ".cff", ".yml", ".yaml", ".toml", ".py", ".bib", ".ipynb"}
 SKIP_PARTS = {".git", ".venv", "venv", "__pycache__", "site", "dist", "build"}
-PROVENANCE_TEXT_SUFFIXES = TEXT_SUFFIXES | {
+ORIGIN_TEXT_SUFFIXES = TEXT_SUFFIXES | {
     ".cfg",
     ".css",
     ".html",
@@ -211,8 +261,8 @@ PROVENANCE_TEXT_SUFFIXES = TEXT_SUFFIXES | {
     ".sh",
     ".txt",
 }
-PROVENANCE_TOKEN_RE = re.compile(r"[A-Za-z][A-Za-z0-9_-]*")
-PROVENANCE_TOKEN_FINGERPRINTS = frozenset(
+ORIGIN_TOKEN_RE = re.compile(r"[A-Za-z][A-Za-z0-9_-]*")
+ORIGIN_TOKEN_FINGERPRINTS = frozenset(
     {
         "57de4cf40144bdf7d00010f2f5557a7d642c2b9705309bfade167dd313e2ca93",
         "60965168ce762e949600281ba6d01fee136e5b6e8257b1f216f9025ed324474c",
@@ -258,7 +308,7 @@ def run_audit(root: Path = ROOT) -> dict[str, list[str]]:
     _check_nav(root, errors)
     _check_api_reference(root, errors)
     _check_stale_patterns(root, errors)
-    _check_repository_provenance(root, errors)
+    _check_repository_origin_markers(root, errors)
     _check_coverage_registry(root, errors)
     _check_companion_asset_policy(root, errors, warnings)
     _check_docs_rendering_assets(root, errors)
@@ -313,8 +363,8 @@ def _check_notebook_curriculum(root: Path, errors: list[str]) -> None:
         *sorted((root / "notebooks/implicit_bridge").glob("*.ipynb")),
         *sorted((root / "notebooks").glob("*.ipynb")),
     ]
-    if len(canonical) != 62:
-        errors.append(f"expected 62 canonical notebooks; found {len(canonical)}")
+    if len(canonical) != 82:
+        errors.append(f"expected 82 canonical notebooks; found {len(canonical)}")
         return
     for path in canonical:
         notebook = json.loads(path.read_text(encoding="utf-8"))
@@ -335,10 +385,21 @@ def _check_notebook_curriculum(root: Path, errors: list[str]) -> None:
             if "silva-extension-curriculum"
             in cell.get("metadata", {}).get("tags", [])
         ]
-        if len(cells) != 4:
+        if len(cells) != 8:
             errors.append(
-                f"{path.relative_to(root)} has {len(cells)} extension curriculum cells; expected 4"
+                f"{path.relative_to(root)} has {len(cells)} extension curriculum cells; expected 8"
             )
+        curriculum_source = "\n".join(
+            "".join(cell.get("source", [])) for cell in cells
+        )
+        for marker in (
+            "Worked Convergence and Sensitivity Study",
+            "Reading and Extending the Result",
+        ):
+            if marker not in curriculum_source:
+                errors.append(
+                    f"{path.relative_to(root)} is missing notebook curriculum: {marker}"
+                )
 
 
 def _check_arxiv_and_bibtex(root: Path, errors: list[str]) -> None:
@@ -511,10 +572,10 @@ def _check_stale_patterns(root: Path, errors: list[str]) -> None:
                 errors.append(f"stale citation text in {path.relative_to(root)}: {pattern}")
 
 
-def _contains_blocked_provenance_token(text: str) -> bool:
-    for match in PROVENANCE_TOKEN_RE.finditer(text):
+def _contains_blocked_origin_token(text: str) -> bool:
+    for match in ORIGIN_TOKEN_RE.finditer(text):
         token = match.group(0).lower().encode("utf-8")
-        if hashlib.sha256(token).hexdigest() in PROVENANCE_TOKEN_FINGERPRINTS:
+        if hashlib.sha256(token).hexdigest() in ORIGIN_TOKEN_FINGERPRINTS:
             return True
     return False
 
@@ -536,7 +597,7 @@ def _tracked_paths(root: Path) -> list[Path]:
     ]
 
 
-def _provenance_text(path: Path) -> str:
+def _repository_text(path: Path) -> str:
     if path.suffix == ".ipynb":
         notebook = json.loads(path.read_text(encoding="utf-8"))
         chunks = [json.dumps(notebook.get("metadata", {}), sort_keys=True)]
@@ -545,15 +606,15 @@ def _provenance_text(path: Path) -> str:
     return path.read_text(encoding="utf-8", errors="ignore")
 
 
-def _check_repository_provenance(root: Path, errors: list[str]) -> None:
+def _check_repository_origin_markers(root: Path, errors: list[str]) -> None:
     for path in _tracked_paths(root):
         relative = path.relative_to(root)
-        if _contains_blocked_provenance_token(relative.as_posix()):
-            errors.append(f"blocked provenance reference in repository path: {relative}")
-        if path.suffix.lower() not in PROVENANCE_TEXT_SUFFIXES:
+        if _contains_blocked_origin_token(relative.as_posix()):
+            errors.append(f"blocked origin reference in repository path: {relative}")
+        if path.suffix.lower() not in ORIGIN_TEXT_SUFFIXES:
             continue
-        if _contains_blocked_provenance_token(_provenance_text(path)):
-            errors.append(f"blocked provenance reference in repository text: {relative}")
+        if _contains_blocked_origin_token(_repository_text(path)):
+            errors.append(f"blocked origin reference in repository text: {relative}")
 
     if not (root / ".git").exists():
         return
@@ -564,8 +625,8 @@ def _check_repository_provenance(root: Path, errors: list[str]) -> None:
         capture_output=True,
         check=False,
     )
-    if result.returncode == 0 and _contains_blocked_provenance_token(result.stdout):
-        errors.append("blocked provenance reference in commit history")
+    if result.returncode == 0 and _contains_blocked_origin_token(result.stdout):
+        errors.append("blocked origin reference in commit history")
 
 
 def _check_coverage_registry(root: Path, errors: list[str]) -> None:

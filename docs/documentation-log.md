@@ -6,6 +6,71 @@ paper, book sources, or production code outside the package.
 
 <div class="silva-doclog" markdown>
 <div class="silva-doclog__date" markdown>
+<strong>August 8, 2026</strong>
+<span>SILVA Networks 1.2.0 release preparation</span>
+</div>
+<div class="silva-doclog__body" markdown>
+## Version 1.2.0
+
+Prepared the expanded public package surface for the next feature release while
+keeping the existing history, citation chain, notebooks, and archive identifiers
+aligned with the package version.
+
+| Area | Change |
+| --- | --- |
+| Release metadata | Advanced the package, import surface, CFF record, Zenodo metadata, changelog, source tag, README, references, and BibTeX software citation to 1.2.0. |
+| Public surface | Kept the expanded structured, emerging, source-data, benchmark, notebook, example, and audit additions in the release candidate. |
+| Validation path | Updated release-readiness and publishing instructions for the validated `v1.2.0` tag, PyPI target, GitHub Release, and Zenodo archive flow. |
+</div>
+</div>
+
+<div class="silva-doclog" markdown>
+<div class="silva-doclog__date" markdown>
+<strong>August 7, 2026</strong>
+<span>Complete worked studies and executed notebook diagnostics</span>
+</div>
+<div class="silva-doclog__body" markdown>
+## Derivation, Results, and Scale Expansion
+
+Expanded the existing examples and notebooks while retaining their prior text,
+cells, outputs, figures, abstractions, and navigation.
+
+| Area | Change |
+| --- | --- |
+| Worked examples | Added complete programs, four linked derivations, measured compact output, result interpretation, and scale/full-data routes to all 25 worked pages. |
+| API guides | Expanded 15 compact reference pages with operational equations, tensor and diagnostic contracts, complete programs, measured output, replacement points, and scale axes. |
+| Learning guides | Added complete result-bearing studies to fixed points, custom layers, interactive diagnostics, advanced data contracts, and stacked device-aware architectures. |
+| Notebook curriculum | Added an analytic equilibrium, convergence-rate derivation, exact sensitivity, gradient check, parameter sweep, and interpretation layer to all 82 canonical notebooks. |
+| Executed evidence | Stored results from 946 code cells, 906 output blocks, and 216 embedded 300-dpi figures, with at least one figure in every canonical notebook. |
+| Publication copies | Added output-only synchronization so rendered and portable notebooks retain canonical results without losing citation or navigation cells. |
+| Regression checks | Added coverage for all 25 standalone programs, every worked-page depth contract, every notebook diagnostic block, stored outputs, figures, and mirror equality. |
+</div>
+</div>
+
+<div class="silva-doclog" markdown>
+<div class="silva-doclog__date" markdown>
+<strong>August 6, 2026</strong>
+<span>Attributed real-data reproduction layer</span>
+</div>
+<div class="silva-doclog__body" markdown>
+## Source Data, Receipts, and Executed Labs
+
+Expanded the structured family material without removing its known-solution
+derivations, outputs, or plots.
+
+| Area | Change |
+| --- | --- |
+| Source adapters | Added deterministic vision, Planetoid, optical-flow, public-motion, and Darcy-field loaders. |
+| Source records | Added receipts with indices, split, preprocessing, access, version, and tensor-content SHA-256. |
+| Snapshots | Added verified compact CIFAR-10, Cora, and real-motion records with a machine-readable manifest. |
+| Notebooks | Extended labs 36-41 with real-tensor construction, gradients, diagnostics, non-benchmark scope, citations, outputs, and 300 DPI plots. |
+| Scale guidance | Added compact and source-scale JSON profiles, storage planning, official split guidance, and complete experiment checklists. |
+| Tests | Added deterministic, checksum, graph-mask, flow-resizing, Darcy-loading, snapshot-integrity, and six-family integration coverage. |
+</div>
+</div>
+
+<div class="silva-doclog" markdown>
+<div class="silva-doclog__date" markdown>
 <strong>August 5, 2026</strong>
 <span>SILVA Networks 1.1.0 extension and reproduction release</span>
 </div>
@@ -18,9 +83,11 @@ custom transition modules through source-aware compact and scaled reproduction.
 | Area | Change |
 | --- | --- |
 | Extensibility | Added transition validation, configurable initializer/transition/readout composition, real family constructors, and inspectable signatures. |
-| Reproduction | Added equations, sources, repositories, data obligations, metrics, evidence paths, verification levels, and scale-aware builders for all 30 canonical families. |
+| Reproduction | Added equations, sources, repositories, data obligations, metrics, evidence paths, verification levels, and scale-aware builders for all 44 canonical families. |
+| Emerging families | Added consistency distillation, mixed-boundary graph roots, implicit Fourier materials, forward skinning, mesh relaxation, physics-guided diffusion, TherINO, and fixed-point diffusion inside the SILVA construction contract. |
 | Diffusion restoration | Added complete reverse-step and observation-consistency hooks inside the joint SILVA trajectory. |
-| Learning | Expanded all 62 canonical notebooks and 112 navigable Markdown pages with derivations, module replacement, equivalence, gradients, reproduction, and scaling paths. |
+| Learning | Expanded all 82 canonical notebooks and the navigable Markdown pages with derivations, module replacement, equivalence, gradients, reproduction, and scaling paths. |
+| Executable evidence | Added eight focused family labs with compact known-solution data, retained numerical outputs, and 300 DPI simulation plots. |
 | Validation | Executed every canonical notebook, expanded tests and audits, stabilized generated notebook text, and upgraded workflow actions. |
 </div>
 </div>
@@ -55,7 +122,7 @@ release history.
 <div class="silva-doclog__body" markdown>
 ## Full-Scale SILVA Pass
 
-Connected all 30 canonical SILVA families to executable scale controls while
+Connected all 44 canonical SILVA families to executable scale controls while
 keeping the existing constructors and ordinary runtime defaults compatible.
 
 | Area | Change |
@@ -356,7 +423,7 @@ PDFs are treated as sources and references, not as files to rewrite here.
 | Companion book/manual | Planned public learning assets connected to the package roadmap. |
 | External papers | References are cited and linked from the documentation. |
 
-All 112 Markdown pages and 36 rendered notebooks use contextual `Where to Go
+All 116 navigable Markdown pages and 44 rendered notebooks use contextual `Where to Go
 Next` tables. Each table connects the current page to the most relevant
 derivation, executable material, example, or API contract, and the
 documentation audit checks this coverage during release validation.

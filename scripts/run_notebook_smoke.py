@@ -28,6 +28,20 @@ DEFAULT_NOTEBOOKS = (
     "docs/package-notebooks/25_silva_implicit_dae_and_residuals.ipynb",
     "docs/package-notebooks/26_full_scale_silva.ipynb",
     "docs/package-notebooks/27_reproducing_silva_and_source_methods.ipynb",
+    "docs/package-notebooks/28_silva_consistency_deq.ipynb",
+    "docs/package-notebooks/29_silva_psi_gnn.ipynb",
+    "docs/package-notebooks/30_silva_ifno_materials.ipynb",
+    "docs/package-notebooks/31_silva_snarf_forward_skinning.ipynb",
+    "docs/package-notebooks/32_silva_mesh_inference.ipynb",
+    "docs/package-notebooks/33_silva_physics_guided_diffusion_pde.ipynb",
+    "docs/package-notebooks/34_silva_therino_mechanics.ipynb",
+    "docs/package-notebooks/35_silva_fixed_point_diffusion.ipynb",
+    "docs/package-notebooks/36_silva_monotone_operator_equilibrium.ipynb",
+    "docs/package-notebooks/37_silva_positive_concave_equilibrium.ipynb",
+    "docs/package-notebooks/38_silva_non_euclidean_equilibrium.ipynb",
+    "docs/package-notebooks/39_silva_efficient_infinite_graph.ipynb",
+    "docs/package-notebooks/40_silva_multiscale_graph_implicit.ipynb",
+    "docs/package-notebooks/41_silva_delta_equilibrium.ipynb",
     "docs/implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb",
 )
 
@@ -40,12 +54,18 @@ def all_canonical_notebooks() -> tuple[str, ...]:
         *sorted((ROOT / "notebooks/implicit_bridge").glob("*.ipynb")),
         *sorted((ROOT / "notebooks").glob("*.ipynb")),
     ]
-    if len(paths) != 62:
-        raise RuntimeError(f"expected 62 canonical notebooks, found {len(paths)}")
+    if len(paths) != 82:
+        raise RuntimeError(f"expected 82 canonical notebooks, found {len(paths)}")
     return tuple(path.relative_to(ROOT).as_posix() for path in paths)
 
 
-def execute_notebook(path: Path, *, timeout: int, output_dir: Path | None = None) -> Path | None:
+def execute_notebook(
+    path: Path,
+    *,
+    timeout: int,
+    output_dir: Path | None = None,
+    inplace: bool = False,
+) -> Path | None:
     """Execute one notebook and optionally write the executed copy."""
 
     try:
@@ -74,6 +94,9 @@ def execute_notebook(path: Path, *, timeout: int, output_dir: Path | None = None
     )
     processor.preprocess(notebook, {"metadata": {"path": str(ROOT)}})
 
+    if inplace:
+        nbformat.write(notebook, path)
+        return path
     if output_dir is None:
         return None
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -102,11 +125,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--output-dir", type=Path, help="optional directory for executed notebook copies"
     )
+    parser.add_argument(
+        "--inplace", action="store_true", help="replace each notebook with its executed copy"
+    )
     parser.add_argument("--list", action="store_true", help="list default notebooks and exit")
     parser.add_argument(
         "--all",
         action="store_true",
-        help="execute all 62 canonical package, bridge, and book notebooks",
+        help="execute all 82 canonical package, bridge, and book notebooks",
     )
     parser.add_argument(
         "--list-all",
@@ -117,6 +143,8 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.notebooks and args.all:
         parser.error("explicit notebook paths cannot be combined with --all")
+    if args.inplace and args.output_dir is not None:
+        parser.error("--inplace cannot be combined with --output-dir")
     if args.list:
         for notebook in DEFAULT_NOTEBOOKS:
             print(notebook)
@@ -131,7 +159,12 @@ def main(argv: list[str] | None = None) -> int:
     for notebook in notebooks:
         relative = notebook.relative_to(ROOT)
         print(f"executing {relative}")
-        output_path = execute_notebook(notebook, timeout=args.timeout, output_dir=args.output_dir)
+        output_path = execute_notebook(
+            notebook,
+            timeout=args.timeout,
+            output_dir=args.output_dir,
+            inplace=args.inplace,
+        )
         if output_path is not None:
             try:
                 display_path = output_path.relative_to(ROOT)

@@ -1,0 +1,207 @@
+{
+  "family": "silva_efficient_infinite_graph",
+  "title": "efficient infinite-depth graph equilibrium",
+  "domain": "graphs and distributed systems",
+  "task_contract": "N,D node features and symmetric or sparse graph operator -> node output",
+  "source_relation": "paper-adaptation",
+  "equation": "Z_star=gamma S^T Z_star g(F)^T+X; g(F)=F^T F/||F^T F||_F",
+  "constructor_signature": "(in_dim: 'int', state_dim: 'int', out_dim: 'int', *, gamma: 'float' = 0.8, learnable_gamma: 'bool' = False, source: 'nn.Module | None' = None, readout: 'nn.Module | None' = None, solve_mode: 'GraphSolveMode' = 'auto', gram_epsilon: 'float' = 1e-12, config: 'SolverConfig | None' = None) -> 'None'",
+  "paper_refs": [
+    78
+  ],
+  "repositories": [
+    "https://github.com/liu-jc/EIGNN"
+  ],
+  "datasets": [
+    "Cora",
+    "Citeseer",
+    "Pubmed",
+    "Amazon co-purchase graphs",
+    "compact chain graphs"
+  ],
+  "data_sources": [
+    "https://arxiv.org/abs/2202.10720",
+    "https://github.com/liu-jc/EIGNN"
+  ],
+  "data_access": [
+    "Citation and co-purchase graph datasets are publicly distributed through their respective benchmark providers.",
+    "Retain the exact split, feature normalization, self-loop convention, graph normalization, and source revision."
+  ],
+  "storage_plan": [
+    "Sparse iterative storage is proportional to edges plus node states; the dense closed form additionally stores graph eigenvectors with quadratic node cost.",
+    "Precompute dense spectra only when they fit comfortably; shard features and use sparse propagation for large graphs."
+  ],
+  "preprocessing": [
+    "record dataset version, split, normalization, shape convention, and seed",
+    "preserve masks, graph indices, boundaries, or physical units required by the domain"
+  ],
+  "metrics": [
+    "node accuracy",
+    "closed-form/iterative agreement",
+    "denominator margin",
+    "runtime and memory"
+  ],
+  "compact_data": [
+    "make_eignn_chain_dataset gives a normalized graph, injected signals, and a known infinite-depth equilibrium."
+  ],
+  "preserved_mechanisms": [
+    "Frobenius-normalized positive-semidefinite channel Gram map",
+    "graph/channel eigendecomposition for an exact dense symmetric solve",
+    "the same equilibrium equation through iterative sparse or directed propagation"
+  ],
+  "configurable_parts": [
+    "replace source/readout maps and normalized channel Gram factor",
+    "switch between differentiable closed-form and iterative SILVA solves",
+    "nodes",
+    "sparse edges",
+    "channel width",
+    "spectral cache"
+  ],
+  "source_scale_steps": [
+    "Acquire a declared graph benchmark and preserve its official features, labels, split, and normalization.",
+    "Use the normalized channel Gram map and match gamma, width, optimizer, early stopping, and either spectral or iterative solve route.",
+    "Check closed-form/iterative agreement on a compact graph before reporting source-scale node accuracy, denominator margin, runtime, and memory."
+  ],
+  "benchmark_requirements": [
+    "source graph split, features, graph normalization, labels, and transductive protocol",
+    "hidden width, gamma, optimizer, weight decay, early stopping, and seeds",
+    "node accuracy, closed-form agreement, denominator margin, runtime, and memory"
+  ],
+  "notebooks": [
+    "notebooks/package_api/39_silva_efficient_infinite_graph.ipynb"
+  ],
+  "tests": [
+    "tests/test_structured_equilibria.py"
+  ],
+  "compact_defaults": [
+    [
+      "tier",
+      "'smoke'"
+    ],
+    [
+      "config",
+      "SolverConfig(solver='anderson', max_iter=12, tol=1e-05, alpha=1.0, history=3, ridge=0.0001, beta=1.0, stop_mode='relative', relative_eps=1e-08, anderson_batch_dims=0, track_residuals=True, reengage=True, backward_mode='implicit', backward_solver='gmres', backward_max_iter=20, backward_tol=1e-05, backward_stop_mode='relative', backward_relative_eps=1e-08, phantom_steps=1, phantom_tau=1.0, indexing=(), return_best=True)"
+    ]
+  ],
+  "full_defaults": [
+    [
+      "tier",
+      "'full'"
+    ],
+    [
+      "config",
+      "SolverConfig(solver='anderson', max_iter=60, tol=1e-05, alpha=1.0, history=6, ridge=0.0001, beta=1.0, stop_mode='relative', relative_eps=1e-08, anderson_batch_dims=0, track_residuals=True, reengage=True, backward_mode='implicit', backward_solver='gmres', backward_max_iter=80, backward_tol=1e-05, backward_stop_mode='relative', backward_relative_eps=1e-08, phantom_steps=1, phantom_tau=1.0, indexing=(), return_best=True)"
+    ]
+  ],
+  "stages": [
+    {
+      "name": "Equation and tensor contract",
+      "objective": "Make the state, conditioning variables, operator, and readout explicit.",
+      "procedure": [
+        "Write and evaluate the family equation: `Z_star=gamma S^T Z_star g(F)^T+X; g(F)=F^T F/||F^T F||_F`",
+        "Declare every tensor axis, boundary, mask, graph, or physical unit.",
+        "Check the transition output has exactly the same shape as the equilibrium state."
+      ],
+      "acceptance_checks": [
+        "finite transition values",
+        "shape-preserving state update",
+        "all conditioning variables affect the intended branch"
+      ],
+      "evidence_status": "contract-verified"
+    },
+    {
+      "name": "Primitive mechanism reconstruction",
+      "objective": "Build the retained source mechanism from replaceable modules.",
+      "procedure": [
+        "Frobenius-normalized positive-semidefinite channel Gram map",
+        "graph/channel eigendecomposition for an exact dense symmetric solve",
+        "the same equilibrium equation through iterative sparse or directed propagation"
+      ],
+      "acceptance_checks": [
+        "primitive modules expose trainable parameters and gradients",
+        "mechanism-specific invariance or constraint check passes",
+        "direct transition evaluation is deterministic under a fixed seed"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Public abstraction equivalence",
+      "objective": "Verify that the assembled family evaluates the same transition as its primitives.",
+      "procedure": [
+        "Copy the primitive module parameters into the public family constructor.",
+        "Evaluate one transition and one complete equilibrium with identical inputs.",
+        "Compare outputs, residuals, and parameter gradients with declared tolerances."
+      ],
+      "acceptance_checks": [
+        "transition outputs agree",
+        "equilibrium residual is finite and decreases",
+        "primitive and assembled gradients agree on the compact case"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Compact real or analytic task",
+      "objective": "Exercise training, evaluation, diagnostics, and serialization end to end.",
+      "procedure": [
+        "make_eignn_chain_dataset gives a normalized graph, injected signals, and a known infinite-depth equilibrium."
+      ],
+      "acceptance_checks": [
+        "record node accuracy",
+        "record closed-form/iterative agreement",
+        "record denominator margin",
+        "record runtime and memory",
+        "checkpoint reload reproduces the recorded prediction",
+        "result record contains data and configuration fingerprints"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Official-data subset",
+      "objective": "Validate the complete source data path before spending the full budget.",
+      "procedure": [
+        "Acquire a declared graph benchmark and preserve its official features, labels, split, and normalization.",
+        "Freeze preprocessing, split logic, metric code, and checkpoint format.",
+        "Run a deterministic subset large enough to expose batching and memory failures."
+      ],
+      "acceptance_checks": [
+        "dataset receipt and checksum are stored",
+        "resume and evaluation paths reproduce the same subset metric",
+        "memory and runtime are measured rather than estimated"
+      ],
+      "evidence_status": "subset-verified"
+    },
+    {
+      "name": "Source-scale reproduction or declared extension",
+      "objective": "Run the cited protocol, or change it explicitly as a SILVA extension.",
+      "procedure": [
+        "Acquire a declared graph benchmark and preserve its official features, labels, split, and normalization.",
+        "Use the normalized channel Gram map and match gamma, width, optimizer, early stopping, and either spectral or iterative solve route.",
+        "Check closed-form/iterative agreement on a compact graph before reporting source-scale node accuracy, denominator margin, runtime, and memory.",
+        "source graph split, features, graph normalization, labels, and transductive protocol",
+        "hidden width, gamma, optimizer, weight decay, early stopping, and seeds",
+        "node accuracy, closed-form agreement, denominator margin, runtime, and memory"
+      ],
+      "acceptance_checks": [
+        "all required artifacts are archived",
+        "reported metrics use the cited evaluation protocol",
+        "every architectural or training deviation is listed",
+        "claims match the achieved evidence status"
+      ],
+      "evidence_status": "planned"
+    }
+  ],
+  "required_artifacts": [
+    "machine-readable model and solver configuration",
+    "dataset receipt with source revision, split, license, and checksum",
+    "preprocessing and normalization record",
+    "seeded training and evaluation log",
+    "checkpoint and optimizer-resume state for trained experiments",
+    "task metrics and equilibrium diagnostics in a machine-readable result",
+    "runtime, peak-memory, device, precision, and dependency record",
+    "declared deviations from the cited protocol"
+  ],
+  "schema_version": 1,
+  "requested_tier": "full",
+  "achieved_evidence_status": "compact-verified",
+  "source_scale_status": "planned"
+}

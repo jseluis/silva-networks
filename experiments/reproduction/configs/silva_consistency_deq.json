@@ -1,0 +1,211 @@
+{
+  "family": "silva_consistency_deq",
+  "title": "trajectory-distilled equilibrium accelerator",
+  "domain": "vision and generation",
+  "task_contract": "condition plus fixed teacher transition -> one- or few-step equilibrium estimate",
+  "source_relation": "paper-adaptation",
+  "equation": "g_phi(z_t,t,x)=c_skip(t)z_t+c_out(t)P_phi(z_<=t,t,x)",
+  "constructor_signature": "(state_dim: 'int', condition_dim: 'int', *, teacher_transition: 'nn.Module', initializer: 'Callable[[Tensor], Tensor] | None' = None, refiner: 'nn.Module | None' = None, readout: 'nn.Module | None' = None, epsilon: 'float' = 0.002, terminal_time: 'float' = 1.0, gamma: 'float' = 2.0, rho: 'float' = 0.1, anderson_beta: 'float' = 0.9, teacher_config: 'SolverConfig | None' = None)",
+  "paper_refs": [
+    59
+  ],
+  "repositories": [
+    "https://github.com/landrarwolf/CDEQ"
+  ],
+  "datasets": [
+    "WikiText-103",
+    "ImageNet",
+    "ogbn-arxiv",
+    "ogbn-products",
+    "analytic contractive teacher trajectories"
+  ],
+  "data_sources": [
+    "https://github.com/landrarwolf/CDEQ",
+    "https://www.salesforce.com/blog/the-wikitext-long-term-dependency-language-modeling-dataset/",
+    "https://ogb.stanford.edu/docs/nodeprop/",
+    "https://www.image-net.org/"
+  ],
+  "data_access": [
+    "WikiText-103 and OGB provide public acquisition routes under their stated terms.",
+    "ImageNet requires registration and acceptance of its access terms.",
+    "Record the teacher and consistency-checkpoint revisions separately from the dataset checksum."
+  ],
+  "storage_plan": [
+    "Teacher cache bytes = samples * stored solver states * state elements * bytes per element.",
+    "For example, 1,000,000 vector samples with 8 stored 512-float32 states require about 15.3 GiB before labels, indices, and checkpoints."
+  ],
+  "preprocessing": [
+    "record dataset version, split, normalization, shape convention, and seed",
+    "preserve masks, graph indices, boundaries, or physical units required by the domain"
+  ],
+  "metrics": [
+    "task metric",
+    "one/few-step equilibrium error",
+    "local/global consistency",
+    "teacher evaluations",
+    "latency"
+  ],
+  "compact_data": [
+    "make_consistency_teacher_dataset gives exact contractive teacher equilibria and solver trajectories."
+  ],
+  "preserved_mechanisms": [
+    "fixed initial state and solver-induced teacher trajectory",
+    "terminally anchored consistency parameterization",
+    "two-state Anderson-structured refinement and local/global consistency losses"
+  ],
+  "configurable_parts": [
+    "replace teacher transition, refiner, time schedule, Anderson structure, or readout",
+    "attach task losses and an exponential-moving-average target",
+    "teacher solver trajectory cache",
+    "history window",
+    "student width",
+    "inference steps"
+  ],
+  "source_scale_steps": [
+    "Acquire one official task and reproduce its teacher preprocessing and evaluation first.",
+    "Load the teacher checkpoint into the matching SILVA transition and cache deterministic solver trajectories.",
+    "Train the refiner with global/local consistency and an EMA target, then sweep one, two, and few-step inference against teacher quality and latency."
+  ],
+  "benchmark_requirements": [
+    "pretrained teacher checkpoint and exact solver settings",
+    "cached trajectories, time mapping, augmentation, optimizer, EMA, and task protocol",
+    "WikiText-103, ImageNet, or OGB preprocessing and published evaluation budget"
+  ],
+  "notebooks": [
+    "notebooks/package_api/28_silva_consistency_deq.ipynb"
+  ],
+  "tests": [
+    "tests/test_emerging_equilibria.py"
+  ],
+  "compact_defaults": [
+    [
+      "tier",
+      "'smoke'"
+    ],
+    [
+      "teacher_config",
+      "SolverConfig(solver='anderson', max_iter=12, tol=1e-05, alpha=1.0, history=3, ridge=0.0001, beta=1.0, stop_mode='relative', relative_eps=1e-08, anderson_batch_dims=1, track_residuals=True, reengage=True, backward_mode='implicit', backward_solver='gmres', backward_max_iter=20, backward_tol=1e-05, backward_stop_mode='relative', backward_relative_eps=1e-08, phantom_steps=1, phantom_tau=1.0, indexing=(), return_best=True)"
+    ]
+  ],
+  "full_defaults": [
+    [
+      "tier",
+      "'full'"
+    ],
+    [
+      "teacher_config",
+      "SolverConfig(solver='anderson', max_iter=60, tol=1e-05, alpha=1.0, history=6, ridge=0.0001, beta=1.0, stop_mode='relative', relative_eps=1e-08, anderson_batch_dims=1, track_residuals=True, reengage=True, backward_mode='implicit', backward_solver='gmres', backward_max_iter=80, backward_tol=1e-05, backward_stop_mode='relative', backward_relative_eps=1e-08, phantom_steps=1, phantom_tau=1.0, indexing=(), return_best=True)"
+    ]
+  ],
+  "stages": [
+    {
+      "name": "Equation and tensor contract",
+      "objective": "Make the state, conditioning variables, operator, and readout explicit.",
+      "procedure": [
+        "Write and evaluate the family equation: `g_phi(z_t,t,x)=c_skip(t)z_t+c_out(t)P_phi(z_<=t,t,x)`",
+        "Declare every tensor axis, boundary, mask, graph, or physical unit.",
+        "Check the transition output has exactly the same shape as the equilibrium state."
+      ],
+      "acceptance_checks": [
+        "finite transition values",
+        "shape-preserving state update",
+        "all conditioning variables affect the intended branch"
+      ],
+      "evidence_status": "contract-verified"
+    },
+    {
+      "name": "Primitive mechanism reconstruction",
+      "objective": "Build the retained source mechanism from replaceable modules.",
+      "procedure": [
+        "fixed initial state and solver-induced teacher trajectory",
+        "terminally anchored consistency parameterization",
+        "two-state Anderson-structured refinement and local/global consistency losses"
+      ],
+      "acceptance_checks": [
+        "primitive modules expose trainable parameters and gradients",
+        "mechanism-specific invariance or constraint check passes",
+        "direct transition evaluation is deterministic under a fixed seed"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Public abstraction equivalence",
+      "objective": "Verify that the assembled family evaluates the same transition as its primitives.",
+      "procedure": [
+        "Copy the primitive module parameters into the public family constructor.",
+        "Evaluate one transition and one complete equilibrium with identical inputs.",
+        "Compare outputs, residuals, and parameter gradients with declared tolerances."
+      ],
+      "acceptance_checks": [
+        "transition outputs agree",
+        "equilibrium residual is finite and decreases",
+        "primitive and assembled gradients agree on the compact case"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Compact real or analytic task",
+      "objective": "Exercise training, evaluation, diagnostics, and serialization end to end.",
+      "procedure": [
+        "make_consistency_teacher_dataset gives exact contractive teacher equilibria and solver trajectories."
+      ],
+      "acceptance_checks": [
+        "record task metric",
+        "record one/few-step equilibrium error",
+        "record local/global consistency",
+        "record teacher evaluations",
+        "checkpoint reload reproduces the recorded prediction",
+        "result record contains data and configuration fingerprints"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Official-data subset",
+      "objective": "Validate the complete source data path before spending the full budget.",
+      "procedure": [
+        "Acquire one official task and reproduce its teacher preprocessing and evaluation first.",
+        "Freeze preprocessing, split logic, metric code, and checkpoint format.",
+        "Run a deterministic subset large enough to expose batching and memory failures."
+      ],
+      "acceptance_checks": [
+        "dataset receipt and checksum are stored",
+        "resume and evaluation paths reproduce the same subset metric",
+        "memory and runtime are measured rather than estimated"
+      ],
+      "evidence_status": "subset-verified"
+    },
+    {
+      "name": "Source-scale reproduction or declared extension",
+      "objective": "Run the cited protocol, or change it explicitly as a SILVA extension.",
+      "procedure": [
+        "Acquire one official task and reproduce its teacher preprocessing and evaluation first.",
+        "Load the teacher checkpoint into the matching SILVA transition and cache deterministic solver trajectories.",
+        "Train the refiner with global/local consistency and an EMA target, then sweep one, two, and few-step inference against teacher quality and latency.",
+        "pretrained teacher checkpoint and exact solver settings",
+        "cached trajectories, time mapping, augmentation, optimizer, EMA, and task protocol",
+        "WikiText-103, ImageNet, or OGB preprocessing and published evaluation budget"
+      ],
+      "acceptance_checks": [
+        "all required artifacts are archived",
+        "reported metrics use the cited evaluation protocol",
+        "every architectural or training deviation is listed",
+        "claims match the achieved evidence status"
+      ],
+      "evidence_status": "planned"
+    }
+  ],
+  "required_artifacts": [
+    "machine-readable model and solver configuration",
+    "dataset receipt with source revision, split, license, and checksum",
+    "preprocessing and normalization record",
+    "seeded training and evaluation log",
+    "checkpoint and optimizer-resume state for trained experiments",
+    "task metrics and equilibrium diagnostics in a machine-readable result",
+    "runtime, peak-memory, device, precision, and dependency record",
+    "declared deviations from the cited protocol"
+  ],
+  "schema_version": 1,
+  "requested_tier": "full",
+  "achieved_evidence_status": "compact-verified",
+  "source_scale_status": "planned"
+}

@@ -113,6 +113,9 @@ python examples/spatial_cortex.py
 python examples/point_architecture_catalog.py
 python examples/full_cortex_operators.py
 python examples/scientific_operators.py
+python examples/frontier_equilibria.py
+python examples/advanced_equilibria.py
+python examples/emerging_equilibria.py
 python examples/stacked_architecture.py
 python examples/datasets_quickstart.py
 python examples/deq_engine_bridge.py
@@ -139,6 +142,7 @@ Use the example pages for explanations:
 | [DEQ Engine Bridge](examples/deq-engine-bridge.md) | arbitrary single-state and multi-state fixed-point systems |
 | [Optical Flow SILVA](examples/optical-flow-silva.md) | synthetic fixed-point flow validation |
 | [Constrained Optimization](examples/constrained-optimization.md) | projected simplex QP solve through the family selector |
+| [Emerging Equilibria](examples/emerging-equilibria.md) | eight compact source-mechanism checks and full-experiment handoffs |
 | [Citation-Aware Reporting](examples/citation-aware-reporting.md) | methods paragraph and citation checklist |
 | [Full-Scale Training](examples/full-scale-training.md) | lazy PDE shards, Fourier equilibrium, accumulation, and checkpoint resume |
 
@@ -169,8 +173,22 @@ The package API track:
 | [RAFT and DEQ-Flow](package-notebooks/13_raft_deq_flow.ipynb) | coupled hidden/flow state, exact implicit gradients, corrections, upsampling, and reuse |
 | [Point Architecture Catalog](package-notebooks/14_point_architecture_catalog.ipynb) | ten internal architectures plus composition inside one point and across linked points |
 | [Neural Operators, ODEs, and PDEs](package-notebooks/15_neural_operators_ode_pde.ipynb) | ODE trajectories, implicit PDE steps, reaction-diffusion, Burgers, variable-coefficient learning, Fourier fields, graph PDEs, and separate numerical/physical diagnostics |
-| [Full-Scale SILVA Families](package-notebooks/26_full_scale_silva.ipynb) | all 30 routes, dense/scalable equivalence checks, lazy shards, trained Fourier equilibrium, checkpoint resume, and extension contracts |
+| [Full-Scale SILVA Families](package-notebooks/26_full_scale_silva.ipynb) | all 44 routes, dense/scalable equivalence checks, lazy shards, trained Fourier equilibrium, checkpoint resume, and extension contracts |
 | [Reproducing SILVA and Source Methods](package-notebooks/27_reproducing_silva_and_source_methods.ipynb) | source-aware registry audit, constructor inspection, custom family construction, joint diffusion restoration, and structured run records |
+| [SILVA Consistency DEQ](package-notebooks/28_silva_consistency_deq.ipynb) | teacher trajectories, terminal anchoring, consistency loss, and one/few-step inference |
+| [SILVA Psi-GNN](package-notebooks/29_silva_psi_gnn.ipynb) | mixed boundaries, typed graph messages, Poisson residuals, and compact training |
+| [SILVA IFNO Materials](package-notebooks/30_silva_ifno_materials.ipynb) | tied Fourier increments, heterogeneous material fields, and depth/resolution controls |
+| [SILVA SNARF Forward Skinning](package-notebooks/31_silva_snarf_forward_skinning.ipynb) | canonical blend fields, multi-start roots, occupancy, and posed reconstruction |
+| [SILVA Mesh Inference](package-notebooks/32_silva_mesh_inference.ipynb) | typed local relaxation, centralized comparison, and convergence certificate |
+| [SILVA Physics-Guided Diffusion PDE](package-notebooks/33_silva_physics_guided_diffusion_pde.ipynb) | reverse prior steps, smoothing, PDE-energy guidance, and boundary projection |
+| [SILVA TherINO Mechanics](package-notebooks/34_silva_therino_mechanics.ipynb) | physical-strain equilibrium, thermodynamic features, and constitutive loss |
+| [SILVA Fixed-Point Diffusion](package-notebooks/35_silva_fixed_point_diffusion.ipynb) | timestep roots, variable compute, state reuse, and implicit gradients |
+| [SILVA Monotone Operator Equilibrium](package-notebooks/36_silva_monotone_operator_equilibrium.ipynb) | operator splitting, certificates, and attributed CIFAR-10 tensors |
+| [SILVA Positive-Concave Equilibrium](package-notebooks/37_silva_positive_concave_equilibrium.ipynb) | positive dense/convolutional states and attributed CIFAR-10 tensors |
+| [SILVA Non-Euclidean Equilibrium](package-notebooks/38_silva_non_euclidean_equilibrium.ipynb) | weighted certificates and bounded real-image perturbations |
+| [SILVA Efficient Infinite Graph](package-notebooks/39_silva_efficient_infinite_graph.ipynb) | spectral/iterative solves and source-indexed Cora masks |
+| [SILVA Multiscale Graph Implicit Network](package-notebooks/40_silva_multiscale_graph_implicit.ipynb) | graph-power equilibria and Cora scale allocation |
+| [SILVA Delta Equilibrium](package-notebooks/41_silva_delta_equilibrium.ipynb) | cached updates and real-video activity diagnostics |
 
 The implicit bridge track:
 
@@ -262,6 +280,22 @@ silva-experiment \
   --config torchvision_dataset_suite
 ```
 
+Run the attributed source-data suite:
+
+```bash
+python examples/source_data_families.py
+```
+
+The included CIFAR-10, Cora, and real-motion snapshots are verified against
+their stored content hashes. Rebuild them from local source collections with:
+
+```bash
+python scripts/prepare_source_snapshots.py
+```
+
+Use [Real-Dataset Reproduction](learn/real-dataset-reproduction.md) for complete
+dataset loaders, source access, storage, split rules, and paper-scale reporting.
+
 The package also supports data that does not require downloads:
 
 | Data route | API |
@@ -338,6 +372,7 @@ pytest tests/test_implementation_coverage.py
 pytest tests/test_release_readiness.py
 pytest tests/test_training.py
 pytest tests/test_scaling.py tests/test_scaling_data.py tests/test_scale_cli.py
+pytest tests/test_source_data.py
 ```
 
 Run the quick notebook validation set:
@@ -349,12 +384,45 @@ python scripts/run_notebook_smoke.py --timeout 180
 Run every canonical package, bridge, and unreleased book/research notebook:
 
 ```bash
-python scripts/run_notebook_smoke.py --all --timeout 300
+python scripts/run_notebook_smoke.py --all --inplace --timeout 300
+python scripts/sync_notebook_outputs.py
 ```
 
-The all-notebook run executes 61 independent notebooks once each. Documentation
-and hosted-runtime mirrors are checked for source synchronization rather than
-executed as duplicate workloads.
+The all-notebook run executes 82 independent notebooks once each. Documentation
+and portable copies receive the canonical execution counts and outputs without
+replacing their reader-facing citation and navigation cells. The committed
+set contains 946 executed code cells, 906 output blocks, and 216 embedded
+300-dpi figures.
+
+To rebuild the additive worked-example and notebook learning layers before
+execution, run:
+
+```bash
+python scripts/expand_api_guides.py
+python scripts/expand_example_guides.py
+python scripts/expand_learning_guides.py
+python experiments/reproduction/run_compact_comparisons.py
+python scripts/generate_research_depth_material.py
+python scripts/expand_notebook_curriculum.py
+python scripts/notebook_citations.py
+python scripts/notebook_navigation.py
+python scripts/run_notebook_smoke.py --all --inplace --timeout 300
+python scripts/sync_notebook_outputs.py
+```
+
+Keep this order: all generators run before notebook execution, and output
+synchronization runs last. A generator may legitimately create a new or
+changed code cell without an execution count, so running it after execution
+requires another complete notebook pass.
+
+The API expander gives compact reference pages an operational contract,
+complete program, measured result, and scale interpretation. The example
+expander runs every standalone program and places its measured compact output
+beside the complete source, derivation, interpretation, and scale route. The
+learning-page expander connects five foundational chapters to complete programs,
+measured results, and controlled next experiments. The notebook expander
+retains the original cells and adds the custom-transition, reproduction-record,
+analytic diagnostic, gradient check, and figure cells.
 
 The default release validation includes the generalized paper-family, coupled
 RAFT/DEQ-Flow, and point-architecture notebooks. To run them directly:

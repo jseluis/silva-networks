@@ -9,6 +9,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from notebook_generation import (
     _link_citations_in_markdown,
+    copy_execution_results,
     link_numbered_citations,
     preserve_matching_cells,
     write_notebook,
@@ -48,6 +49,25 @@ def test_matching_code_cells_keep_outputs_when_notebook_expands() -> None:
     assert merged["cells"][2]["outputs"] == []
 
 
+def test_execution_sync_preserves_mirror_prose_and_extra_cells() -> None:
+    output = [{"output_type": "stream", "name": "stdout", "text": ["measured\n"]}]
+    source = _notebook([_code("run()", output), _code("second()", output)])
+    navigation = {
+        "cell_type": "markdown",
+        "metadata": {"tags": ["notebook-navigation"]},
+        "source": ["Where to go next"],
+    }
+    target = _notebook([navigation, _code("run()"), _code("mirror_only()")])
+
+    synchronized, copied = copy_execution_results(source, target)
+
+    assert copied == 1
+    assert synchronized["cells"][0] == navigation
+    assert synchronized["cells"][1]["outputs"] == output
+    assert synchronized["cells"][1]["execution_count"] == 7
+    assert synchronized["cells"][2]["outputs"] == []
+
+
 def test_generator_keeps_existing_curriculum_cells() -> None:
     curriculum = {
         "cell_type": "markdown",
@@ -62,6 +82,29 @@ def test_generator_keeps_existing_curriculum_cells() -> None:
 
     assert len(merged["cells"]) == 3
     assert merged["cells"][-1] == curriculum
+
+
+def test_fully_owned_generator_can_drop_stale_unmatched_cells() -> None:
+    stale = {
+        "cell_type": "markdown",
+        "id": "stale-title",
+        "metadata": {},
+        "source": ["Old generated title"],
+    }
+    current = {
+        "cell_type": "markdown",
+        "id": "current-title",
+        "metadata": {},
+        "source": ["Current generated title"],
+    }
+
+    merged = preserve_matching_cells(
+        _notebook([current]),
+        _notebook([stale]),
+        preserve_unmatched=False,
+    )
+
+    assert merged["cells"] == [current]
 
 
 def test_stable_cell_id_does_not_shorten_existing_content_by_default() -> None:

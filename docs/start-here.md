@@ -22,6 +22,12 @@ This path goes from first principles to a usable PyTorch model.
 11. Open [Full-Scale SILVA](learn/full-scale-silva.md) when the compact path is
     working and you are ready to choose sharding, precision, accumulation,
     matrix-free operators, or distributed execution.
+12. Use [Real-Dataset Reproduction](learn/real-dataset-reproduction.md) to move
+    from known-solution checks to attributed source subsets and complete local
+    dataset protocols.
+13. Open the [Family Reproduction Dossiers](families/index.md) to inspect the
+    governing equation, replaceable modules, compact evidence, source data,
+    acceptance checks, and editable scale plan for each of the 44 families.
 
 The main equation is
 
@@ -50,7 +56,11 @@ $$
 | Cortex hierarchy | [Cortex Hierarchies](learn/cortex-hierarchy.md) | build linked SILVA points with independently configured MLP, convolutional, U-Net, attention, or graph internals |
 | Internal architecture selection | [Point Architecture Catalog](learn/point-architecture-catalog.md) | choose among ten vector, token, and spatial fields and compose them inside or across points |
 | Scientific models | [Neural Operators, ODEs, PDEs, and SILVA](learn/neural-operators-ode-pde.md) | derive explicit flow, implicit time stepping, PDE residuals, FNO fields, and graph discretizations |
-| Scale and reproduce | [Full-Scale SILVA](learn/full-scale-silva.md) | move all 30 families from equation checks to benchmark-ready execution |
+| Scale and reproduce | [Full-Scale SILVA](learn/full-scale-silva.md) | move all 44 families from equation checks to benchmark-ready execution |
+| Source-data reproduction | [Real-Dataset Reproduction](learn/real-dataset-reproduction.md) | verify source receipts and move from compact real subsets to official full splits |
+| Family experiment design | [Family Reproduction Dossiers](families/index.md) | follow six explicit stages from tensor contracts to a complete cited protocol or declared extension |
+| New family construction | [Advanced Extension Handbook](learn/advanced-extension-handbook.md) | validate primitive modules, public composition equivalence, gradients, serialization, data, and scale registration |
+| Failure analysis | [Failure Diagnostics and Recovery](learn/failure-diagnostics-and-recovery.md) | distinguish slow, oscillatory, expansive, stalled, constrained, and backward-solve failures |
 | Stability | [Jacobians and Stability](learn/jacobians.md) | compute Jacobians, products, spectral-radius diagnostics |
 | Dataset adaptation | [Datasets and Preprocessing](learn/datasets-and-preprocessing.md) | convert public or private data into the engine |
 
@@ -70,8 +80,11 @@ $$
 | Use optical-flow utilities | [Optical Flow API](api/flow.md) |
 | Use constrained optimization layers | [Optimization API](api/optimization.md) |
 | Adapt datasets | [Datasets API](api/datasets.md) |
+| Load attributed source data | [Source Data API](api/source_data.md) |
 | Check GPU behavior | [Devices API](api/devices.md) |
 | Configure full-scale execution | [Scaling API](api/scaling.md) |
+| Inspect family experiment contracts | [Research Depth API](api/research_depth.md) |
+| Run common-task family comparisons | [Compact Benchmarks API](api/compact_benchmarks.md) |
 
 ## Long-Form Study
 
@@ -95,6 +108,9 @@ $$
 \quad\to\quad
 \text{extend}.
 $$
+
+The attributed source-data route is developed in
+[Real-Dataset Reproduction](learn/real-dataset-reproduction.md).
 
 ## Where to Go Next
 

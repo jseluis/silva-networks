@@ -213,6 +213,79 @@ _IMPLEMENTATION_CASES: tuple[SILVAImplementationCase, ...] = (
         ),
     ),
     SILVAImplementationCase(
+        key="emerging_equilibrium_families",
+        public_objects=(
+            "SILVAConsistencyDEQ",
+            "SILVAPsiGNN",
+            "SILVAIFNO",
+            "SILVASNARF",
+            "SILVAMeshInference",
+            "SILVAPhysicsGuidedDiffusionPDE",
+            "SILVATherINO",
+            "SILVAFixedPointDenoiser",
+            "SILVAFixedPointDiffusionModel",
+            "make_consistency_teacher_dataset",
+            "make_psi_poisson_grid",
+            "make_ifno_material_dataset",
+            "make_snarf_stick_dataset",
+            "make_mesh_gaussian_dataset",
+            "make_poisson_diffusion_dataset",
+            "make_therino_elastic_dataset",
+            "make_fixed_point_diffusion_dataset",
+        ),
+        tutorial="docs/learn/emerging-equilibrium-methods.md",
+        notebooks=(
+            "docs/package-notebooks/28_silva_consistency_deq.ipynb",
+            "docs/package-notebooks/29_silva_psi_gnn.ipynb",
+            "docs/package-notebooks/30_silva_ifno_materials.ipynb",
+            "docs/package-notebooks/31_silva_snarf_forward_skinning.ipynb",
+            "docs/package-notebooks/32_silva_mesh_inference.ipynb",
+            "docs/package-notebooks/33_silva_physics_guided_diffusion_pde.ipynb",
+            "docs/package-notebooks/34_silva_therino_mechanics.ipynb",
+            "docs/package-notebooks/35_silva_fixed_point_diffusion.ipynb",
+        ),
+        smoke_tests=("tests/test_emerging_equilibria.py",),
+        examples=("examples/emerging_equilibria.py",),
+        scope=(
+            "Eight source-backed equilibrium mechanisms with exact compact data, "
+            "replaceable transitions, complete diagnostics, gradients, source contracts, "
+            "and benchmark-scale handoffs."
+        ),
+    ),
+    SILVAImplementationCase(
+        key="structured_equilibrium_families",
+        public_objects=(
+            "SILVAMonotoneOperatorEquilibrium",
+            "SILVAPositiveConcaveEquilibrium",
+            "SILVANonEuclideanEquilibrium",
+            "SILVAEfficientInfiniteGraphEquilibrium",
+            "SILVAMultiscaleGraphImplicitNetwork",
+            "SILVADeltaEquilibrium",
+            "make_monotone_operator_dataset",
+            "make_positive_concave_dataset",
+            "make_non_euclidean_robustness_dataset",
+            "make_eignn_chain_dataset",
+            "make_mgnni_multiscale_dataset",
+            "make_delta_heterogeneous_dataset",
+        ),
+        tutorial="docs/learn/structured-equilibrium-families.md",
+        notebooks=(
+            "docs/package-notebooks/36_silva_monotone_operator_equilibrium.ipynb",
+            "docs/package-notebooks/37_silva_positive_concave_equilibrium.ipynb",
+            "docs/package-notebooks/38_silva_non_euclidean_equilibrium.ipynb",
+            "docs/package-notebooks/39_silva_efficient_infinite_graph.ipynb",
+            "docs/package-notebooks/40_silva_multiscale_graph_implicit.ipynb",
+            "docs/package-notebooks/41_silva_delta_equilibrium.ipynb",
+        ),
+        smoke_tests=("tests/test_structured_equilibria.py",),
+        examples=("examples/structured_equilibria.py",),
+        scope=(
+            "Six source-grounded SILVA families covering monotone splitting, "
+            "positive-concave and non-Euclidean certificates, efficient and multiscale "
+            "infinite graph models, and delta-cached equilibrium inference."
+        ),
+    ),
+    SILVAImplementationCase(
         key="datasets",
         public_objects=("load_tabular_dataset", "tabular_to_silva_graph", "images_to_silva_vectors"),
         tutorial="docs/learn/datasets-and-preprocessing.md",

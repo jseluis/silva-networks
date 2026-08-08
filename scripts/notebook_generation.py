@@ -86,6 +86,7 @@ def preserve_matching_cells(
     existing: dict[str, Any],
     *,
     replace_changed: bool = False,
+    preserve_unmatched: bool = True,
 ) -> dict[str, Any]:
     """Preserve valid results and every educational cell not owned by the generator."""
 
@@ -127,15 +128,44 @@ def preserve_matching_cells(
             cell["execution_count"] = previous.get("execution_count")
             cell["outputs"] = copy.deepcopy(previous.get("outputs", []))
 
-    merged["cells"].extend(
-        copy.deepcopy(cell) for index, cell in enumerate(existing_cells) if index not in consumed
-    )
+    if preserve_unmatched:
+        merged["cells"].extend(
+            copy.deepcopy(cell)
+            for index, cell in enumerate(existing_cells)
+            if index not in consumed
+        )
 
     merged["metadata"] = {
         **copy.deepcopy(existing.get("metadata", {})),
         **copy.deepcopy(merged.get("metadata", {})),
     }
     return merged
+
+
+def copy_execution_results(
+    source: dict[str, Any],
+    target: dict[str, Any],
+) -> tuple[dict[str, Any], int]:
+    """Copy code-cell results into a related notebook without changing its prose."""
+
+    synchronized = copy.deepcopy(target)
+    source_cells: dict[tuple[str, str], deque[dict[str, Any]]] = defaultdict(deque)
+    for cell in source.get("cells", []):
+        if cell.get("cell_type") == "code":
+            source_cells[_source_key(cell)].append(cell)
+
+    copied = 0
+    for cell in synchronized.get("cells", []):
+        if cell.get("cell_type") != "code":
+            continue
+        matches = source_cells.get(_source_key(cell))
+        if not matches:
+            continue
+        executed = matches.popleft()
+        cell["execution_count"] = executed.get("execution_count")
+        cell["outputs"] = copy.deepcopy(executed.get("outputs", []))
+        copied += 1
+    return synchronized, copied
 
 
 def write_notebook(
@@ -145,6 +175,7 @@ def write_notebook(
     indent: int = 2,
     ensure_ascii: bool = False,
     replace_changed: bool = False,
+    preserve_unmatched: bool = True,
 ) -> None:
     """Write a notebook while retaining prior cells and valid executed results."""
 
@@ -156,6 +187,7 @@ def write_notebook(
             notebook,
             existing,
             replace_changed=replace_changed,
+            preserve_unmatched=preserve_unmatched,
         )
     payload = link_numbered_citations(payload)
     path.write_text(

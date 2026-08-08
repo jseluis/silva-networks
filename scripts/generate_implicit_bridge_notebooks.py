@@ -136,7 +136,7 @@ CITATION = r"""
 If this package or notebook is used, cite the software repository:
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.1.0. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.2.0. MIT License.
 https://github.com/jseluis/silva-networks
 https://doi.org/10.5281/zenodo.21770098
 ```

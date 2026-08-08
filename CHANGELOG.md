@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.2.0 - 2026-08-08
+
+- Added emerging and structured equilibrium families, expanding the canonical
+  SILVA surface to 44 documented family routes with constructors, equations,
+  compact datasets, benchmark requirements, notebooks, tests, and references.
+- Added package APIs for compact benchmarks, source snapshots, emerging data,
+  structured data, research-depth records, and cross-family comparison
+  workflows.
+- Added package notebooks 28-47, Colab copies, rendered documentation copies,
+  family reproduction dossiers, cross-family vector/graph/field benchmarks,
+  extension-builder material, and failure-diagnostics material.
+- Added compact source snapshot assets and reproduction configs for CIFAR10,
+  Cora, public motion frames, and the 44-family reproduction registry.
+- Expanded API, example, learning, family, dataset, experiment, and publishing
+  documentation with derivations, tensor-shape contracts, command-line usage,
+  result-record pages, and release checks.
+- Expanded release, documentation, notebook, source-record, and content
+  preservation audits, plus smoke coverage for the new public modules and
+  examples.
+
 ## 1.1.0 - 2026-08-05
 
 - Added public transition inspection and validation, conditioned-equilibrium
@@ -38,7 +58,7 @@
   package APIs, examples, derivations, numbered citations, and downloadable
   executable notebooks.
 - Expanded release, documentation, citation, navigation, rendering, and
-  provenance audits across the complete public package surface.
+  source-record audits across the complete public package surface.
 
 ## 1.0.0 - 2026-08-03
 

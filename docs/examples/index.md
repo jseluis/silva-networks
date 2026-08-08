@@ -27,6 +27,7 @@ python examples/stacked_architecture.py
 python examples/datasets_quickstart.py
 python examples/paper_family_cases.py
 python examples/raft_deq_flow.py
+python examples/source_data_families.py
 ```
 
 ## What Each Example Covers
@@ -53,6 +54,7 @@ python examples/raft_deq_flow.py
 | [Citation-Aware Reporting](citation-aware-reporting.md) | presets, solvers, diagnostics, citation audit | methods sentence and citation checklist for a concrete configuration |
 | [Paper Family Cases](paper-family-cases.md) | sequence DEQ, MDEQ, IGNN, INR, DEQ-DDIM | compact architecture and gradient smokes across generalized cases |
 | [RAFT and DEQ-Flow](raft-deq-flow.md) | `SILVARAFTDEQ`, correction loss, cached state | coupled flow solve, sparse correction predictions, backward pass, and reuse |
+| [Source-Data Families](source-data.md) | source receipts, verified snapshots, monDEQ, pcDEQ, NEMON, EIGNN, MGNNI, DeltaDEQ | six real-tensor mechanism and gradient checks with explicit non-benchmark scope |
 
 ## Shared Pattern
 
@@ -72,6 +74,53 @@ $$
 
 The same pattern supports user datasets after preprocessing into the package
 tensor contract.
+
+<!-- silva-worked-example:start -->
+## Executable Evidence Map
+
+Every worked page now retains its introductory route and adds the complete
+program, measured compact output, mathematical result contract, interpretation,
+and full-scale transfer record.
+
+| Worked page | Executable program | Compact evidence |
+| --- | --- | --- |
+| [Advanced Equilibria](advanced-equilibria.md) | `examples/advanced_equilibria.py` | One result for each advanced equilibrium family, with family-specific residuals |
+| [Citation Aware Reporting](citation-aware-reporting.md) | `examples/reproduction_registry.py` | A complete machine-readable source and verification record |
+| [Constrained Optimization](constrained-optimization.md) | `examples/constrained_optimization.py` | Simplex feasibility, energy, solver residual, and parameter gradients |
+| [Cortex Hierarchy](cortex-hierarchy.md) | `examples/cortex_hierarchy.py` | Per-point state shapes, solver choices, logits, loss, and gradients |
+| [Custom Layers](custom-layers.md) | `examples/custom_layers.py` | The custom state shape, final residual, and differentiable loss path |
+| [Datasets Quickstart](datasets-quickstart.md) | `examples/datasets_quickstart.py` | Dataset identity, tensor shape, and measured classification accuracy |
+| [Deq Engine Bridge](deq-engine-bridge.md) | `examples/deq_engine_bridge.py` | State shape, iterations, residual ratio, and gradient availability |
+| [Emerging Equilibria](emerging-equilibria.md) | `examples/emerging_equilibria.py` | Family-specific exact-solution, boundary, reconstruction, or trajectory checks |
+| [Frontier Equilibria](frontier-equilibria.md) | `examples/frontier_equilibria.py` | Task, equation, invariance, and fixed-point residuals for four operator classes |
+| [Full Cortex Operators](full-cortex-operators.md) | `examples/full_cortex_operators.py` | Branch activations, solver history, state shape, loss, and gradients |
+| [Full Scale Training](full-scale-training.md) | `examples/add_layers_on_top.py` | A measured training loss from the complete optimization path |
+| [Graph Silva](graph-silva.md) | `examples/graph_silva.py` | Node-state shape, task loss, equilibrium residual, and gradients |
+| [Molecules](molecules.md) | `examples/molecules.py` | Atom and molecule tensor shapes, residual, prediction loss, and gradients |
+| [Optical Flow Silva](optical-flow-silva.md) | `examples/optical_flow_silva.py` | Flow shape, endpoint error, iterations, residual, and gradients |
+| [Paper Family Cases](paper-family-cases.md) | `examples/paper_family_cases.py` | Shape and residual checks across sequence, vision, graph, and diffusion cases |
+| [Point Architecture Catalog](point-architecture-catalog.md) | `examples/point_architecture_catalog.py` | Parameters, loss, residual trajectory, and gradient norm for every architecture |
+| [Raft Deq Flow](raft-deq-flow.md) | `examples/raft_deq_flow.py` | Flow shape, correction trajectory, solver residual, loss, and gradients |
+| [Reproduction Registry](reproduction-registry.md) | `examples/reproduction_registry.py` | Verification levels, preserved mechanisms, scale tiers, and source obligations |
+| [Scalar Deq](scalar-deq.md) | `examples/scalar_deq.py` | Closed-form agreement, final residual, iteration count, and implicit gradient |
+| [Scientific Operators](scientific-operators.md) | `examples/scientific_operators.py` | Ode error plus pde, boundary, and equilibrium residuals |
+| [Source Data](source-data.md) | `examples/source_data_families.py` | Losses, certificates, residuals, scale allocation, and cache activity on source data |
+| [Spatial Cortex](spatial-cortex.md) | `examples/spatial_cortex.py` | Spatial and vector state shapes, per-point solvers, loss, and gradients |
+| [Stacked Architecture](stacked-architecture.md) | `examples/stacked_architecture.py` | Logit shape, pointwise solvers, loss, and gradient flow across the stack |
+| [Structured Equilibria](structured-equilibria.md) | `examples/structured_equilibria.py` | Certificates, positivity, one-sided bounds, scale weights, and cache activity |
+| [Vision Channels](vision-channels.md) | `examples/vision_channels.py` | Image-state shape, iteration count, residual, loss, and gradients |
+
+Across the collection, a reported result is treated as the tuple
+
+$$
+\mathcal E =
+(\text{task metric},\text{fixed-point residual},\text{iterations},
+\text{gradient evidence},\text{domain invariants}).
+$$
+
+Keeping these entries separate prevents task quality, solver convergence, and
+structural validity from being collapsed into one number.
+<!-- silva-worked-example:end -->
 
 ## Where to Go Next
 

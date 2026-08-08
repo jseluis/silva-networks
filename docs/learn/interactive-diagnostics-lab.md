@@ -133,6 +133,55 @@ and [Solver Derivation Lab](solver-derivation-lab.md). Primary sources are
 listed under [Solvers and Linear Algebra](../paper/references.md#solvers-and-linear-algebra)
 and [Equilibrium and Implicit Layers](../paper/references.md#equilibrium-and-implicit-layers).
 
+<!-- silva-learning-study:start -->
+## Worked Evidence Bridge
+
+The derivation above becomes a complete SILVA study when the state, condition,
+solver result, task result, and gradient path are kept separate. Here the state
+is **one state vector per graph node** and the condition is **features, edges, and graph context**. The compact
+relation is
+
+$$
+r_K=\frac{\|T_\theta(z_K;c)-z_K\|_2}{\|z_K\|_2+\varepsilon},\qquad \rho=\rho(J_T(z_K;c))
+$$
+
+The following is the complete executable program used by the repository tests:
+
+```python
+--8<-- "examples/graph_silva.py"
+```
+
+Run it from the project root:
+
+```bash
+python examples/graph_silva.py
+```
+
+### Measured Output
+
+```text
+state_shape (8, 12)
+loss 0.7801069021224976
+residual 0.07725001126527786
+spectral_radius 0.7778381109237671
+```
+
+### What This Result Establishes
+
+This run records task loss, normalized solver evidence, and a spectral-radius estimate. It establishes that the compact mechanism is
+executable with finite outputs and that its stated shape or structural contract
+can be inspected. It does not establish source-scale accuracy by itself.
+
+For the next controlled study, hold model and graph fixed while sweeping solver, damping, tolerance, and maximum iterations. Keep the compact run as a
+regression case. For every larger run, archive the resolved data source and
+split, preprocessing, seed, constructor arguments, forward and backward solver
+settings, task metric, normalized residual, iteration count, gradient norm,
+runtime, peak memory, and convergence failures. This keeps task quality,
+numerical convergence, and computational cost from being collapsed into one
+number.
+
+<!-- silva-learning-study:end -->
+
 ## Where to Go Next
 
 | Question | Page |

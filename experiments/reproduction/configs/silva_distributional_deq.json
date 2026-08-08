@@ -1,0 +1,191 @@
+{
+  "family": "silva_distributional_deq",
+  "title": "equilibrium of empirical measures",
+  "domain": "geometry and distributions",
+  "task_contract": "B,N,D particles plus masks -> B,M,H equilibrium particles",
+  "source_relation": "paper-adaptation",
+  "equation": "mu_star = Phi_theta(mu_star, nu_input)",
+  "constructor_signature": "(input_dim: 'int', latent_dim: 'int', *, particles: 'int' = 8, heads: 'int' = 1, transition: 'nn.Module | None' = None, kernel: 'DistributionKernel' = 'energy', bandwidth: 'float' = 1.0, step_size: 'float' = 1.0, max_iter: 'int' = 20, tol: 'float' = 1e-05, pairwise_chunk_size: 'int | None' = None)",
+  "paper_refs": [
+    45
+  ],
+  "repositories": [
+    "https://github.com/j-geuter/DDEQs"
+  ],
+  "datasets": [
+    "MNIST point clouds",
+    "ModelNet40",
+    "point-cloud completion data"
+  ],
+  "data_sources": [
+    "https://github.com/j-geuter/DDEQs"
+  ],
+  "data_access": [
+    "Follow the cited repository and dataset terms, then record source revisions and archive checksums."
+  ],
+  "storage_plan": [
+    "Measure one processed sample, estimate the complete split, and budget raw data, processed shards, checkpoints, optimizer state, and diagnostics separately."
+  ],
+  "preprocessing": [
+    "record dataset version, split, normalization, shape convention, and seed",
+    "preserve masks, graph indices, boundaries, or physical units required by the domain"
+  ],
+  "metrics": [
+    "classification accuracy or completion distance",
+    "measure discrepancy",
+    "residual"
+  ],
+  "compact_data": [
+    "Use the cited notebook's deterministic compact fixture before replacing it with source-scale data."
+  ],
+  "preserved_mechanisms": [
+    "permutation-compatible equilibrium over masked empirical measures"
+  ],
+  "configurable_parts": [
+    "replace the measure discrepancy or equivariant transition",
+    "particle count",
+    "pairwise chunk size",
+    "attention memory"
+  ],
+  "source_scale_steps": [
+    "Acquire the cited data and preserve its official split, preprocessing, units, and metric.",
+    "Build the same SILVA family with source-aligned task modules and scale controls.",
+    "Run forward, loss, backward, checkpoint resume, and metric validation on a small shard before the complete experiment."
+  ],
+  "benchmark_requirements": [
+    "source point-cloud conversion, masks, discrepancy, model scale, training, and metric"
+  ],
+  "notebooks": [
+    "notebooks/package_api/20_silva_distributional_equilibrium_lab.ipynb"
+  ],
+  "tests": [
+    "tests/test_frontier.py",
+    "tests/test_frontier_data.py"
+  ],
+  "compact_defaults": [
+    [
+      "tier",
+      "'smoke'"
+    ],
+    [
+      "pairwise_chunk_size",
+      "256"
+    ]
+  ],
+  "full_defaults": [
+    [
+      "tier",
+      "'full'"
+    ],
+    [
+      "pairwise_chunk_size",
+      "256"
+    ]
+  ],
+  "stages": [
+    {
+      "name": "Equation and tensor contract",
+      "objective": "Make the state, conditioning variables, operator, and readout explicit.",
+      "procedure": [
+        "Write and evaluate the family equation: `mu_star = Phi_theta(mu_star, nu_input)`",
+        "Declare every tensor axis, boundary, mask, graph, or physical unit.",
+        "Check the transition output has exactly the same shape as the equilibrium state."
+      ],
+      "acceptance_checks": [
+        "finite transition values",
+        "shape-preserving state update",
+        "all conditioning variables affect the intended branch"
+      ],
+      "evidence_status": "contract-verified"
+    },
+    {
+      "name": "Primitive mechanism reconstruction",
+      "objective": "Build the retained source mechanism from replaceable modules.",
+      "procedure": [
+        "permutation-compatible equilibrium over masked empirical measures"
+      ],
+      "acceptance_checks": [
+        "primitive modules expose trainable parameters and gradients",
+        "mechanism-specific invariance or constraint check passes",
+        "direct transition evaluation is deterministic under a fixed seed"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Public abstraction equivalence",
+      "objective": "Verify that the assembled family evaluates the same transition as its primitives.",
+      "procedure": [
+        "Copy the primitive module parameters into the public family constructor.",
+        "Evaluate one transition and one complete equilibrium with identical inputs.",
+        "Compare outputs, residuals, and parameter gradients with declared tolerances."
+      ],
+      "acceptance_checks": [
+        "transition outputs agree",
+        "equilibrium residual is finite and decreases",
+        "primitive and assembled gradients agree on the compact case"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Compact real or analytic task",
+      "objective": "Exercise training, evaluation, diagnostics, and serialization end to end.",
+      "procedure": [
+        "Use the cited notebook's deterministic compact fixture before replacing it with source-scale data."
+      ],
+      "acceptance_checks": [
+        "record classification accuracy or completion distance",
+        "record measure discrepancy",
+        "record residual",
+        "checkpoint reload reproduces the recorded prediction",
+        "result record contains data and configuration fingerprints"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Official-data subset",
+      "objective": "Validate the complete source data path before spending the full budget.",
+      "procedure": [
+        "Acquire the cited data and preserve its official split, preprocessing, units, and metric.",
+        "Freeze preprocessing, split logic, metric code, and checkpoint format.",
+        "Run a deterministic subset large enough to expose batching and memory failures."
+      ],
+      "acceptance_checks": [
+        "dataset receipt and checksum are stored",
+        "resume and evaluation paths reproduce the same subset metric",
+        "memory and runtime are measured rather than estimated"
+      ],
+      "evidence_status": "subset-verified"
+    },
+    {
+      "name": "Source-scale reproduction or declared extension",
+      "objective": "Run the cited protocol, or change it explicitly as a SILVA extension.",
+      "procedure": [
+        "Acquire the cited data and preserve its official split, preprocessing, units, and metric.",
+        "Build the same SILVA family with source-aligned task modules and scale controls.",
+        "Run forward, loss, backward, checkpoint resume, and metric validation on a small shard before the complete experiment.",
+        "source point-cloud conversion, masks, discrepancy, model scale, training, and metric"
+      ],
+      "acceptance_checks": [
+        "all required artifacts are archived",
+        "reported metrics use the cited evaluation protocol",
+        "every architectural or training deviation is listed",
+        "claims match the achieved evidence status"
+      ],
+      "evidence_status": "planned"
+    }
+  ],
+  "required_artifacts": [
+    "machine-readable model and solver configuration",
+    "dataset receipt with source revision, split, license, and checksum",
+    "preprocessing and normalization record",
+    "seeded training and evaluation log",
+    "checkpoint and optimizer-resume state for trained experiments",
+    "task metrics and equilibrium diagnostics in a machine-readable result",
+    "runtime, peak-memory, device, precision, and dependency record",
+    "declared deviations from the cited protocol"
+  ],
+  "schema_version": 1,
+  "requested_tier": "full",
+  "achieved_evidence_status": "compact-verified",
+  "source_scale_status": "planned"
+}

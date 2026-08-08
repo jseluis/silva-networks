@@ -1,0 +1,196 @@
+{
+  "family": "silva_physics_guided_diffusion_pde",
+  "title": "diffusion-prior PDE inference with hard physical projection",
+  "domain": "physics and differential systems",
+  "task_contract": "initial random field, prior, PDE residual energy, and boundary projector -> physical field",
+  "source_relation": "paper-adaptation",
+  "equation": "u_(t-1)=ProjectBoundary(Smooth(Prior(u_t))-eta grad E_PDE(u_t)+noise_t)",
+  "constructor_signature": "(energy: 'Callable[[Tensor, Tensor | None], Tensor]', boundary_projector: 'Callable[[Tensor, Tensor | None], Tensor]', *, noise_predictor: 'nn.Module | None' = None, steps: 'int' = 20, beta_start: 'float' = 0.0001, beta_end: 'float' = 0.02, guidance_step: 'float' = 0.05, prior_strength: 'float' = 0.1, smoothing_sigma: 'float' = 1.0, noise_scale: 'float' = 1.0, prior_mode: 'DiffusionPriorMode' = 'noise')",
+  "paper_refs": [
+    64
+  ],
+  "repositories": [
+    "https://arxiv.org/abs/2604.01242"
+  ],
+  "datasets": [
+    "Poisson fields",
+    "space-time diffusion fields",
+    "space-time Burgers fields"
+  ],
+  "data_sources": [
+    "https://arxiv.org/abs/2604.01242"
+  ],
+  "data_access": [
+    "The cited article specifies generated Poisson, diffusion, and Burgers fields rather than an external observational dataset.",
+    "Regenerate coefficient, initial, and boundary distributions and record the numerical solver, grid, time step, normalization, and seed."
+  ],
+  "storage_plan": [
+    "A scalar float32 set of 4,000 fields at 64x64 is about 62.5 MiB; conditioning and trajectories multiply that amount.",
+    "Store prior-training fields, normalization, PDE parameters, and reverse-inference traces in separate shards."
+  ],
+  "preprocessing": [
+    "record dataset version, split, normalization, shape convention, and seed",
+    "preserve masks, graph indices, boundaries, or physical units required by the domain"
+  ],
+  "metrics": [
+    "relative solution error",
+    "PDE residual energy",
+    "boundary error",
+    "reverse-step convergence"
+  ],
+  "compact_data": [
+    "make_poisson_diffusion_dataset gives analytic Poisson fields, forcing, and hard boundary data."
+  ],
+  "preserved_mechanisms": [
+    "standard data-trained field prior separated from physics at inference",
+    "reverse denoising, Gaussian smoothing, residual-energy guidance, and hard boundary projection",
+    "deterministic and stochastic schedules over Poisson, diffusion, or Burgers fields"
+  ],
+  "configurable_parts": [
+    "replace the data-trained prior, residual energy, smoothing, schedule, or projector",
+    "select deterministic or stochastic reverse inference without retraining the prior",
+    "grid resolution",
+    "reverse steps",
+    "guidance step",
+    "prior width"
+  ],
+  "source_scale_steps": [
+    "Generate the source 64x64 Poisson, diffusion, or Burgers fields and reproduce global max-absolute normalization.",
+    "Train the three-level field prior independently of the PDE residual and freeze its checkpoint.",
+    "Run deterministic and stochastic guided reverse schedules with Gaussian smoothing and hard boundary projection, then report field, residual, and boundary errors."
+  ],
+  "benchmark_requirements": [
+    "source 64x64 fields, 4000 snapshots, global max-absolute scaling, and trained three-level U-Net prior",
+    "Poisson/diffusion/Burgers coefficient ranges, boundary/initial data, reverse schedule, and guidance steps",
+    "PDE residual, relative solution error, boundary error, convergence trace, and source baselines"
+  ],
+  "notebooks": [
+    "notebooks/package_api/33_silva_physics_guided_diffusion_pde.ipynb"
+  ],
+  "tests": [
+    "tests/test_emerging_equilibria.py"
+  ],
+  "compact_defaults": [
+    [
+      "tier",
+      "'smoke'"
+    ]
+  ],
+  "full_defaults": [
+    [
+      "tier",
+      "'full'"
+    ]
+  ],
+  "stages": [
+    {
+      "name": "Equation and tensor contract",
+      "objective": "Make the state, conditioning variables, operator, and readout explicit.",
+      "procedure": [
+        "Write and evaluate the family equation: `u_(t-1)=ProjectBoundary(Smooth(Prior(u_t))-eta grad E_PDE(u_t)+noise_t)`",
+        "Declare every tensor axis, boundary, mask, graph, or physical unit.",
+        "Check the transition output has exactly the same shape as the equilibrium state."
+      ],
+      "acceptance_checks": [
+        "finite transition values",
+        "shape-preserving state update",
+        "all conditioning variables affect the intended branch"
+      ],
+      "evidence_status": "contract-verified"
+    },
+    {
+      "name": "Primitive mechanism reconstruction",
+      "objective": "Build the retained source mechanism from replaceable modules.",
+      "procedure": [
+        "standard data-trained field prior separated from physics at inference",
+        "reverse denoising, Gaussian smoothing, residual-energy guidance, and hard boundary projection",
+        "deterministic and stochastic schedules over Poisson, diffusion, or Burgers fields"
+      ],
+      "acceptance_checks": [
+        "primitive modules expose trainable parameters and gradients",
+        "mechanism-specific invariance or constraint check passes",
+        "direct transition evaluation is deterministic under a fixed seed"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Public abstraction equivalence",
+      "objective": "Verify that the assembled family evaluates the same transition as its primitives.",
+      "procedure": [
+        "Copy the primitive module parameters into the public family constructor.",
+        "Evaluate one transition and one complete equilibrium with identical inputs.",
+        "Compare outputs, residuals, and parameter gradients with declared tolerances."
+      ],
+      "acceptance_checks": [
+        "transition outputs agree",
+        "equilibrium residual is finite and decreases",
+        "primitive and assembled gradients agree on the compact case"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Compact real or analytic task",
+      "objective": "Exercise training, evaluation, diagnostics, and serialization end to end.",
+      "procedure": [
+        "make_poisson_diffusion_dataset gives analytic Poisson fields, forcing, and hard boundary data."
+      ],
+      "acceptance_checks": [
+        "record relative solution error",
+        "record PDE residual energy",
+        "record boundary error",
+        "record reverse-step convergence",
+        "checkpoint reload reproduces the recorded prediction",
+        "result record contains data and configuration fingerprints"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Official-data subset",
+      "objective": "Validate the complete source data path before spending the full budget.",
+      "procedure": [
+        "Generate the source 64x64 Poisson, diffusion, or Burgers fields and reproduce global max-absolute normalization.",
+        "Freeze preprocessing, split logic, metric code, and checkpoint format.",
+        "Run a deterministic subset large enough to expose batching and memory failures."
+      ],
+      "acceptance_checks": [
+        "dataset receipt and checksum are stored",
+        "resume and evaluation paths reproduce the same subset metric",
+        "memory and runtime are measured rather than estimated"
+      ],
+      "evidence_status": "subset-verified"
+    },
+    {
+      "name": "Source-scale reproduction or declared extension",
+      "objective": "Run the cited protocol, or change it explicitly as a SILVA extension.",
+      "procedure": [
+        "Generate the source 64x64 Poisson, diffusion, or Burgers fields and reproduce global max-absolute normalization.",
+        "Train the three-level field prior independently of the PDE residual and freeze its checkpoint.",
+        "Run deterministic and stochastic guided reverse schedules with Gaussian smoothing and hard boundary projection, then report field, residual, and boundary errors.",
+        "source 64x64 fields, 4000 snapshots, global max-absolute scaling, and trained three-level U-Net prior",
+        "Poisson/diffusion/Burgers coefficient ranges, boundary/initial data, reverse schedule, and guidance steps",
+        "PDE residual, relative solution error, boundary error, convergence trace, and source baselines"
+      ],
+      "acceptance_checks": [
+        "all required artifacts are archived",
+        "reported metrics use the cited evaluation protocol",
+        "every architectural or training deviation is listed",
+        "claims match the achieved evidence status"
+      ],
+      "evidence_status": "planned"
+    }
+  ],
+  "required_artifacts": [
+    "machine-readable model and solver configuration",
+    "dataset receipt with source revision, split, license, and checksum",
+    "preprocessing and normalization record",
+    "seeded training and evaluation log",
+    "checkpoint and optimizer-resume state for trained experiments",
+    "task metrics and equilibrium diagnostics in a machine-readable result",
+    "runtime, peak-memory, device, precision, and dependency record",
+    "declared deviations from the cited protocol"
+  ],
+  "schema_version": 1,
+  "requested_tier": "full",
+  "achieved_evidence_status": "compact-verified",
+  "source_scale_status": "planned"
+}

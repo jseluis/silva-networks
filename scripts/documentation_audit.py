@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import re
 from pathlib import Path
@@ -61,6 +62,34 @@ UNBRACKETED_NUMBERED_CITATION_RE = re.compile(
 NUMBERED_CITATION_START = "<!-- silva-numbered-citations:start -->"
 NUMBERED_CITATION_END = "<!-- silva-numbered-citations:end -->"
 EXTENSION_PATH_START = "<!-- silva-extension-path:start -->"
+API_STUDY_START = "<!-- silva-api-study:start -->"
+API_STUDY_END = "<!-- silva-api-study:end -->"
+LEARNING_STUDY_START = "<!-- silva-learning-study:start -->"
+LEARNING_STUDY_END = "<!-- silva-learning-study:end -->"
+EXPANDED_API_GUIDES = {
+    "advanced_data.md",
+    "advanced_equilibria.md",
+    "coverage.md",
+    "devices.md",
+    "emerging_data.md",
+    "emerging_equilibria.md",
+    "extensibility.md",
+    "frontier_data.md",
+    "physics_informed.md",
+    "reproducibility.md",
+    "scale_cli.md",
+    "scaling.md",
+    "scaling_data.md",
+    "structured_data.md",
+    "structured_equilibria.md",
+}
+EXPANDED_LEARNING_GUIDES = {
+    "advanced-equilibrium-datasets.md",
+    "custom-layers.md",
+    "fixed-points.md",
+    "interactive-diagnostics-lab.md",
+    "stacking-and-devices.md",
+}
 
 
 def _reader_prose_without_code_or_math(source: str) -> str:
@@ -93,7 +122,170 @@ def run_documentation_audit(root: Path = ROOT) -> dict[str, list[str]]:
     _check_reader_wording(docs, errors)
     _check_math_source(docs, errors)
     _check_extension_paths(docs, errors)
+    _check_research_depth_material(root, docs, errors)
+    _check_current_inventory(root, docs, errors)
     return {"errors": errors, "warnings": warnings}
+
+
+def _check_research_depth_material(
+    root: Path,
+    docs: Path,
+    errors: list[str],
+) -> None:
+    family_pages = sorted((docs / "families").glob("*.md"))
+    dossier_pages = [path for path in family_pages if path.name != "index.md"]
+    config_paths = sorted((root / "experiments/reproduction/configs").glob("*.json"))
+    if len(dossier_pages) != 44:
+        errors.append(f"expected 44 family dossier pages, found {len(dossier_pages)}")
+    if len(config_paths) != 44:
+        errors.append(f"expected 44 family scale plans, found {len(config_paths)}")
+
+    required_sections = (
+        "## Identity and Sources",
+        "## Governing Equation",
+        "## What Is Preserved",
+        "## What Can Be Replaced",
+        "## Progressive Experiment Ladder",
+        "## Data, Access, and Storage",
+        "## Compact Defaults",
+        "## Full Defaults",
+        "## Source-Scale Checklist",
+        "## Reporting Rule",
+    )
+    for path in dossier_pages:
+        text = path.read_text(encoding="utf-8")
+        for section in required_sections:
+            if section not in text:
+                errors.append(f"{path.relative_to(root)} is missing dossier section: {section}")
+
+    required_config_fields = {
+        "family",
+        "title",
+        "equation",
+        "constructor_signature",
+        "stages",
+        "datasets",
+        "metrics",
+        "compact_defaults",
+        "full_defaults",
+        "required_artifacts",
+        "source_scale_status",
+    }
+    for path in config_paths:
+        record = json.loads(path.read_text(encoding="utf-8"))
+        missing = required_config_fields - record.keys()
+        if missing:
+            errors.append(
+                f"{path.relative_to(root)} is missing scale-plan fields: "
+                + ", ".join(sorted(missing))
+            )
+        if len(record.get("stages", ())) != 6:
+            errors.append(f"{path.relative_to(root)} must contain six experiment stages")
+
+    result_path = root / "experiments/reproduction/outputs/compact_comparisons.json"
+    if not result_path.exists():
+        errors.append("missing compact comparison result record")
+    else:
+        record = json.loads(result_path.read_text(encoding="utf-8"))
+        suites = record.get("suites", ())
+        if {suite.get("name") for suite in suites} != {"vector", "graph", "field"}:
+            errors.append("compact comparisons must contain vector, graph, and field suites")
+        results = [item for suite in suites for item in suite.get("results", ())]
+        if len(results) != 12:
+            errors.append(f"expected 12 compact family results, found {len(results)}")
+        for result in results:
+            if result.get("final_loss", float("inf")) >= result.get(
+                "initial_loss", float("-inf")
+            ):
+                errors.append(
+                    f"compact comparison did not reduce loss: {result.get('family')}"
+                )
+            if result.get("evidence_status") != "compact-verified":
+                errors.append(
+                    f"compact comparison has an invalid evidence label: {result.get('family')}"
+                )
+
+    lab_names = {
+        "42_family_reproduction_dossiers.ipynb",
+        "43_cross_family_vector_benchmark.ipynb",
+        "44_cross_family_graph_benchmark.ipynb",
+        "45_cross_family_field_benchmark.ipynb",
+        "46_extension_builder_workshop.ipynb",
+        "47_failure_diagnostics_workshop.ipynb",
+    }
+    for directory in (
+        root / "notebooks/package_api",
+        docs / "package-notebooks",
+        root / "colab",
+    ):
+        missing_labs = lab_names - {path.name for path in directory.glob("*.ipynb")}
+        if missing_labs:
+            errors.append(
+                f"{directory.relative_to(root)} is missing research-depth labs: "
+                + ", ".join(sorted(missing_labs))
+            )
+
+
+def _check_current_inventory(root: Path, docs: Path, errors: list[str]) -> None:
+    """Keep reader-facing counts and homepage routes synchronized with the tree."""
+
+    family_tree = ast.parse(
+        (root / "src/silva_networks/families.py").read_text(encoding="utf-8")
+    )
+    family_count: int | None = None
+    for node in family_tree.body:
+        if not isinstance(node, ast.AnnAssign):
+            continue
+        if isinstance(node.target, ast.Name) and node.target.id == "_FAMILY_DESCRIPTIONS":
+            family_count = len(ast.literal_eval(node.value))
+            break
+    if family_count is None:
+        errors.append("could not determine the canonical SILVA family count")
+        return
+
+    markdown_count = sum(
+        1
+        for path in docs.rglob("*.md")
+        if "includes" not in path.relative_to(docs).parts
+    )
+    rendered_notebook_count = sum(1 for _ in docs.rglob("*.ipynb"))
+    canonical_notebook_count = (
+        sum(1 for _ in (root / "notebooks").glob("*.ipynb"))
+        + sum(1 for _ in (root / "notebooks/package_api").glob("*.ipynb"))
+        + sum(1 for _ in (root / "notebooks/implicit_bridge").glob("*.ipynb"))
+    )
+
+    index = (docs / "index.md").read_text(encoding="utf-8")
+    release = (docs / "release-readiness.md").read_text(encoding="utf-8")
+    reproducibility = (docs / "api/reproducibility.md").read_text(encoding="utf-8")
+    required_fragments = {
+        "docs/index.md": (
+            f"<strong>{family_count} Model Families</strong>",
+            f"provides {family_count} selectable\nmodel families",
+        ),
+        "docs/release-readiness.md": (
+            (
+                f"all {markdown_count} navigable Markdown pages and "
+                f"{rendered_notebook_count} rendered notebooks"
+            ),
+            f"all {canonical_notebook_count} package, bridge, and unreleased book/research notebooks",
+        ),
+        "docs/api/reproducibility.md": (f"Each of the {family_count} records",),
+    }
+    sources = {
+        "docs/index.md": index,
+        "docs/release-readiness.md": release,
+        "docs/api/reproducibility.md": reproducibility,
+    }
+    for label, fragments in required_fragments.items():
+        for fragment in fragments:
+            if fragment not in sources[label]:
+                errors.append(f"{label} has stale inventory text: {fragment}")
+
+    for notebook in sorted((docs / "package-notebooks").glob("*.ipynb")):
+        target = f"package-notebooks/{notebook.name}"
+        if target not in index:
+            errors.append(f"docs/index.md does not expose package notebook: {target}")
 
 
 def _check_math_source(docs: Path, errors: list[str]) -> None:
@@ -172,9 +364,13 @@ def _check_extension_paths(docs: Path, errors: list[str]) -> None:
 def _check_ui_configuration(root: Path, errors: list[str]) -> None:
     config = (root / "mkdocs.yml").read_text(encoding="utf-8")
     stylesheet = (root / "docs/stylesheets/extra.css").read_text(encoding="utf-8")
+    notebook_figures = (root / "docs/javascripts/notebook-figures.js").read_text(
+        encoding="utf-8"
+    )
     required_config = (
         "line_length: 88",
         "separate_signature: true",
+        "javascripts/notebook-figures.js",
     )
     for setting in required_config:
         if setting not in config:
@@ -191,6 +387,17 @@ def _check_ui_configuration(root: Path, errors: list[str]) -> None:
     for selector in required_styles:
         if selector not in stylesheet:
             errors.append(f"documentation UI stylesheet is missing: {selector}")
+
+    required_figure_markers = (
+        "No description has been provided for this image",
+        "Executed notebook figure for",
+        "nearestContext",
+    )
+    for marker in required_figure_markers:
+        if marker not in notebook_figures:
+            errors.append(
+                f"notebook figure accessibility enhancement is missing: {marker}"
+            )
 
 
 def _check_next_steps(docs: Path, errors: list[str]) -> None:
@@ -292,6 +499,20 @@ def _check_learning_pages(docs: Path, errors: list[str]) -> None:
         _require_features(path, _page_features(text), errors)
         if len(text.splitlines()) < 60:
             errors.append(f"{path.relative_to(ROOT)} is too short for a learning page")
+        if path.name in EXPANDED_LEARNING_GUIDES:
+            for marker in (
+                LEARNING_STUDY_START,
+                LEARNING_STUDY_END,
+                "## Worked Evidence Bridge",
+                "### Measured Output",
+                "### What This Result Establishes",
+            ):
+                if marker not in text:
+                    errors.append(
+                        f"{path.relative_to(ROOT)} is missing learning study: {marker}"
+                    )
+            if len(text.split()) < 600:
+                errors.append(f"{path.relative_to(ROOT)} learning study is too short")
 
 
 def _check_example_pages(root: Path, docs: Path, errors: list[str]) -> None:
@@ -314,6 +535,19 @@ def _check_api_pages(docs: Path, errors: list[str]) -> None:
             errors.append(f"{path.relative_to(ROOT)} does not render public API docs")
         if "silva" not in text.lower():
             errors.append(f"{path.relative_to(ROOT)} does not explain its SILVA role")
+        if path.name in EXPANDED_API_GUIDES:
+            for marker in (
+                API_STUDY_START,
+                API_STUDY_END,
+                "## Operational Contract",
+                "## Complete Compact Study",
+                "### Measured Compact Output",
+                "### Interpret the Output",
+            ):
+                if marker not in text:
+                    errors.append(f"{path.relative_to(ROOT)} is missing API study: {marker}")
+            if len(text.split()) < 400:
+                errors.append(f"{path.relative_to(ROOT)} API study is too short")
 
 
 def _check_notebooks(root: Path, docs: Path, errors: list[str]) -> None:

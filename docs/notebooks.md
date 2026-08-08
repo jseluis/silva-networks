@@ -4,7 +4,7 @@ The package ships with rendered notebook pages in the documentation and the
 same `.ipynb` files in the repository. The rendered pages are part of the docs
 navigation. The source notebooks can be opened locally in Jupyter.
 
-The repository contains **62 canonical notebooks**: 27 package/family labs, 9
+The repository contains **82 canonical notebooks**: 47 package/family labs, 9
 implicit-layer bridge labs, and 26 derivation-heavy book/research notebooks.
 Publication and hosted-runtime copies mirror the canonical files and are not
 counted as additional notebooks.
@@ -58,8 +58,37 @@ derivatives, and DAE roots.
 | [SILVA Poisson Mirror Equilibrium](package-notebooks/23_silva_poisson_mirror_equilibrium.ipynb) | `notebooks/package_api/23_silva_poisson_mirror_equilibrium.ipynb` | derives Poisson KL and Burg geometry, checks the adjoint pair, positivity, and reconstruction fidelity |
 | [SILVA Physics-Informed Equilibrium](package-notebooks/24_silva_physics_informed_equilibrium.ipynb) | `notebooks/package_api/24_silva_physics_informed_equilibrium.ipynb` | derives the implicit time derivative and trains boundary, ODE, and Jacobian terms |
 | [SILVA Implicit DAE and Residuals](package-notebooks/25_silva_implicit_dae_and_residuals.ipynb) | `notebooks/package_api/25_silva_implicit_dae_and_residuals.ipynb` | derives one- and two-stage DAE roots, rolls out a trajectory, and distinguishes the residual objective |
-| [Full-Scale SILVA Families](package-notebooks/26_full_scale_silva.ipynb) | `notebooks/package_api/26_full_scale_silva.ipynb` | audits all 30 routes, verifies dense/scalable numerical equivalence, shards PDE data, trains with accumulation, resumes, and derives extension patterns |
+| [Full-Scale SILVA Families](package-notebooks/26_full_scale_silva.ipynb) | `notebooks/package_api/26_full_scale_silva.ipynb` | audits all 44 routes, verifies dense/scalable numerical equivalence, shards PDE data, trains with accumulation, resumes, and derives extension patterns |
 | [Reproducing SILVA and Source Methods](package-notebooks/27_reproducing_silva_and_source_methods.ipynb) | `notebooks/package_api/27_reproducing_silva_and_source_methods.ipynb` | audits source-aware records, inspects real constructors, builds a custom transition, adapts joint diffusion restoration, and emits a structured run record |
+| [SILVA Consistency DEQ](package-notebooks/28_silva_consistency_deq.ipynb) | `notebooks/package_api/28_silva_consistency_deq.ipynb` | derives trajectory distillation, trains a terminally anchored refiner, and compares teacher, one-step, and two-step errors |
+| [SILVA Psi-GNN](package-notebooks/29_silva_psi_gnn.ipynb) | `notebooks/package_api/29_silva_psi_gnn.ipynb` | builds a mixed-boundary Poisson graph, trains the equilibrium processor, and separates solution, algebraic, boundary, and solver residuals |
+| [SILVA IFNO Materials](package-notebooks/30_silva_ifno_materials.ipynb) | `notebooks/package_api/30_silva_ifno_materials.ipynb` | derives the tied Fourier residual update on a heterogeneous material field and compares displacement, strain, and constitutive error |
+| [SILVA SNARF Forward Skinning](package-notebooks/31_silva_snarf_forward_skinning.ipynb) | `notebooks/package_api/31_silva_snarf_forward_skinning.ipynb` | verifies forward blend skinning, multi-start canonical root recovery, occupancy evaluation, and posed-space reconstruction |
+| [SILVA Mesh Inference](package-notebooks/32_silva_mesh_inference.ipynb) | `notebooks/package_api/32_silva_mesh_inference.ipynb` | derives local typed relaxation, verifies its matrix certificate, and compares the distributed state with the centralized optimum |
+| [SILVA Physics-Guided Diffusion PDE](package-notebooks/33_silva_physics_guided_diffusion_pde.ipynb) | `notebooks/package_api/33_silva_physics_guided_diffusion_pde.ipynb` | runs denoising, Gaussian smoothing, PDE-energy guidance, and boundary projection on an exact Poisson field |
+| [SILVA TherINO Mechanics](package-notebooks/34_silva_therino_mechanics.ipynb) | `notebooks/package_api/34_silva_therino_mechanics.ipynb` | derives physical-strain equilibrium, verifies exact periodic elasticity, trains the complete constitutive loss, and exposes the full operator contract |
+| [SILVA Fixed-Point Diffusion](package-notebooks/35_silva_fixed_point_diffusion.ipynb) | `notebooks/package_api/35_silva_fixed_point_diffusion.ipynb` | derives timestep-conditioned roots, variable compute, equilibrium reuse, stochastic Jacobian-free training, and the distinct joint restoration route |
+| [SILVA Monotone Operator Equilibrium](package-notebooks/36_silva_monotone_operator_equilibrium.ipynb) | `notebooks/package_api/36_silva_monotone_operator_equilibrium.ipynb` | derives the monotone inclusion, verifies the matrix certificate, compares both splittings, checks gradients, and runs an attributed CIFAR-10 mechanism check with plots |
+| [SILVA Positive-Concave Equilibrium](package-notebooks/37_silva_positive_concave_equilibrium.ipynb) | `notebooks/package_api/37_silva_positive_concave_equilibrium.ipynb` | derives positive-concave fixed points, runs both variants and operator types, verifies positivity, and trains on attributed positive CIFAR-10 tensors |
+| [SILVA Non-Euclidean Equilibrium](package-notebooks/38_silva_non_euclidean_equilibrium.ipynb) | `notebooks/package_api/38_silva_non_euclidean_equilibrium.ipynb` | derives weighted-infinity contraction and sensitivity bounds, then measures a bounded perturbation on attributed CIFAR-10 examples |
+| [SILVA Efficient Infinite Graph](package-notebooks/39_silva_efficient_infinite_graph.ipynb) | `notebooks/package_api/39_silva_efficient_infinite_graph.ipynb` | derives spectral and iterative routes, then trains a masked source-indexed Cora subgraph with label and prediction plots |
+| [SILVA Multiscale Graph Implicit Network](package-notebooks/40_silva_multiscale_graph_implicit.ipynb) | `notebooks/package_api/40_silva_multiscale_graph_implicit.ipynb` | derives graph-power equilibria and graph-conditioned injection, then plots nodewise scale allocation on source-indexed Cora tensors |
+| [SILVA Delta Equilibrium](package-notebooks/41_silva_delta_equilibrium.ipynb) | `notebooks/package_api/41_silva_delta_equilibrium.ipynb` | derives cached updates, verifies zero-threshold equivalence and delta-forward training, then measures cache activity on consecutive real-video frames |
+
+## Research Depth and Comparison Track
+
+These labs connect every family to a staged experiment contract, compare
+compatible families under common compact tasks, and show how to author and
+diagnose new SILVA constructions without hiding their replaceable components.
+
+| Rendered page | Source notebook | Main result |
+| --- | --- | --- |
+| [Family Reproduction Dossiers](package-notebooks/42_family_reproduction_dossiers.ipynb) | `notebooks/package_api/42_family_reproduction_dossiers.ipynb` | audits all 44 six-stage dossiers, data routes, scale defaults, required artifacts, and evidence boundaries |
+| [Cross-Family Vector Benchmark](package-notebooks/43_cross_family_vector_benchmark.ipynb) | `notebooks/package_api/43_cross_family_vector_benchmark.ipynb` | trains five compatible vector equilibria on one deterministic regression task and compares optimization and solver diagnostics |
+| [Cross-Family Graph Benchmark](package-notebooks/44_cross_family_graph_benchmark.ipynb) | `notebooks/package_api/44_cross_family_graph_benchmark.ipynb` | trains four graph equilibria on the same chain-graph task and records loss, residual, gradients, parameters, and iterations |
+| [Cross-Family Field Benchmark](package-notebooks/45_cross_family_field_benchmark.ipynb) | `notebooks/package_api/45_cross_family_field_benchmark.ipynb` | trains three Fourier-family equilibria on one periodic field task and separates task error from numerical diagnostics |
+| [Extension Builder Workshop](package-notebooks/46_extension_builder_workshop.ipynb) | `notebooks/package_api/46_extension_builder_workshop.ipynb` | derives a custom branch, proves primitive-to-public transition equivalence, solves it, trains it, and records the route to a reusable family |
+| [Failure Diagnostics Workshop](package-notebooks/47_failure_diagnostics_workshop.ipynb) | `notebooks/package_api/47_failure_diagnostics_workshop.ipynb` | contrasts stable, near-critical, oscillatory, and damped fixed points through complete residual curves and recovery checks |
 
 ## Implicit Layers Bridge Track
 
@@ -113,6 +142,30 @@ $$
 Dataset cells end with `GraphTensorBatch.validate()` so shape errors are caught
 before a model call.
 
+Each canonical notebook also ends with an executable analytic reference study.
+For the local scalar transition
+
+$$
+z_{k+1}=\rho z_k+u,
+\qquad
+z^\star=\frac{u}{1-\rho},
+$$
+
+the notebook measures the forward residual, the exact-state error, iteration
+count, and the implicit derivative
+
+$$
+\frac{\partial z^\star}{\partial u}=\frac{1}{1-\rho}.
+$$
+
+That compact calculation is then translated back to the notebook's operator,
+graph, spatial, trajectory, measure, or constrained state. The result is not
+only a plotted residual: each notebook stores a numerical table, checks the
+analytic gradient, renders a 300-dpi two-panel diagnostic, identifies the
+structural invariants, and states which solver, data, and scale axes to vary
+next. Across the 82 canonical notebooks, all 946 code cells are executed; the
+committed results contain 906 output blocks and 216 figures.
+
 ## Local Jupyter
 
 For a quick release validation, run:
@@ -121,11 +174,17 @@ For a quick release validation, run:
 python scripts/run_notebook_smoke.py --timeout 180
 ```
 
-Execute all 62 canonical notebooks, including the unreleased book track:
+Execute all 82 canonical notebooks, including the unreleased book track:
 
 ```bash
-python scripts/run_notebook_smoke.py --all --timeout 300
+python scripts/run_notebook_smoke.py --all --inplace --timeout 300
+python scripts/sync_notebook_outputs.py
 ```
+
+The first command writes fresh results into the canonical notebooks. The second
+copies only execution counts and outputs into the documentation and portable
+copies, leaving their citation links, download metadata, and navigation cells
+unchanged.
 
 Install the example dependencies and open the notebook folder:
 

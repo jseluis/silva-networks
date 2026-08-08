@@ -112,6 +112,56 @@ $$
 \rho\left((1-\alpha)I+\alpha J_f(z^\star)\right).
 $$
 
+<!-- silva-learning-study:start -->
+## Worked Evidence Bridge
+
+The derivation above becomes a complete SILVA study when the state, condition,
+solver result, task result, and gradient path are kept separate. Here the state
+is **one scalar equilibrium state** and the condition is **a constant injected source**. The compact
+relation is
+
+$$
+z^\star=az^\star+b,\qquad z^\star=\frac{b}{1-a}
+$$
+
+The following is the complete executable program used by the repository tests:
+
+```python
+--8<-- "examples/scalar_deq.py"
+```
+
+Run it from the project root:
+
+```bash
+python examples/scalar_deq.py
+```
+
+### Measured Output
+
+```text
+z_star 2.222222328186035
+closed_form 2.222222328186035
+final_residual 0.0
+jacobian [0.550000011920929]
+spectral_radius 0.550000011920929
+```
+
+### What This Result Establishes
+
+This run records closed-form agreement, a zero final residual, and the local Jacobian. It establishes that the compact mechanism is
+executable with finite outputs and that its stated shape or structural contract
+can be inspected. It does not establish source-scale accuracy by itself.
+
+For the next controlled study, replace the scalar coefficient with a matrix or nonlinear transition and sweep its spectral radius. Keep the compact run as a
+regression case. For every larger run, archive the resolved data source and
+split, preprocessing, seed, constructor arguments, forward and backward solver
+settings, task metric, normalized residual, iteration count, gradient norm,
+runtime, peak memory, and convergence failures. This keeps task quality,
+numerical convergence, and computational cost from being collapsed into one
+number.
+
+<!-- silva-learning-study:end -->
+
 ## Where to Go Next
 
 | Question | Page |

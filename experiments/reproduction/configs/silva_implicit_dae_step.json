@@ -1,0 +1,198 @@
+{
+  "family": "silva_implicit_dae_step",
+  "title": "implicit Runge-Kutta DAE root layer",
+  "domain": "physics and differential systems",
+  "task_contract": "differential/algebraic states plus dynamics/constraint -> next consistent state",
+  "source_relation": "paper-adaptation",
+  "equation": "Y_i=y_n+dt sum_j a_ij f(Y_j,Z_j); 0=g(Y_i,Z_i)",
+  "constructor_signature": "(*, a: 'Tensor | None' = None, b: 'Tensor | None' = None, c: 'Tensor | None' = None, max_iter: 'int' = 8, tol: 'float' = 1e-07, damping: 'float' = 1.0, ridge: 'float' = 1e-06, linear_solver: 'DAELinearSolver' = 'auto', dense_linear_threshold: 'int' = 64, linear_max_iter: 'int' = 50, linear_tol: 'float' = 1e-06)",
+  "paper_refs": [
+    52
+  ],
+  "repositories": [
+    "https://github.com/jseluis/silva-networks"
+  ],
+  "datasets": [
+    "three-bus power-network DAE",
+    "analytic index-1 DAE"
+  ],
+  "data_sources": [
+    "https://github.com/jseluis/silva-networks"
+  ],
+  "data_access": [
+    "Follow the cited repository and dataset terms, then record source revisions and archive checksums."
+  ],
+  "storage_plan": [
+    "Measure one processed sample, estimate the complete split, and budget raw data, processed shards, checkpoints, optimizer state, and diagnostics separately."
+  ],
+  "preprocessing": [
+    "record dataset version, split, normalization, shape convention, and seed",
+    "preserve masks, graph indices, boundaries, or physical units required by the domain"
+  ],
+  "metrics": [
+    "trajectory error",
+    "algebraic constraint residual",
+    "stage residual"
+  ],
+  "compact_data": [
+    "Use the cited notebook's deterministic compact fixture before replacing it with source-scale data."
+  ],
+  "preserved_mechanisms": [
+    "implicit Runge-Kutta stage root with differential and algebraic constraints"
+  ],
+  "configurable_parts": [
+    "supply a Butcher tableau, dynamics, constraints, or learned closures",
+    "stage count",
+    "Newton-Krylov budget",
+    "time-step continuation"
+  ],
+  "source_scale_steps": [
+    "Acquire the cited data and preserve its official split, preprocessing, units, and metric.",
+    "Build the same SILVA family with source-aligned task modules and scale controls.",
+    "Run forward, loss, backward, checkpoint resume, and metric validation on a small shard before the complete experiment."
+  ],
+  "benchmark_requirements": [
+    "source DAE, index assumptions, consistent initialization, time grid, tolerances, and error"
+  ],
+  "notebooks": [
+    "notebooks/package_api/25_silva_implicit_dae_and_residuals.ipynb"
+  ],
+  "tests": [
+    "tests/test_advanced_equilibria.py",
+    "tests/test_advanced_data.py"
+  ],
+  "compact_defaults": [
+    [
+      "tier",
+      "'smoke'"
+    ],
+    [
+      "linear_max_iter",
+      "80"
+    ],
+    [
+      "linear_solver",
+      "'gmres'"
+    ]
+  ],
+  "full_defaults": [
+    [
+      "tier",
+      "'full'"
+    ],
+    [
+      "linear_max_iter",
+      "80"
+    ],
+    [
+      "linear_solver",
+      "'gmres'"
+    ]
+  ],
+  "stages": [
+    {
+      "name": "Equation and tensor contract",
+      "objective": "Make the state, conditioning variables, operator, and readout explicit.",
+      "procedure": [
+        "Write and evaluate the family equation: `Y_i=y_n+dt sum_j a_ij f(Y_j,Z_j); 0=g(Y_i,Z_i)`",
+        "Declare every tensor axis, boundary, mask, graph, or physical unit.",
+        "Check the transition output has exactly the same shape as the equilibrium state."
+      ],
+      "acceptance_checks": [
+        "finite transition values",
+        "shape-preserving state update",
+        "all conditioning variables affect the intended branch"
+      ],
+      "evidence_status": "contract-verified"
+    },
+    {
+      "name": "Primitive mechanism reconstruction",
+      "objective": "Build the retained source mechanism from replaceable modules.",
+      "procedure": [
+        "implicit Runge-Kutta stage root with differential and algebraic constraints"
+      ],
+      "acceptance_checks": [
+        "primitive modules expose trainable parameters and gradients",
+        "mechanism-specific invariance or constraint check passes",
+        "direct transition evaluation is deterministic under a fixed seed"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Public abstraction equivalence",
+      "objective": "Verify that the assembled family evaluates the same transition as its primitives.",
+      "procedure": [
+        "Copy the primitive module parameters into the public family constructor.",
+        "Evaluate one transition and one complete equilibrium with identical inputs.",
+        "Compare outputs, residuals, and parameter gradients with declared tolerances."
+      ],
+      "acceptance_checks": [
+        "transition outputs agree",
+        "equilibrium residual is finite and decreases",
+        "primitive and assembled gradients agree on the compact case"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Compact real or analytic task",
+      "objective": "Exercise training, evaluation, diagnostics, and serialization end to end.",
+      "procedure": [
+        "Use the cited notebook's deterministic compact fixture before replacing it with source-scale data."
+      ],
+      "acceptance_checks": [
+        "record trajectory error",
+        "record algebraic constraint residual",
+        "record stage residual",
+        "checkpoint reload reproduces the recorded prediction",
+        "result record contains data and configuration fingerprints"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Official-data subset",
+      "objective": "Validate the complete source data path before spending the full budget.",
+      "procedure": [
+        "Acquire the cited data and preserve its official split, preprocessing, units, and metric.",
+        "Freeze preprocessing, split logic, metric code, and checkpoint format.",
+        "Run a deterministic subset large enough to expose batching and memory failures."
+      ],
+      "acceptance_checks": [
+        "dataset receipt and checksum are stored",
+        "resume and evaluation paths reproduce the same subset metric",
+        "memory and runtime are measured rather than estimated"
+      ],
+      "evidence_status": "subset-verified"
+    },
+    {
+      "name": "Source-scale reproduction or declared extension",
+      "objective": "Run the cited protocol, or change it explicitly as a SILVA extension.",
+      "procedure": [
+        "Acquire the cited data and preserve its official split, preprocessing, units, and metric.",
+        "Build the same SILVA family with source-aligned task modules and scale controls.",
+        "Run forward, loss, backward, checkpoint resume, and metric validation on a small shard before the complete experiment.",
+        "source DAE, index assumptions, consistent initialization, time grid, tolerances, and error"
+      ],
+      "acceptance_checks": [
+        "all required artifacts are archived",
+        "reported metrics use the cited evaluation protocol",
+        "every architectural or training deviation is listed",
+        "claims match the achieved evidence status"
+      ],
+      "evidence_status": "planned"
+    }
+  ],
+  "required_artifacts": [
+    "machine-readable model and solver configuration",
+    "dataset receipt with source revision, split, license, and checksum",
+    "preprocessing and normalization record",
+    "seeded training and evaluation log",
+    "checkpoint and optimizer-resume state for trained experiments",
+    "task metrics and equilibrium diagnostics in a machine-readable result",
+    "runtime, peak-memory, device, precision, and dependency record",
+    "declared deviations from the cited protocol"
+  ],
+  "schema_version": 1,
+  "requested_tier": "full",
+  "achieved_evidence_status": "compact-verified",
+  "source_scale_status": "planned"
+}

@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "purpose": "Executable source-data mechanism checks for six structured SILVA families.",
+  "claims": {
+    "benchmark_reproduction": false,
+    "mechanism_check": true,
+    "note": "The compact subsets verify data flow, architecture construction, losses, gradients, and diagnostics. They do not replace complete source protocols."
+  },
+  "seed": 91,
+  "snapshots": {
+    "cifar10": "docs/assets/source-data/cifar10-balanced-10.pt",
+    "cora": "docs/assets/source-data/cora-induced-96.pt",
+    "motion": "docs/assets/source-data/public-motion-frames-100-101.pt"
+  },
+  "bundled_snapshots": {
+    "cifar10": "cifar10",
+    "cora": "cora",
+    "motion": "motion"
+  },
+  "families": {
+    "silva_monotone_operator_equilibrium": {
+      "dataset": "CIFAR10",
+      "snapshot": "cifar10",
+      "input": "flatten 16x16 RGB images",
+      "state_dim": 32,
+      "out_dim": 10,
+      "splitting": "forward_backward",
+      "step_size": 0.5,
+      "epochs": 2,
+      "batch_size": 10
+    },
+    "silva_positive_concave_equilibrium": {
+      "dataset": "CIFAR10",
+      "snapshot": "cifar10",
+      "input": "unit-valued 16x16 RGB images",
+      "operator": "conv2d",
+      "variant": 1,
+      "state_dim": 8,
+      "out_dim": 10,
+      "epochs": 2,
+      "batch_size": 10
+    },
+    "silva_non_euclidean_equilibrium": {
+      "dataset": "CIFAR10",
+      "snapshot": "cifar10",
+      "input": "flatten 16x16 RGB images",
+      "state_dim": 32,
+      "out_dim": 10,
+      "one_sided_bound": 0.05,
+      "perturbation_linf": 0.031372549,
+      "epochs": 2,
+      "batch_size": 10
+    },
+    "silva_efficient_infinite_graph": {
+      "dataset": "Cora",
+      "snapshot": "cora",
+      "state_dim": 16,
+      "out_dim": 7,
+      "gamma": 0.8,
+      "solve_mode": "iterative",
+      "epochs": 3,
+      "loss_mask": "train_mask",
+      "report_masks": [
+        "train_mask",
+        "validation_mask",
+        "test_mask"
+      ]
+    },
+    "silva_multiscale_graph_implicit": {
+      "dataset": "Cora",
+      "snapshot": "cora",
+      "state_dim": 16,
+      "out_dim": 7,
+      "scales": [
+        1,
+        2,
+        4
+      ],
+      "epochs": 3,
+      "loss_mask": "train_mask",
+      "report_masks": [
+        "train_mask",
+        "validation_mask",
+        "test_mask"
+      ]
+    },
+    "silva_delta_equilibrium": {
+      "dataset": "PublicBasketballMotion",
+      "snapshot": "motion",
+      "input": "two consecutive 96x160 RGB frames",
+      "thresholds": [
+        0.0,
+        0.0001,
+        0.001,
+        0.01
+      ],
+      "claim": "real-image cache activity and exact-map residual only; no supervised flow metric"
+    }
+  }
+}

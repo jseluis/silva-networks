@@ -23,7 +23,7 @@ branches, solvers, diagnostics, and readouts.
 <span>Picard, Anderson, Broyden, GMRES diagnostics</span>
 </div>
 <div class="silva-metric" markdown>
-<strong>30 Model Families</strong>
+<strong>44 Model Families</strong>
 <span>SILVA, operators, graph physics, transformers, inverse problems, ODEs, DAEs</span>
 </div>
 <div class="silva-metric" markdown>
@@ -76,7 +76,7 @@ branches, solvers, diagnostics, and readouts.
 </a>
 <a class="silva-action" href="learn/full-scale-silva/" markdown>
 <strong>Scale a SILVA model</strong>
-<span>All 30 families, sharded data, distributed training, resume, extensions</span>
+<span>All 44 families, sharded data, distributed training, resume, extensions</span>
 </a>
 <a class="silva-action" href="learn/neural-operators-ode-pde/" markdown>
 <strong>Connect ODEs and PDEs</strong>
@@ -89,6 +89,10 @@ branches, solvers, diagnostics, and readouts.
 <a class="silva-action" href="learn/physics-informed-equilibria/" markdown>
 <strong>Build physical equilibria</strong>
 <span>Implicit ODE derivatives, DAE stages, residual objectives</span>
+</a>
+<a class="silva-action" href="learn/emerging-equilibrium-methods/" markdown>
+<strong>Explore emerging methods</strong>
+<span>Consistency, mixed boundaries, materials, skinning, meshes, and diffusion</span>
 </a>
 <a class="silva-action" href="experiments/benchmark-cards/" markdown>
 <strong>Read benchmarks</strong>
@@ -150,7 +154,7 @@ SILVA is not limited to one graph or image architecture. The recurrent state
 can be a vector, token sequence, multiresolution tuple, coordinate field,
 sampled physical field, flow pair, diffusion trajectory, or optimization
 variable. It can also be a continuous-flow endpoint or an empirical measure
-represented by variable-size particles. The package provides 30 selectable
+represented by variable-size particles. The package provides 44 selectable
 model families and ten internal point architectures while retaining an
 explicit state-transition contract:
 
@@ -200,6 +204,20 @@ parallel diffusion restoration [[49]](paper/references.md#ref-49){ .silva-cite }
 | Poisson mirror equilibrium | Burg mirror geometry preserves a positive inverse state | `SILVAPoissonMirrorEquilibrium` | [Mirror derivation](learn/advanced-equilibrium-families.md#poisson-mirror-equilibrium) |
 | physics-informed equilibrium | latent fixed point supplies an implicit ODE time derivative | `SILVAPhysicsInformedEquilibrium` | [Physics-informed derivation](learn/physics-informed-equilibria.md#physics-informed-deep-equilibrium) |
 | implicit DAE stage layer | Runge-Kutta stages and algebraic endpoint form one root | `SILVAImplicitDAEStep` | [DAE derivation](learn/physics-informed-equilibria.md#differential-algebraic-equations) |
+| consistency-distilled equilibrium | a teacher solver trajectory supervises a terminally anchored few-step refiner | `SILVAConsistencyDEQ` | [Consistency DEQ derivation](learn/emerging-equilibrium-methods.md#consistency-deq) |
+| mixed-boundary Poisson graph | typed directed messages preserve Dirichlet and Neumann roles inside an implicit processor | `SILVAPsiGNN` | [Psi-GNN derivation](learn/emerging-equilibrium-methods.md#psi-gnn-for-mixed-boundary-poisson-problems) |
+| implicit Fourier material operator | one tied spectral/local increment evolves displacement or damage fields | `SILVAIFNO` | [IFNO derivation](learn/emerging-equilibrium-methods.md#ifno-for-heterogeneous-materials) |
+| forward-skinning root field | multi-start canonical roots connect posed queries to occupancy | `SILVASNARF` | [SNARF derivation](learn/emerging-equilibrium-methods.md#snarf-forward-skinning) |
+| center-free mesh relaxation | typed local observations converge to a certified distributed estimate | `SILVAMeshInference` | [Mesh derivation](learn/emerging-equilibrium-methods.md#mesh-inference) |
+| physics-guided diffusion PDE solve | prior denoising, residual-energy descent, smoothing, and boundary projection share one reverse path | `SILVAPhysicsGuidedDiffusionPDE` | [Diffusion PDE derivation](learn/emerging-equilibrium-methods.md#physics-guided-diffusion-for-pdes) |
+| thermodynamically informed material equilibrium | strain, free-energy features, constitutive response, and Anderson mixing evolve directly in the physical solution field | `SILVATherINO` | [TherINO derivation](learn/emerging-equilibrium-methods.md#thermodynamically-informed-material-equilibria) |
+| fixed-point diffusion denoiser | timestep-conditioned equilibrium solves support variable compute, warm starts, and stochastic implicit training | `SILVAFixedPointDiffusionModel` | [Fixed-point diffusion derivation](learn/emerging-equilibrium-methods.md#fixed-point-diffusion-denoisers) |
+| monotone operator equilibrium | strongly monotone recurrent structure supports forward-backward or Peaceman-Rachford splitting | `SILVAMonotoneOperatorEquilibrium` | [Monotone operator derivation](learn/structured-equilibrium-families.md#monotone-operator-equilibrium) |
+| positive-concave equilibrium | nonnegative recurrent weights and concave positive maps admit ordinary fixed-point iteration | `SILVAPositiveConcaveEquilibrium` | [Positive-concave derivation](learn/structured-equilibrium-families.md#positive-concave-equilibrium) |
+| non-Euclidean equilibrium | a weighted-infinity matrix measure certifies well-posedness, averaging, and sensitivity | `SILVANonEuclideanEquilibrium` | [Non-Euclidean derivation](learn/structured-equilibrium-families.md#non-euclidean-monotone-operator-network) |
+| efficient infinite graph equilibrium | normalized channel and graph spectra produce a closed-form or iterative long-range graph state | `SILVAEfficientInfiniteGraphEquilibrium` | [Efficient graph derivation](learn/structured-equilibrium-families.md#efficient-infinite-depth-graph-equilibrium) |
+| multiscale graph implicit network | graph-power equilibria are fused by learned nodewise scale attention | `SILVAMultiscaleGraphImplicitNetwork` | [Multiscale graph derivation](learn/structured-equilibrium-families.md#multiscale-graph-implicit-network) |
+| delta-cached equilibrium | thresholded state changes update cached linear or convolutional fields during fixed-point iteration | `SILVADeltaEquilibrium` | [Delta equilibrium derivation](learn/structured-equilibrium-families.md#delta-cached-equilibrium-inference) |
 | reaction-diffusion and Burgers | known finite-difference field inside backward Euler | scientific right-hand-side modules | [Worked equations](learn/neural-operators-ode-pde.md#worked-scientific-constructions) |
 | irregular graph PDE | graph Laplacian or message field in `local_terms` | `SILVACortexLayer` | [Graph discretization](learn/neural-operators-ode-pde.md#irregular-domains-and-graph-pdes) |
 
@@ -225,7 +243,26 @@ families or implicit layers. Their [dataset guide](learn/advanced-equilibrium-da
 states the exact chain, image-pair, Poisson, ODE, and DAE equations, while
 notebooks 21 through 25 execute every derivation and gradient path.
 
-The [full-scale guide](learn/full-scale-silva.md) connects all 30 canonical
+The [emerging-method guide](learn/emerging-equilibrium-methods.md) derives eight
+additional families and provides compact known-solution datasets, replaceable
+component contracts, source-scale data obligations, storage estimates, and
+focused notebooks 28 through 35 with retained numerical outputs and plots.
+
+The [structured-family guide](learn/structured-equilibrium-families.md) adds six
+certified, spectral, multiscale, and accelerated constructions. Focused
+notebooks 36 through 41 derive each transition from its primary source, run
+known-solution checks, expose replaceable internals, retain 300-DPI plots, and
+separate compact evidence from the complete published benchmark protocol.
+
+The [real-dataset reproduction guide](learn/real-dataset-reproduction.md) adds
+checksum-verified CIFAR-10, Cora, and public-motion snapshots to those six
+notebooks, along with complete local loaders for vision, Planetoid graphs,
+Sintel, KITTI Flow, FlyingChairs, and Darcy fields. Each compact run records
+source indices, preprocessing, access information, and a content hash. The
+guide states exactly what must be restored before reporting a source-paper
+benchmark.
+
+The [full-scale guide](learn/full-scale-silva.md) connects all 44 canonical
 families to scale-aware operators, sharded data, mixed precision, gradient
 accumulation, distributed execution, checkpoint resume, benchmark handoffs,
 and explicit extension points. Its
@@ -241,6 +278,15 @@ still require the complete cited protocol and compute budget. The
 [executable reproduction lab](package-notebooks/27_reproducing_silva_and_source_methods.ipynb)
 audits the registry, builds a custom transition, and runs an
 observation-conditioned joint diffusion trajectory.
+
+The [family reproduction dossiers](families/index.md) expand that registry into
+44 reader-facing experiment plans with equations, preserved mechanisms,
+replaceable components, data and storage routes, progressive acceptance checks,
+compact/full defaults, and evidence boundaries. The
+[cross-family comparison suites](experiments/cross-family-comparisons.md) train
+compatible vector, graph, and field families on shared deterministic tasks and
+retain measured losses, residuals, iterations, gradients, parameter counts, and
+runtime in a machine-readable record.
 
 The package is meant to be read, imported, extended, and tested. It contains
 reference SILVA presets, generic custom layers, fixed-point solvers,
@@ -278,7 +324,7 @@ Primary category: cs.LG. DOI:
 <div class="silva-citation-card" markdown>
 <strong>Software</strong>
 
-Dr. Jose Luis Silva. *SILVA Networks*. Version 1.1.0. MIT License.
+Dr. Jose Luis Silva. *SILVA Networks*. Version 1.2.0. MIT License.
 All-versions DOI: [10.5281/zenodo.21770098](https://doi.org/10.5281/zenodo.21770098).
 
 [Repository](https://github.com/jseluis/silva-networks) |
@@ -503,7 +549,12 @@ residual, boundary error, and resolution or mesh transfer separately.
 | [Extensibility](api/extensibility.md) | transition validation and generic conditioned equilibria assembled from custom modules |
 | [Optical Flow](api/flow.md) | RAFT/DEQ-Flow-style package-native optical-flow utilities |
 | [Generalized Cases](api/cases.md) | sequence, multiscale vision, implicit graph, coordinate representation, and diffusion equilibria |
-| [Family Selection](api/families.md) | 30 canonical constructors and compatibility aliases through one configuration surface |
+| [Family Selection](api/families.md) | 44 canonical constructors and compatibility aliases through one configuration surface |
+| [Emerging Equilibria](api/emerging_equilibria.md) | consistency distillation, mixed-boundary graph roots, IFNO, forward skinning, mesh relaxation, physics-guided diffusion, TherINO, and fixed-point diffusion |
+| [Emerging Equilibrium Data](api/emerging_data.md) | compact exact teacher, Poisson, material, skinning, mesh, PDE, thermodynamic-mechanics, and diffusion datasets |
+| [Structured Equilibria](api/structured_equilibria.md) | monotone, positive-concave, non-Euclidean, spectral graph, multiscale graph, and delta-cached equilibria |
+| [Structured Equilibrium Data](api/structured_data.md) | compact known-solution tasks for certificates, graph spectra, multiscale fusion, robustness, and heterogeneous convergence |
+| [Source Data and Receipts](api/source_data.md) | attributed real-data subsets, complete local loaders, checksums, source indices, split masks, and field/flow adapters |
 | [Recent Equilibrium API](api/frontier.md) | Fourier, physics graph, homotopy, and empirical-measure SILVA families |
 | [Recent Equilibrium Datasets](api/frontier_data.md) | deterministic field, graph, homotopy, and empirical-measure teaching data |
 | [Advanced Equilibria API](api/advanced_equilibria.md) | monotone graph and one-time-injected transformer equilibria |
@@ -546,6 +597,28 @@ residual, boundary error, and resolution or mesh transfer separately.
 | [SILVA Poisson Mirror Equilibrium](package-notebooks/23_silva_poisson_mirror_equilibrium.ipynb) | Poisson KL, Burg geometry, positivity, and inverse diagnostics |
 | [SILVA Physics-Informed Equilibrium](package-notebooks/24_silva_physics_informed_equilibrium.ipynb) | implicit time derivatives and decomposed physics training |
 | [SILVA Implicit DAE and Residuals](package-notebooks/25_silva_implicit_dae_and_residuals.ipynb) | Runge-Kutta roots, DAE rollout, and residual-objective boundary |
+| [Full-Scale SILVA](package-notebooks/26_full_scale_silva.ipynb) | scale-aware construction, dense and matrix-free equivalence, checkpointing, and distributed execution controls |
+| [Reproducing SILVA and Source Methods](package-notebooks/27_reproducing_silva_and_source_methods.ipynb) | source mechanisms, configurable replacements, compact evidence, benchmark obligations, and full-scale handoffs |
+| [SILVA Consistency DEQ](package-notebooks/28_silva_consistency_deq.ipynb) | solver trajectories, terminal anchoring, consistency distillation, few-step refinement, and latency diagnostics |
+| [SILVA Psi-GNN](package-notebooks/29_silva_psi_gnn.ipynb) | mixed Dirichlet/Neumann graph construction, typed messages, Poisson residuals, and boundary checks |
+| [SILVA IFNO Materials](package-notebooks/30_silva_ifno_materials.ipynb) | tied spectral increments, heterogeneous coefficients, displacement fields, damage variables, and resolution transfer |
+| [SILVA SNARF Forward Skinning](package-notebooks/31_silva_snarf_forward_skinning.ipynb) | forward deformation, multi-start canonical roots, occupancy evaluation, and root-selection diagnostics |
+| [SILVA Mesh Inference](package-notebooks/32_silva_mesh_inference.ipynb) | typed local observations, center-free relaxation, convergence certificates, and topology-compatible tests |
+| [SILVA Physics-Guided Diffusion PDE](package-notebooks/33_silva_physics_guided_diffusion_pde.ipynb) | reverse diffusion, PDE-residual energy guidance, smoothing, boundary projection, and coefficient-shift checks |
+| [SILVA TherINO Mechanics](package-notebooks/34_silva_therino_mechanics.ipynb) | physical-strain equilibrium, thermodynamic features, constitutive loss, periodic elasticity, and operator replacement |
+| [SILVA Fixed-Point Diffusion](package-notebooks/35_silva_fixed_point_diffusion.ipynb) | timestep-conditioned roots, variable compute, warm starts, implicit gradients, and the separate restoration route |
+| [SILVA Monotone Operator Equilibrium](package-notebooks/36_silva_monotone_operator_equilibrium.ipynb) | strong monotonicity, both splittings, custom resolvents, and an attributed CIFAR-10 gradient/residual check |
+| [SILVA Positive-Concave Equilibrium](package-notebooks/37_silva_positive_concave_equilibrium.ipynb) | positive variants, dense and convolutional states, projected weights, and attributed positive CIFAR-10 tensors |
+| [SILVA Non-Euclidean Equilibrium](package-notebooks/38_silva_non_euclidean_equilibrium.ipynb) | weighted-infinity certificates, averaged iteration, and bounded perturbations on attributed CIFAR-10 examples |
+| [SILVA Efficient Infinite Graph](package-notebooks/39_silva_efficient_infinite_graph.ipynb) | spectral and iterative solves plus masked training and visual diagnostics on source-indexed Cora tensors |
+| [SILVA Multiscale Graph Implicit Network](package-notebooks/40_silva_multiscale_graph_implicit.ipynb) | graph-power equilibria, graph-conditioned sources, and nodewise scale allocation on source-indexed Cora tensors |
+| [SILVA Delta Equilibrium](package-notebooks/41_silva_delta_equilibrium.ipynb) | thresholded caches, exact checks, training routes, and measured activity on consecutive real-video frames |
+| [Family Reproduction Dossiers](package-notebooks/42_family_reproduction_dossiers.ipynb) | all 44 source contracts, six-stage evidence ladders, data obligations, and scale artifacts |
+| [Cross-Family Vector Benchmark](package-notebooks/43_cross_family_vector_benchmark.ipynb) | five compatible vector families on one trained compact task |
+| [Cross-Family Graph Benchmark](package-notebooks/44_cross_family_graph_benchmark.ipynb) | four graph equilibria on one shared chain-node prediction task |
+| [Cross-Family Field Benchmark](package-notebooks/45_cross_family_field_benchmark.ipynb) | three spectral field families on one periodic operator task |
+| [Extension Builder Workshop](package-notebooks/46_extension_builder_workshop.ipynb) | primitive-to-public transition equivalence, equilibrium solving, training, and registration |
+| [Failure Diagnostics Workshop](package-notebooks/47_failure_diagnostics_workshop.ipynb) | stable, slow, oscillatory, and damped residual signatures with recovery checks |
 | [Fixed Points as Layers](implicit-bridge-notebooks/01_introduction_fixed_points.ipynb) | implicit-layer introduction through package solvers |
 | [DEQ and SILVA](implicit-bridge-notebooks/04_deq_and_silva.ipynb) | DEQ baseline and configurable SILVA graph model in one API |
 | [SILVA DEQ Engine](implicit-bridge-notebooks/07_silva_deq_engine_torchdeq_bridge.ipynb) | single-state, multi-state, and variational-dropout fixed-point systems |

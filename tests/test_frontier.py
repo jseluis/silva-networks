@@ -395,4 +395,4 @@ def test_literature_aliases_resolve_to_silva_families(
     model = silva_equilibrium_model(alias, **kwargs)
 
     assert isinstance(model, expected_type)
-    assert len(available_silva_families()) == 30
+    assert len(available_silva_families()) == 44

@@ -18,6 +18,16 @@ from .cases import (
     SILVAMultiscaleDEQ,
     SILVASequenceDEQ,
 )
+from .emerging_equilibria import (
+    SILVAIFNO,
+    SILVASNARF,
+    SILVAConsistencyDEQ,
+    SILVAFixedPointDenoiser,
+    SILVAMeshInference,
+    SILVAPhysicsGuidedDiffusionPDE,
+    SILVAPsiGNN,
+    SILVATherINO,
+)
 from .flow import SILVARAFTDEQ, SILVADEQFlow
 from .frontier import (
     SILVAFNODEQ,
@@ -45,6 +55,14 @@ from .scientific import (
     SILVAFourierNeuralOperator,
     SILVAImplicitTimeStep,
     SILVAOperatorModel,
+)
+from .structured_equilibria import (
+    SILVADeltaEquilibrium,
+    SILVAEfficientInfiniteGraphEquilibrium,
+    SILVAMonotoneOperatorEquilibrium,
+    SILVAMultiscaleGraphImplicitNetwork,
+    SILVANonEuclideanEquilibrium,
+    SILVAPositiveConcaveEquilibrium,
 )
 
 SILVAFamily = Literal[
@@ -78,6 +96,20 @@ SILVAFamily = Literal[
     "silva_poisson_mirror_equilibrium",
     "silva_physics_informed_equilibrium",
     "silva_implicit_dae_step",
+    "silva_consistency_deq",
+    "silva_psi_gnn",
+    "silva_ifno",
+    "silva_snarf",
+    "silva_mesh_inference",
+    "silva_physics_guided_diffusion_pde",
+    "silva_therino",
+    "silva_fixed_point_diffusion",
+    "silva_monotone_operator_equilibrium",
+    "silva_positive_concave_equilibrium",
+    "silva_non_euclidean_equilibrium",
+    "silva_efficient_infinite_graph",
+    "silva_multiscale_graph_implicit",
+    "silva_delta_equilibrium",
 ]
 
 _FAMILY_DESCRIPTIONS: dict[str, str] = {
@@ -129,6 +161,48 @@ _FAMILY_DESCRIPTIONS: dict[str, str] = {
     "silva_implicit_dae_step": (
         "implicit Runge-Kutta stage system for differential-algebraic equations"
     ),
+    "silva_consistency_deq": (
+        "trajectory-distilled SILVA equilibrium with one- or few-step inference"
+    ),
+    "silva_psi_gnn": (
+        "mixed-boundary Poisson graph equilibrium with typed message processors"
+    ),
+    "silva_ifno": (
+        "layer-independent Fourier residual operator for material-response fields"
+    ),
+    "silva_snarf": (
+        "multi-start forward-skinning equilibrium for articulated implicit shapes"
+    ),
+    "silva_mesh_inference": (
+        "typed directed M-matrix relaxation with centralized verification"
+    ),
+    "silva_physics_guided_diffusion_pde": (
+        "reverse field diffusion with residual-energy guidance and hard boundaries"
+    ),
+    "silva_therino": (
+        "thermodynamically encoded neural operator solved in physical strain space"
+    ),
+    "silva_fixed_point_diffusion": (
+        "timestep-conditioned fixed-point denoiser with variable compute and solution reuse"
+    ),
+    "silva_monotone_operator_equilibrium": (
+        "monotone-operator equilibrium with forward-backward or Peaceman-Rachford splitting"
+    ),
+    "silva_positive_concave_equilibrium": (
+        "positive-concave equilibrium with nonnegative linear or convolutional operators"
+    ),
+    "silva_non_euclidean_equilibrium": (
+        "weighted-infinity non-Euclidean equilibrium with a one-sided Lipschitz certificate"
+    ),
+    "silva_efficient_infinite_graph": (
+        "spectral closed-form or iterative infinite-depth graph equilibrium"
+    ),
+    "silva_multiscale_graph_implicit": (
+        "parallel graph-power equilibria fused by nodewise scale attention"
+    ),
+    "silva_delta_equilibrium": (
+        "equilibrium inference with thresholded cached linear or convolutional updates"
+    ),
 }
 
 _FAMILY_CONSTRUCTORS: dict[str, Callable[..., Any]] = {
@@ -162,6 +236,20 @@ _FAMILY_CONSTRUCTORS: dict[str, Callable[..., Any]] = {
     "silva_poisson_mirror_equilibrium": SILVAPoissonMirrorEquilibrium,
     "silva_physics_informed_equilibrium": SILVAPhysicsInformedEquilibrium,
     "silva_implicit_dae_step": SILVAImplicitDAEStep,
+    "silva_consistency_deq": SILVAConsistencyDEQ,
+    "silva_psi_gnn": SILVAPsiGNN,
+    "silva_ifno": SILVAIFNO,
+    "silva_snarf": SILVASNARF,
+    "silva_mesh_inference": SILVAMeshInference,
+    "silva_physics_guided_diffusion_pde": SILVAPhysicsGuidedDiffusionPDE,
+    "silva_therino": SILVATherINO,
+    "silva_fixed_point_diffusion": SILVAFixedPointDenoiser,
+    "silva_monotone_operator_equilibrium": SILVAMonotoneOperatorEquilibrium,
+    "silva_positive_concave_equilibrium": SILVAPositiveConcaveEquilibrium,
+    "silva_non_euclidean_equilibrium": SILVANonEuclideanEquilibrium,
+    "silva_efficient_infinite_graph": SILVAEfficientInfiniteGraphEquilibrium,
+    "silva_multiscale_graph_implicit": SILVAMultiscaleGraphImplicitNetwork,
+    "silva_delta_equilibrium": SILVADeltaEquilibrium,
 }
 
 _FAMILY_ALIASES: dict[str, str] = {
@@ -216,6 +304,32 @@ _FAMILY_ALIASES: dict[str, str] = {
     "physics_informed_deq": "silva_physics_informed_equilibrium",
     "dae_pinn": "silva_implicit_dae_step",
     "implicit_rk_dae": "silva_implicit_dae_step",
+    "c_deq": "silva_consistency_deq",
+    "consistency_deq": "silva_consistency_deq",
+    "psi_gnn": "silva_psi_gnn",
+    "poisson_graph_equilibrium": "silva_psi_gnn",
+    "ifno": "silva_ifno",
+    "implicit_fourier_neural_operator": "silva_ifno",
+    "snarf": "silva_snarf",
+    "forward_skinning_equilibrium": "silva_snarf",
+    "mesh_inference": "silva_mesh_inference",
+    "physics_guided_diffusion_pde": "silva_physics_guided_diffusion_pde",
+    "therino": "silva_therino",
+    "thermodynamic_operator": "silva_therino",
+    "fpdm": "silva_fixed_point_diffusion",
+    "fixed_point_diffusion": "silva_fixed_point_diffusion",
+    "mondeq": "silva_monotone_operator_equilibrium",
+    "monotone_operator_deq": "silva_monotone_operator_equilibrium",
+    "pcdeq": "silva_positive_concave_equilibrium",
+    "positive_concave_deq": "silva_positive_concave_equilibrium",
+    "nemon": "silva_non_euclidean_equilibrium",
+    "non_euclidean_deq": "silva_non_euclidean_equilibrium",
+    "eignn": "silva_efficient_infinite_graph",
+    "efficient_infinite_graph": "silva_efficient_infinite_graph",
+    "mgnni": "silva_multiscale_graph_implicit",
+    "multiscale_implicit_graph": "silva_multiscale_graph_implicit",
+    "deltadeq": "silva_delta_equilibrium",
+    "delta_deq": "silva_delta_equilibrium",
 }
 
 

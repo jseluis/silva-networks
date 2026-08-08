@@ -32,6 +32,11 @@ def test_reproduction_registry_covers_every_canonical_family() -> None:
     assert all(spec.preserved_mechanisms for spec in specs)
     assert all(spec.silva_extensions for spec in specs)
     assert all(spec.benchmark_requirements for spec in specs)
+    assert all(spec.data_sources for spec in specs)
+    assert all(spec.data_access for spec in specs)
+    assert all(spec.storage_plan for spec in specs)
+    assert all(spec.compact_data for spec in specs)
+    assert all(spec.source_scale_steps for spec in specs)
     assert all(not spec.equation.startswith("z_star = T_theta") for spec in specs)
 
 
@@ -51,6 +56,26 @@ def test_every_family_has_a_distinct_source_conformance_contract() -> None:
     assert len({spec.preserved_mechanisms for spec in specs}) == len(specs)
     assert len({spec.silva_extensions for spec in specs}) == len(specs)
     assert len({spec.benchmark_requirements for spec in specs}) == len(specs)
+
+
+def test_emerging_source_scale_plans_name_data_access_storage_and_steps() -> None:
+    builders = {
+        "silva_consistency_deq": "make_consistency_teacher_dataset",
+        "silva_psi_gnn": "make_psi_poisson_grid",
+        "silva_ifno": "make_ifno_material_dataset",
+        "silva_snarf": "make_snarf_stick_dataset",
+        "silva_mesh_inference": "make_mesh_gaussian_dataset",
+        "silva_physics_guided_diffusion_pde": "make_poisson_diffusion_dataset",
+        "silva_therino": "make_therino_elastic_dataset",
+        "silva_fixed_point_diffusion": "make_fixed_point_diffusion_dataset",
+    }
+
+    for family, builder in builders.items():
+        spec = silva_reproduction_spec(family)
+        assert builder in " ".join(spec.compact_data)
+        assert all(source.startswith("https://") for source in spec.data_sources)
+        assert len(spec.source_scale_steps) >= 3
+        assert len(spec.storage_plan) >= 2
 
 
 def test_aliases_expose_real_constructor_and_signature() -> None:

@@ -2,7 +2,11 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PYTHON="${PYTHON:-python}"
+if [[ -z "${PYTHON:-}" && -x "$ROOT/.venv/bin/python" ]]; then
+  PYTHON="$ROOT/.venv/bin/python"
+else
+  PYTHON="${PYTHON:-python}"
+fi
 DEFAULT_OUTPUT_DIR="${TMPDIR:-/tmp}/silva-networks-smoke"
 OUTPUT_DIR="${SILVA_SMOKE_OUTPUT_DIR:-$DEFAULT_OUTPUT_DIR}"
 
@@ -79,6 +83,7 @@ run() {
 }
 
 cd "$ROOT"
+export PYTHONPATH="$ROOT/src${PYTHONPATH:+:$PYTHONPATH}"
 mkdir -p "$OUTPUT_DIR"
 
 if command -v silva-experiment >/dev/null 2>&1; then

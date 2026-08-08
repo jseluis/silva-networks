@@ -233,7 +233,7 @@ def test_all_canonical_notebooks_include_extension_and_reproduction_depth() -> N
         *sorted((ROOT / "notebooks/implicit_bridge").glob("*.ipynb")),
         *sorted((ROOT / "notebooks").glob("*.ipynb")),
     ]
-    assert len(canonical) == 62
+    assert len(canonical) == 82
     for path in canonical:
         notebook = json.loads(path.read_text(encoding="utf-8"))
         curriculum = [
@@ -241,15 +241,59 @@ def test_all_canonical_notebooks_include_extension_and_reproduction_depth() -> N
             for cell in notebook["cells"]
             if "silva-extension-curriculum" in cell.get("metadata", {}).get("tags", [])
         ]
-        assert len(curriculum) == 4, path
+        assert len(curriculum) == 8, path
         source = "\n".join("".join(cell.get("source", [])) for cell in curriculum)
         for marker in (
             "to a Custom SILVA Family",
             "validate_silva_transition",
             "Numerical Equivalence, Compact Reproduction, and Scale",
             "notebook_reproduction_record",
+            "Worked Convergence and Sensitivity Study",
+            "Reading and Extending the Result",
         ):
             assert marker in source, (path, marker)
+
+        identifiers = {cell.get("id") for cell in curriculum}
+        for identifier in (
+            "silva-extension-diagnostic-derivation",
+            "silva-extension-diagnostic-table",
+            "silva-extension-diagnostic-figure",
+            "silva-extension-diagnostic-interpretation",
+        ):
+            assert identifier in identifiers, (path, identifier)
+
+        code_cells = [cell for cell in notebook["cells"] if cell["cell_type"] == "code"]
+        assert all(cell.get("execution_count") is not None for cell in code_cells), path
+        assert not any(
+            output.get("output_type") == "error"
+            for cell in code_cells
+            for output in cell.get("outputs", [])
+        ), path
+        assert any(
+            "image/png" in output.get("data", {})
+            for cell in code_cells
+            for output in cell.get("outputs", [])
+        ), path
+
+
+def test_worked_example_pages_include_derivation_code_results_and_scale_route() -> None:
+    pages = sorted((ROOT / "docs/examples").glob("*.md"))
+    expanded = []
+    for path in pages:
+        source = path.read_text(encoding="utf-8")
+        if "<!-- silva-worked-example:start -->" not in source:
+            continue
+        expanded.append(path)
+        assert "<!-- silva-worked-example:end -->" in source, path
+        if path.name != "index.md":
+            assert "Measured Compact Output" in source, path
+            assert "Interpret the Output" in source, path
+            assert "Add a Solver and Scale Sweep" in source, path
+            assert source.count("$$") >= 8, path
+            assert source.count("```") >= 8, path
+            assert len(source.split()) >= 700, path
+
+    assert len(expanded) == 26
 
 
 def test_notebook_mirror_sets_are_complete() -> None:
@@ -273,6 +317,41 @@ def test_notebook_mirror_sets_are_complete() -> None:
         sorted(path.name for path in (ROOT / "colab/implicit_bridge").glob("*.ipynb"))
         == bridge_docs
     )
+
+
+def test_notebook_mirrors_retain_canonical_execution_results() -> None:
+    groups = [
+        (
+            ROOT / "notebooks/package_api",
+            (ROOT / "docs/package-notebooks", ROOT / "colab"),
+        ),
+        (
+            ROOT / "notebooks/implicit_bridge",
+            (ROOT / "docs/implicit-bridge-notebooks", ROOT / "colab/implicit_bridge"),
+        ),
+    ]
+    compared = 0
+    for canonical_dir, mirror_dirs in groups:
+        for canonical_path in sorted(canonical_dir.glob("*.ipynb")):
+            canonical = json.loads(canonical_path.read_text(encoding="utf-8"))
+            expected = [
+                (cell.get("execution_count"), cell.get("outputs", []))
+                for cell in canonical["cells"]
+                if cell["cell_type"] == "code"
+            ]
+            for mirror_dir in mirror_dirs:
+                mirror = json.loads(
+                    (mirror_dir / canonical_path.name).read_text(encoding="utf-8")
+                )
+                actual = [
+                    (cell.get("execution_count"), cell.get("outputs", []))
+                    for cell in mirror["cells"]
+                    if cell["cell_type"] == "code"
+                ]
+                assert actual == expected, mirror_dir / canonical_path.name
+                compared += 1
+
+    assert compared == 112
 
 
 def test_expanded_notebooks_are_synchronized_and_substantive() -> None:
@@ -406,6 +485,78 @@ def test_expanded_notebooks_are_synchronized_and_substantive() -> None:
                 "Reproduce, Then Go Beyond",
             ),
         ),
+        "28_silva_consistency_deq.ipynb": (
+            16,
+            (
+                "Teacher Equilibrium and Solver-Time Path",
+                "Terminally Anchored Consistency Map",
+                "Global and Local Distillation",
+                "Replace the Teacher and Few-Step Refiner",
+            ),
+        ),
+        "29_silva_psi_gnn.ipynb": (
+            17,
+            (
+                "PDE, Discretization, and Directed Boundary Graph",
+                "Typed Processor",
+                "Complete Training Objective",
+                "Replace the Boundary-Aware Graph Processor",
+            ),
+        ),
+        "30_silva_ifno_materials.ipynb": (
+            17,
+            (
+                "Material Operator Contract",
+                "Tied Depth and Deep Limit",
+                "Compact Coefficient-to-Displacement Training",
+                "Replace the Tied Material Increment",
+            ),
+        ),
+        "31_silva_snarf_forward_skinning.ipynb": (
+            16,
+            (
+                "Forward Skinning Is the Model",
+                "Canonical Correspondences as Roots",
+                "What the Advanced User Replaces",
+                "Replace Every Forward-Deformation Component",
+            ),
+        ),
+        "32_silva_mesh_inference.ipynb": (
+            15,
+            (
+                "Typed Anchors, Evidence, and Policy",
+                "Why the Iteration Converges",
+                "Directed Admission Sweep",
+                "Replace Local Observation and Relaxation Maps",
+            ),
+        ),
+        "33_silva_physics_guided_diffusion_pde.ipynb": (
+            15,
+            (
+                "Residual Energy",
+                "Reverse Step",
+                "Prior Independence and Stochasticity",
+                "Replace Prior, Physics Energy, Smoother, and Boundary Projection",
+            ),
+        ),
+        "34_silva_therino_mechanics.ipynb": (
+            17,
+            (
+                "Physical State, Constitutive Map, and Equilibrium",
+                "Exact Periodic Verification Cell",
+                "Trainable Finite-Iteration Objective",
+                "Move from the Exact Cell to Full Mechanics",
+            ),
+        ),
+        "35_silva_fixed_point_diffusion.ipynb": (
+            17,
+            (
+                "One Fixed Point at Every Diffusion Time",
+                "Reverse Schedule, Variable Compute, and State Reuse",
+                "Stochastic Jacobian-Free Training",
+                "Distinguish the Joint DeqIR Route",
+            ),
+        ),
     }
 
     for name, (minimum_cells, markers) in requirements.items():
@@ -422,6 +573,80 @@ def test_expanded_notebooks_are_synchronized_and_substantive() -> None:
         all_source = "\n".join(source for _, source in signatures[0])
         for marker in markers:
             assert marker in all_source
+
+
+def test_emerging_labs_retain_executed_outputs_and_publication_plots() -> None:
+    expected_pngs = {
+        "28_silva_consistency_deq.ipynb": 2,
+        "29_silva_psi_gnn.ipynb": 2,
+        "30_silva_ifno_materials.ipynb": 2,
+        "31_silva_snarf_forward_skinning.ipynb": 2,
+        "32_silva_mesh_inference.ipynb": 2,
+        "33_silva_physics_guided_diffusion_pde.ipynb": 1,
+        "34_silva_therino_mechanics.ipynb": 2,
+        "35_silva_fixed_point_diffusion.ipynb": 2,
+    }
+    for name, minimum_pngs in expected_pngs.items():
+        notebook = json.loads(
+            (ROOT / "docs/package-notebooks" / name).read_text(encoding="utf-8")
+        )
+        outputs = [
+            output
+            for cell in notebook["cells"]
+            for output in cell.get("outputs", [])
+        ]
+        pngs = [output for output in outputs if "image/png" in output.get("data", {})]
+        assert outputs, name
+        assert len(pngs) >= minimum_pngs, name
+
+
+def test_structured_labs_retain_real_source_outputs_and_publication_plots() -> None:
+    expected = {
+        "36_silva_monotone_operator_equilibrium.ipynb": (
+            2,
+            "Attributed CIFAR-10 Mechanism Check",
+        ),
+        "37_silva_positive_concave_equilibrium.ipynb": (
+            2,
+            "Attributed Positive Image Check",
+        ),
+        "38_silva_non_euclidean_equilibrium.ipynb": (
+            2,
+            "Real Images and the Sensitivity Contract",
+        ),
+        "39_silva_efficient_infinite_graph.ipynb": (
+            2,
+            "Cora With Source Masks",
+        ),
+        "40_silva_multiscale_graph_implicit.ipynb": (
+            2,
+            "Cora Across Three Graph Scales",
+        ),
+        "41_silva_delta_equilibrium.ipynb": (
+            3,
+            "Real-Image Delta Activity",
+        ),
+    }
+    for name, (minimum_pngs, marker) in expected.items():
+        notebooks = [
+            json.loads((ROOT / folder / name).read_text(encoding="utf-8"))
+            for folder in ("notebooks/package_api", "docs/package-notebooks", "colab")
+        ]
+        signatures = [
+            [(cell["cell_type"], "".join(cell.get("source", []))) for cell in notebook["cells"]]
+            for notebook in notebooks
+        ]
+        assert signatures[0] == signatures[1] == signatures[2]
+        assert marker in "\n".join(source for _, source in signatures[0])
+        for notebook in notebooks:
+            outputs = [
+                output
+                for cell in notebook["cells"]
+                for output in cell.get("outputs", [])
+            ]
+            pngs = [output for output in outputs if "image/png" in output.get("data", {})]
+            assert outputs, name
+            assert len(pngs) >= minimum_pngs, name
 
 
 def test_rendered_notebooks_have_a_shared_download_control() -> None:

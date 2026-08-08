@@ -81,7 +81,12 @@ def _notebook_metrics(notebook: dict[str, Any]) -> dict[str, int]:
     cells = notebook.get("cells", [])
     code = [cell for cell in cells if cell.get("cell_type") == "code"]
     markdown = [cell for cell in cells if cell.get("cell_type") == "markdown"]
-    outputs = [output for cell in code for output in (cell.get("outputs", []) or [])]
+    outputs = [
+        output
+        for cell in code
+        for output in (cell.get("outputs", []) or [])
+        if not (output.get("output_type") == "stream" and output.get("name") == "stderr")
+    ]
     images = [
         output
         for output in outputs
@@ -91,7 +96,16 @@ def _notebook_metrics(notebook: dict[str, Any]) -> dict[str, int]:
         "cells": len(cells),
         "code_cells": len(code),
         "markdown_cells": len(markdown),
-        "output_cells": sum(bool(cell.get("outputs", []) or []) for cell in code),
+        "output_cells": sum(
+            any(
+                not (
+                    output.get("output_type") == "stream"
+                    and output.get("name") == "stderr"
+                )
+                for output in (cell.get("outputs", []) or [])
+            )
+            for cell in code
+        ),
         "outputs": len(outputs),
         "images": len(images),
         "display_equations": _collect_markdown(notebook).count("$$") // 2,

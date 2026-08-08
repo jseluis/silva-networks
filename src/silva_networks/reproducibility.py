@@ -28,6 +28,11 @@ class SILVAReproductionSpec:
     repositories: tuple[str, ...]
     equation: str
     datasets: tuple[str, ...]
+    data_sources: tuple[str, ...]
+    data_access: tuple[str, ...]
+    storage_plan: tuple[str, ...]
+    compact_data: tuple[str, ...]
+    source_scale_steps: tuple[str, ...]
     preprocessing: tuple[str, ...]
     metrics: tuple[str, ...]
     notebooks: tuple[str, ...]
@@ -95,8 +100,39 @@ _EQUATIONS: dict[str, str] = {
     "silva_physics_informed_equilibrium": (
         "z_star(t)=T_theta(z_star(t),t); (I-dT/dz) dz_star/dt=dT/dt"
     ),
-    "silva_implicit_dae_step": (
-        "Y_i=y_n+dt sum_j a_ij f(Y_j,Z_j); 0=g(Y_i,Z_i)"
+    "silva_implicit_dae_step": ("Y_i=y_n+dt sum_j a_ij f(Y_j,Z_j); 0=g(Y_i,Z_i)"),
+    "silva_consistency_deq": ("g_phi(z_t,t,x)=c_skip(t)z_t+c_out(t)P_phi(z_<=t,t,x)"),
+    "silva_psi_gnn": ("H_star=h_theta(H_star,G); U_hat=D(H_star); L_res=MSE(A U_hat-B)"),
+    "silva_ifno": ("h_(l+1)=h_l+dt sigma(W h_l+F_inv(R_theta F(h_l))+c)"),
+    "silva_snarf": ("d_w(x,B)=sum_b w_b(x) B_b x; d_w(x_star,B)-x_posed=0"),
+    "silva_mesh_inference": ("z_i_star=(b_i+sum_j w_ij z_j_star)/(lambda_i+tau_i+sum_j w_ij)"),
+    "silva_physics_guided_diffusion_pde": (
+        "u_(t-1)=ProjectBoundary(Smooth(Prior(u_t))-eta grad E_PDE(u_t)+noise_t)"
+    ),
+    "silva_therino": (
+        "epsilon_star=ProjectMacro(U_theta([epsilon_star, C:epsilon_star, "
+        "0.5 epsilon_star:C:epsilon_star, epsilon_bar]))"
+    ),
+    "silva_fixed_point_diffusion": (
+        "z_t_star=F_theta(z_t_star, P(x_t), t); epsilon_hat=Q(z_t_star, x_t, t)"
+    ),
+    "silva_monotone_operator_equilibrium": (
+        "0 in (I-W)z_star-Ux-b+partial f(z_star); W=(1-m)I-A^T A+B-B^T"
+    ),
+    "silva_positive_concave_equilibrium": (
+        "z_star=phi(W_positive z_star+s_positive(x)); W_positive>=0"
+    ),
+    "silva_non_euclidean_equilibrium": (
+        "z_star=phi(A z_star+B x+b); mu_infinity,D(A)<1"
+    ),
+    "silva_efficient_infinite_graph": (
+        "Z_star=gamma S^T Z_star g(F)^T+X; g(F)=F^T F/||F^T F||_F"
+    ),
+    "silva_multiscale_graph_implicit": (
+        "Z_m_star=gamma S^m Z_m_star g(F_m)^T+X; Z=sum_m beta_m(Z_m_star)Z_m_star"
+    ),
+    "silva_delta_equilibrium": (
+        "c_k=c_(k-1)+W mask(|z_k-z_(k-1)|>tau)(z_k-z_(k-1))"
     ),
 }
 
@@ -212,7 +248,9 @@ _SOURCE_DETAILS: dict[
     "silva_fno_deq": (
         ("input-injected weight-tied Fourier operator solved at infinite-depth equilibrium",),
         ("replace forcing lift, tied block, boundary field, geometry field, or readout",),
-        ("source Darcy/Navier-Stokes data, modes, widths, training budget, seeds, and relative L2",),
+        (
+            "source Darcy/Navier-Stokes data, modes, widths, training budget, seeds, and relative L2",
+        ),
     ),
     "silva_physics_graph_deq": (
         ("diffusion and advection laws embedded as graph transition fields",),
@@ -232,7 +270,9 @@ _SOURCE_DETAILS: dict[
     "silva_monotone_graph_equilibrium": (
         ("monotone graph equilibrium with a constrained channel operator and proximal step",),
         ("replace proximal map, factorization, graph operator, or head under the margin contract",),
-        ("source graph splits, normalization, monotonicity parameterization, training, and accuracy",),
+        (
+            "source graph splits, normalization, monotonicity parameterization, training, and accuracy",
+        ),
     ),
     "silva_generative_equilibrium_transformer": (
         ("one-time condition injection followed by a weight-tied token equilibrium",),
@@ -242,7 +282,9 @@ _SOURCE_DETAILS: dict[
     "silva_poisson_mirror_equilibrium": (
         ("positive Burg-geometry mirror step for Poisson data fidelity",),
         ("replace forward/adjoint maps, regularizer gradient, mirror step, or tiling",),
-        ("source forward model, count statistics, regularizer, training, initialization, and PSNR",),
+        (
+            "source forward model, count statistics, regularizer, training, initialization, and PSNR",
+        ),
     ),
     "silva_physics_informed_equilibrium": (
         ("equilibrium state with implicit time derivative and physics-informed residual terms",),
@@ -252,7 +294,233 @@ _SOURCE_DETAILS: dict[
     "silva_implicit_dae_step": (
         ("implicit Runge-Kutta stage root with differential and algebraic constraints",),
         ("replace tableau, dynamics, constraints, learned closures, or Newton-Krylov controls",),
-        ("source DAE, index assumptions, consistent initialization, time grid, tolerances, and error",),
+        (
+            "source DAE, index assumptions, consistent initialization, time grid, tolerances, and error",
+        ),
+    ),
+    "silva_consistency_deq": (
+        (
+            "fixed initial state and solver-induced teacher trajectory",
+            "terminally anchored consistency parameterization",
+            "two-state Anderson-structured refinement and local/global consistency losses",
+        ),
+        (
+            "inject any SILVA teacher transition, student refiner, readout, time schedule, and task loss",
+            "choose one-step or chained few-step inference and maintain an EMA target",
+        ),
+        (
+            "pretrained teacher checkpoint and exact solver settings",
+            "cached trajectories, time mapping, augmentation, optimizer, EMA, and task protocol",
+            "WikiText-103, ImageNet, or OGB preprocessing and published evaluation budget",
+        ),
+    ),
+    "silva_psi_gnn": (
+        (
+            "encode-process-decode graph equilibrium",
+            "separate interior incoming/outgoing and Neumann incoming messages",
+            "fixed Dirichlet latent values, Broyden root solving, PDE residual, and Jacobian stabilization",
+        ),
+        (
+            "replace every message/update network, encoder, decoder, root solver, and loss weight",
+            "accept arbitrary first-order unstructured meshes through coordinates and directed edges",
+        ),
+        (
+            "paper mesh generator, GMSH first-order elements, 6000/2000/2000 split, and approximately 500 nodes",
+            "finite-element residual matrices for training, mixed boundaries, optimizer groups, and seeds",
+            "published residual, LU error, parameter count, and variable-resolution evaluation",
+        ),
+    ),
+    "silva_ifno": (
+        (
+            "layer-independent Fourier kernel, pointwise channel map, bias, and residual increment",
+            "input lift and shallow projection for displacement or damage fields",
+            "shared-depth nonlocal integration and optional zero-increment root solve",
+        ),
+        (
+            "replace lift, spectral/local increment, activation, boundary projection, and readout",
+            "represent coordinates, material fields, body forces, Dirichlet values, and traction as input channels",
+        ),
+        (
+            "source simulation or DIC fields, train/test split, grid, normalization, modes, and depth continuation",
+            "task-specific hyperelastic, anisotropic, brittle-fracture, or experimental loading protocol",
+            "relative field error, resolution transfer, depth stability, and source baselines",
+        ),
+    ),
+    "silva_snarf": (
+        (
+            "pose-independent canonical blend-weight field and pose-conditioned occupancy field",
+            "linear blend forward deformation with inverse-bone multi-start root initialization",
+            "implicit canonical correspondences, residual filtering, and soft occupancy union",
+        ),
+        (
+            "replace weight/occupancy fields, transforms, pose conditioning, root solver, and aggregation",
+            "sample posed occupancy grids and connect an optional marching-cubes backend",
+        ),
+        (
+            "source subject meshes, bone transforms, canonical pose, query sampler, and train/validation sequences",
+            "2D Stick or DFaust/AMASS/CAPE access, occupancy labels, bootstrap losses, and root threshold",
+            "unseen-pose reconstruction metrics, correspondence success, and mesh extraction settings",
+        ),
+    ),
+    "silva_mesh_inference": (
+        (
+            "receiver-autonomous nonnegative typed admission and source emission carriers",
+            "anchored directed Jacobi relaxation whose system is an M-matrix",
+            "centralized optimum comparison and numerical convergence certificate",
+        ),
+        (
+            "supply field-specific anchors, observations, precisions, admission, emission, and clamped coordinates",
+            "replace synchronous solving with a bounded-delay asynchronous executor under the same operator",
+        ),
+        (
+            "paper synthetic lineage/carrier cases, source-novel forwarding policy, and noise model",
+            "connectivity, asymmetry, anchor-density, latency, and confidentiality probe sweeps",
+            "centralized Bayes optimum, spectral gap, recovery error, and communication accounting",
+        ),
+    ),
+    "silva_physics_guided_diffusion_pde": (
+        (
+            "standard data-trained field prior separated from physics at inference",
+            "reverse denoising, Gaussian smoothing, residual-energy guidance, and hard boundary projection",
+            "deterministic and stochastic schedules over Poisson, diffusion, or Burgers fields",
+        ),
+        (
+            "replace prior, energy, differential discretization, smoother, schedule, projector, and stochasticity",
+            "reuse one prior across coefficient or equation changes when field shape and normalization agree",
+        ),
+        (
+            "source 64x64 fields, 4000 snapshots, global max-absolute scaling, and trained three-level U-Net prior",
+            "Poisson/diffusion/Burgers coefficient ranges, boundary/initial data, reverse schedule, and guidance steps",
+            "PDE residual, relative solution error, boundary error, convergence trace, and source baselines",
+        ),
+    ),
+    "silva_therino": (
+        (
+            "fixed-point iteration in the physical strain field rather than an abstract latent state",
+            "thermodynamic encoding through strain, stress, elastic energy density, and macroscopic loading",
+            "shared neural-operator update, macroscopic-strain projection, and strain/stress/energy supervision",
+        ),
+        (
+            "replace the constitutive encoder, neural operator, projection, solver, and each supervised loss term",
+            "support differentiable constitutive maps beyond linear elasticity while retaining the physical-state contract",
+        ),
+        (
+            "source periodic microstructure generator, finite-element labels, stiffness contrast, loading cases, and normalization",
+            "three-dimensional Fourier operator width/modes, Anderson settings, optimizer, schedule, and random seeds",
+            "strain, stress, energy, homogenized response, out-of-distribution contrast, and iteration metrics",
+        ),
+    ),
+    "silva_fixed_point_diffusion": (
+        (
+            "explicit pre-processing, input projection/injection, timestep-conditioned implicit block, and explicit post-processing",
+            "sequential reverse diffusion with the previous timestep equilibrium reused as the next initialization",
+            "per-timestep iteration allocation and stochastic Jacobian-free backpropagation through sampled unrolled steps",
+        ),
+        (
+            "replace pre, projection, fixed-point transition, post, conditioning, reverse scheduler, and allocation policy independently",
+            "embed convolutional, attention, transformer, or operator transitions while preserving the timestep fixed-point interface",
+        ),
+        (
+            "source latent encoder, image preprocessing, diffusion schedule, task split, and pretrained or jointly trained components",
+            "reported timestep allocation, stochastic backward sampling, optimizer, precision, checkpoints, and generation budget",
+            "FID-50K or task metric, block evaluations, equilibrium residual, wall time, memory, and source baselines",
+        ),
+    ),
+    "silva_monotone_operator_equilibrium": (
+        (
+            "strongly monotone parameterization W=(1-m)I-A^T A+B-B^T",
+            "forward-backward and Peaceman-Rachford operator splittings",
+            "proximal nonlinearities and implicit differentiation at the solved equilibrium",
+        ),
+        (
+            "replace the source, proximal map, monotone operator, splitter, readout, or solver",
+            "inspect the monotonicity margin and numerical residual on every solve",
+        ),
+        (
+            "source architecture width/depth, convolutional parameterization, data split, and augmentation",
+            "splitting step size, forward/backward tolerances, optimizer, regularization, and seeds",
+            "task accuracy, residual, evaluation count, memory, and source baselines",
+        ),
+    ),
+    "silva_positive_concave_equilibrium": (
+        (
+            "entrywise nonnegative recurrent operators and nonnegative source injection",
+            "published variant-one tanh/softsign/ReLU6 and variant-two sigmoid maps",
+            "fixed-point iteration over vector or convolutional positive-concave states",
+        ),
+        (
+            "replace the positive operator, source, activation variant, readout, or solver",
+            "use linear or spatial convolutions while retaining positivity diagnostics",
+        ),
+        (
+            "source data split, preprocessing, positive parameterization, widths, kernels, and activations",
+            "solver iterations, optimizer, learning-rate schedule, regularization, and seeds",
+            "task accuracy, fixed-point residual, positivity minimum, runtime, and source baselines",
+        ),
+    ),
+    "silva_non_euclidean_equilibrium": (
+        (
+            "weighted-infinity matrix-measure contraction certificate",
+            "diagonally weighted parameterization and averaged fixed-point iteration",
+            "input-output sensitivity bound in the learned non-Euclidean metric",
+        ),
+        (
+            "replace the certified operator, source, activation, metric, averaging, or readout",
+            "learn the metric jointly while exposing the one-sided bound and sensitivity certificate",
+        ),
+        (
+            "source architecture, metric initialization, one-sided target, data perturbations, and preprocessing",
+            "averaging rule, solver tolerance, optimizer, robustness protocol, and seeds",
+            "task accuracy, certified bound, empirical sensitivity, residual, and source baselines",
+        ),
+    ),
+    "silva_efficient_infinite_graph": (
+        (
+            "Frobenius-normalized positive-semidefinite channel Gram map",
+            "graph/channel eigendecomposition for an exact dense symmetric solve",
+            "the same equilibrium equation through iterative sparse or directed propagation",
+        ),
+        (
+            "replace source, readout, graph operator, channel factor, gamma, or solve route",
+            "precompute and reuse a graph spectrum without changing the SILVA state contract",
+        ),
+        (
+            "source graph split, features, graph normalization, labels, and transductive protocol",
+            "hidden width, gamma, optimizer, weight decay, early stopping, and seeds",
+            "node accuracy, closed-form agreement, denominator margin, runtime, and memory",
+        ),
+    ),
+    "silva_multiscale_graph_implicit": (
+        (
+            "one infinite graph equilibrium for each declared graph-power scale",
+            "independent normalized channel factors across scales",
+            "nodewise softmax attention over converged scale states",
+        ),
+        (
+            "replace scales, factors, source, per-scale solvers, attention, fusion, or readout",
+            "inspect each scale state and attention distribution before adding new graph powers",
+        ),
+        (
+            "source graph split, features, graph normalization, labels, and scale list",
+            "per-scale widths, gamma, attention dimension, optimizer, early stopping, and seeds",
+            "node accuracy, per-scale residuals, attention statistics, runtime, and memory",
+        ),
+    ),
+    "silva_delta_equilibrium": (
+        (
+            "cached linear or convolutional recurrent output updated from thresholded state deltas",
+            "zero-threshold algebraic equivalence to full recurrent evaluation",
+            "full-map training with independently selectable delta-cached inference",
+        ),
+        (
+            "replace source, recurrent operator, activation, readout, threshold, or solver",
+            "record active elements, exact full-map residual, and task error for every threshold",
+        ),
+        (
+            "source model checkpoint, recurrent operators, data preprocessing, and evaluation sequence",
+            "threshold policy, warm starts, solver tolerances, hardware, precision, and seeds",
+            "task metric, active fraction, exact residual, latency, memory traffic, and source baseline",
+        ),
     ),
 }
 
@@ -291,6 +559,377 @@ _DATASETS: dict[str, tuple[str, ...]] = {
     "silva_poisson_mirror_equilibrium": ("declared Poisson inverse-imaging data",),
     "silva_physics_informed_equilibrium": ("Van der Pol or declared nonlinear IVP",),
     "silva_implicit_dae_step": ("three-bus power-network DAE", "analytic index-1 DAE"),
+    "silva_consistency_deq": (
+        "WikiText-103",
+        "ImageNet",
+        "ogbn-arxiv",
+        "ogbn-products",
+        "analytic contractive teacher trajectories",
+    ),
+    "silva_psi_gnn": (
+        "paper synthetic unstructured Poisson meshes",
+        "compact mixed-boundary finite-difference grids",
+    ),
+    "silva_ifno": (
+        "Darcy flow",
+        "hyperelastic and anisotropic material simulations",
+        "brittle-fracture fields",
+        "digital image correlation measurements",
+        "compact heterogeneous bars",
+    ),
+    "silva_snarf": ("2D Stick", "DFaust/AMASS", "CAPE"),
+    "silva_mesh_inference": (
+        "synthetic carrier-chain mechanism cases",
+        "noisy linear-Gaussian collective estimation",
+    ),
+    "silva_physics_guided_diffusion_pde": (
+        "Poisson fields",
+        "space-time diffusion fields",
+        "space-time Burgers fields",
+    ),
+    "silva_therino": (
+        "periodic two-phase linear-elastic microstructures",
+        "nonlinear constitutive localization fields",
+        "compact exact diagonal-elasticity cells",
+    ),
+    "silva_fixed_point_diffusion": (
+        "ImageNet 256x256 latent diffusion",
+        "FFHQ, CelebA-HQ, or LSUN Church when configured from a matching source protocol",
+        "compact synthetic latent denoising trajectories",
+    ),
+    "silva_monotone_operator_equilibrium": (
+        "MNIST",
+        "CIFAR-10",
+        "SVHN",
+        "compact known-solution monotone inclusions",
+    ),
+    "silva_positive_concave_equilibrium": (
+        "MNIST",
+        "CIFAR-10",
+        "SVHN",
+        "compact positive-concave vector and image equilibria",
+    ),
+    "silva_non_euclidean_equilibrium": (
+        "MNIST",
+        "CIFAR-10",
+        "compact weighted-infinity perturbation pairs",
+    ),
+    "silva_efficient_infinite_graph": (
+        "Cora",
+        "Citeseer",
+        "Pubmed",
+        "Amazon co-purchase graphs",
+        "compact chain graphs",
+    ),
+    "silva_multiscale_graph_implicit": (
+        "Cora",
+        "Citeseer",
+        "Pubmed",
+        "Amazon",
+        "Coauthor",
+        "compact multiscale chain graphs",
+    ),
+    "silva_delta_equilibrium": (
+        "FlyingChairs",
+        "Sintel",
+        "KITTI",
+        "compact heterogeneous-rate equilibria",
+    ),
+}
+
+_DATA_SOURCES: dict[str, tuple[str, ...]] = {
+    "silva_consistency_deq": (
+        "https://github.com/landrarwolf/CDEQ",
+        "https://www.salesforce.com/blog/the-wikitext-long-term-dependency-language-modeling-dataset/",
+        "https://ogb.stanford.edu/docs/nodeprop/",
+        "https://www.image-net.org/",
+    ),
+    "silva_psi_gnn": (
+        "https://arxiv.org/abs/2302.10891",
+        "https://gmsh.info/",
+    ),
+    "silva_ifno": ("https://arxiv.org/abs/2203.08205",),
+    "silva_snarf": (
+        "https://github.com/xuchen-ethz/snarf",
+        "https://amass.is.tue.mpg.de/",
+        "https://dfaust.is.tue.mpg.de/",
+        "https://cape.is.tue.mpg.de/",
+        "https://smpl.is.tue.mpg.de/",
+    ),
+    "silva_mesh_inference": (
+        "https://arxiv.org/abs/2606.19537",
+        "https://github.com/sym-bot/mesh-memory-protocol",
+    ),
+    "silva_physics_guided_diffusion_pde": ("https://arxiv.org/abs/2604.01242",),
+    "silva_therino": (
+        "https://arxiv.org/abs/2411.06529",
+        "https://doi.org/10.1016/j.cma.2025.117939",
+    ),
+    "silva_fixed_point_diffusion": (
+        "https://arxiv.org/abs/2401.08741",
+        "https://openaccess.thecvf.com/content/CVPR2024/html/Bai_Fixed-Point_Diffusion_Models_CVPR_2024_paper.html",
+    ),
+    "silva_monotone_operator_equilibrium": (
+        "https://arxiv.org/abs/2006.08591",
+        "https://github.com/locuslab/monotone_op_net",
+    ),
+    "silva_positive_concave_equilibrium": (
+        "https://proceedings.mlr.press/v235/gabor24a.html",
+        "https://github.com/mateuszgabor/pcdeq",
+    ),
+    "silva_non_euclidean_equilibrium": (
+        "https://arxiv.org/abs/2106.03194",
+        "https://github.com/davydovalexander/Non-Euclidean_Mon_Op_Net",
+    ),
+    "silva_efficient_infinite_graph": (
+        "https://arxiv.org/abs/2202.10720",
+        "https://github.com/liu-jc/EIGNN",
+    ),
+    "silva_multiscale_graph_implicit": (
+        "https://arxiv.org/abs/2210.08353",
+        "https://github.com/liu-jc/MGNNI",
+    ),
+    "silva_delta_equilibrium": (
+        "https://papers.nips.cc/paper_files/paper/2024/hash/69f5b860d6dc469ac6e52f03866b73c4-Abstract-Conference.html",
+        "https://github.com/ZuowenWang0000/Delta-Deep-Equilibrium-Models",
+    ),
+}
+
+_DATA_ACCESS: dict[str, tuple[str, ...]] = {
+    "silva_consistency_deq": (
+        "WikiText-103 and OGB provide public acquisition routes under their stated terms.",
+        "ImageNet requires registration and acceptance of its access terms.",
+        "Record the teacher and consistency-checkpoint revisions separately from the dataset checksum.",
+    ),
+    "silva_psi_gnn": (
+        "The benchmark is procedurally generated rather than a fixed public archive.",
+        "Recreate first-order unstructured meshes and mixed boundaries from the paper protocol with Gmsh, then save generator parameters and mesh checksums.",
+    ),
+    "silva_ifno": (
+        "The cited article describes simulation and experimental DIC tasks but does not identify one public benchmark archive.",
+        "Use an openly released task when available, regenerate the stated constitutive simulations, or provide licensed DIC tensors; never substitute a different task silently.",
+    ),
+    "silva_snarf": (
+        "The implementation and test assets are public, while SMPL, AMASS, D-FAUST, and CAPE require their own registrations or licenses.",
+        "Keep raw licenses outside package artifacts and record the exact subject, sequence, clothing, and preprocessing revision.",
+    ),
+    "silva_mesh_inference": (
+        "The reported linear-Gaussian cases are synthetic and can be regenerated from declared topology, precision, policy, and seed.",
+        "No private node state is needed in a shared archive; store admitted typed observations and lineage separately.",
+    ),
+    "silva_physics_guided_diffusion_pde": (
+        "The cited article specifies generated Poisson, diffusion, and Burgers fields rather than an external observational dataset.",
+        "Regenerate coefficient, initial, and boundary distributions and record the numerical solver, grid, time step, normalization, and seed.",
+    ),
+    "silva_therino": (
+        "The source experiments use procedurally generated periodic microstructures and numerical mechanics labels rather than one packaged benchmark archive.",
+        "Record geometry generation, constituent stiffness tensors, periodic boundary conditions, load cases, finite-element discretization, and every split seed.",
+    ),
+    "silva_fixed_point_diffusion": (
+        "ImageNet requires registration and its stated access terms; face and scene datasets each retain their own licenses and acquisition routes.",
+        "Store dataset checksums separately from latent-encoder, diffusion-schedule, and checkpoint revisions so a source-scale claim is auditable.",
+    ),
+    "silva_monotone_operator_equilibrium": (
+        "MNIST, CIFAR-10, and SVHN have established public acquisition routes under their stated terms.",
+        "Record the source repository revision, data split, augmentation, and any pretrained checkpoint checksum.",
+    ),
+    "silva_positive_concave_equilibrium": (
+        "Acquire the declared image benchmark through its official or framework-provided route and preserve the source split.",
+        "Record preprocessing, positivity parameterization, activation variant, and source revision before comparing results.",
+    ),
+    "silva_non_euclidean_equilibrium": (
+        "Acquire the declared vision benchmark through its stated public route and preserve train/test preprocessing.",
+        "Archive clean and perturbed evaluation indices, perturbation norm, metric weights, and checkpoint revision together.",
+    ),
+    "silva_efficient_infinite_graph": (
+        "Citation and co-purchase graph datasets are publicly distributed through their respective benchmark providers.",
+        "Retain the exact split, feature normalization, self-loop convention, graph normalization, and source revision.",
+    ),
+    "silva_multiscale_graph_implicit": (
+        "Use the benchmark provider's original graph, labels, and declared transductive split.",
+        "Cache graph powers or sparse propagation plans by dataset checksum, normalization, and scale list.",
+    ),
+    "silva_delta_equilibrium": (
+        "FlyingChairs, Sintel, and KITTI retain their own download and evaluation terms.",
+        "Store the base checkpoint separately from delta thresholds and report whether the evaluation route uses warm starts or cached states.",
+    ),
+}
+
+_STORAGE_PLANS: dict[str, tuple[str, ...]] = {
+    "silva_consistency_deq": (
+        "Teacher cache bytes = samples * stored solver states * state elements * bytes per element.",
+        "For example, 1,000,000 vector samples with 8 stored 512-float32 states require about 15.3 GiB before labels, indices, and checkpoints.",
+    ),
+    "silva_psi_gnn": (
+        "Plan separately for node features, directed edge indices/features, targets, and optional sparse finite-element matrices.",
+        "Measure one serialized mesh after preprocessing and multiply by 10,000; shard by graph count so matrices are never densified.",
+    ),
+    "silva_ifno": (
+        "Dense field bytes = samples * (input channels + output channels) * height * width * bytes per element.",
+        "Add simulator outputs, normalization statistics, optimizer state, and checkpoints; use sharded tensors for multi-resolution fields.",
+    ),
+    "silva_snarf": (
+        "Budget raw meshes and motion separately from sampled occupancy/query tensors.",
+        "Query-cache bytes scale with frames * samples per frame * (coordinates + occupancy + optional skinning labels) * bytes per value.",
+    ),
+    "silva_mesh_inference": (
+        "Storage scales with runs * typed observations * nodes plus sparse carrier edges and lineage records.",
+        "Stream policy sweeps because centralized matrices and distributed traces can be regenerated from the saved seed and parameters.",
+    ),
+    "silva_physics_guided_diffusion_pde": (
+        "A scalar float32 set of 4,000 fields at 64x64 is about 62.5 MiB; conditioning and trajectories multiply that amount.",
+        "Store prior-training fields, normalization, PDE parameters, and reverse-inference traces in separate shards.",
+    ),
+    "silva_therino": (
+        "Dense mechanics bytes = samples * voxels * (material + strain + stress channels) * bytes per element.",
+        "Keep microstructures, stiffness tensors, finite-element strain/stress labels, normalization, and checkpoints in separate shards; three-dimensional labels usually dominate storage.",
+    ),
+    "silva_fixed_point_diffusion": (
+        "Budget raw images, encoded latents, checkpoints, optimizer state, and generated evaluation samples separately.",
+        "A standard FID-50K evaluation alone stores 50,000 decoded samples; latent trajectory caches scale again with timesteps and retained fixed-point states.",
+    ),
+    "silva_monotone_operator_equilibrium": (
+        "Dense operator storage scales quadratically with state width; structured convolutions replace that term with kernel parameters and feature maps.",
+        "Budget activations, solver history, checkpoints, and optimizer state separately even when implicit differentiation avoids storing every iteration.",
+    ),
+    "silva_positive_concave_equilibrium": (
+        "Vector tasks are small; convolutional tasks are dominated by equilibrium feature maps times solver history and precision.",
+        "Store raw positive parameters and transformed nonnegative weights only when diagnostics cannot be regenerated from the checkpoint.",
+    ),
+    "silva_non_euclidean_equilibrium": (
+        "Budget the base checkpoint, learned metric, clean/perturbed batches, solver traces, and certificate tables independently.",
+        "For large dense states, prefer structured operators because the unconstrained matrix and its optimizer state scale quadratically.",
+    ),
+    "silva_efficient_infinite_graph": (
+        "Sparse iterative storage is proportional to edges plus node states; the dense closed form additionally stores graph eigenvectors with quadratic node cost.",
+        "Precompute dense spectra only when they fit comfortably; shard features and use sparse propagation for large graphs.",
+    ),
+    "silva_multiscale_graph_implicit": (
+        "State storage scales with nodes times state width times the number of graph scales, plus per-scale solver history.",
+        "Cache sparse graph powers or repeated sparse propagation plans rather than materializing dense matrices.",
+    ),
+    "silva_delta_equilibrium": (
+        "The cache stores one previous state and one recurrent output per wrapped operator in addition to the ordinary solver state.",
+        "For image or flow evaluation, log activity summaries rather than full boolean masks unless a detailed profiling shard is required.",
+    ),
+}
+
+_COMPACT_DATA: dict[str, tuple[str, ...]] = {
+    "silva_consistency_deq": (
+        "make_consistency_teacher_dataset gives exact contractive teacher equilibria and solver trajectories.",
+    ),
+    "silva_psi_gnn": (
+        "make_psi_poisson_grid gives a known mixed-boundary Poisson solution, directed graph, and residual matrix.",
+    ),
+    "silva_ifno": (
+        "make_ifno_material_dataset gives heterogeneous coefficient/loading fields and analytic displacement targets.",
+    ),
+    "silva_snarf": (
+        "make_snarf_stick_dataset gives licensed-data-free articulated transforms, canonical points, and posed queries.",
+    ),
+    "silva_mesh_inference": (
+        "make_mesh_gaussian_dataset gives a seeded carrier graph with a centralized reference solution.",
+    ),
+    "silva_physics_guided_diffusion_pde": (
+        "make_poisson_diffusion_dataset gives analytic Poisson fields, forcing, and hard boundary data.",
+    ),
+    "silva_therino": (
+        "make_therino_elastic_dataset gives periodic diagonal-elastic cells with exact strain, stress, energy, and macroscopic loading.",
+    ),
+    "silva_fixed_point_diffusion": (
+        "make_fixed_point_diffusion_dataset gives seeded latent fields and exact timestep-conditioned targets for allocation, reuse, and stochastic Jacobian-free checks.",
+    ),
+    "silva_monotone_operator_equilibrium": (
+        "make_monotone_operator_dataset gives a seeded affine source and known monotone-ReLU equilibrium.",
+    ),
+    "silva_positive_concave_equilibrium": (
+        "make_positive_concave_dataset gives a seeded nonnegative map and bounded positive equilibrium.",
+    ),
+    "silva_non_euclidean_equilibrium": (
+        "make_non_euclidean_robustness_dataset gives clean/perturbed inputs and known weighted-infinity equilibria.",
+    ),
+    "silva_efficient_infinite_graph": (
+        "make_eignn_chain_dataset gives a normalized graph, injected signals, and a known infinite-depth equilibrium.",
+    ),
+    "silva_multiscale_graph_implicit": (
+        "make_mgnni_multiscale_dataset gives per-scale graph equilibria and node-dependent target fusion weights.",
+    ),
+    "silva_delta_equilibrium": (
+        "make_delta_heterogeneous_dataset gives an exact affine equilibrium with coordinates converging at different rates.",
+    ),
+}
+
+_SOURCE_SCALE_STEPS: dict[str, tuple[str, ...]] = {
+    "silva_consistency_deq": (
+        "Acquire one official task and reproduce its teacher preprocessing and evaluation first.",
+        "Load the teacher checkpoint into the matching SILVA transition and cache deterministic solver trajectories.",
+        "Train the refiner with global/local consistency and an EMA target, then sweep one, two, and few-step inference against teacher quality and latency.",
+    ),
+    "silva_psi_gnn": (
+        "Generate the 6000/2000/2000 mesh split with first-order elements, mixed boundaries, and approximately 500 training nodes per graph.",
+        "Convert each mesh to the SILVAPsiGNN tensor contract without densifying edges or finite-element matrices.",
+        "Train residual, Jacobian, latent-consistency, and reconstruction terms, then evaluate new geometries, resolutions, boundaries, and initial states.",
+    ),
+    "silva_ifno": (
+        "Choose exactly one source material task and reproduce its simulator or DIC preprocessing, units, split, and normalization.",
+        "Map coordinates, material descriptors, loads, and boundary values to input channels and use the shared SILVAIFNO increment at the reported depth and modes.",
+        "Evaluate displacement or damage error, depth stability, and resolution transfer before adding new constitutive regimes.",
+    ),
+    "silva_snarf": (
+        "Acquire the permitted SMPL and motion/mesh assets and run the source point-sampling preprocessing for a declared subject split.",
+        "Train canonical blend weights and occupancy with inverse-bone starts, Broyden roots, residual filtering, and pose conditioning.",
+        "Evaluate within-distribution and unseen poses, correspondence success, occupancy quality, and marching-cubes reconstruction with fixed settings.",
+    ),
+    "silva_mesh_inference": (
+        "Generate topology, typed observations, precisions, admission/emission policies, lineage, and seeds as a versioned case table.",
+        "Run distributed relaxation and the centralized solve for every case, retaining the M-matrix and spectral-radius certificates.",
+        "Sweep connectivity, asymmetry, noise, anchor density, latency, and forwarding while reporting agreement and communication cost.",
+    ),
+    "silva_physics_guided_diffusion_pde": (
+        "Generate the source 64x64 Poisson, diffusion, or Burgers fields and reproduce global max-absolute normalization.",
+        "Train the three-level field prior independently of the PDE residual and freeze its checkpoint.",
+        "Run deterministic and stochastic guided reverse schedules with Gaussian smoothing and hard boundary projection, then report field, residual, and boundary errors.",
+    ),
+    "silva_therino": (
+        "Reproduce the source periodic microstructure generator, constituent laws, finite-element labels, load cases, split, and normalization before fitting the operator.",
+        "Configure the physical-state transition with the reported three-dimensional Fourier update, macroscopic-strain projection, and Anderson solve.",
+        "Train strain, stress, and energy objectives and report localization, homogenized response, contrast transfer, iterations, and memory against the declared baselines.",
+    ),
+    "silva_fixed_point_diffusion": (
+        "Acquire one declared image task and reproduce its resize/crop, latent encoder, diffusion schedule, split, and evaluation preprocessing.",
+        "Configure explicit pre/projection/post blocks around the timestep-conditioned fixed point, then reproduce the source per-timestep iteration allocation and state reuse.",
+        "Train with the declared stochastic Jacobian-free schedule and compare FID-50K, block evaluations, latency, memory, and residuals at equal sampling budgets.",
+    ),
+    "silva_monotone_operator_equilibrium": (
+        "Acquire one source benchmark and reproduce its split, normalization, augmentation, and architecture dimensions.",
+        "Choose the forward-backward or Peaceman-Rachford route and match the monotone factorization, proximal map, step, and solver tolerances.",
+        "Validate the compact known-solution case, then report task accuracy, certificate, residual, evaluations, runtime, and memory at source scale.",
+    ),
+    "silva_positive_concave_equilibrium": (
+        "Acquire one source vision task and reproduce its image preprocessing, split, and classifier head.",
+        "Match published variant 1 or 2, nonnegative parameterization, activation, convolutional width, and fixed-point budget.",
+        "Verify positivity and compact convergence first, then report task accuracy, residual, runtime, and memory with all source hyperparameters.",
+    ),
+    "silva_non_euclidean_equilibrium": (
+        "Acquire one declared benchmark and reproduce clean and perturbed evaluation preprocessing.",
+        "Match the weighted metric, one-sided matrix-measure target, averaging rule, architecture, and solver settings.",
+        "Verify the compact certificate and empirical sensitivity, then report clean/robust task metrics, residuals, runtime, and memory.",
+    ),
+    "silva_efficient_infinite_graph": (
+        "Acquire a declared graph benchmark and preserve its official features, labels, split, and normalization.",
+        "Use the normalized channel Gram map and match gamma, width, optimizer, early stopping, and either spectral or iterative solve route.",
+        "Check closed-form/iterative agreement on a compact graph before reporting source-scale node accuracy, denominator margin, runtime, and memory.",
+    ),
+    "silva_multiscale_graph_implicit": (
+        "Acquire a declared graph benchmark and preserve the official split, graph normalization, and feature preprocessing.",
+        "Match graph-power scales, per-scale channel factors, equilibrium budgets, and nodewise attention fusion.",
+        "Validate per-scale states and normalized attention on the compact case, then report task accuracy, residuals, fusion statistics, runtime, and memory.",
+    ),
+    "silva_delta_equilibrium": (
+        "Load a source-compatible checkpoint and reproduce the task data preprocessing and ordinary full-map evaluation first.",
+        "Wrap supported recurrent linear or convolutional operators, begin at zero threshold, and verify prediction/state equivalence and exact residual.",
+        "Sweep thresholds and report task degradation, active fraction, wall time, memory traffic, solver evaluations, and hardware details.",
+    ),
 }
 
 _METRICS: dict[str, tuple[str, ...]] = {
@@ -350,6 +989,96 @@ _METRICS: dict[str, tuple[str, ...]] = {
         "algebraic constraint residual",
         "stage residual",
     ),
+    "silva_consistency_deq": (
+        "task metric",
+        "one/few-step equilibrium error",
+        "local/global consistency",
+        "teacher evaluations",
+        "latency",
+    ),
+    "silva_psi_gnn": (
+        "finite-element residual",
+        "MSE against LU solution",
+        "boundary error",
+        "Jacobian norm",
+        "root iterations",
+    ),
+    "silva_ifno": (
+        "relative displacement/damage L2 error",
+        "resolution transfer error",
+        "increment norm",
+        "memory",
+    ),
+    "silva_snarf": (
+        "intersection over union",
+        "correspondence residual/success",
+        "unseen-pose reconstruction",
+        "root evaluations",
+    ),
+    "silva_mesh_inference": (
+        "centralized agreement error",
+        "M-matrix certificate",
+        "carrier connectivity",
+        "spectral gap",
+        "messages",
+    ),
+    "silva_physics_guided_diffusion_pde": (
+        "relative solution error",
+        "PDE residual energy",
+        "boundary error",
+        "reverse-step convergence",
+    ),
+    "silva_therino": (
+        "strain localization error",
+        "stress and elastic-energy error",
+        "homogenized stiffness error",
+        "out-of-distribution contrast error",
+        "root iterations and residual",
+    ),
+    "silva_fixed_point_diffusion": (
+        "FID-50K or declared task metric",
+        "fixed-point block evaluations",
+        "per-timestep residual",
+        "sampling wall time",
+        "peak memory",
+    ),
+    "silva_monotone_operator_equilibrium": (
+        "task accuracy",
+        "monotonicity certificate",
+        "fixed-point residual",
+        "operator evaluations",
+        "runtime and memory",
+    ),
+    "silva_positive_concave_equilibrium": (
+        "task accuracy",
+        "minimum state and weight",
+        "fixed-point residual",
+        "runtime and memory",
+    ),
+    "silva_non_euclidean_equilibrium": (
+        "clean and perturbed task metric",
+        "one-sided Lipschitz certificate",
+        "empirical sensitivity",
+        "fixed-point residual",
+    ),
+    "silva_efficient_infinite_graph": (
+        "node accuracy",
+        "closed-form/iterative agreement",
+        "denominator margin",
+        "runtime and memory",
+    ),
+    "silva_multiscale_graph_implicit": (
+        "node accuracy",
+        "per-scale residual",
+        "attention entropy and scale usage",
+        "runtime and memory",
+    ),
+    "silva_delta_equilibrium": (
+        "task metric",
+        "active fraction",
+        "exact full-map residual",
+        "latency and memory traffic",
+    ),
 }
 
 _NOTEBOOKS: dict[str, tuple[str, ...]] = {
@@ -373,8 +1102,36 @@ _NOTEBOOKS: dict[str, tuple[str, ...]] = {
     "silva_physics_informed_equilibrium": (
         "notebooks/package_api/24_silva_physics_informed_equilibrium.ipynb",
     ),
-    "silva_implicit_dae_step": (
-        "notebooks/package_api/25_silva_implicit_dae_and_residuals.ipynb",
+    "silva_implicit_dae_step": ("notebooks/package_api/25_silva_implicit_dae_and_residuals.ipynb",),
+    "silva_consistency_deq": ("notebooks/package_api/28_silva_consistency_deq.ipynb",),
+    "silva_psi_gnn": ("notebooks/package_api/29_silva_psi_gnn.ipynb",),
+    "silva_ifno": ("notebooks/package_api/30_silva_ifno_materials.ipynb",),
+    "silva_snarf": ("notebooks/package_api/31_silva_snarf_forward_skinning.ipynb",),
+    "silva_mesh_inference": ("notebooks/package_api/32_silva_mesh_inference.ipynb",),
+    "silva_physics_guided_diffusion_pde": (
+        "notebooks/package_api/33_silva_physics_guided_diffusion_pde.ipynb",
+    ),
+    "silva_therino": ("notebooks/package_api/34_silva_therino_mechanics.ipynb",),
+    "silva_fixed_point_diffusion": (
+        "notebooks/package_api/35_silva_fixed_point_diffusion.ipynb",
+    ),
+    "silva_monotone_operator_equilibrium": (
+        "notebooks/package_api/36_silva_monotone_operator_equilibrium.ipynb",
+    ),
+    "silva_positive_concave_equilibrium": (
+        "notebooks/package_api/37_silva_positive_concave_equilibrium.ipynb",
+    ),
+    "silva_non_euclidean_equilibrium": (
+        "notebooks/package_api/38_silva_non_euclidean_equilibrium.ipynb",
+    ),
+    "silva_efficient_infinite_graph": (
+        "notebooks/package_api/39_silva_efficient_infinite_graph.ipynb",
+    ),
+    "silva_multiscale_graph_implicit": (
+        "notebooks/package_api/40_silva_multiscale_graph_implicit.ipynb",
+    ),
+    "silva_delta_equilibrium": (
+        "notebooks/package_api/41_silva_delta_equilibrium.ipynb",
     ),
 }
 
@@ -403,6 +1160,20 @@ _TESTS: dict[str, tuple[str, ...]] = {
         "tests/test_advanced_equilibria.py",
         "tests/test_advanced_data.py",
     ),
+    "silva_consistency_deq": ("tests/test_emerging_equilibria.py",),
+    "silva_psi_gnn": ("tests/test_emerging_equilibria.py",),
+    "silva_ifno": ("tests/test_emerging_equilibria.py",),
+    "silva_snarf": ("tests/test_emerging_equilibria.py",),
+    "silva_mesh_inference": ("tests/test_emerging_equilibria.py",),
+    "silva_physics_guided_diffusion_pde": ("tests/test_emerging_equilibria.py",),
+    "silva_therino": ("tests/test_emerging_equilibria.py",),
+    "silva_fixed_point_diffusion": ("tests/test_emerging_equilibria.py",),
+    "silva_monotone_operator_equilibrium": ("tests/test_structured_equilibria.py",),
+    "silva_positive_concave_equilibrium": ("tests/test_structured_equilibria.py",),
+    "silva_non_euclidean_equilibrium": ("tests/test_structured_equilibria.py",),
+    "silva_efficient_infinite_graph": ("tests/test_structured_equilibria.py",),
+    "silva_multiscale_graph_implicit": ("tests/test_structured_equilibria.py",),
+    "silva_delta_equilibrium": ("tests/test_structured_equilibria.py",),
 }
 
 
@@ -448,13 +1219,38 @@ def _default_tests(family: str) -> tuple[str, ...]:
 
 def _spec(family: str) -> SILVAReproductionSpec:
     guide = silva_family_guide(family)
-    preserved_mechanisms, silva_extensions, benchmark_requirements = (
-        _SOURCE_DETAILS[family]
-    )
+    preserved_mechanisms, silva_extensions, benchmark_requirements = _SOURCE_DETAILS[family]
     source_relation: SourceRelation = (
         "silva-native" if 1 in guide.paper_refs else "paper-adaptation"
     )
     datasets = _DATASETS.get(family, guide.benchmark_tasks)
+    data_sources = _DATA_SOURCES.get(family, guide.reference_repositories)
+    data_access = _DATA_ACCESS.get(
+        family,
+        (
+            "Follow the cited repository and dataset terms, then record source revisions and archive checksums.",
+        ),
+    )
+    storage_plan = _STORAGE_PLANS.get(
+        family,
+        (
+            "Measure one processed sample, estimate the complete split, and budget raw data, processed shards, checkpoints, optimizer state, and diagnostics separately.",
+        ),
+    )
+    compact_data = _COMPACT_DATA.get(
+        family,
+        (
+            "Use the cited notebook's deterministic compact fixture before replacing it with source-scale data.",
+        ),
+    )
+    source_scale_steps = _SOURCE_SCALE_STEPS.get(
+        family,
+        (
+            "Acquire the cited data and preserve its official split, preprocessing, units, and metric.",
+            "Build the same SILVA family with source-aligned task modules and scale controls.",
+            "Run forward, loss, backward, checkpoint resume, and metric validation on a small shard before the complete experiment.",
+        ),
+    )
     metrics = _METRICS.get(
         family,
         ("task metric", "fixed-point residual", "gradient agreement", "runtime", "memory"),
@@ -466,6 +1262,11 @@ def _spec(family: str) -> SILVAReproductionSpec:
         repositories=guide.reference_repositories,
         equation=_EQUATIONS.get(family, _GENERIC_EQUATION),
         datasets=datasets,
+        data_sources=data_sources,
+        data_access=data_access,
+        storage_plan=storage_plan,
+        compact_data=compact_data,
+        source_scale_steps=source_scale_steps,
         preprocessing=(
             "record dataset version, split, normalization, shape convention, and seed",
             "preserve masks, graph indices, boundaries, or physical units required by the domain",
@@ -486,9 +1287,7 @@ def _spec(family: str) -> SILVAReproductionSpec:
     )
 
 
-_REPRODUCTION_SPECS = {
-    family: _spec(family) for family in available_silva_families()
-}
+_REPRODUCTION_SPECS = {family: _spec(family) for family in available_silva_families()}
 
 
 def silva_reproduction_spec(family: str) -> SILVAReproductionSpec:
@@ -524,6 +1323,11 @@ def audit_silva_reproduction_specs() -> tuple[str, ...]:
             "repositories",
             "equation",
             "datasets",
+            "data_sources",
+            "data_access",
+            "storage_plan",
+            "compact_data",
+            "source_scale_steps",
             "preprocessing",
             "metrics",
             "notebooks",

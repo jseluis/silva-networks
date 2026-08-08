@@ -247,11 +247,17 @@ Distributed execution divides data among processes; it does not change the
 equilibrium equation. Solver residuals, task metrics, physical residuals, and
 structural invariance checks should still be reported separately.
 
-## All 30 Family Routes
+## All 44 Family Routes
 
 The table is generated conceptually from `all_silva_family_guides()`. Every row
 has a tested canonical factory, a data contract, literature lineage, benchmark
 route, scale controls, and an extension point.
+
+### All 30 Family Routes
+
+The original 30-family route catalog is retained in the table below and
+expanded with 14 additional structured and emerging families, for 44 canonical
+routes in total.
 
 | SILVA family | Research route | Main scale controls | Source |
 | --- | --- | --- | --- |
@@ -285,6 +291,45 @@ route, scale controls, and an extension point.
 | `silva_poisson_mirror_equilibrium` | Poisson inverse imaging | forward operator, mirror step, tiling | DEQ-MD [[50]](../paper/references.md#ref-50){ .silva-cite } |
 | `silva_physics_informed_equilibrium` | Van der Pol or nonlinear IVP | collocation batches, JVP/GMRES, Jacobian samples | PIDEQ [[51]](../paper/references.md#ref-51){ .silva-cite } |
 | `silva_implicit_dae_step` | power-network or index-1 DAE | stages, Newton-Krylov, continuation | DAE-PINN [[52]](../paper/references.md#ref-52){ .silva-cite } |
+
+### Eight Additional Family Routes
+
+The extension adds source-specific numerical policies and data contracts while
+leaving every original route above intact.
+
+| SILVA family | Research route | Main scale controls | Source |
+| --- | --- | --- | --- |
+| `silva_consistency_deq` | accelerated sequence, vision, or graph equilibrium | cached teacher states, history, refiner width, inference steps | C-DEQ [[59]](../paper/references.md#ref-59){ .silva-cite } |
+| `silva_psi_gnn` | mixed-boundary Poisson on unstructured meshes | nodes, edges, typed messages, latent width, solver budget | Psi-GNN [[60]](../paper/references.md#ref-60){ .silva-cite } |
+| `silva_ifno` | heterogeneous material response | resolution, Fourier modes, shared depth, state width | IFNO [[61]](../paper/references.md#ref-61){ .silva-cite } |
+| `silva_snarf` | articulated implicit-shape reconstruction | query points, bone starts, root history, occupancy resolution | SNARF [[62]](../paper/references.md#ref-62){ .silva-cite } |
+| `silva_mesh_inference` | distributed typed estimation | nodes, fields, carrier sparsity, asynchronous budget | Mesh Inference [[63]](../paper/references.md#ref-63){ .silva-cite } |
+| `silva_physics_guided_diffusion_pde` | Poisson, diffusion, or Burgers inference | field resolution, reverse steps, prior width, guidance schedule | physics-guided diffusion [[64]](../paper/references.md#ref-64){ .silva-cite } |
+| `silva_therino` | periodic heterogeneous elastic localization | voxel resolution, strain components, operator modes/width, root budget | TherINO [[73]](../paper/references.md#ref-73){ .silva-cite } |
+| `silva_fixed_point_diffusion` | latent image generation with an implicit denoiser | latent resolution, transition width, per-timestep allocations, state reuse | Fixed-Point Diffusion Models [[74]](../paper/references.md#ref-74){ .silva-cite } |
+
+### Six Structured Family Routes
+
+These routes add certified geometry, graph spectra, multiscale propagation, and
+delta-cached execution while retaining the same family, runtime, checkpoint,
+and reproduction interfaces.
+
+| SILVA family | Research route | Main scale controls | Source |
+| --- | --- | --- | --- |
+| `silva_monotone_operator_equilibrium` | image or dense classification with guaranteed operator splitting | state width, dense/convolutional operator, margin, splitting, resolvent, solver budget | monDEQ [[75]](../paper/references.md#ref-75){ .silva-cite } |
+| `silva_positive_concave_equilibrium` | positive dense or multistage convolutional classification | state width, positive parameterization, activation, kernels, linked points, iteration budget | pcDEQ [[76]](../paper/references.md#ref-76){ .silva-cite } |
+| `silva_non_euclidean_equilibrium` | clean and adversarially perturbed image classification | metric weights, one-sided bound, averaging, Lipschitz penalty, attack budget | NEMON [[77]](../paper/references.md#ref-77){ .silva-cite } |
+| `silva_efficient_infinite_graph` | long-range node classification with reusable graph spectrum | nodes, edges, width, gamma, dense spectral or sparse iterative solve | EIGNN [[78]](../paper/references.md#ref-78){ .silva-cite } |
+| `silva_multiscale_graph_implicit` | node or graph classification across graph powers | graph-conditioned source, scale set, per-scale widths and solvers, attention, pooling | MGNNI [[79]](../paper/references.md#ref-79){ .silva-cite } |
+| `silva_delta_equilibrium` | accelerated INR or optical-flow equilibrium | eligible operators, training/inference thresholds, KM damping, reuse, stopping, sparse-kernel support | DeltaDEQ [[80]](../paper/references.md#ref-80){ .silva-cite } |
+
+For the monotone and non-Euclidean families, a source-scale convolutional run
+must provide an operator that preserves the paper's certificate and structured
+solve. For the multiscale graph family, `graph_source(features, graph_operator)`
+implements the paper's graph-conditioned injection. For delta training,
+`backward_mode="implicit"` uses delta-cached forward iterations and the original
+full equilibrium map in the adjoint equation. This preserves the source
+separation between accelerated forward computation and equilibrium gradients.
 
 ## Reproduce, Then Go Beyond
 
@@ -323,6 +368,27 @@ need permutation checks; operator models need evaluation on at least one unseen
 resolution when that claim is made.
 The [experiment reconstruction guide](reconstructing-paper-experiments.md)
 defines the reporting record for source-faithful and extended studies.
+
+## Source-Data Profiles
+
+Two packaged JSON records make the transition from the executed labs to larger
+runs explicit:
+
+- `structured_real_subset_suite.json` records the exact snapshot, dimensions,
+  masks, thresholds, and compact training budget used for mechanism checks.
+- `structured_source_scale_suite.json` records complete-data adapters,
+  architecture starting profiles, optimization fields, seed policy, and
+  required task, solver, timing, memory, and failure reports.
+
+The source-scale profile is not presented as an exact paper configuration.
+Before a reproduction claim, reconcile every value with the cited paper table
+and repository revision, then store that resolved configuration with the
+checkpoint and `SourceDataReceipt`. The
+[Real-Dataset Reproduction guide](real-dataset-reproduction.md) provides the
+complete checklist and storage plan.
+
+For dataset receipts, source splits, and complete-data loaders, continue with
+[Real-Dataset Reproduction](real-dataset-reproduction.md).
 
 ## Where to Go Next
 

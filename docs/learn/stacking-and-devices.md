@@ -135,6 +135,55 @@ The runnable construction is in [Stacked Architecture](../examples/stacked-archi
 Solver sources are collected in
 [Solvers and Linear Algebra](../paper/references.md#solvers-and-linear-algebra).
 
+<!-- silva-learning-study:start -->
+## Worked Evidence Bridge
+
+The derivation above becomes a complete SILVA study when the state, condition,
+solver result, task result, and gradient path are kept separate. Here the state
+is **three linked equilibrium states with independent solver policies** and the condition is **the output of the preceding point plus the original task input**. The compact
+relation is
+
+$$
+z_i^\star=T_{\theta_i}(z_i^\star;c_i),\qquad c_{i+1}=A_i(z_i^\star,x)
+$$
+
+The following is the complete executable program used by the repository tests:
+
+```python
+--8<-- "examples/stacked_architecture.py"
+```
+
+Run it from the project root:
+
+```bash
+python examples/stacked_architecture.py
+```
+
+### Measured Output
+
+```text
+device cpu
+logits_shape (2, 2)
+solvers ['picard', 'anderson', 'broyden']
+final_loss 0.586849570274353
+```
+
+### What This Result Establishes
+
+This run records the final logit shape, all three selected solvers, and a differentiable task loss. It establishes that the compact mechanism is
+executable with finite outputs and that its stated shape or structural contract
+can be inspected. It does not establish source-scale accuracy by itself.
+
+For the next controlled study, profile each point separately before increasing point count, state width, batch size, or device count. Keep the compact run as a
+regression case. For every larger run, archive the resolved data source and
+split, preprocessing, seed, constructor arguments, forward and backward solver
+settings, task metric, normalized residual, iteration count, gradient norm,
+runtime, peak memory, and convergence failures. This keeps task quality,
+numerical convergence, and computational cost from being collapsed into one
+number.
+
+<!-- silva-learning-study:end -->
+
 ## Where to Go Next
 
 | Question | Page |

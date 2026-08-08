@@ -107,6 +107,53 @@ every configurable branch slot together. Source lineages for graph, attention,
 and set operators are collected in
 [Graphs, Attention, and Messages](../paper/references.md#graphs-attention-and-messages).
 
+<!-- silva-learning-study:start -->
+## Worked Evidence Bridge
+
+The derivation above becomes a complete SILVA study when the state, condition,
+solver result, task result, and gradient path are kept separate. Here the state
+is **a user-selected latent tensor** and the condition is **the adapted input and any graph, spatial, or physical context**. The compact
+relation is
+
+$$
+z^\star=T_\theta(z^\star;c),\qquad \operatorname{shape}(T_\theta(z;c))=\operatorname{shape}(z)
+$$
+
+The following is the complete executable program used by the repository tests:
+
+```python
+--8<-- "examples/custom_layers.py"
+```
+
+Run it from the project root:
+
+```bash
+python examples/custom_layers.py
+```
+
+### Measured Output
+
+```text
+custom_state_shape (10, 14)
+final_residual 0.12513570487499237
+```
+
+### What This Result Establishes
+
+This run records the custom state shape and the transition's measured equilibrium residual. It establishes that the compact mechanism is
+executable with finite outputs and that its stated shape or structural contract
+can be inspected. It does not establish source-scale accuracy by itself.
+
+For the next controlled study, replace one internal module at a time, then increase state width and source-data size. Keep the compact run as a
+regression case. For every larger run, archive the resolved data source and
+split, preprocessing, seed, constructor arguments, forward and backward solver
+settings, task metric, normalized residual, iteration count, gradient norm,
+runtime, peak memory, and convergence failures. This keeps task quality,
+numerical convergence, and computational cost from being collapsed into one
+number.
+
+<!-- silva-learning-study:end -->
+
 ## Where to Go Next
 
 | Question | Page |

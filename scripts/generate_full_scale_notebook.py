@@ -201,7 +201,7 @@ def build_notebook() -> dict[str, object]:
             """
             guides = all_silva_family_guides()
             assert audit_silva_family_guides() == ()
-            assert len(guides) == 30
+            assert len(guides) == 44
 
             for index, guide in enumerate(guides, start=1):
                 refs = ", ".join(f"[{number}]" for number in guide.paper_refs)
@@ -747,7 +747,7 @@ def main() -> int:
     for directory in OUT_DIRS:
         directory.mkdir(parents=True, exist_ok=True)
         path = directory / NAME
-        write_notebook(path, notebook_payload)
+        write_notebook(path, notebook_payload, replace_changed=True)
         print(path.relative_to(ROOT))
     return 0
 

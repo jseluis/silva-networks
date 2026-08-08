@@ -161,6 +161,57 @@ assert ivp.equation_residual().abs().max() == 0
 assert dae.constraint_residual().abs().max() == 0
 ```
 
+<!-- silva-learning-study:start -->
+## Worked Evidence Bridge
+
+The derivation above becomes a complete SILVA study when the state, condition,
+solver result, task result, and gradient path are kept separate. Here the state
+is **the family-specific graph, token, inverse, trajectory, or algebraic state** and the condition is **a generated batch that retains the equation coefficients and constraints**. The compact
+relation is
+
+$$
+r_{\mathrm{data}}=\|\mathcal A(x,y,c)\|_2,\qquad r_{\mathrm{model}}=\|T_\theta(z;c)-z\|_2
+$$
+
+The following is the complete executable program used by the repository tests:
+
+```python
+--8<-- "examples/advanced_equilibria.py"
+```
+
+Run it from the project root:
+
+```bash
+python examples/advanced_equilibria.py
+```
+
+### Measured Output
+
+```text
+monotone graph: (8, 1) 0.023554455488920212
+equilibrium transformer: 0.18536624312400818
+Poisson mirror: 0.005979819223284721
+physics-informed loss: 0.8003759384155273
+implicit DAE step: [0.4761904776096344] 1.862645149230957e-09
+adversarial residual objective: 0.7888258695602417 1.3886094093322754
+```
+
+### What This Result Establishes
+
+This run records separate compact outputs for monotone, generative, inverse, physics-informed, DAE, and residual mechanisms. It establishes that the compact mechanism is
+executable with finite outputs and that its stated shape or structural contract
+can be inspected. It does not establish source-scale accuracy by itself.
+
+For the next controlled study, substitute an official dataset adapter with the same named fields and preserve the original split and metric. Keep the compact run as a
+regression case. For every larger run, archive the resolved data source and
+split, preprocessing, seed, constructor arguments, forward and backward solver
+settings, task metric, normalized residual, iteration count, gradient norm,
+runtime, peak memory, and convergence failures. This keeps task quality,
+numerical convergence, and computational cost from being collapsed into one
+number.
+
+<!-- silva-learning-study:end -->
+
 ## Where to Go Next
 
 | Question | Page |

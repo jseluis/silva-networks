@@ -1,8 +1,8 @@
 (() => {
-  const defaultDate = "August 4, 2026";
+  const defaultDate = "August 5, 2026";
   const pageNotes = {
-    "": "Thirty SILVA model families, advanced equilibrium and physics guides, executable notebooks, citations, and release paths reviewed.",
-    "index.html": "Thirty SILVA model families, advanced equilibrium and physics guides, executable notebooks, citations, and release paths reviewed.",
+    "": "Thirty-eight SILVA model families, advanced equilibrium and physics guides, executable notebooks, citations, and release paths reviewed.",
+    "index.html": "Thirty-eight SILVA model families, advanced equilibrium and physics guides, executable notebooks, citations, and release paths reviewed.",
     "start-here/": "Learning path and package orientation reviewed.",
     "run-everything/": "Run path added for install, examples, notebooks, data, tests, release audit, and local docs.",
     "equation-and-pdf-audit/": "Equation inventory, companion-asset policy, and source-to-doc traceability added.",
@@ -22,6 +22,7 @@
     "learn/advanced-equilibrium-families/": "Monotone graph, injected transformer, and Poisson mirror equilibria derived and connected to public SILVA objects.",
     "learn/physics-informed-equilibria/": "Physics-informed equilibrium, implicit DAE, and adversarial residual mechanisms derived and validated.",
     "learn/advanced-equilibrium-datasets/": "Deterministic graph, image, inverse-problem, IVP, and DAE datasets documented with equation checks.",
+    "learn/emerging-equilibrium-methods/": "Eight emerging equilibrium mechanisms derived with compact data, replaceable modules, source-scale plans, and focused labs.",
     "get-started/derivation-to-code/": "Linked to the implementation derivations manual.",
     "research-citation-audit/": "Method-to-paper citation audit added across package solvers, layers, presets, datasets, and bridge modules.",
     "experiments/benchmark-cards/": "Public validation metrics summarized from checked JSON outputs.",
@@ -38,11 +39,14 @@
     "api/advanced-equilibria/": "Advanced equilibrium transitions, results, losses, and factories added to the public API reference.",
     "api/physics-informed/": "Physics-informed, mirror, DAE, and residual-objective APIs added with tensor contracts.",
     "api/advanced-data/": "Advanced deterministic dataset APIs added with exact residual contracts.",
+    "api/emerging-equilibria/": "Eight emerging SILVA family APIs documented with configurable transitions, solvers, objectives, and readouts.",
+    "api/emerging-data/": "Compact exact datasets documented for consistency, Poisson, material, skinning, mesh, mechanics, and diffusion studies.",
     "examples/deq-engine-bridge/": "DEQ engine bridge example documented with equations and diagnostics.",
     "examples/optical-flow-silva/": "Optical-flow SILVA example documented with RAFT/DEQ-Flow equations.",
     "examples/cortex-hierarchy/": "Cortex hierarchy example documented with linked equilibrium equations.",
     "examples/citation-aware-reporting/": "Citation-aware methods-reporting example added.",
     "examples/advanced-equilibria/": "Runnable small-scale validation paths added for all advanced equilibrium and physics mechanisms.",
+    "examples/emerging-equilibria/": "Runnable compact validation paths added for all eight emerging equilibrium mechanisms.",
     "notebooks/": "Notebook index reviewed against package and implicit bridge tracks.",
     "package-notebooks/07_research_citation_audit/": "Citation checklist notebook added for solver/operator reporting.",
     "package-notebooks/08_equation_to_code_walkthrough/": "Executable equation-to-code walkthrough added.",
@@ -55,6 +59,16 @@
     "package-notebooks/23_silva_poisson_mirror_equilibrium/": "Positive mirror-equilibrium derivation and Poisson inverse-problem validation added.",
     "package-notebooks/24_silva_physics_informed_equilibrium/": "Analytic linear IVP, implicit time derivative, and three-term physics-informed objective.",
     "package-notebooks/25_silva_implicit_dae_and_residuals/": "Implicit DAE step and adversarial residual objective derivations added with equation checks.",
+    "package-notebooks/26_full_scale_silva/": "Scale-aware family construction, dense and scalable equivalence, checkpointing, and distributed controls added.",
+    "package-notebooks/27_reproducing_silva_and_source_methods/": "Source mechanisms, configurable replacements, compact evidence, and benchmark handoffs documented.",
+    "package-notebooks/28_silva_consistency_deq/": "Solver trajectories, consistency distillation, few-step refinement, and latency diagnostics added.",
+    "package-notebooks/29_silva_psi_gnn/": "Mixed-boundary graph construction, typed messages, Poisson residuals, and boundary checks added.",
+    "package-notebooks/30_silva_ifno_materials/": "Tied Fourier material updates, heterogeneous coefficients, displacement, damage, and transfer checks added.",
+    "package-notebooks/31_silva_snarf_forward_skinning/": "Forward deformation, multi-start canonical roots, occupancy, and selection diagnostics added.",
+    "package-notebooks/32_silva_mesh_inference/": "Typed local observations, center-free relaxation, convergence certificates, and topology checks added.",
+    "package-notebooks/33_silva_physics_guided_diffusion_pde/": "Reverse diffusion, residual-energy guidance, smoothing, boundary projection, and coefficient-shift checks added.",
+    "package-notebooks/34_silva_therino_mechanics/": "Physical-strain equilibrium, thermodynamic features, periodic elasticity, and constitutive checks added.",
+    "package-notebooks/35_silva_fixed_point_diffusion/": "Timestep-conditioned roots, variable compute, state reuse, and implicit training checks added.",
     "implicit-bridge-notebooks/01_introduction_fixed_points/": "Fixed-point tutorial converted to package-native solvers.",
     "implicit-bridge-notebooks/02_implicit_autodiff/": "Implicit autodiff tutorial connected to package Jacobian helpers.",
     "implicit-bridge-notebooks/03_neural_odes_as_implicit_layers/": "Neural ODE bridge documented with the package Euler block.",
@@ -86,7 +100,7 @@
     date.className = "silva-page-date";
     date.innerHTML = [
       '<span class="silva-page-date__label">Updated</span>',
-      `<time datetime="2026-08-04">${defaultDate}</time>`,
+      `<time datetime="2026-08-05">${defaultDate}</time>`,
       `<span class="silva-page-date__note">${note}</span>`,
     ].join(" ");
 

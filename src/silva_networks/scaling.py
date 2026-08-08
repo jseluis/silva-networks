@@ -445,6 +445,211 @@ _FAMILY_GUIDES: dict[str, SILVAFamilyGuide] = {
             ("stage count", "Newton-Krylov budget", "time-step continuation"),
             ("supply a Butcher tableau, dynamics, constraints, or learned closures",),
         ),
+        _guide(
+            "silva_consistency_deq",
+            "trajectory-distilled equilibrium accelerator",
+            "condition plus fixed teacher transition -> one- or few-step equilibrium estimate",
+            (59,),
+            ("https://github.com/landrarwolf/CDEQ",),
+            ("WikiText-103", "ImageNet", "ogbn-arxiv", "ogbn-products"),
+            (
+                "teacher solver trajectory cache",
+                "history window",
+                "student width",
+                "inference steps",
+            ),
+            (
+                "replace teacher transition, refiner, time schedule, Anderson structure, or readout",
+                "attach task losses and an exponential-moving-average target",
+            ),
+        ),
+        _guide(
+            "silva_psi_gnn",
+            "mixed-boundary Poisson graph equilibrium",
+            "unstructured coordinates, typed nodes, directed edges, forcing, and boundary data -> nodal solution",
+            (60,),
+            ("https://arxiv.org/abs/2302.10891",),
+            ("synthetic unstructured Poisson meshes", "mixed Dirichlet-Neumann Poisson"),
+            ("mesh nodes", "edge count", "latent width", "root-solver budget"),
+            (
+                "replace encoder, typed message maps, update maps, decoder, or root solver",
+                "supply finite-element matrices only to the physics residual loss",
+            ),
+        ),
+        _guide(
+            "silva_ifno",
+            "tied residual Fourier operator for material response",
+            "coordinate, material, loading, and boundary fields -> displacement or damage field",
+            (61,),
+            ("https://arxiv.org/abs/2203.08205",),
+            (
+                "Darcy flow",
+                "hyperelastic and anisotropic materials",
+                "brittle fracture",
+                "digital image correlation displacement",
+            ),
+            ("grid resolution", "Fourier modes", "state width", "shared depth"),
+            (
+                "replace lift, tied integral increment, boundary projector, or material readout",
+                "switch between finite shared-depth integration and the zero-increment equilibrium",
+            ),
+        ),
+        _guide(
+            "silva_snarf",
+            "articulated implicit shape with forward-skinning root search",
+            "posed query points and bone transforms -> canonical roots and occupancy",
+            (62,),
+            ("https://github.com/xuchen-ethz/snarf",),
+            ("2D Stick", "DFaust/AMASS", "CAPE"),
+            ("query points", "bone starts", "root history", "occupancy-grid resolution"),
+            (
+                "replace canonical weight and occupancy fields",
+                "supply alternate skinning transforms, root maps, or correspondence aggregation",
+            ),
+        ),
+        _guide(
+            "silva_mesh_inference",
+            "typed center-free linear-Gaussian relaxation",
+            "private anchors, typed observations, admission weights, and emission carriers -> joint answer",
+            (63,),
+            ("https://github.com/sym-bot/mesh-memory-protocol",),
+            ("synthetic carrier chains", "noisy linear-Gaussian collective estimation"),
+            ("nodes", "typed fields", "carrier sparsity", "asynchronous iteration budget"),
+            (
+                "replace admission/emission policy or typed evidence precision",
+                "compare every distributed solve to the centralized optimum and M-matrix certificate",
+            ),
+        ),
+        _guide(
+            "silva_physics_guided_diffusion_pde",
+            "diffusion-prior PDE inference with hard physical projection",
+            "initial random field, prior, PDE residual energy, and boundary projector -> physical field",
+            (64,),
+            ("https://arxiv.org/abs/2604.01242",),
+            ("Poisson", "space-time diffusion", "space-time Burgers"),
+            ("grid resolution", "reverse steps", "guidance step", "prior width"),
+            (
+                "replace the data-trained prior, residual energy, smoothing, schedule, or projector",
+                "select deterministic or stochastic reverse inference without retraining the prior",
+            ),
+        ),
+        _guide(
+            "silva_therino",
+            "thermodynamically informed solution-space equilibrium operator",
+            "stiffness tensor field and prescribed bulk strain -> local strain/stress fields",
+            (73,),
+            ("https://arxiv.org/abs/2411.06529",),
+            (
+                "periodic heterogeneous elastic localization",
+                "loading-direction and stiffness-contrast transfer",
+            ),
+            (
+                "voxel resolution",
+                "Fourier modes",
+                "thermodynamic channels",
+                "root-solver budget",
+            ),
+            (
+                "replace the constitutive encoder, solution-space update, or bulk projector",
+                "supply nonlinear, anisotropic, dissipative, or weak-form material laws",
+            ),
+        ),
+        _guide(
+            "silva_fixed_point_diffusion",
+            "timestep-conditioned fixed-point denoising network",
+            "noisy latent, timestep, and optional condition -> denoised latent",
+            (74,),
+            ("https://lukemelas.github.io/fixed-point-diffusion-models/",),
+            ("ImageNet", "FFHQ", "CelebA-HQ", "LSUN Church"),
+            (
+                "latent resolution",
+                "transition width",
+                "iterations per timestep",
+                "number of reverse timesteps",
+            ),
+            (
+                "replace pre/injection/equilibrium/post modules or reverse sampler",
+                "change compute allocation, solution reuse, conditioning, or truncated-gradient policy",
+            ),
+        ),
+        _guide(
+            "silva_monotone_operator_equilibrium",
+            "monotone-operator equilibrium with certified splitting",
+            "B,D input -> B,H equilibrium and task readout",
+            (75,),
+            ("https://github.com/locuslab/monotone_op_net",),
+            ("MNIST", "CIFAR-10", "SVHN"),
+            ("state width", "operator factor rank", "splitting iterations", "implicit backward budget"),
+            (
+                "replace the monotone operator, source, proximal map, splitting, or readout",
+                "compose structured convolutions while retaining the monotonicity certificate",
+            ),
+        ),
+        _guide(
+            "silva_positive_concave_equilibrium",
+            "positive-concave fixed point with existence and uniqueness structure",
+            "positive vector or image input -> positive equilibrium and task readout",
+            (76,),
+            ("https://github.com/mateuszgabor/pcdeq",),
+            ("MNIST", "CIFAR-10", "SVHN"),
+            ("state width", "positive operator kernel", "activation variant", "solver budget"),
+            (
+                "replace the nonnegative linear or convolutional transition, source, or readout",
+                "select either published activation/injection variant under the positive-concave contract",
+            ),
+        ),
+        _guide(
+            "silva_non_euclidean_equilibrium",
+            "weighted-infinity non-Euclidean monotone equilibrium",
+            "B,D input -> certified B,H equilibrium and task readout",
+            (77,),
+            ("https://github.com/davydovalexander/Non-Euclidean_Mon_Op_Net",),
+            ("MNIST", "CIFAR-10", "robustness and sensitivity studies"),
+            ("state width", "learned metric", "one-sided bound", "averaging coefficient"),
+            (
+                "replace the certified operator, source, activation, metric, or readout",
+                "evaluate input-output sensitivity in the learned weighted norm",
+            ),
+        ),
+        _guide(
+            "silva_efficient_infinite_graph",
+            "efficient infinite-depth graph equilibrium",
+            "N,D node features and symmetric or sparse graph operator -> node output",
+            (78,),
+            ("https://github.com/liu-jc/EIGNN",),
+            ("Cora", "Citeseer", "Pubmed", "Amazon co-purchase graphs"),
+            ("nodes", "sparse edges", "channel width", "spectral cache"),
+            (
+                "replace source/readout maps and normalized channel Gram factor",
+                "switch between differentiable closed-form and iterative SILVA solves",
+            ),
+        ),
+        _guide(
+            "silva_multiscale_graph_implicit",
+            "multiscale graph implicit network with nodewise fusion",
+            "N,D node features and graph operator -> per-scale equilibria and fused node output",
+            (79,),
+            ("https://github.com/liu-jc/MGNNI",),
+            ("Cora", "Citeseer", "Pubmed", "Amazon", "Coauthor"),
+            ("graph-power scales", "per-scale widths", "sparse edges", "solver budgets"),
+            (
+                "replace each scale factor, source, fusion attention, readout, or solver",
+                "add graph powers while retaining separately inspectable equilibria",
+            ),
+        ),
+        _guide(
+            "silva_delta_equilibrium",
+            "delta-cached equilibrium inference",
+            "B,D or B,C,H,W input -> equilibrium with per-iteration activity diagnostics",
+            (80,),
+            ("https://github.com/ZuowenWang0000/Delta-Deep-Equilibrium-Models",),
+            ("FlyingChairs", "Sintel", "KITTI", "task-defined recurrent operators"),
+            ("state size", "delta threshold", "operator sparsity", "solver budget"),
+            (
+                "wrap linear or convolutional recurrent operators in the delta cache",
+                "train with the full transition and enable thresholded cached evaluation independently",
+            ),
+        ),
     )
 }
 
@@ -474,6 +679,18 @@ _SOLVER_CONFIG_FAMILIES = {
     "silva_generative_equilibrium_transformer",
     "silva_poisson_mirror_equilibrium",
     "silva_physics_informed_equilibrium",
+    "silva_psi_gnn",
+    "silva_ifno",
+    "silva_snarf",
+    "silva_mesh_inference",
+    "silva_therino",
+    "silva_fixed_point_diffusion",
+    "silva_monotone_operator_equilibrium",
+    "silva_positive_concave_equilibrium",
+    "silva_non_euclidean_equilibrium",
+    "silva_efficient_infinite_graph",
+    "silva_multiscale_graph_implicit",
+    "silva_delta_equilibrium",
 }
 _COUPLED_GRAPH_FAMILIES = {
     "silva_layer",
@@ -482,6 +699,10 @@ _COUPLED_GRAPH_FAMILIES = {
     "implicit_graph",
     "silva_physics_graph_deq",
     "silva_monotone_graph_equilibrium",
+    "silva_psi_gnn",
+    "silva_mesh_inference",
+    "silva_efficient_infinite_graph",
+    "silva_multiscale_graph_implicit",
 }
 
 
@@ -556,7 +777,15 @@ def silva_scaling_defaults(family: str, *, tier: ScaleTier = "full") -> dict[str
     defaults: dict[str, Any] = {}
     if key in _SOLVER_CONFIG_FAMILIES:
         batch_dims = 0 if key in _COUPLED_GRAPH_FAMILIES else 1
-        defaults["config"] = full_scale_solver_config(batch_dims=batch_dims, tier=tier)
+        config = full_scale_solver_config(batch_dims=batch_dims, tier=tier)
+        source_solvers = {
+            "silva_psi_gnn": "broyden",
+            "silva_snarf": "broyden",
+            "silva_mesh_inference": "picard",
+        }
+        if key in source_solvers:
+            config = replace(config, solver=source_solvers[key])
+        defaults["config"] = config
     if key in {"silva_graph_preset", "silva_image_cortex"}:
         defaults.update(
             solver="anderson",
@@ -574,6 +803,8 @@ def silva_scaling_defaults(family: str, *, tier: ScaleTier = "full") -> dict[str
         defaults.update(derivative_mode="matrix_free", derivative_max_iter=80)
     elif key == "silva_implicit_dae_step":
         defaults.update(linear_solver="gmres", linear_max_iter=80)
+    elif key == "silva_consistency_deq":
+        defaults["teacher_config"] = full_scale_solver_config(batch_dims=1, tier=tier)
     return defaults
 
 

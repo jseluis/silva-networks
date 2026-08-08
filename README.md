@@ -73,8 +73,24 @@ readouts at each point.
 | What can live inside one equilibrium point? | [Point Architecture Catalog](docs/learn/point-architecture-catalog.md) | [Architecture Catalog Lab](notebooks/package_api/14_point_architecture_catalog.ipynb) |
 | How are ODEs, PDEs, and Fourier operators connected to SILVA? | [Neural Operators, ODEs, and PDEs](docs/learn/neural-operators-ode-pde.md) | [Scientific Operator Lab](notebooks/package_api/15_neural_operators_ode_pde.ipynb) |
 | How do I reproduce or extend a cited family? | [Reproducing SILVA and Source Methods](docs/learn/reproducing-silva-and-papers.md) | [All-Family Reproduction Registry](notebooks/package_api/27_reproducing_silva_and_source_methods.ipynb) |
+| How do I run consistency, mixed-boundary graph, material, skinning, mesh, or diffusion models? | [Emerging Equilibrium Methods](docs/learn/emerging-equilibrium-methods.md) | [Focused Labs 28-35](docs/notebooks.md#advanced-equilibrium-and-physics-track) |
+| How do I run monotone, positive-concave, non-Euclidean, spectral graph, multiscale graph, or delta-cached equilibria? | [Structured Equilibrium Families](docs/learn/structured-equilibrium-families.md) | [Focused Labs 36-41](docs/notebooks.md#advanced-equilibrium-and-physics-track) |
+| How do I move from compact checks to real datasets and complete protocols? | [Real-Dataset Reproduction](docs/learn/real-dataset-reproduction.md) | [Source-Data Family Example](examples/source_data_families.py) |
+| Where is the staged experiment contract for every family? | [Family Reproduction Dossiers](docs/families/index.md) | [Dossier Lab](notebooks/package_api/42_family_reproduction_dossiers.ipynb) |
+| How do compatible families compare on one shared task? | [Cross-Family Comparisons](docs/experiments/cross-family-comparisons.md) | [Vector, Graph, and Field Labs](docs/notebooks.md#research-depth-and-comparison-track) |
+| How do I build and validate a new SILVA abstraction? | [Advanced Extension Handbook](docs/learn/advanced-extension-handbook.md) | [Extension Builder Workshop](notebooks/package_api/46_extension_builder_workshop.ipynb) |
+| How do I diagnose slow, oscillatory, or failed solves? | [Failure Diagnostics](docs/learn/failure-diagnostics-and-recovery.md) | [Diagnostics Workshop](notebooks/package_api/47_failure_diagnostics_workshop.ipynb) |
 | How do I scale a construction beyond the compact examples? | [Full-Scale SILVA](docs/learn/full-scale-silva.md) | [Full-Scale Execution Lab](notebooks/package_api/26_full_scale_silva.ipynb) |
 | Where can I find every notebook and download route? | [Notebook Library](docs/notebooks.md) | [Run Everything](docs/run-everything.md) |
+
+Every worked example page now carries the complete executable program, the
+measured compact output, the equations needed to interpret that output, and a
+route from the compact check to a source-scale experiment. Every canonical
+notebook adds an analytic fixed-point reference study, a convergence and
+gradient table, a 300-dpi diagnostic figure, and a solver/data/scale extension
+record. The current 82-notebook set contains 946 executed code cells, 906 stored
+output blocks, and 216 embedded figures; no notebook is represented by prose
+and an unexecuted snippet alone.
 
 The code is released under the MIT License. If you use this package, cite the
 all-versions software DOI `10.5281/zenodo.21770098` or the GitHub repository at
@@ -134,7 +150,7 @@ for a small CIFAR10 check and run the full TorchVision suite only when the
 image archives can be cached locally.
 
 Inspect the data, literature, benchmark, scale controls, and extension route
-for any of the 30 canonical SILVA families:
+for any of the 44 canonical SILVA families:
 
 ```bash
 silva-scale --list
@@ -448,6 +464,56 @@ deep-equilibrium family. Full derivations are in
 `src/silva_networks/advanced_data.py`; focused notebooks are numbered `21`
 through `25`.
 
+### Emerging Equilibrium Methods
+
+Eight further mechanisms are implemented as configurable SILVA families:
+
+- consistency distillation from a fixed teacher solver trajectory;
+- a mixed Dirichlet/Neumann Poisson graph equilibrium;
+- a tied implicit Fourier material-response operator;
+- multi-start forward-skinning roots with canonical occupancy;
+- typed distributed mesh relaxation with a numerical convergence certificate;
+- reverse diffusion with PDE-energy guidance and hard boundary projection;
+- thermodynamically encoded equilibrium in the physical strain field;
+- timestep-conditioned fixed-point diffusion with variable compute and state reuse.
+
+Each family has a compact known-solution dataset, gradient and invariance tests,
+a source-conformance record, a full-scale builder route, and an executed focused
+lab with retained 300 DPI plots. The derivations, replaceable-module contracts,
+dataset and storage requirements, and source-scale protocols are in
+`docs/learn/emerging-equilibrium-methods.md`. The public signatures are in
+`docs/api/emerging_equilibria.md` and `docs/api/emerging_data.md`; notebooks are
+numbered `28` through `35`.
+
+### Structured Equilibrium Families
+
+Six additional source-grounded mechanisms are available through the same
+family registry and solver surface:
+
+- strongly monotone dense operators with forward-backward and
+  Peaceman-Rachford splitting;
+- positive-concave dense or convolutional equilibria with nonnegative weights;
+- weighted-infinity equilibria with one-sided Lipschitz and sensitivity
+  certificates;
+- efficient infinite-depth graph propagation with spectral or iterative solves;
+- multiscale graph-power equilibria with graph-conditioned injection and
+  nodewise scale attention;
+- delta-cached linear or convolutional updates with source-style implicit
+  differentiation during training.
+
+Each family has a known-solution dataset, source equation, replaceable internal
+modules, certificate or equivalence test, scale controls, complete citation,
+and an executed lab with retained 300 DPI figures. The derivations and
+source-scale protocol are in
+`docs/learn/structured-equilibrium-families.md`; public signatures and data
+builders are in `docs/api/structured_equilibria.md` and
+`docs/api/structured_data.md`; notebooks are numbered `36` through `41`.
+
+The compact runs validate equations, numerical behavior, and gradients. A
+published benchmark is reported as reproduced only after the corresponding
+source dataset, split, preprocessing, architecture, optimization schedule,
+solver budget, and evaluation protocol have all been run and recorded.
+
 ### Full-Scale SILVA Execution
 
 Every canonical family has an executable scale guide. `build_scaled_silva`
@@ -490,7 +556,9 @@ its governing equation, citation numbers, research repositories, datasets,
 preprocessing requirements, metrics, notebooks, tests, replaceable parts, and
 real constructor signature. Each record additionally states the mechanism
 preserved from its cited source, the extra choices exposed by SILVA, and the
-requirements that must be restored for a publication-scale benchmark:
+requirements that must be restored for a publication-scale benchmark. It also
+identifies authoritative data routes, access conditions, storage planning,
+the compact fixture, and ordered source-scale steps:
 
 ```python
 from silva_networks import build_silva_reproduction, silva_reproduction_spec
@@ -500,6 +568,10 @@ print(spec.constructor_signature)
 print(spec.preserved_mechanisms)
 print(spec.silva_extensions)
 print(spec.benchmark_requirements)
+print(spec.data_sources)
+print(spec.data_access)
+print(spec.storage_plan)
+print(spec.source_scale_steps)
 
 model = build_silva_reproduction(
     "pideq",
@@ -523,6 +595,35 @@ data, split, preprocessing, scale, training, and evaluation protocol. The
 registry keeps both levels visible so advanced users can replace individual
 modules, reconstruct the cited configuration, or define a new family without
 changing the equilibrium engine.
+
+### Attributed Source Subsets
+
+The installed package includes the compact `cifar10`, `cora`, and `motion`
+records. Open them with `load_bundled_source_snapshot(name)`; each load verifies
+the stored tensor checksum before returning the source receipt.
+
+The repository includes checksum-verified compact snapshots derived from
+CIFAR-10, Cora, and a public real-motion clip. They exercise six structured
+families through real tensors while retaining source indices, split metadata,
+preprocessing, citations, and content hashes:
+
+```python
+from silva_networks import load_source_snapshot
+
+sample = load_source_snapshot(
+    "docs/assets/source-data/cora-induced-96.pt"
+)
+print(sample.receipt.dataset)
+print(sample.receipt.selected_indices)
+print(sample.receipt.content_sha256)
+```
+
+Live adapters open complete local CIFAR-10, MNIST, SVHN, Planetoid, Sintel,
+KITTI Flow, FlyingChairs, and Darcy archives. The full guide explains data size,
+access, compact-versus-benchmark claims, and paper-scale construction:
+[Real-Dataset Reproduction](docs/learn/real-dataset-reproduction.md).
+The six-family executable program is
+[`examples/source_data_families.py`](examples/source_data_families.py).
 
 The matching deterministic datasets are created inside the package:
 
@@ -602,18 +703,21 @@ are in `docs/learn/extending-silva.md`.
   SILVA layers, cortex hierarchies, ten internal point architectures, stackable
   architectures, scientific ODE/PDE and operator modules, DEQ engine utilities,
   Fourier equilibrium, graph-physics, homotopy, distributional, optical-flow,
-  constrained optimization, dataset, and device modules.
+  constrained optimization, dataset, device, family-dossier, and compact
+  comparison modules.
 - `docs/`: Material for MkDocs documentation site, including the case atlas,
   derivation-first math pages, API maps, examples, and references.
 - Companion book and solutions manual: planned long-form learning assets.
 - `notebooks/`: 26 solved mathematical and book/research notebooks.
-- `notebooks/package_api/`: 27 package-first tutorials that import
+- `notebooks/package_api/`: 47 package-first tutorials that import
   `silva_networks` directly.
 - `notebooks/implicit_bridge/`: 9 adapted implicit-layer, DEQ, MDEQ, ODE, and
   differentiable-optimization notebooks using the package API.
 - `colab/`: Colab-ready notebook exports for the package and bridge tracks.
 - `examples/`: small runnable examples for CPU, CUDA, or MPS PyTorch devices.
 - `experiments/public/`: configurable public package checks and learning cases.
+- `experiments/reproduction/`: editable full-scale plans for all 44 families
+  plus deterministic vector, graph, and field comparison records.
 - `tests/`: package, docs, notebook, and example checks.
 - `tests_extended/`: optional extended validation checks, run explicitly.
 - `src/silva_networks/coverage.py`: implementation families mapped to their
@@ -822,7 +926,7 @@ and external tutorials are cited and linked as references.
 Use the repository citation metadata in `CITATION.cff`, or cite:
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.1.0. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.2.0. MIT License.
 https://github.com/jseluis/silva-networks
 https://doi.org/10.5281/zenodo.21770098
 ```
@@ -846,7 +950,7 @@ When the work uses or discusses the SILVA methodology, cite the paper as well:
   title   = {SILVA Networks},
   author  = {Silva, Jose Luis},
   year    = {2026},
-  version = {1.1.0},
+  version = {1.2.0},
   license = {MIT},
   doi     = {10.5281/zenodo.21770098},
   url     = {https://github.com/jseluis/silva-networks}
@@ -868,7 +972,7 @@ mkdocs build --strict
 ```
 
 The complete release-candidate validation executes the core and extended tests
-without skips, all 62 canonical notebooks, the documentation audit, the
+without skips, all 82 canonical notebooks, the documentation audit, the
 content-preservation audit, the strict site build, and both distribution
 artifacts:
 
@@ -876,7 +980,16 @@ artifacts:
 python scripts/release_audit.py
 ruff check src tests tests_extended examples scripts
 pytest tests tests_extended --cov=silva_networks --cov-report=term-missing -rs
-python scripts/run_notebook_smoke.py --all --timeout 180
+python scripts/expand_api_guides.py
+python scripts/expand_example_guides.py
+python scripts/expand_learning_guides.py
+python experiments/reproduction/run_compact_comparisons.py
+python scripts/generate_research_depth_material.py
+python scripts/expand_notebook_curriculum.py
+python scripts/notebook_citations.py
+python scripts/notebook_navigation.py
+python scripts/run_notebook_smoke.py --all --inplace --timeout 300
+python scripts/sync_notebook_outputs.py
 mkdocs build --strict
 python -m build
 twine check dist/*
@@ -907,6 +1020,12 @@ Key documentation routes:
   case.
 - [Implicit Layers Bridge](docs/learn/implicit-bridge.md): adapted implicit
   layers, DEQ, MDEQ, ODE, optimization, and Jacobian regularization tutorials.
+- [Structured Equilibrium Families](docs/learn/structured-equilibrium-families.md):
+  monotone, positive-concave, non-Euclidean, spectral graph, multiscale graph,
+  and delta-cached derivations with source-scale reproduction paths.
+- [Real-Dataset Reproduction](docs/learn/real-dataset-reproduction.md):
+  attributed compact subsets, source receipts, complete local loaders, storage
+  planning, and full-protocol checklists.
 - [Book and Solutions Manual](docs/book.md): coming-soon roadmap for the
   companion book and solved manual.
 

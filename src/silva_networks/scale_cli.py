@@ -58,10 +58,7 @@ def main(argv: list[str] | None = None) -> int:
         elif errors:
             print("\n".join(errors))
         else:
-            print(
-                "All canonical SILVA families have complete scale-up and "
-                "reproduction guidance."
-            )
+            print("All canonical SILVA families have complete scale-up and reproduction guidance.")
         return int(bool(errors))
 
     if args.list or args.family is None:
@@ -77,9 +74,7 @@ def main(argv: list[str] | None = None) -> int:
     payload = {
         "guide": asdict(guide),
         "reproduction": _serializable(silva_reproduction_spec(guide.family)),
-        "constructor_signature": silva_reproduction_spec(
-            guide.family
-        ).constructor_signature,
+        "constructor_signature": silva_reproduction_spec(guide.family).constructor_signature,
         "constructor_defaults": _serializable(silva_scaling_defaults(guide.family, tier=args.tier)),
     }
     if args.json:
@@ -96,6 +91,16 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Source relation: {reproduction.source_relation}")
         print(f"Equation: {reproduction.equation}")
         print(f"Datasets: {', '.join(reproduction.datasets)}")
+        print(f"Data sources: {', '.join(reproduction.data_sources)}")
+        print("Data access:")
+        for item in reproduction.data_access:
+            print(f"  - {item}")
+        print("Storage plan:")
+        for item in reproduction.storage_plan:
+            print(f"  - {item}")
+        print("Source-scale steps:")
+        for index, item in enumerate(reproduction.source_scale_steps, start=1):
+            print(f"  {index}. {item}")
         print(f"Metrics: {', '.join(reproduction.metrics)}")
         print(f"Verification: {reproduction.verification_level}")
         print(f"Constructor: {reproduction.constructor_signature}")

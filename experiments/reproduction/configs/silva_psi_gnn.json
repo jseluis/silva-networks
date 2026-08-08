@@ -1,0 +1,205 @@
+{
+  "family": "silva_psi_gnn",
+  "title": "mixed-boundary Poisson graph equilibrium",
+  "domain": "graphs and distributed systems",
+  "task_contract": "unstructured coordinates, typed nodes, directed edges, forcing, and boundary data -> nodal solution",
+  "source_relation": "paper-adaptation",
+  "equation": "H_star=h_theta(H_star,G); U_hat=D(H_star); L_res=MSE(A U_hat-B)",
+  "constructor_signature": "(state_dim: 'int', *, coordinate_dim: 'int' = 2, encoder: 'nn.Module | None' = None, forcing_encoder: 'nn.Module | None' = None, processor: 'nn.Module | None' = None, decoder: 'nn.Module | None' = None, config: 'SolverConfig | None' = None)",
+  "paper_refs": [
+    60
+  ],
+  "repositories": [
+    "https://arxiv.org/abs/2302.10891"
+  ],
+  "datasets": [
+    "paper synthetic unstructured Poisson meshes",
+    "compact mixed-boundary finite-difference grids"
+  ],
+  "data_sources": [
+    "https://arxiv.org/abs/2302.10891",
+    "https://gmsh.info/"
+  ],
+  "data_access": [
+    "The benchmark is procedurally generated rather than a fixed public archive.",
+    "Recreate first-order unstructured meshes and mixed boundaries from the paper protocol with Gmsh, then save generator parameters and mesh checksums."
+  ],
+  "storage_plan": [
+    "Plan separately for node features, directed edge indices/features, targets, and optional sparse finite-element matrices.",
+    "Measure one serialized mesh after preprocessing and multiply by 10,000; shard by graph count so matrices are never densified."
+  ],
+  "preprocessing": [
+    "record dataset version, split, normalization, shape convention, and seed",
+    "preserve masks, graph indices, boundaries, or physical units required by the domain"
+  ],
+  "metrics": [
+    "finite-element residual",
+    "MSE against LU solution",
+    "boundary error",
+    "Jacobian norm",
+    "root iterations"
+  ],
+  "compact_data": [
+    "make_psi_poisson_grid gives a known mixed-boundary Poisson solution, directed graph, and residual matrix."
+  ],
+  "preserved_mechanisms": [
+    "encode-process-decode graph equilibrium",
+    "separate interior incoming/outgoing and Neumann incoming messages",
+    "fixed Dirichlet latent values, Broyden root solving, PDE residual, and Jacobian stabilization"
+  ],
+  "configurable_parts": [
+    "replace encoder, typed message maps, update maps, decoder, or root solver",
+    "supply finite-element matrices only to the physics residual loss",
+    "mesh nodes",
+    "edge count",
+    "latent width",
+    "root-solver budget"
+  ],
+  "source_scale_steps": [
+    "Generate the 6000/2000/2000 mesh split with first-order elements, mixed boundaries, and approximately 500 training nodes per graph.",
+    "Convert each mesh to the SILVAPsiGNN tensor contract without densifying edges or finite-element matrices.",
+    "Train residual, Jacobian, latent-consistency, and reconstruction terms, then evaluate new geometries, resolutions, boundaries, and initial states."
+  ],
+  "benchmark_requirements": [
+    "paper mesh generator, GMSH first-order elements, 6000/2000/2000 split, and approximately 500 nodes",
+    "finite-element residual matrices for training, mixed boundaries, optimizer groups, and seeds",
+    "published residual, LU error, parameter count, and variable-resolution evaluation"
+  ],
+  "notebooks": [
+    "notebooks/package_api/29_silva_psi_gnn.ipynb"
+  ],
+  "tests": [
+    "tests/test_emerging_equilibria.py"
+  ],
+  "compact_defaults": [
+    [
+      "tier",
+      "'smoke'"
+    ],
+    [
+      "config",
+      "SolverConfig(solver='broyden', max_iter=12, tol=1e-05, alpha=1.0, history=3, ridge=0.0001, beta=1.0, stop_mode='relative', relative_eps=1e-08, anderson_batch_dims=0, track_residuals=True, reengage=True, backward_mode='implicit', backward_solver='gmres', backward_max_iter=20, backward_tol=1e-05, backward_stop_mode='relative', backward_relative_eps=1e-08, phantom_steps=1, phantom_tau=1.0, indexing=(), return_best=True)"
+    ]
+  ],
+  "full_defaults": [
+    [
+      "tier",
+      "'full'"
+    ],
+    [
+      "config",
+      "SolverConfig(solver='broyden', max_iter=60, tol=1e-05, alpha=1.0, history=6, ridge=0.0001, beta=1.0, stop_mode='relative', relative_eps=1e-08, anderson_batch_dims=0, track_residuals=True, reengage=True, backward_mode='implicit', backward_solver='gmres', backward_max_iter=80, backward_tol=1e-05, backward_stop_mode='relative', backward_relative_eps=1e-08, phantom_steps=1, phantom_tau=1.0, indexing=(), return_best=True)"
+    ]
+  ],
+  "stages": [
+    {
+      "name": "Equation and tensor contract",
+      "objective": "Make the state, conditioning variables, operator, and readout explicit.",
+      "procedure": [
+        "Write and evaluate the family equation: `H_star=h_theta(H_star,G); U_hat=D(H_star); L_res=MSE(A U_hat-B)`",
+        "Declare every tensor axis, boundary, mask, graph, or physical unit.",
+        "Check the transition output has exactly the same shape as the equilibrium state."
+      ],
+      "acceptance_checks": [
+        "finite transition values",
+        "shape-preserving state update",
+        "all conditioning variables affect the intended branch"
+      ],
+      "evidence_status": "contract-verified"
+    },
+    {
+      "name": "Primitive mechanism reconstruction",
+      "objective": "Build the retained source mechanism from replaceable modules.",
+      "procedure": [
+        "encode-process-decode graph equilibrium",
+        "separate interior incoming/outgoing and Neumann incoming messages",
+        "fixed Dirichlet latent values, Broyden root solving, PDE residual, and Jacobian stabilization"
+      ],
+      "acceptance_checks": [
+        "primitive modules expose trainable parameters and gradients",
+        "mechanism-specific invariance or constraint check passes",
+        "direct transition evaluation is deterministic under a fixed seed"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Public abstraction equivalence",
+      "objective": "Verify that the assembled family evaluates the same transition as its primitives.",
+      "procedure": [
+        "Copy the primitive module parameters into the public family constructor.",
+        "Evaluate one transition and one complete equilibrium with identical inputs.",
+        "Compare outputs, residuals, and parameter gradients with declared tolerances."
+      ],
+      "acceptance_checks": [
+        "transition outputs agree",
+        "equilibrium residual is finite and decreases",
+        "primitive and assembled gradients agree on the compact case"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Compact real or analytic task",
+      "objective": "Exercise training, evaluation, diagnostics, and serialization end to end.",
+      "procedure": [
+        "make_psi_poisson_grid gives a known mixed-boundary Poisson solution, directed graph, and residual matrix."
+      ],
+      "acceptance_checks": [
+        "record finite-element residual",
+        "record MSE against LU solution",
+        "record boundary error",
+        "record Jacobian norm",
+        "checkpoint reload reproduces the recorded prediction",
+        "result record contains data and configuration fingerprints"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Official-data subset",
+      "objective": "Validate the complete source data path before spending the full budget.",
+      "procedure": [
+        "Generate the 6000/2000/2000 mesh split with first-order elements, mixed boundaries, and approximately 500 training nodes per graph.",
+        "Freeze preprocessing, split logic, metric code, and checkpoint format.",
+        "Run a deterministic subset large enough to expose batching and memory failures."
+      ],
+      "acceptance_checks": [
+        "dataset receipt and checksum are stored",
+        "resume and evaluation paths reproduce the same subset metric",
+        "memory and runtime are measured rather than estimated"
+      ],
+      "evidence_status": "subset-verified"
+    },
+    {
+      "name": "Source-scale reproduction or declared extension",
+      "objective": "Run the cited protocol, or change it explicitly as a SILVA extension.",
+      "procedure": [
+        "Generate the 6000/2000/2000 mesh split with first-order elements, mixed boundaries, and approximately 500 training nodes per graph.",
+        "Convert each mesh to the SILVAPsiGNN tensor contract without densifying edges or finite-element matrices.",
+        "Train residual, Jacobian, latent-consistency, and reconstruction terms, then evaluate new geometries, resolutions, boundaries, and initial states.",
+        "paper mesh generator, GMSH first-order elements, 6000/2000/2000 split, and approximately 500 nodes",
+        "finite-element residual matrices for training, mixed boundaries, optimizer groups, and seeds",
+        "published residual, LU error, parameter count, and variable-resolution evaluation"
+      ],
+      "acceptance_checks": [
+        "all required artifacts are archived",
+        "reported metrics use the cited evaluation protocol",
+        "every architectural or training deviation is listed",
+        "claims match the achieved evidence status"
+      ],
+      "evidence_status": "planned"
+    }
+  ],
+  "required_artifacts": [
+    "machine-readable model and solver configuration",
+    "dataset receipt with source revision, split, license, and checksum",
+    "preprocessing and normalization record",
+    "seeded training and evaluation log",
+    "checkpoint and optimizer-resume state for trained experiments",
+    "task metrics and equilibrium diagnostics in a machine-readable result",
+    "runtime, peak-memory, device, precision, and dependency record",
+    "declared deviations from the cited protocol"
+  ],
+  "schema_version": 1,
+  "requested_tier": "full",
+  "achieved_evidence_status": "compact-verified",
+  "source_scale_status": "planned"
+}

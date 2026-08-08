@@ -27,16 +27,23 @@ inputs, outputs, and source links.
 | [Advanced Equilibria](advanced_equilibria.md) | monotone graph and one-time-injected transformer equilibria |
 | [Physics-Informed and DAE](physics_informed.md) | Poisson mirror geometry, implicit ODE derivatives, DAE roots, and residual objectives |
 | [Advanced Equilibrium Data](advanced_data.md) | exact chain, teacher-map, Poisson, ODE, and DAE teaching problems |
+| [Emerging Equilibria](emerging_equilibria.md) | consistency refinement, mixed-boundary graph PDEs, IFNO materials, forward skinning, mesh inference, mechanics, and guided diffusion |
+| [Emerging Equilibrium Data](emerging_data.md) | analytic and source-shaped fixtures for consistency, graph PDE, materials, geometry, mesh, diffusion, and mechanics labs |
+| [Structured Equilibria](structured_equilibria.md) | monotone operators, positive-concave maps, non-Euclidean contractions, infinite graph filters, multiscale graph equilibria, and delta caching |
+| [Structured Equilibrium Data](structured_data.md) | certificate-aware vector, graph, image, and frame-pair fixtures for structured family validation |
 | [Implicit Bridge](implicit.md) | SILVA-named DEQ transition, fixed-point classifier, Euler flow, quadratic optimization, MDEQ bridge |
 | [DEQ Engine](deq-engine.md) | general single-state and multi-state SILVA DEQ engine, variational dropout, state packing |
 | [Extensibility](extensibility.md) | generic conditioned equilibrium, transition reports, contract validation, and custom-family construction |
 | [Reproducibility](reproducibility.md) | source relationships, equations, datasets, metrics, evidence paths, constructor signatures, and scale-aware builders |
+| [Research Depth](research_depth.md) | six-stage dossiers, configurable components, experiment acceptance checks, artifacts, and result records for all 44 families |
+| [Compact Benchmarks](compact_benchmarks.md) | deterministic same-task vector, graph, and field comparison suites with optimization and solver diagnostics |
 | [Optical Flow](flow.md) | RAFT-style correlation, warping, DEQ-flow fixed point, synthetic flow data |
 | [Generalized Cases](cases.md) | sequence DEQ, multiscale vision DEQ, IGNN, implicit representations, and diffusion equilibria |
 | [Family Selection](families.md) | `available_silva_families`, `silva_family_description`, `silva_family_constructor`, `silva_family_signature`, `silva_equilibrium_model`, family aliases |
 | [Optimization](optimization.md) | constrained quadratic projections and optional CVXPYlayers bridge |
 | [SILVA Presets](presets.md) | SILVA-style graph, vision, convolutional, and molecular presets |
 | [Datasets](datasets.md) | download helpers, tensor adapters, `GraphTensorBatch`, validation |
+| [Source Data](source_data.md) | attributed real-data subsets, reproducibility receipts, verified snapshots, source graph masks, optical flow, and Darcy fields |
 | [Training](training.md) | optional supervised fit/evaluate helpers, seeding, checkpoint/resume |
 | [Devices](devices.md) | CPU/CUDA/MPS selection and nested tensor movement |
 | [Coverage Registry](coverage.md) | implementation families mapped to tutorials, notebooks, examples, and tests |
@@ -75,7 +82,10 @@ inputs, outputs, and source links.
 | Constrained optimization compatibility | `SILVAConstrainedQuadraticLayer`, `silva_constrained_quadratic_layer`, `silva_cvxpy_layer` |
 | Family selection | `available_silva_families`, `silva_equilibrium_model`, `silva_family_description`, `silva_family_constructor`, `silva_family_signature`; see [Family Selection](families.md) |
 | Reproduction | `silva_reproduction_spec`, `all_silva_reproduction_specs`, `audit_silva_reproduction_specs`, `build_silva_reproduction`; see [Reproducibility](reproducibility.md) |
+| Experiment dossiers | `silva_experiment_dossier`, `all_silva_experiment_dossiers`, `audit_silva_experiment_dossiers`, `SILVAResultRecord`; see [Research Depth](research_depth.md) |
+| Common compact comparisons | `run_vector_comparison`, `run_graph_comparison`, `run_field_comparison`, `run_compact_comparisons`; see [Compact Benchmarks](compact_benchmarks.md) |
 | Dataset conversion | `GraphTensorBatch`, `tabular_to_silva_graph`, `images_to_silva_vectors`, `images_to_silva_pixel_graph`, `pyg_data_to_silva_graph` |
+| Source-data reproduction | `load_source_snapshot`, `load_vision_source_subset`, `load_planetoid_source_subset`, `load_optical_flow_source_subset`, `load_darcy_source_subset`; see [Source Data](source_data.md) |
 | Custom training objectives | `BatchStep`, `fit_supervised(..., step_fn=...)`, `evaluate(..., step_fn=...)` |
 | Optional training loop | `TrainConfig`, `fit_supervised`, `evaluate`, `seed_everything` |
 | Diagnostics | `residual_curve`, `stability_report`, `damped_spectral_radius`, `solve_with_energy` |
@@ -119,6 +129,7 @@ from silva_networks import (
     SILVAImageCortexClassifier,
     available_silva_families,
     available_silva_point_architectures,
+    load_source_snapshot,
     silva_deq_reduction_layer,
     silva_projected_qp_layer,
     silva_point_architecture,

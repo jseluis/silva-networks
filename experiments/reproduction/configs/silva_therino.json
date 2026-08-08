@@ -1,0 +1,206 @@
+{
+  "family": "silva_therino",
+  "title": "thermodynamically informed solution-space equilibrium operator",
+  "domain": "scientific operators",
+  "task_contract": "stiffness tensor field and prescribed bulk strain -> local strain/stress fields",
+  "source_relation": "paper-adaptation",
+  "equation": "epsilon_star=ProjectMacro(U_theta([epsilon_star, C:epsilon_star, 0.5 epsilon_star:C:epsilon_star, epsilon_bar]))",
+  "constructor_signature": "(strain_components: 'int' = 3, *, hidden_channels: 'int' = 24, modes_height: 'int' = 8, modes_width: 'int' = 8, encoder: 'SILVAThermodynamicEncoder | None' = None, update: 'nn.Module | None' = None, enforce_macro_strain: 'bool' = True, config: 'SolverConfig | None' = None)",
+  "paper_refs": [
+    73
+  ],
+  "repositories": [
+    "https://arxiv.org/abs/2411.06529"
+  ],
+  "datasets": [
+    "periodic two-phase linear-elastic microstructures",
+    "nonlinear constitutive localization fields",
+    "compact exact diagonal-elasticity cells"
+  ],
+  "data_sources": [
+    "https://arxiv.org/abs/2411.06529",
+    "https://doi.org/10.1016/j.cma.2025.117939"
+  ],
+  "data_access": [
+    "The source experiments use procedurally generated periodic microstructures and numerical mechanics labels rather than one packaged benchmark archive.",
+    "Record geometry generation, constituent stiffness tensors, periodic boundary conditions, load cases, finite-element discretization, and every split seed."
+  ],
+  "storage_plan": [
+    "Dense mechanics bytes = samples * voxels * (material + strain + stress channels) * bytes per element.",
+    "Keep microstructures, stiffness tensors, finite-element strain/stress labels, normalization, and checkpoints in separate shards; three-dimensional labels usually dominate storage."
+  ],
+  "preprocessing": [
+    "record dataset version, split, normalization, shape convention, and seed",
+    "preserve masks, graph indices, boundaries, or physical units required by the domain"
+  ],
+  "metrics": [
+    "strain localization error",
+    "stress and elastic-energy error",
+    "homogenized stiffness error",
+    "out-of-distribution contrast error",
+    "root iterations and residual"
+  ],
+  "compact_data": [
+    "make_therino_elastic_dataset gives periodic diagonal-elastic cells with exact strain, stress, energy, and macroscopic loading."
+  ],
+  "preserved_mechanisms": [
+    "fixed-point iteration in the physical strain field rather than an abstract latent state",
+    "thermodynamic encoding through strain, stress, elastic energy density, and macroscopic loading",
+    "shared neural-operator update, macroscopic-strain projection, and strain/stress/energy supervision"
+  ],
+  "configurable_parts": [
+    "replace the constitutive encoder, solution-space update, or bulk projector",
+    "supply nonlinear, anisotropic, dissipative, or weak-form material laws",
+    "voxel resolution",
+    "Fourier modes",
+    "thermodynamic channels",
+    "root-solver budget"
+  ],
+  "source_scale_steps": [
+    "Reproduce the source periodic microstructure generator, constituent laws, finite-element labels, load cases, split, and normalization before fitting the operator.",
+    "Configure the physical-state transition with the reported three-dimensional Fourier update, macroscopic-strain projection, and Anderson solve.",
+    "Train strain, stress, and energy objectives and report localization, homogenized response, contrast transfer, iterations, and memory against the declared baselines."
+  ],
+  "benchmark_requirements": [
+    "source periodic microstructure generator, finite-element labels, stiffness contrast, loading cases, and normalization",
+    "three-dimensional Fourier operator width/modes, Anderson settings, optimizer, schedule, and random seeds",
+    "strain, stress, energy, homogenized response, out-of-distribution contrast, and iteration metrics"
+  ],
+  "notebooks": [
+    "notebooks/package_api/34_silva_therino_mechanics.ipynb"
+  ],
+  "tests": [
+    "tests/test_emerging_equilibria.py"
+  ],
+  "compact_defaults": [
+    [
+      "tier",
+      "'smoke'"
+    ],
+    [
+      "config",
+      "SolverConfig(solver='anderson', max_iter=12, tol=1e-05, alpha=1.0, history=3, ridge=0.0001, beta=1.0, stop_mode='relative', relative_eps=1e-08, anderson_batch_dims=1, track_residuals=True, reengage=True, backward_mode='implicit', backward_solver='gmres', backward_max_iter=20, backward_tol=1e-05, backward_stop_mode='relative', backward_relative_eps=1e-08, phantom_steps=1, phantom_tau=1.0, indexing=(), return_best=True)"
+    ]
+  ],
+  "full_defaults": [
+    [
+      "tier",
+      "'full'"
+    ],
+    [
+      "config",
+      "SolverConfig(solver='anderson', max_iter=60, tol=1e-05, alpha=1.0, history=6, ridge=0.0001, beta=1.0, stop_mode='relative', relative_eps=1e-08, anderson_batch_dims=1, track_residuals=True, reengage=True, backward_mode='implicit', backward_solver='gmres', backward_max_iter=80, backward_tol=1e-05, backward_stop_mode='relative', backward_relative_eps=1e-08, phantom_steps=1, phantom_tau=1.0, indexing=(), return_best=True)"
+    ]
+  ],
+  "stages": [
+    {
+      "name": "Equation and tensor contract",
+      "objective": "Make the state, conditioning variables, operator, and readout explicit.",
+      "procedure": [
+        "Write and evaluate the family equation: `epsilon_star=ProjectMacro(U_theta([epsilon_star, C:epsilon_star, 0.5 epsilon_star:C:epsilon_star, epsilon_bar]))`",
+        "Declare every tensor axis, boundary, mask, graph, or physical unit.",
+        "Check the transition output has exactly the same shape as the equilibrium state."
+      ],
+      "acceptance_checks": [
+        "finite transition values",
+        "shape-preserving state update",
+        "all conditioning variables affect the intended branch"
+      ],
+      "evidence_status": "contract-verified"
+    },
+    {
+      "name": "Primitive mechanism reconstruction",
+      "objective": "Build the retained source mechanism from replaceable modules.",
+      "procedure": [
+        "fixed-point iteration in the physical strain field rather than an abstract latent state",
+        "thermodynamic encoding through strain, stress, elastic energy density, and macroscopic loading",
+        "shared neural-operator update, macroscopic-strain projection, and strain/stress/energy supervision"
+      ],
+      "acceptance_checks": [
+        "primitive modules expose trainable parameters and gradients",
+        "mechanism-specific invariance or constraint check passes",
+        "direct transition evaluation is deterministic under a fixed seed"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Public abstraction equivalence",
+      "objective": "Verify that the assembled family evaluates the same transition as its primitives.",
+      "procedure": [
+        "Copy the primitive module parameters into the public family constructor.",
+        "Evaluate one transition and one complete equilibrium with identical inputs.",
+        "Compare outputs, residuals, and parameter gradients with declared tolerances."
+      ],
+      "acceptance_checks": [
+        "transition outputs agree",
+        "equilibrium residual is finite and decreases",
+        "primitive and assembled gradients agree on the compact case"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Compact real or analytic task",
+      "objective": "Exercise training, evaluation, diagnostics, and serialization end to end.",
+      "procedure": [
+        "make_therino_elastic_dataset gives periodic diagonal-elastic cells with exact strain, stress, energy, and macroscopic loading."
+      ],
+      "acceptance_checks": [
+        "record strain localization error",
+        "record stress and elastic-energy error",
+        "record homogenized stiffness error",
+        "record out-of-distribution contrast error",
+        "checkpoint reload reproduces the recorded prediction",
+        "result record contains data and configuration fingerprints"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Official-data subset",
+      "objective": "Validate the complete source data path before spending the full budget.",
+      "procedure": [
+        "Reproduce the source periodic microstructure generator, constituent laws, finite-element labels, load cases, split, and normalization before fitting the operator.",
+        "Freeze preprocessing, split logic, metric code, and checkpoint format.",
+        "Run a deterministic subset large enough to expose batching and memory failures."
+      ],
+      "acceptance_checks": [
+        "dataset receipt and checksum are stored",
+        "resume and evaluation paths reproduce the same subset metric",
+        "memory and runtime are measured rather than estimated"
+      ],
+      "evidence_status": "subset-verified"
+    },
+    {
+      "name": "Source-scale reproduction or declared extension",
+      "objective": "Run the cited protocol, or change it explicitly as a SILVA extension.",
+      "procedure": [
+        "Reproduce the source periodic microstructure generator, constituent laws, finite-element labels, load cases, split, and normalization before fitting the operator.",
+        "Configure the physical-state transition with the reported three-dimensional Fourier update, macroscopic-strain projection, and Anderson solve.",
+        "Train strain, stress, and energy objectives and report localization, homogenized response, contrast transfer, iterations, and memory against the declared baselines.",
+        "source periodic microstructure generator, finite-element labels, stiffness contrast, loading cases, and normalization",
+        "three-dimensional Fourier operator width/modes, Anderson settings, optimizer, schedule, and random seeds",
+        "strain, stress, energy, homogenized response, out-of-distribution contrast, and iteration metrics"
+      ],
+      "acceptance_checks": [
+        "all required artifacts are archived",
+        "reported metrics use the cited evaluation protocol",
+        "every architectural or training deviation is listed",
+        "claims match the achieved evidence status"
+      ],
+      "evidence_status": "planned"
+    }
+  ],
+  "required_artifacts": [
+    "machine-readable model and solver configuration",
+    "dataset receipt with source revision, split, license, and checksum",
+    "preprocessing and normalization record",
+    "seeded training and evaluation log",
+    "checkpoint and optimizer-resume state for trained experiments",
+    "task metrics and equilibrium diagnostics in a machine-readable result",
+    "runtime, peak-memory, device, precision, and dependency record",
+    "declared deviations from the cited protocol"
+  ],
+  "schema_version": 1,
+  "requested_tier": "full",
+  "achieved_evidence_status": "compact-verified",
+  "source_scale_status": "planned"
+}

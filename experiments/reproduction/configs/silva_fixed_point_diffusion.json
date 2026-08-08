@@ -1,0 +1,206 @@
+{
+  "family": "silva_fixed_point_diffusion",
+  "title": "timestep-conditioned fixed-point denoising network",
+  "domain": "vision and generation",
+  "task_contract": "noisy latent, timestep, and optional condition -> denoised latent",
+  "source_relation": "paper-adaptation",
+  "equation": "z_t_star=F_theta(z_t_star, P(x_t), t); epsilon_hat=Q(z_t_star, x_t, t)",
+  "constructor_signature": "(channels: 'int', *, preprocessor: 'nn.Module | None' = None, projection: 'nn.Module | None' = None, transition: 'nn.Module | None' = None, postprocessor: 'nn.Module | None' = None, config: 'SolverConfig | None' = None)",
+  "paper_refs": [
+    74
+  ],
+  "repositories": [
+    "https://lukemelas.github.io/fixed-point-diffusion-models/"
+  ],
+  "datasets": [
+    "ImageNet 256x256 latent diffusion",
+    "FFHQ, CelebA-HQ, or LSUN Church when configured from a matching source protocol",
+    "compact synthetic latent denoising trajectories"
+  ],
+  "data_sources": [
+    "https://arxiv.org/abs/2401.08741",
+    "https://openaccess.thecvf.com/content/CVPR2024/html/Bai_Fixed-Point_Diffusion_Models_CVPR_2024_paper.html"
+  ],
+  "data_access": [
+    "ImageNet requires registration and its stated access terms; face and scene datasets each retain their own licenses and acquisition routes.",
+    "Store dataset checksums separately from latent-encoder, diffusion-schedule, and checkpoint revisions so a source-scale claim is auditable."
+  ],
+  "storage_plan": [
+    "Budget raw images, encoded latents, checkpoints, optimizer state, and generated evaluation samples separately.",
+    "A standard FID-50K evaluation alone stores 50,000 decoded samples; latent trajectory caches scale again with timesteps and retained fixed-point states."
+  ],
+  "preprocessing": [
+    "record dataset version, split, normalization, shape convention, and seed",
+    "preserve masks, graph indices, boundaries, or physical units required by the domain"
+  ],
+  "metrics": [
+    "FID-50K or declared task metric",
+    "fixed-point block evaluations",
+    "per-timestep residual",
+    "sampling wall time",
+    "peak memory"
+  ],
+  "compact_data": [
+    "make_fixed_point_diffusion_dataset gives seeded latent fields and exact timestep-conditioned targets for allocation, reuse, and stochastic Jacobian-free checks."
+  ],
+  "preserved_mechanisms": [
+    "explicit pre-processing, input projection/injection, timestep-conditioned implicit block, and explicit post-processing",
+    "sequential reverse diffusion with the previous timestep equilibrium reused as the next initialization",
+    "per-timestep iteration allocation and stochastic Jacobian-free backpropagation through sampled unrolled steps"
+  ],
+  "configurable_parts": [
+    "replace pre/injection/equilibrium/post modules or reverse sampler",
+    "change compute allocation, solution reuse, conditioning, or truncated-gradient policy",
+    "latent resolution",
+    "transition width",
+    "iterations per timestep",
+    "number of reverse timesteps"
+  ],
+  "source_scale_steps": [
+    "Acquire one declared image task and reproduce its resize/crop, latent encoder, diffusion schedule, split, and evaluation preprocessing.",
+    "Configure explicit pre/projection/post blocks around the timestep-conditioned fixed point, then reproduce the source per-timestep iteration allocation and state reuse.",
+    "Train with the declared stochastic Jacobian-free schedule and compare FID-50K, block evaluations, latency, memory, and residuals at equal sampling budgets."
+  ],
+  "benchmark_requirements": [
+    "source latent encoder, image preprocessing, diffusion schedule, task split, and pretrained or jointly trained components",
+    "reported timestep allocation, stochastic backward sampling, optimizer, precision, checkpoints, and generation budget",
+    "FID-50K or task metric, block evaluations, equilibrium residual, wall time, memory, and source baselines"
+  ],
+  "notebooks": [
+    "notebooks/package_api/35_silva_fixed_point_diffusion.ipynb"
+  ],
+  "tests": [
+    "tests/test_emerging_equilibria.py"
+  ],
+  "compact_defaults": [
+    [
+      "tier",
+      "'smoke'"
+    ],
+    [
+      "config",
+      "SolverConfig(solver='anderson', max_iter=12, tol=1e-05, alpha=1.0, history=3, ridge=0.0001, beta=1.0, stop_mode='relative', relative_eps=1e-08, anderson_batch_dims=1, track_residuals=True, reengage=True, backward_mode='implicit', backward_solver='gmres', backward_max_iter=20, backward_tol=1e-05, backward_stop_mode='relative', backward_relative_eps=1e-08, phantom_steps=1, phantom_tau=1.0, indexing=(), return_best=True)"
+    ]
+  ],
+  "full_defaults": [
+    [
+      "tier",
+      "'full'"
+    ],
+    [
+      "config",
+      "SolverConfig(solver='anderson', max_iter=60, tol=1e-05, alpha=1.0, history=6, ridge=0.0001, beta=1.0, stop_mode='relative', relative_eps=1e-08, anderson_batch_dims=1, track_residuals=True, reengage=True, backward_mode='implicit', backward_solver='gmres', backward_max_iter=80, backward_tol=1e-05, backward_stop_mode='relative', backward_relative_eps=1e-08, phantom_steps=1, phantom_tau=1.0, indexing=(), return_best=True)"
+    ]
+  ],
+  "stages": [
+    {
+      "name": "Equation and tensor contract",
+      "objective": "Make the state, conditioning variables, operator, and readout explicit.",
+      "procedure": [
+        "Write and evaluate the family equation: `z_t_star=F_theta(z_t_star, P(x_t), t); epsilon_hat=Q(z_t_star, x_t, t)`",
+        "Declare every tensor axis, boundary, mask, graph, or physical unit.",
+        "Check the transition output has exactly the same shape as the equilibrium state."
+      ],
+      "acceptance_checks": [
+        "finite transition values",
+        "shape-preserving state update",
+        "all conditioning variables affect the intended branch"
+      ],
+      "evidence_status": "contract-verified"
+    },
+    {
+      "name": "Primitive mechanism reconstruction",
+      "objective": "Build the retained source mechanism from replaceable modules.",
+      "procedure": [
+        "explicit pre-processing, input projection/injection, timestep-conditioned implicit block, and explicit post-processing",
+        "sequential reverse diffusion with the previous timestep equilibrium reused as the next initialization",
+        "per-timestep iteration allocation and stochastic Jacobian-free backpropagation through sampled unrolled steps"
+      ],
+      "acceptance_checks": [
+        "primitive modules expose trainable parameters and gradients",
+        "mechanism-specific invariance or constraint check passes",
+        "direct transition evaluation is deterministic under a fixed seed"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Public abstraction equivalence",
+      "objective": "Verify that the assembled family evaluates the same transition as its primitives.",
+      "procedure": [
+        "Copy the primitive module parameters into the public family constructor.",
+        "Evaluate one transition and one complete equilibrium with identical inputs.",
+        "Compare outputs, residuals, and parameter gradients with declared tolerances."
+      ],
+      "acceptance_checks": [
+        "transition outputs agree",
+        "equilibrium residual is finite and decreases",
+        "primitive and assembled gradients agree on the compact case"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Compact real or analytic task",
+      "objective": "Exercise training, evaluation, diagnostics, and serialization end to end.",
+      "procedure": [
+        "make_fixed_point_diffusion_dataset gives seeded latent fields and exact timestep-conditioned targets for allocation, reuse, and stochastic Jacobian-free checks."
+      ],
+      "acceptance_checks": [
+        "record FID-50K or declared task metric",
+        "record fixed-point block evaluations",
+        "record per-timestep residual",
+        "record sampling wall time",
+        "checkpoint reload reproduces the recorded prediction",
+        "result record contains data and configuration fingerprints"
+      ],
+      "evidence_status": "compact-verified"
+    },
+    {
+      "name": "Official-data subset",
+      "objective": "Validate the complete source data path before spending the full budget.",
+      "procedure": [
+        "Acquire one declared image task and reproduce its resize/crop, latent encoder, diffusion schedule, split, and evaluation preprocessing.",
+        "Freeze preprocessing, split logic, metric code, and checkpoint format.",
+        "Run a deterministic subset large enough to expose batching and memory failures."
+      ],
+      "acceptance_checks": [
+        "dataset receipt and checksum are stored",
+        "resume and evaluation paths reproduce the same subset metric",
+        "memory and runtime are measured rather than estimated"
+      ],
+      "evidence_status": "subset-verified"
+    },
+    {
+      "name": "Source-scale reproduction or declared extension",
+      "objective": "Run the cited protocol, or change it explicitly as a SILVA extension.",
+      "procedure": [
+        "Acquire one declared image task and reproduce its resize/crop, latent encoder, diffusion schedule, split, and evaluation preprocessing.",
+        "Configure explicit pre/projection/post blocks around the timestep-conditioned fixed point, then reproduce the source per-timestep iteration allocation and state reuse.",
+        "Train with the declared stochastic Jacobian-free schedule and compare FID-50K, block evaluations, latency, memory, and residuals at equal sampling budgets.",
+        "source latent encoder, image preprocessing, diffusion schedule, task split, and pretrained or jointly trained components",
+        "reported timestep allocation, stochastic backward sampling, optimizer, precision, checkpoints, and generation budget",
+        "FID-50K or task metric, block evaluations, equilibrium residual, wall time, memory, and source baselines"
+      ],
+      "acceptance_checks": [
+        "all required artifacts are archived",
+        "reported metrics use the cited evaluation protocol",
+        "every architectural or training deviation is listed",
+        "claims match the achieved evidence status"
+      ],
+      "evidence_status": "planned"
+    }
+  ],
+  "required_artifacts": [
+    "machine-readable model and solver configuration",
+    "dataset receipt with source revision, split, license, and checksum",
+    "preprocessing and normalization record",
+    "seeded training and evaluation log",
+    "checkpoint and optimizer-resume state for trained experiments",
+    "task metrics and equilibrium diagnostics in a machine-readable result",
+    "runtime, peak-memory, device, precision, and dependency record",
+    "declared deviations from the cited protocol"
+  ],
+  "schema_version": 1,
+  "requested_tier": "full",
+  "achieved_evidence_status": "compact-verified",
+  "source_scale_status": "planned"
+}

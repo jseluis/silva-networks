@@ -8,6 +8,20 @@ and device placement.
 Long training schedules, large result tables, and cached datasets are outside
 the compact package experiment suite.
 
+The additive [Cross-Family Compact Comparisons](cross-family-comparisons.md)
+run 12 compatible family configurations across shared vector, graph, and field
+tasks. [Result Records](result-records.md) defines the metadata and evidence
+labels that accompany those measurements, while the
+[Family Reproduction Dossiers](../families/index.md) provide the route from a
+compact check to official-data subsets and complete source protocols.
+
+Run all three common-task suites and refresh their machine-readable record:
+
+```bash
+python experiments/reproduction/run_compact_comparisons.py
+python scripts/generate_research_depth_material.py
+```
+
 ## Run a Config
 
 ```bash

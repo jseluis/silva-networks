@@ -430,6 +430,316 @@ NOTEBOOK_NEXT_STEPS: dict[str, tuple[tuple[str, str, str], ...]] = {
             *_page("Full-Scale SILVA", "learn/full-scale-silva"),
         ),
     ),
+    "package_api/28_silva_consistency_deq.ipynb": (
+        (
+            "How is the solver trajectory distilled into one or two steps?",
+            *_page("Emerging Equilibrium Methods", "learn/emerging-equilibrium-methods#consistency-deq"),
+        ),
+        (
+            "Which consistency modules and losses are public?",
+            *_page("Emerging Equilibria API", "api/emerging_equilibria"),
+        ),
+        (
+            "How is a full source experiment specified?",
+            *_page("Reproducing SILVA and Source Methods", "learn/reproducing-silva-and-papers"),
+        ),
+    ),
+    "package_api/29_silva_psi_gnn.ipynb": (
+        (
+            "How are mixed boundaries represented in the graph equilibrium?",
+            *_page("Emerging Equilibrium Methods", "learn/emerging-equilibrium-methods#psi-gnn"),
+        ),
+        (
+            "Which graph model and compact Poisson data are public?",
+            *_page("Emerging Equilibria API", "api/emerging_equilibria"),
+        ),
+        (
+            "How do graph PDEs connect to the wider SILVA structure?",
+            *_page("Neural Operators, ODEs, PDEs, and SILVA", "learn/neural-operators-ode-pde"),
+        ),
+    ),
+    "package_api/30_silva_ifno_materials.ipynb": (
+        (
+            "How is the tied Fourier material update derived?",
+            *_page("Emerging Equilibrium Methods", "learn/emerging-equilibrium-methods#ifno-material-operator"),
+        ),
+        (
+            "Which tied increments and material datasets are public?",
+            *_page("Emerging Data API", "api/emerging_data"),
+        ),
+        (
+            "How do Fourier operators fit the SILVA point contract?",
+            *_page("Neural Operators, ODEs, PDEs, and SILVA", "learn/neural-operators-ode-pde"),
+        ),
+    ),
+    "package_api/31_silva_snarf_forward_skinning.ipynb": (
+        (
+            "How does forward skinning become a multi-root SILVA problem?",
+            *_page("Emerging Equilibrium Methods", "learn/emerging-equilibrium-methods#snarf-style-forward-skinning"),
+        ),
+        (
+            "Which deformation, occupancy, and root APIs are public?",
+            *_page("Emerging Equilibria API", "api/emerging_equilibria"),
+        ),
+        (
+            "Which compact posed-space data checks inverse recovery?",
+            *_page("Emerging Data API", "api/emerging_data"),
+        ),
+    ),
+    "package_api/32_silva_mesh_inference.ipynb": (
+        (
+            "How is distributed relaxation compared with the centralized optimum?",
+            *_page("Emerging Equilibrium Methods", "learn/emerging-equilibrium-methods#mesh-inference"),
+        ),
+        (
+            "Which mesh transition and convergence certificate are public?",
+            *_page("Emerging Equilibria API", "api/emerging_equilibria"),
+        ),
+        (
+            "How is the compact Gaussian mesh problem generated?",
+            *_page("Emerging Data API", "api/emerging_data"),
+        ),
+    ),
+    "package_api/33_silva_physics_guided_diffusion_pde.ipynb": (
+        (
+            "How do reverse diffusion and PDE-energy guidance compose?",
+            *_page("Emerging Equilibrium Methods", "learn/emerging-equilibrium-methods#physics-guided-diffusion-pde-solver"),
+        ),
+        (
+            "Which sampler and replaceable physics hooks are public?",
+            *_page("Emerging Equilibria API", "api/emerging_equilibria"),
+        ),
+        (
+            "Which exact Poisson field supplies the compact simulation?",
+            *_page("Emerging Data API", "api/emerging_data"),
+        ),
+    ),
+    "package_api/34_silva_therino_mechanics.ipynb": (
+        (
+            "How is thermodynamic encoding solved in physical strain space?",
+            *_page(
+                "Emerging Equilibrium Methods",
+                "learn/emerging-equilibrium-methods#thermodynamically-informed-material-equilibria",
+            ),
+        ),
+        (
+            "Which material encoder, operator, losses, and result records are public?",
+            *_page("Emerging Equilibria API", "api/emerging_equilibria"),
+        ),
+        (
+            "Which exact periodic cell verifies strain, stress, and energy?",
+            *_page("Emerging Data API", "api/emerging_data"),
+        ),
+    ),
+    "package_api/35_silva_fixed_point_diffusion.ipynb": (
+        (
+            "How do timestep fixed points, allocation, and state reuse compose?",
+            *_page(
+                "Emerging Equilibrium Methods",
+                "learn/emerging-equilibrium-methods#fixed-point-diffusion-denoisers",
+            ),
+        ),
+        (
+            "Which denoiser, transition, wrapper, and result records are public?",
+            *_page("Emerging Equilibria API", "api/emerging_equilibria"),
+        ),
+        (
+            "How does the joint restoration trajectory differ?",
+            *_page(
+                "Reproducing SILVA and Source Methods",
+                "learn/reproducing-silva-and-papers#joint-diffusion-restoration",
+            ),
+        ),
+    ),
+    "package_api/36_silva_monotone_operator_equilibrium.ipynb": (
+        (
+            "How are monotonicity and both splittings derived?",
+            *_page(
+                "Structured Equilibrium Families",
+                "learn/structured-equilibrium-families#monotone-operator-equilibrium",
+            ),
+        ),
+        (
+            "Which operators, outputs, and solver controls are public?",
+            *_page("Structured Equilibria API", "api/structured_equilibria"),
+        ),
+        (
+            "How is the known-solution monotone task generated?",
+            *_page("Structured Data API", "api/structured_data"),
+        ),
+    ),
+    "package_api/37_silva_positive_concave_equilibrium.ipynb": (
+        (
+            "Why do positivity and concavity guarantee the fixed point?",
+            *_page(
+                "Structured Equilibrium Families",
+                "learn/structured-equilibrium-families#positive-concave-equilibrium",
+            ),
+        ),
+        (
+            "Which dense, convolutional, and replaceable parts are public?",
+            *_page("Structured Equilibria API", "api/structured_equilibria"),
+        ),
+        (
+            "How is the compact positive task constructed?",
+            *_page("Structured Data API", "api/structured_data"),
+        ),
+    ),
+    "package_api/38_silva_non_euclidean_equilibrium.ipynb": (
+        (
+            "How is the weighted-infinity certificate derived?",
+            *_page(
+                "Structured Equilibrium Families",
+                "learn/structured-equilibrium-families#non-euclidean-monotone-operator-network",
+            ),
+        ),
+        (
+            "Which metric, averaging, and sensitivity APIs are public?",
+            *_page("Structured Equilibria API", "api/structured_equilibria"),
+        ),
+        (
+            "How is the compact perturbation problem generated?",
+            *_page("Structured Data API", "api/structured_data"),
+        ),
+    ),
+    "package_api/39_silva_efficient_infinite_graph.ipynb": (
+        (
+            "How is the spectral closed form derived?",
+            *_page(
+                "Structured Equilibrium Families",
+                "learn/structured-equilibrium-families#efficient-infinite-depth-graph-equilibrium",
+            ),
+        ),
+        (
+            "Which spectral and iterative graph APIs are public?",
+            *_page("Structured Equilibria API", "api/structured_equilibria"),
+        ),
+        (
+            "How is the exact long-range chain target constructed?",
+            *_page("Structured Data API", "api/structured_data"),
+        ),
+    ),
+    "package_api/40_silva_multiscale_graph_implicit.ipynb": (
+        (
+            "How do graph powers and nodewise scale attention compose?",
+            *_page(
+                "Structured Equilibrium Families",
+                "learn/structured-equilibrium-families#multiscale-graph-implicit-network",
+            ),
+        ),
+        (
+            "How can the source depend on both features and graph structure?",
+            *_page("Structured Equilibria API", "api/structured_equilibria"),
+        ),
+        (
+            "How is the exact multiscale graph task generated?",
+            *_page("Structured Data API", "api/structured_data"),
+        ),
+    ),
+    "package_api/41_silva_delta_equilibrium.ipynb": (
+        (
+            "How are cached linear updates and threshold error derived?",
+            *_page(
+                "Structured Equilibrium Families",
+                "learn/structured-equilibrium-families#delta-cached-equilibrium-inference",
+            ),
+        ),
+        (
+            "How does delta-forward implicit training work?",
+            *_page("Structured Equilibria API", "api/structured_equilibria"),
+        ),
+        (
+            "Which source-scale INR and optical-flow checks are required?",
+            *_page(
+                "Reproducing SILVA and Source Methods",
+                "learn/reproducing-silva-and-papers",
+            ),
+        ),
+    ),
+    "package_api/42_family_reproduction_dossiers.ipynb": (
+        (
+            "Where is the complete dossier for each family?",
+            *_page("Family Reproduction Dossiers", "families"),
+        ),
+        (
+            "How are evidence levels represented in the public API?",
+            *_page("Experiment Dossiers API", "api/research_depth"),
+        ),
+        (
+            "How should measured results be archived?",
+            *_page("Result Records", "experiments/result-records"),
+        ),
+    ),
+    "package_api/43_cross_family_vector_benchmark.ipynb": (
+        (
+            "Where are all compact comparison values reported?",
+            *_page("Cross-Family Comparisons", "experiments/cross-family-comparisons"),
+        ),
+        (
+            "Which comparison functions and result records are public?",
+            *_page("Compact Comparison API", "api/compact_benchmarks"),
+        ),
+        (
+            "How does each vector family scale beyond this task?",
+            *_page("Family Reproduction Dossiers", "families"),
+        ),
+    ),
+    "package_api/44_cross_family_graph_benchmark.ipynb": (
+        (
+            "Where are all compact comparison values reported?",
+            *_page("Cross-Family Comparisons", "experiments/cross-family-comparisons"),
+        ),
+        (
+            "Which comparison functions and result records are public?",
+            *_page("Compact Comparison API", "api/compact_benchmarks"),
+        ),
+        (
+            "How does each graph family scale beyond this task?",
+            *_page("Family Reproduction Dossiers", "families"),
+        ),
+    ),
+    "package_api/45_cross_family_field_benchmark.ipynb": (
+        (
+            "Where are all compact comparison values reported?",
+            *_page("Cross-Family Comparisons", "experiments/cross-family-comparisons"),
+        ),
+        (
+            "Which comparison functions and result records are public?",
+            *_page("Compact Comparison API", "api/compact_benchmarks"),
+        ),
+        (
+            "How does each field family scale to source data?",
+            *_page("Family Reproduction Dossiers", "families"),
+        ),
+    ),
+    "package_api/46_extension_builder_workshop.ipynb": (
+        (
+            "What is the complete extension registration process?",
+            *_page("Advanced Extension Handbook", "learn/advanced-extension-handbook"),
+        ),
+        (
+            "How are transition contracts validated?",
+            *_page("Extensibility API", "api/extensibility"),
+        ),
+        (
+            "How should a new family receive a dossier?",
+            *_page("Experiment Dossiers API", "api/research_depth"),
+        ),
+    ),
+    "package_api/47_failure_diagnostics_workshop.ipynb": (
+        (
+            "How should solver failures be diagnosed and recorded?",
+            *_page("Failure Diagnostics and Recovery", "learn/failure-diagnostics-and-recovery"),
+        ),
+        (
+            "Which residual and stability diagnostics are public?",
+            *_page("Diagnostics API", "api/diagnostics"),
+        ),
+        (
+            "How are solver choices derived?",
+            *_page("Solver Derivation Lab", "learn/solver-derivation-lab"),
+        ),
+    ),
     "implicit_bridge/01_introduction_fixed_points.ipynb": (
         (
             "What does a fixed point mean operationally?",

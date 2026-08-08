@@ -7,7 +7,7 @@ repo_url: https://github.com/jseluis/silva-networks
 repo_name: jseluis/silva-networks
 
 extra:
-  source_release_tag: v1.1.0
+  source_release_tag: v1.2.0
 
 exclude_docs: |
   includes/
@@ -85,6 +85,7 @@ markdown_extensions:
 extra_javascript:
   - javascripts/default-theme.js
   - javascripts/page-dates.js
+  - javascripts/notebook-figures.js
   - javascripts/mathjax.js
   - javascripts/vendor/mathjax/tex-mml-chtml.js
 
@@ -125,6 +126,8 @@ nav:
       - Jacobians and Stability: learn/jacobians.md
       - Custom Layers: learn/custom-layers.md
       - Extending SILVA: learn/extending-silva.md
+      - Advanced Extension Handbook: learn/advanced-extension-handbook.md
+      - Failure Diagnostics and Recovery: learn/failure-diagnostics-and-recovery.md
       - Reproducing SILVA and Source Methods: learn/reproducing-silva-and-papers.md
       - Cortex Hierarchies: learn/cortex-hierarchy.md
       - Point Architecture Catalog: learn/point-architecture-catalog.md
@@ -134,6 +137,9 @@ nav:
       - Advanced Equilibrium Families: learn/advanced-equilibrium-families.md
       - Physics-Informed Equilibria and DAEs: learn/physics-informed-equilibria.md
       - Advanced Equilibrium Datasets: learn/advanced-equilibrium-datasets.md
+      - Emerging Equilibrium Methods: learn/emerging-equilibrium-methods.md
+      - Structured Equilibrium Families: learn/structured-equilibrium-families.md
+      - Real-Dataset Reproduction: learn/real-dataset-reproduction.md
       - Stacking and Devices: learn/stacking-and-devices.md
       - Datasets and Preprocessing: learn/datasets-and-preprocessing.md
       - Reconstructing Paper Experiments: learn/reconstructing-paper-experiments.md
@@ -171,6 +177,26 @@ nav:
       - SILVA Implicit DAE and Residuals: package-notebooks/25_silva_implicit_dae_and_residuals.ipynb
       - Full-Scale SILVA Families: package-notebooks/26_full_scale_silva.ipynb
       - Reproducing SILVA and Source Methods: package-notebooks/27_reproducing_silva_and_source_methods.ipynb
+      - SILVA Consistency DEQ: package-notebooks/28_silva_consistency_deq.ipynb
+      - SILVA Psi-GNN: package-notebooks/29_silva_psi_gnn.ipynb
+      - SILVA IFNO Materials: package-notebooks/30_silva_ifno_materials.ipynb
+      - SILVA SNARF Forward Skinning: package-notebooks/31_silva_snarf_forward_skinning.ipynb
+      - SILVA Mesh Inference: package-notebooks/32_silva_mesh_inference.ipynb
+      - SILVA Physics-Guided Diffusion PDE: package-notebooks/33_silva_physics_guided_diffusion_pde.ipynb
+      - SILVA TherINO Mechanics: package-notebooks/34_silva_therino_mechanics.ipynb
+      - SILVA Fixed-Point Diffusion: package-notebooks/35_silva_fixed_point_diffusion.ipynb
+      - SILVA Monotone Operator Equilibrium: package-notebooks/36_silva_monotone_operator_equilibrium.ipynb
+      - SILVA Positive-Concave Equilibrium: package-notebooks/37_silva_positive_concave_equilibrium.ipynb
+      - SILVA Non-Euclidean Equilibrium: package-notebooks/38_silva_non_euclidean_equilibrium.ipynb
+      - SILVA Efficient Infinite Graph: package-notebooks/39_silva_efficient_infinite_graph.ipynb
+      - SILVA Multiscale Graph Implicit Network: package-notebooks/40_silva_multiscale_graph_implicit.ipynb
+      - SILVA Delta Equilibrium: package-notebooks/41_silva_delta_equilibrium.ipynb
+      - Family Reproduction Dossiers: package-notebooks/42_family_reproduction_dossiers.ipynb
+      - Cross-Family Vector Benchmark: package-notebooks/43_cross_family_vector_benchmark.ipynb
+      - Cross-Family Graph Benchmark: package-notebooks/44_cross_family_graph_benchmark.ipynb
+      - Cross-Family Field Benchmark: package-notebooks/45_cross_family_field_benchmark.ipynb
+      - Extension Builder Workshop: package-notebooks/46_extension_builder_workshop.ipynb
+      - Failure Diagnostics Workshop: package-notebooks/47_failure_diagnostics_workshop.ipynb
       - Implicit Layers Bridge:
           - Fixed Points as Layers: implicit-bridge-notebooks/01_introduction_fixed_points.ipynb
           - Implicit Autodiff: implicit-bridge-notebooks/02_implicit_autodiff.ipynb
@@ -196,10 +222,17 @@ nav:
       - Advanced Equilibria: api/advanced_equilibria.md
       - Physics-Informed and DAE: api/physics_informed.md
       - Advanced Equilibrium Data: api/advanced_data.md
+      - Emerging Equilibria: api/emerging_equilibria.md
+      - Emerging Equilibrium Data: api/emerging_data.md
+      - Structured Equilibria: api/structured_equilibria.md
+      - Structured Equilibrium Data: api/structured_data.md
+      - Source Data and Receipts: api/source_data.md
       - Implicit Bridge: api/implicit.md
       - DEQ Engine: api/deq-engine.md
       - Extensibility: api/extensibility.md
       - Reproducibility: api/reproducibility.md
+      - Experiment Dossiers and Result Records: api/research_depth.md
+      - Compact Comparison Suites: api/compact_benchmarks.md
       - Optical Flow: api/flow.md
       - Generalized Cases: api/cases.md
       - Family Selection: api/families.md
@@ -218,8 +251,56 @@ nav:
   - Public Experiments:
       - Overview: experiments/index.md
       - Benchmark Cards: experiments/benchmark-cards.md
+      - Cross-Family Comparisons: experiments/cross-family-comparisons.md
+      - Result Records: experiments/result-records.md
       - Dataset Cases: experiments/datasets.md
       - Extensions: experiments/extensions.md
+  - Family Reproduction Dossiers:
+      - Overview: families/index.md
+      - SILVA Layer: families/silva_layer.md
+      - SILVA Graph: families/silva_graph.md
+      - SILVA Graph Preset: families/silva_graph_preset.md
+      - SILVA Cortex Point: families/silva_cortex.md
+      - SILVA Cortex Network: families/silva_cortex_network.md
+      - SILVA Image Cortex: families/silva_image_cortex.md
+      - Compact DEQ: families/compact_deq.md
+      - Message-Passing DEQ: families/message_passing_deq.md
+      - MDEQ Bridge: families/mdeq.md
+      - Multiscale Vision DEQ: families/multiscale_vision_deq.md
+      - Sequence DEQ: families/sequence_deq.md
+      - Implicit Graph: families/implicit_graph.md
+      - Implicit Neural Representation: families/implicit_neural_representation.md
+      - Diffusion Equilibrium: families/diffusion_equilibrium.md
+      - Scientific Operator: families/scientific_operator.md
+      - Fourier Operator Equilibrium: families/fourier_operator_equilibrium.md
+      - Implicit Time Step: families/implicit_time_step.md
+      - SILVA DEQ Flow: families/silva_deq_flow.md
+      - RAFT DEQ Flow: families/raft_deq_flow.md
+      - Quadratic Optimization: families/quadratic_optimization.md
+      - SILVA Projected QP: families/silva_projected_qp.md
+      - SILVA FNO-DEQ: families/silva_fno_deq.md
+      - SILVA Physics Graph DEQ: families/silva_physics_graph_deq.md
+      - SILVA Homotopy Equilibrium: families/silva_homotopy_equilibrium.md
+      - SILVA Distributional DEQ: families/silva_distributional_deq.md
+      - SILVA Monotone Graph Equilibrium: families/silva_monotone_graph_equilibrium.md
+      - SILVA Generative Equilibrium Transformer: families/silva_generative_equilibrium_transformer.md
+      - SILVA Poisson Mirror Equilibrium: families/silva_poisson_mirror_equilibrium.md
+      - SILVA Physics-Informed Equilibrium: families/silva_physics_informed_equilibrium.md
+      - SILVA Implicit DAE Step: families/silva_implicit_dae_step.md
+      - SILVA Consistency DEQ: families/silva_consistency_deq.md
+      - SILVA Psi-GNN: families/silva_psi_gnn.md
+      - SILVA IFNO: families/silva_ifno.md
+      - SILVA SNARF: families/silva_snarf.md
+      - SILVA Mesh Inference: families/silva_mesh_inference.md
+      - SILVA Physics-Guided Diffusion PDE: families/silva_physics_guided_diffusion_pde.md
+      - SILVA TherINO: families/silva_therino.md
+      - SILVA Fixed-Point Diffusion: families/silva_fixed_point_diffusion.md
+      - SILVA Monotone Operator Equilibrium: families/silva_monotone_operator_equilibrium.md
+      - SILVA Positive-Concave Equilibrium: families/silva_positive_concave_equilibrium.md
+      - SILVA Non-Euclidean Equilibrium: families/silva_non_euclidean_equilibrium.md
+      - SILVA Efficient Infinite Graph: families/silva_efficient_infinite_graph.md
+      - SILVA Multiscale Graph Implicit: families/silva_multiscale_graph_implicit.md
+      - SILVA Delta Equilibrium: families/silva_delta_equilibrium.md
   - Examples:
       - Overview: examples/index.md
       - Scalar DEQ: examples/scalar-deq.md
@@ -243,6 +324,9 @@ nav:
       - Paper Family Cases: examples/paper-family-cases.md
       - RAFT and DEQ-Flow: examples/raft-deq-flow.md
       - Full-Scale Training: examples/full-scale-training.md
+      - Emerging Equilibria: examples/emerging-equilibria.md
+      - Structured Equilibria: examples/structured-equilibria.md
+      - Source-Data Families: examples/source-data.md
       - Source-Aware Reproduction: examples/reproduction-registry.md
   - Cheatsheets:
       - SILVA API: cheatsheets/silva-api.md

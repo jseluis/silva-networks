@@ -1,0 +1,240 @@
+{
+  "schema_version": 1,
+  "evidence_status": "compact-verified",
+  "generated_at": "2026-08-08T00:45:19.265105+00:00",
+  "seed": 120,
+  "environment": {
+    "python": "3.11.9",
+    "torch": "2.2.2",
+    "platform": "macOS-15.7.7-x86_64-i386-64bit",
+    "device": "cpu"
+  },
+  "suites": [
+    {
+      "name": "vector",
+      "task": "fit one bounded nonlinear scalar field from the same 16 three-feature samples",
+      "metric": "mean squared error, equilibrium residual, iterations, gradients, parameters, and CPU time",
+      "results": [
+        {
+          "suite": "vector",
+          "family": "silva_layer",
+          "seed": 120,
+          "samples": 16,
+          "train_steps": 12,
+          "parameter_count": 67,
+          "initial_loss": 0.2844322919845581,
+          "final_loss": 0.024085544049739838,
+          "residual": 0.005519779399037361,
+          "iterations": 16,
+          "gradient_norm": 0.4105378232288354,
+          "runtime_seconds": 0.11993438203353435,
+          "evidence_status": "compact-verified",
+          "loss_reduction": 0.9153206414022518
+        },
+        {
+          "suite": "vector",
+          "family": "silva_monotone_operator_equilibrium",
+          "seed": 120,
+          "samples": 16,
+          "train_steps": 12,
+          "parameter_count": 103,
+          "initial_loss": 0.16142649948596954,
+          "final_loss": 0.006284455768764019,
+          "residual": 0.03626420348882675,
+          "iterations": 20,
+          "gradient_norm": 0.17698092228814008,
+          "runtime_seconds": 0.10522471595322713,
+          "evidence_status": "compact-verified",
+          "loss_reduction": 0.9610692433474329
+        },
+        {
+          "suite": "vector",
+          "family": "silva_positive_concave_equilibrium",
+          "seed": 120,
+          "samples": 16,
+          "train_steps": 12,
+          "parameter_count": 67,
+          "initial_loss": 0.20812717080116272,
+          "final_loss": 0.03752942383289337,
+          "residual": 9.573923307470977e-07,
+          "iterations": 17,
+          "gradient_norm": 0.4880183362911599,
+          "runtime_seconds": 0.05561756802489981,
+          "evidence_status": "compact-verified",
+          "loss_reduction": 0.8196803248301124
+        },
+        {
+          "suite": "vector",
+          "family": "silva_non_euclidean_equilibrium",
+          "seed": 120,
+          "samples": 16,
+          "train_steps": 12,
+          "parameter_count": 73,
+          "initial_loss": 0.13036899268627167,
+          "final_loss": 0.005842789076268673,
+          "residual": 9.747170679474948e-07,
+          "iterations": 16,
+          "gradient_norm": 0.07094299311679231,
+          "runtime_seconds": 0.11219420697307214,
+          "evidence_status": "compact-verified",
+          "loss_reduction": 0.9551826783664031
+        },
+        {
+          "suite": "vector",
+          "family": "silva_delta_equilibrium",
+          "seed": 120,
+          "samples": 16,
+          "train_steps": 12,
+          "parameter_count": 73,
+          "initial_loss": 0.1635134220123291,
+          "final_loss": 0.006073818076401949,
+          "residual": 9.170857424578571e-07,
+          "iterations": 19,
+          "gradient_norm": 0.06620251558411384,
+          "runtime_seconds": 0.05754861101740971,
+          "evidence_status": "compact-verified",
+          "loss_reduction": 0.9628543149445923
+        }
+      ],
+      "limitations": [
+        "The training budget is deliberately small and is not a ranking of the families.",
+        "Each family retains its own well-posedness parameterization and therefore has a different hypothesis class."
+      ]
+    },
+    {
+      "name": "graph",
+      "task": "predict the same smoothed node field on one bidirectional 12-node chain",
+      "metric": "node mean squared error, equilibrium residual, iterations, gradients, parameters, and CPU time",
+      "results": [
+        {
+          "suite": "graph",
+          "family": "implicit_graph",
+          "seed": 121,
+          "samples": 12,
+          "train_steps": 10,
+          "parameter_count": 51,
+          "initial_loss": 0.3188911974430084,
+          "final_loss": 0.0681874006986618,
+          "residual": 6.263194518396631e-05,
+          "iterations": 20,
+          "gradient_norm": 0.5974611153903184,
+          "runtime_seconds": 0.09077120397705585,
+          "evidence_status": "compact-verified",
+          "loss_reduction": 0.786173462154445
+        },
+        {
+          "suite": "graph",
+          "family": "silva_monotone_graph_equilibrium",
+          "seed": 121,
+          "samples": 12,
+          "train_steps": 10,
+          "parameter_count": 76,
+          "initial_loss": 0.3714542090892792,
+          "final_loss": 0.036182601004838943,
+          "residual": 0.009743746370077133,
+          "iterations": 20,
+          "gradient_norm": 0.2936326262640112,
+          "runtime_seconds": 0.1328356380108744,
+          "evidence_status": "compact-verified",
+          "loss_reduction": 0.9025920285206879
+        },
+        {
+          "suite": "graph",
+          "family": "silva_efficient_infinite_graph",
+          "seed": 121,
+          "samples": 12,
+          "train_steps": 10,
+          "parameter_count": 52,
+          "initial_loss": 0.4015113413333893,
+          "final_loss": 0.013410833664238453,
+          "residual": 0.005330693908035755,
+          "iterations": 28,
+          "gradient_norm": 0.21081227265397878,
+          "runtime_seconds": 0.0924818940111436,
+          "evidence_status": "compact-verified",
+          "loss_reduction": 0.9665991161801256
+        },
+        {
+          "suite": "graph",
+          "family": "silva_multiscale_graph_implicit",
+          "seed": 121,
+          "samples": 12,
+          "train_steps": 10,
+          "parameter_count": 111,
+          "initial_loss": 0.6282293200492859,
+          "final_loss": 0.029197530820965767,
+          "residual": 0.0038224286399781704,
+          "iterations": 56,
+          "gradient_norm": 0.25940904836697354,
+          "runtime_seconds": 0.19621547998394817,
+          "evidence_status": "compact-verified",
+          "loss_reduction": 0.9535240876394067
+        }
+      ],
+      "limitations": [
+        "The edge-index and dense-operator routes encode the same chain but use their native normalization paths.",
+        "The compact run validates interoperability and optimization; it is not a graph benchmark claim."
+      ]
+    },
+    {
+      "name": "field",
+      "task": "fit the same periodic 8 by 8 two-channel-to-one-channel field operator",
+      "metric": "field mean squared error, equilibrium or increment residual, iterations, gradients, parameters, and CPU time",
+      "results": [
+        {
+          "suite": "field",
+          "family": "fourier_operator_equilibrium",
+          "seed": 122,
+          "samples": 4,
+          "train_steps": 6,
+          "parameter_count": 951,
+          "initial_loss": 0.4745684862136841,
+          "final_loss": 0.22477683424949646,
+          "residual": 0.0407392643392086,
+          "iterations": 6,
+          "gradient_norm": 1.027187911201689,
+          "runtime_seconds": 0.09537546295905486,
+          "evidence_status": "compact-verified",
+          "loss_reduction": 0.5263553295692581
+        },
+        {
+          "suite": "field",
+          "family": "silva_fno_deq",
+          "seed": 122,
+          "samples": 4,
+          "train_steps": 6,
+          "parameter_count": 1881,
+          "initial_loss": 0.42206352949142456,
+          "final_loss": 0.2564629912376404,
+          "residual": 0.04519260302186012,
+          "iterations": 6,
+          "gradient_norm": 0.8545455596438566,
+          "runtime_seconds": 0.1386330170207657,
+          "evidence_status": "compact-verified",
+          "loss_reduction": 0.39235926983155467
+        },
+        {
+          "suite": "field",
+          "family": "silva_ifno",
+          "seed": 122,
+          "samples": 4,
+          "train_steps": 6,
+          "parameter_count": 1021,
+          "initial_loss": 0.3257634937763214,
+          "final_loss": 0.14527921378612518,
+          "residual": 8.723374366760254,
+          "iterations": 5,
+          "gradient_norm": 0.3782332877368608,
+          "runtime_seconds": 0.08050764200743288,
+          "evidence_status": "compact-verified",
+          "loss_reduction": 0.5540347013656537
+        }
+      ],
+      "limitations": [
+        "The target is an analytic periodic map rather than a publication dataset.",
+        "The unrolled implicit Fourier family reports its final increment norm where root-solved families report a solver residual."
+      ]
+    }
+  ],
+  "claim_boundary": "These deterministic tasks validate common execution, optimization, and diagnostics. They do not reproduce publication-scale benchmark values."
+}
