@@ -39,20 +39,20 @@ designed for two audiences:
 A SILVA layer is an equilibrium model whose transition is separated into
 named, independently configurable mechanisms:
 
-$$
-z^\star = \sigma\!\left(
-S_\theta(x)
-+ H_\theta(z^\star)
-+ L_\theta(z^\star;\mathcal E)
-+ G_\theta(z^\star;\mathcal B)
-\right).
-$$
+```text
+z* = sigma(
+    S_theta(x)
+  + H_theta(z*)
+  + L_theta(z*; E)
+  + G_theta(z*; B)
+)
+```
 
-Here, $S_\theta$ injects the observed data, $H_\theta$ is an optional learned
-self-interaction, $L_\theta$ carries local structure such as graph messages or
-dynamic neighborhoods, and $G_\theta$ supplies global context such as a mean
-field or bounded attention. The solver searches for $z^\star$; a readout maps
-that equilibrium state to the task output.
+Here, `S_theta` injects the observed data, `H_theta` is an optional learned
+self-interaction, `L_theta` carries local structure such as graph messages or
+dynamic neighborhoods, and `G_theta` supplies global context such as a mean
+field or bounded attention. The solver searches for `z*`; a readout maps that
+equilibrium state to the task output.
 
 Classical affine DEQs, graph equilibria, multiscale image models, Fourier
 operators, ODE and PDE states, constrained optimization layers, distributional
