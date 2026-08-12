@@ -7,7 +7,7 @@ repo_url: https://github.com/jseluis/silva-networks
 repo_name: jseluis/silva-networks
 
 extra:
-  source_release_tag: v1.2.1
+  source_release_tag: v1.2.2
 
 exclude_docs: |
   includes/
@@ -117,6 +117,7 @@ nav:
       - Solver Derivation Lab: learn/solver-derivation-lab.md
       - Implicit Layers Bridge: learn/implicit-bridge.md
       - Implicit Backward Guide: learn/implicit-backward-guide.md
+      - Learned Solvers and Backward Approximations: learn/solver-learning-and-gradients.md
       - Interactive Diagnostics Lab: learn/interactive-diagnostics-lab.md
       - Method Adaptation Atlas: learn/method-adaptation-atlas.md
       - DEQ Engine and Optical Flow: learn/deq-engine-and-flow.md
@@ -139,6 +140,11 @@ nav:
       - Advanced Equilibrium Datasets: learn/advanced-equilibrium-datasets.md
       - Emerging Equilibrium Methods: learn/emerging-equilibrium-methods.md
       - Structured Equilibrium Families: learn/structured-equilibrium-families.md
+      - Quantum Equilibria: learn/quantum-equilibria.md
+      - Equilibrium Expansion Atlas: learn/equilibrium-expansion-atlas.md
+      - Bayesian, Joint, Dynamic, and Certified Equilibria: learn/advanced-equilibrium-expansions.md
+      - Evidence and Source-Scale Experiments: learn/evidence-and-source-scale.md
+      - Source-Aligned Equilibrium Families: learn/source-equilibrium-families.md
       - Real-Dataset Reproduction: learn/real-dataset-reproduction.md
       - Stacking and Devices: learn/stacking-and-devices.md
       - Datasets and Preprocessing: learn/datasets-and-preprocessing.md
@@ -197,6 +203,33 @@ nav:
       - Cross-Family Field Benchmark: package-notebooks/45_cross_family_field_benchmark.ipynb
       - Extension Builder Workshop: package-notebooks/46_extension_builder_workshop.ipynb
       - Failure Diagnostics Workshop: package-notebooks/47_failure_diagnostics_workshop.ipynb
+      - SILVA Learned Equilibrium Solvers: package-notebooks/48_silva_learned_solvers.ipynb
+      - JFB and SHINE Backward Methods: package-notebooks/49_jfb_shine_backward_methods.ipynb
+      - SILVA Quantum DEQ: package-notebooks/50_silva_quantum_deq.ipynb
+      - Equilibrium Expansion Atlas: package-notebooks/51_equilibrium_expansion_atlas.ipynb
+      - SILVA Evidence Ladders: package-notebooks/52_silva_evidence_ladders.ipynb
+      - Transition Equivalence Lab: package-notebooks/53_transition_equivalence_lab.ipynb
+      - Statistical Benchmarking: package-notebooks/54_statistical_benchmarking.ipynb
+      - SILVA Bayesian DEQ: package-notebooks/55_silva_bayesian_deq.ipynb
+      - SILVA Joint Inference: package-notebooks/56_silva_joint_inference.ipynb
+      - SILVA Implicit Spatiotemporal: package-notebooks/57_silva_implicit_spatiotemporal.ipynb
+      - SILVA Certified Equilibrium: package-notebooks/58_silva_certified_equilibrium.ipynb
+      - Full Experiment Pipeline: package-notebooks/59_full_experiment_pipeline.ipynb
+      - Neumann Backward Comparison: package-notebooks/60_neumann_backward_comparison.ipynb
+      - SILVA Lipschitz MDEQ: package-notebooks/61_silva_lipschitz_mdeq.ipynb
+      - SILVA Subhomogeneous Equilibrium: package-notebooks/62_silva_subhomogeneous_equilibrium.ipynb
+      - SILVA Algorithmic Reasoner: package-notebooks/63_silva_algorithmic_reasoner.ipynb
+      - SILVA Hamiltonian Equilibrium: package-notebooks/64_silva_hamiltonian_equilibrium.ipynb
+      - SILVA Inverse Imaging Equilibrium: package-notebooks/65_silva_inverse_imaging_equilibrium.ipynb
+      - SILVA Snapshot Compressive Equilibrium: package-notebooks/66_silva_snapshot_compressive_equilibrium.ipynb
+      - SILVA Magnetic Particle Equilibrium: package-notebooks/67_silva_magnetic_particle_equilibrium.ipynb
+      - SILVA Sparse Hyperspectral Equilibrium: package-notebooks/68_silva_sparse_hyperspectral_equilibrium.ipynb
+      - SILVA Serialized Smoothing Equilibrium: package-notebooks/69_silva_serialized_smoothing_equilibrium.ipynb
+      - SILVA Diffusion Restoration Equilibrium: package-notebooks/70_silva_diffusion_restoration_equilibrium.ipynb
+      - SILVA Recurrent Equilibrium Network: package-notebooks/71_silva_recurrent_equilibrium_network.ipynb
+      - SILVA Lipschitz Robust Equilibrium: package-notebooks/72_silva_lipschitz_robust_equilibrium.ipynb
+      - SILVA Image Matting Equilibrium: package-notebooks/73_silva_image_matting_equilibrium.ipynb
+      - SILVA Dynamic Economic Equilibrium: package-notebooks/74_silva_dynamic_economic_equilibrium.ipynb
       - Implicit Layers Bridge:
           - Fixed Points as Layers: implicit-bridge-notebooks/01_introduction_fixed_points.ipynb
           - Implicit Autodiff: implicit-bridge-notebooks/02_implicit_autodiff.ipynb
@@ -211,6 +244,12 @@ nav:
       - Overview: api/reference.md
       - Public API: api/public-api.md
       - Solvers: api/solvers.md
+      - Learned Equilibrium Solvers: api/solver_learning.md
+      - Quantum Equilibria: api/quantum_equilibria.md
+      - Bayesian, Joint, Dynamic, and Certified: api/advanced_expansions.md
+      - Evidence and Statistics: api/evidence.md
+      - Experiment Protocols: api/experiment_protocols.md
+      - Source-Aligned Equilibria: api/source_equilibria.md
       - Jacobians: api/jacobians.md
       - Diagnostics: api/diagnostics.md
       - Layers: api/layers.md
@@ -301,6 +340,26 @@ nav:
       - SILVA Efficient Infinite Graph: families/silva_efficient_infinite_graph.md
       - SILVA Multiscale Graph Implicit: families/silva_multiscale_graph_implicit.md
       - SILVA Delta Equilibrium: families/silva_delta_equilibrium.md
+      - SILVA HyperDEQ: families/silva_hyper_deq.md
+      - SILVA Quantum DEQ: families/silva_quantum_deq.md
+      - SILVA Bayesian DEQ: families/silva_bayesian_deq.md
+      - SILVA Joint Inference Equilibrium: families/silva_joint_inference_equilibrium.md
+      - SILVA Implicit Spatiotemporal: families/silva_implicit_spatiotemporal.md
+      - SILVA Certified Equilibrium: families/silva_certified_equilibrium.md
+      - SILVA Lipschitz MDEQ: families/silva_lipschitz_mdeq.md
+      - SILVA Subhomogeneous Equilibrium: families/silva_subhomogeneous_equilibrium.md
+      - SILVA Algorithmic Reasoner: families/silva_algorithmic_reasoner.md
+      - SILVA Hamiltonian Equilibrium: families/silva_hamiltonian_equilibrium.md
+      - SILVA Inverse Imaging Equilibrium: families/silva_inverse_imaging_equilibrium.md
+      - SILVA Snapshot Compressive Equilibrium: families/silva_snapshot_compressive_equilibrium.md
+      - SILVA Magnetic Particle Equilibrium: families/silva_magnetic_particle_equilibrium.md
+      - SILVA Sparse Hyperspectral Equilibrium: families/silva_sparse_hyperspectral_equilibrium.md
+      - SILVA Serialized Smoothing Equilibrium: families/silva_serialized_smoothing_equilibrium.md
+      - SILVA Diffusion Restoration Equilibrium: families/silva_diffusion_restoration_equilibrium.md
+      - SILVA Recurrent Equilibrium Network: families/silva_recurrent_equilibrium_network.md
+      - SILVA Lipschitz Robust Equilibrium: families/silva_lipschitz_robust_equilibrium.md
+      - SILVA Image Matting Equilibrium: families/silva_image_matting_equilibrium.md
+      - SILVA Dynamic Economic Equilibrium: families/silva_dynamic_economic_equilibrium.md
   - Examples:
       - Overview: examples/index.md
       - Scalar DEQ: examples/scalar-deq.md
@@ -328,6 +387,10 @@ nav:
       - Structured Equilibria: examples/structured-equilibria.md
       - Source-Data Families: examples/source-data.md
       - Source-Aware Reproduction: examples/reproduction-registry.md
+      - Learned Equilibrium Solvers: examples/learned-solvers.md
+      - Quantum DEQ: examples/quantum-deq.md
+      - Advanced Equilibrium Expansions: examples/advanced-expansions.md
+      - Evidence and Protocols: examples/evidence-and-protocols.md
   - Cheatsheets:
       - SILVA API: cheatsheets/silva-api.md
   - Paper and References: paper/references.md

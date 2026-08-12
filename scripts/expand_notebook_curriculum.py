@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 from dataclasses import dataclass
@@ -12,12 +13,10 @@ TAG = "silva-extension-curriculum"
 READER_TEXT_REPLACEMENTS = {
     "Upstream references to compare with:": "Primary implementation and tutorial references:",
     "- Recent-paper cache: references/papers/recent_deq/": (
-        "- Numbered research references: "
-        "https://jseluis.github.io/silva-networks/paper/references/"
+        "- Numbered research references: https://jseluis.github.io/silva-networks/paper/references/"
     ),
     "- `references/papers/recent_deq/`": (
-        "- Numbered research references: "
-        "https://jseluis.github.io/silva-networks/paper/references/"
+        "- Numbered research references: https://jseluis.github.io/silva-networks/paper/references/"
     ),
 }
 CODE_REPLACEMENTS = {
@@ -56,132 +55,254 @@ GENERIC = Curriculum(
 )
 
 RULES: tuple[tuple[tuple[str, ...], Curriculum], ...] = (
-    (("solver", "contraction", "fixed_point", "original_deq", "diagnostic", "consistency_deq"), Curriculum(
-        "the latent vector or tensor z",
-        "the injected observation x",
-        "the tied map f_theta(z, x)",
-        "state shape and a decreasing or bounded residual",
-        "distance to an analytic fixed point and final relative residual",
-        "latent width, solver tolerance, and iteration budget",
-        "transition, damping, stopping rule, backward solver, and readout",
-    )),
-    (("jacobian", "implicit_gradient", "implicit_autodiff", "recent_theory"), Curriculum(
-        "the converged latent state z_star",
-        "differentiable parameters and external inputs",
-        "the map whose Jacobian defines I - J_z f",
-        "agreement of dense, JVP, VJP, and matrix-free products",
-        "adjoint residual and gradient error against explicit differentiation",
-        "state dimension and matrix-free linear-solver iterations",
-        "transition, Jacobian product, linear solver, regularizer, and loss",
-    )),
-    (("ode", "homotopy"), Curriculum(
-        "the evolving or terminal physical state",
-        "time, initial condition, and external forcing",
-        "an explicit flow step or residual field T(z, x) - z",
-        "time-step shape, initial condition, and integration consistency",
-        "trajectory error, terminal fixed-point residual, and conservation error",
-        "time horizon, step count, state dimension, and stiffness",
-        "vector field, integrator, equilibrium transition, readout, and tolerances",
-    )),
-    (("pde", "neural_operator", "fno", "ifno", "therino", "scientific"), Curriculum(
-        "a sampled solution field on a grid or mesh",
-        "coefficient, forcing, boundary, and coordinate fields",
-        "a tied local/spectral/operator field with source reinjection",
-        "spatial shape, boundary conditions, and resolution semantics",
-        "solution error, PDE residual, boundary error, and fixed-point residual",
-        "resolution, retained modes, channels, domain size, and dataset size",
-        "lifting map, spectral/local operator, physics field, readout, and solver",
-    )),
-    (("message_passing", "graph", "psi_gnn", "mesh_inference", "node_benchmark", "molecular", "zinc"), Curriculum(
-        "one latent vector per node or entity",
-        "node features, edges, edge attributes, and graph batches",
-        "a source-injected graph message or monotone graph transition",
-        "node relabeling equivariance, graph boundaries, and state shape",
-        "node/graph error, physical graph residual, and fixed-point residual",
-        "node count, edge count, feature width, and number of graphs",
-        "input projection, message field, global field, transition, pooling, and head",
-    )),
-    (("mdeq", "vision", "multiscale", "cortex", "architecture_catalog"), Curriculum(
-        "one image tensor per resolution or linked SILVA point",
-        "image features and per-scale source injections",
-        "shape-preserving convolutional, U-Net, attention, or multiscale fusion blocks",
-        "channel/spatial shape at every scale and deterministic fusion",
-        "task error, per-scale residuals, and gradient agreement",
-        "image resolution, channels, scales, internal depth, and batch size",
-        "stem, per-scale injections, transition blocks, links, task head, and solvers",
-    )),
-    (("sequence", "language", "music"), Curriculum(
-        "one latent vector per sequence position",
-        "tokens, embeddings, masks, and optional memory",
-        "a tied recurrent, convolutional, or attention transition",
-        "sequence length, causal masking, padding, and state width",
-        "token loss, perplexity or sequence metric, and fixed-point residual",
-        "vocabulary, context length, hidden width, heads, and memory length",
-        "embedding, positional source, transition, memory, readout, and solver",
-    )),
-    (("flow", "raft"), Curriculum(
-        "the flow field, optionally coupled to a recurrent hidden state",
-        "image features, correlation volumes, context, and initial flow",
-        "the tied correlation-conditioned refinement update",
-        "flow shape, coordinate convention, image resolution, and warping domain",
-        "endpoint error, warp error, correction loss, and fixed-point residual",
-        "image resolution, correlation radius/levels, hidden width, and solver budget",
-        "feature/context encoders, correlation, update block, transition, upsampler, and solver",
-    )),
-    (("distribution", "measure"), Curriculum(
-        "a masked set of latent particles",
-        "an empirical input measure and validity mask",
-        "a permutation-compatible particle transition and discrepancy descent",
-        "permutation equivariance, masks, variable cardinality, and finite particles",
-        "measure discrepancy, moment error, task error, and descent residual",
-        "particle count, latent width, pair chunk size, and batch cardinality",
-        "particle initializer, attention transition, discrepancy, descent rule, and readout",
-    )),
-    (("diffusion", "generative", "transformer"), Curriculum(
-        "a joint trajectory or equilibrium token/image state",
-        "noise, timestep, condition, one-time injection, or teacher target",
-        "a tied denoising or injected-attention transition",
-        "trajectory ordering, token/image shape, conditioning, and deterministic noise",
-        "teacher error, reconstruction/generation metric, and equilibrium residual",
-        "image size, token count, hidden width, heads, and sampling schedule",
-        "patch/noise source, injection blocks, transition, decoder, schedule, and solver",
-    )),
-    (("optimization", "projected_qp", "differentiable_optimization"), Curriculum(
-        "the primal variable and any dual or auxiliary state",
-        "objective coefficients and constraints",
-        "a projected, proximal, or primal-dual update",
-        "feasibility, domain projection, state shape, and optimality conditions",
-        "objective gap, feasibility residual, KKT residual, and gradient error",
-        "variable count, constraint count, conditioning, and linear-solver budget",
-        "objective operator, projector/proximal map, transition, solver, and readout",
-    )),
-    (("inr", "representation", "coordinate", "snarf"), Curriculum(
-        "one latent feature vector per coordinate",
-        "spatial, temporal, or spatiotemporal coordinates",
-        "a coordinate-injected recurrent field",
-        "coordinate shape, output domain, differentiability, and state width",
-        "signal error, coordinate-derivative error, and fixed-point residual",
-        "sample count, coordinate dimension, frequency scale, and hidden width",
-        "coordinate lift, recurrent transition, activation, readout, and solver",
-    )),
-    (("poisson", "mirror", "inverse"), Curriculum(
-        "a positive reconstruction",
-        "observed counts and forward/adjoint measurement operators",
-        "a Burg-geometry mirror transition with a learned or known regularizer",
-        "positivity, adjoint consistency, finite intensity, and box constraints",
-        "Poisson divergence, reconstruction error, data residual, and fixed-point residual",
-        "measurement count, image size, operator cost, and regularizer width",
-        "initializer, forward/adjoint operators, regularizer, mirror transition, and solver",
-    )),
-    (("physics_informed", "dae", "residual"), Curriculum(
-        "an implicit latent state or coupled differential/algebraic stage state",
-        "time, initial/boundary values, dynamics, and algebraic constraints",
-        "a time-conditioned fixed point or implicit Runge-Kutta root map",
-        "initial/boundary conditions, equation shape, and constraint consistency",
-        "equation residual, boundary error, trajectory error, and solver residual",
-        "collocation count, latent dimension, stages, stiffness, and time horizon",
-        "time/source lift, transition, readout, dynamics, constraints, losses, and solvers",
-    )),
+    (
+        ("solver", "contraction", "fixed_point", "original_deq", "diagnostic", "consistency_deq"),
+        Curriculum(
+            "the latent vector or tensor z",
+            "the injected observation x",
+            "the tied map f_theta(z, x)",
+            "state shape and a decreasing or bounded residual",
+            "distance to an analytic fixed point and final relative residual",
+            "latent width, solver tolerance, and iteration budget",
+            "transition, damping, stopping rule, backward solver, and readout",
+        ),
+    ),
+    (
+        ("jacobian", "implicit_gradient", "implicit_autodiff", "recent_theory", "jfb", "shine"),
+        Curriculum(
+            "the converged latent state z_star",
+            "differentiable parameters and external inputs",
+            "the map whose Jacobian defines I - J_z f",
+            "agreement of dense, JVP, VJP, and matrix-free products",
+            "adjoint residual and gradient error against explicit differentiation",
+            "state dimension and matrix-free linear-solver iterations",
+            "transition, Jacobian product, linear solver, regularizer, and loss",
+        ),
+    ),
+    (
+        ("bayesian",),
+        Curriculum(
+            "one equilibrium state for each posterior transition sample",
+            "the observed input, posterior parameters, sample seed, and optional warm start",
+            "a sampled parameter transition with a separately solved fixed point",
+            "sample/state shape, reproducible draws, contraction control, and finite predictive moments",
+            "task metric, posterior predictive variance, per-sample residual, and calibration metric",
+            "posterior sample count, state width, data size, solver budget, and accelerator count",
+            "posterior sampler, transition, initializer, warm-start policy, readout, and solver",
+        ),
+    ),
+    (
+        ("joint_inference", "joint-inference"),
+        Curriculum(
+            "a packed representation and optimized-input equilibrium",
+            "the observation, representation source, input objective, and constraints",
+            "a coupled representation update followed by a projected input update",
+            "packed-state dimensions, projection feasibility, and both block residuals",
+            "task metric, representation residual, optimized-input residual, and gradient agreement",
+            "representation width, optimized-input dimension, inner modules, and solver budget",
+            "representation transition, input update, projector, readout, initializer, and solver",
+        ),
+    ),
+    (
+        ("spatiotemporal",),
+        Curriculum(
+            "a physical field at each implicit time step",
+            "initial state, time increment, known dynamics, learned closure, and boundaries",
+            "an implicit theta-method residual solved at every time step",
+            "trajectory shape, initial state, boundary projection, and time-order consistency",
+            "trajectory error, physical residual, boundary error, and fixed-point residual",
+            "spatial resolution, horizon, time step, closure width, and per-step solver budget",
+            "known dynamics, learned closure, projector, time-step transition, readout, and solver",
+        ),
+    ),
+    (
+        ("certified", "certificate"),
+        Curriculum(
+            "a contractive equilibrium and its lower/upper interval states",
+            "the input box, class labels, affine parameters, activation, and contraction bound",
+            "a monotone interval transition coupled to the nominal equilibrium",
+            "ordered bounds, nominal-state containment, contraction, and output-margin semantics",
+            "task metric, fixed-point residual, bound width, certified margin, and certified rate",
+            "state width, perturbation radius, contraction bound, classes, and solver tolerance",
+            "nominal transition, interval propagator, readout, certificate backend, and solver",
+        ),
+    ),
+    (
+        ("evidence", "benchmarking", "experiment_pipeline", "protocol_statistics"),
+        Curriculum(
+            "the per-seed result record and aggregate evidence report",
+            "a fixed configuration, data receipt, seed list, acceptance checks, and resource tier",
+            "a deterministic experiment lifecycle whose outputs are fingerprinted and summarized",
+            "stable schemas, retained failures, deterministic fingerprints, and declared evidence level",
+            "task metric distribution, residuals, confidence interval, runtime, memory, and failures",
+            "seed count, repetitions, bootstrap samples, data scale, and resource allocation",
+            "trial function, metric summary, lifecycle hooks, protocol tier, artifact writer, and validator",
+        ),
+    ),
+    (
+        ("ode", "homotopy"),
+        Curriculum(
+            "the evolving or terminal physical state",
+            "time, initial condition, and external forcing",
+            "an explicit flow step or residual field T(z, x) - z",
+            "time-step shape, initial condition, and integration consistency",
+            "trajectory error, terminal fixed-point residual, and conservation error",
+            "time horizon, step count, state dimension, and stiffness",
+            "vector field, integrator, equilibrium transition, readout, and tolerances",
+        ),
+    ),
+    (
+        ("pde", "neural_operator", "fno", "ifno", "therino", "scientific"),
+        Curriculum(
+            "a sampled solution field on a grid or mesh",
+            "coefficient, forcing, boundary, and coordinate fields",
+            "a tied local/spectral/operator field with source reinjection",
+            "spatial shape, boundary conditions, and resolution semantics",
+            "solution error, PDE residual, boundary error, and fixed-point residual",
+            "resolution, retained modes, channels, domain size, and dataset size",
+            "lifting map, spectral/local operator, physics field, readout, and solver",
+        ),
+    ),
+    (
+        (
+            "message_passing",
+            "graph",
+            "psi_gnn",
+            "mesh_inference",
+            "node_benchmark",
+            "molecular",
+            "zinc",
+        ),
+        Curriculum(
+            "one latent vector per node or entity",
+            "node features, edges, edge attributes, and graph batches",
+            "a source-injected graph message or monotone graph transition",
+            "node relabeling equivariance, graph boundaries, and state shape",
+            "node/graph error, physical graph residual, and fixed-point residual",
+            "node count, edge count, feature width, and number of graphs",
+            "input projection, message field, global field, transition, pooling, and head",
+        ),
+    ),
+    (
+        ("mdeq", "vision", "multiscale", "cortex", "architecture_catalog"),
+        Curriculum(
+            "one image tensor per resolution or linked SILVA point",
+            "image features and per-scale source injections",
+            "shape-preserving convolutional, U-Net, attention, or multiscale fusion blocks",
+            "channel/spatial shape at every scale and deterministic fusion",
+            "task error, per-scale residuals, and gradient agreement",
+            "image resolution, channels, scales, internal depth, and batch size",
+            "stem, per-scale injections, transition blocks, links, task head, and solvers",
+        ),
+    ),
+    (
+        ("sequence", "language", "music"),
+        Curriculum(
+            "one latent vector per sequence position",
+            "tokens, embeddings, masks, and optional memory",
+            "a tied recurrent, convolutional, or attention transition",
+            "sequence length, causal masking, padding, and state width",
+            "token loss, perplexity or sequence metric, and fixed-point residual",
+            "vocabulary, context length, hidden width, heads, and memory length",
+            "embedding, positional source, transition, memory, readout, and solver",
+        ),
+    ),
+    (
+        ("flow", "raft"),
+        Curriculum(
+            "the flow field, optionally coupled to a recurrent hidden state",
+            "image features, correlation volumes, context, and initial flow",
+            "the tied correlation-conditioned refinement update",
+            "flow shape, coordinate convention, image resolution, and warping domain",
+            "endpoint error, warp error, correction loss, and fixed-point residual",
+            "image resolution, correlation radius/levels, hidden width, and solver budget",
+            "feature/context encoders, correlation, update block, transition, upsampler, and solver",
+        ),
+    ),
+    (
+        ("distribution", "measure"),
+        Curriculum(
+            "a masked set of latent particles",
+            "an empirical input measure and validity mask",
+            "a permutation-compatible particle transition and discrepancy descent",
+            "permutation equivariance, masks, variable cardinality, and finite particles",
+            "measure discrepancy, moment error, task error, and descent residual",
+            "particle count, latent width, pair chunk size, and batch cardinality",
+            "particle initializer, attention transition, discrepancy, descent rule, and readout",
+        ),
+    ),
+    (
+        ("diffusion", "generative", "transformer"),
+        Curriculum(
+            "a joint trajectory or equilibrium token/image state",
+            "noise, timestep, condition, one-time injection, or teacher target",
+            "a tied denoising or injected-attention transition",
+            "trajectory ordering, token/image shape, conditioning, and deterministic noise",
+            "teacher error, reconstruction/generation metric, and equilibrium residual",
+            "image size, token count, hidden width, heads, and sampling schedule",
+            "patch/noise source, injection blocks, transition, decoder, schedule, and solver",
+        ),
+    ),
+    (
+        ("quantum", "qdeq"),
+        Curriculum(
+            "the measured circuit feature vector z",
+            "encoded classical features and optional circuit condition",
+            "a feature-injected quantum circuit followed by real-valued measurements",
+            "wire count, encoding width, measurement shape, normalization, and differentiability",
+            "task error, fixed-point residual, circuit evaluations, and gradient variance",
+            "wire count, statevector or shot budget, circuit depth, and solver evaluations",
+            "image filter, input adapter, circuit backend, measurement map, readout, and solver",
+        ),
+    ),
+    (
+        ("optimization", "projected_qp", "differentiable_optimization"),
+        Curriculum(
+            "the primal variable and any dual or auxiliary state",
+            "objective coefficients and constraints",
+            "a projected, proximal, or primal-dual update",
+            "feasibility, domain projection, state shape, and optimality conditions",
+            "objective gap, feasibility residual, KKT residual, and gradient error",
+            "variable count, constraint count, conditioning, and linear-solver budget",
+            "objective operator, projector/proximal map, transition, solver, and readout",
+        ),
+    ),
+    (
+        ("inr", "representation", "coordinate", "snarf"),
+        Curriculum(
+            "one latent feature vector per coordinate",
+            "spatial, temporal, or spatiotemporal coordinates",
+            "a coordinate-injected recurrent field",
+            "coordinate shape, output domain, differentiability, and state width",
+            "signal error, coordinate-derivative error, and fixed-point residual",
+            "sample count, coordinate dimension, frequency scale, and hidden width",
+            "coordinate lift, recurrent transition, activation, readout, and solver",
+        ),
+    ),
+    (
+        ("poisson", "mirror", "inverse"),
+        Curriculum(
+            "a positive reconstruction",
+            "observed counts and forward/adjoint measurement operators",
+            "a Burg-geometry mirror transition with a learned or known regularizer",
+            "positivity, adjoint consistency, finite intensity, and box constraints",
+            "Poisson divergence, reconstruction error, data residual, and fixed-point residual",
+            "measurement count, image size, operator cost, and regularizer width",
+            "initializer, forward/adjoint operators, regularizer, mirror transition, and solver",
+        ),
+    ),
+    (
+        ("physics_informed", "dae", "residual"),
+        Curriculum(
+            "an implicit latent state or coupled differential/algebraic stage state",
+            "time, initial/boundary values, dynamics, and algebraic constraints",
+            "a time-conditioned fixed point or implicit Runge-Kutta root map",
+            "initial/boundary conditions, equation shape, and constraint consistency",
+            "equation residual, boundary error, trajectory error, and solver residual",
+            "collocation count, latent dimension, stages, stiffness, and time horizon",
+            "time/source lift, transition, readout, dynamics, constraints, losses, and solvers",
+        ),
+    ),
     (("dataset", "preliminaries", "quickstart", "public_experiment", "training"), GENERIC),
 )
 
@@ -214,10 +335,7 @@ def _normalize_reader_text(notebook: dict[str, object]) -> None:
                 source = source.replace(
                     "    SolverConfig,\n    SolverConfig,\n", "    SolverConfig,\n"
                 )
-            if (
-                "    picard,\n    anderson," in source
-                and "    SolverConfig," not in source
-            ):
+            if "    picard,\n    anderson," in source and "    SolverConfig," not in source:
                 source = source.replace(
                     "    picard,\n    anderson,",
                     "    SolverConfig,\n    picard,\n    anderson,",
@@ -1041,9 +1159,7 @@ def _diagnostic_label(path: Path) -> str:
     return "transition feedback factor"
 
 
-def _markdown_diagnostic_study(
-    path: Path, curriculum: Curriculum, label: str
-) -> str:
+def _markdown_diagnostic_study(path: Path, curriculum: Curriculum, label: str) -> str:
     return rf"""
 ## Worked Convergence and Sensitivity Study
 
@@ -1099,7 +1215,7 @@ transition.
 
 
 def _code_diagnostic_table(label: str) -> str:
-    return f'''
+    return f"""
 import math as silva_deepening_math
 import torch as silva_deepening_torch
 
@@ -1158,11 +1274,11 @@ for silva_deepening_row in silva_deepening_rows:
 assert all(row[2] < silva_deepening_tolerance for row in silva_deepening_rows)
 assert all(row[3] < 1e-6 for row in silva_deepening_rows)
 assert all(row[5] < 1e-6 for row in silva_deepening_rows)
-'''
+"""
 
 
 def _code_diagnostic_figure(label: str) -> str:
-    return f'''
+    return f"""
 import matplotlib.pyplot as silva_deepening_plt
 
 silva_deepening_plt.rcParams.update({{"figure.dpi": 300, "savefig.dpi": 300}})
@@ -1206,7 +1322,7 @@ silva_deepening_sensitivity_axis.set_ylabel("implicit sensitivity", color="tab:r
 silva_deepening_axes[1].set_title("Cost and sensitivity")
 silva_deepening_figure.tight_layout()
 silva_deepening_plt.show()
-'''
+"""
 
 
 def _markdown_diagnostic_interpretation(curriculum: Curriculum, label: str) -> str:
@@ -1292,13 +1408,31 @@ def _canonical_notebooks() -> list[Path]:
     bridge = sorted((ROOT / "notebooks/implicit_bridge").glob("*.ipynb"))
     book = sorted((ROOT / "notebooks").glob("*.ipynb"))
     notebooks = package + bridge + book
-    if len(notebooks) != 82:
-        raise RuntimeError(f"expected 82 canonical notebooks, found {len(notebooks)}")
+    if len(notebooks) != 109:
+        raise RuntimeError(f"expected 109 canonical notebooks, found {len(notebooks)}")
     return notebooks
 
 
-def main() -> int:
-    for path in _canonical_notebooks():
+def _selected_notebooks(items: list[str]) -> list[Path]:
+    if not items:
+        return _canonical_notebooks()
+    selected = [(ROOT / item).resolve() for item in items]
+    missing = [path for path in selected if not path.exists()]
+    if missing:
+        raise FileNotFoundError(f"notebook not found: {missing[0]}")
+    return selected
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "notebooks",
+        nargs="*",
+        help="canonical notebook paths; omit to expand all 109 notebooks",
+    )
+    args = parser.parse_args(argv)
+    paths = _selected_notebooks(args.notebooks)
+    for path in paths:
         notebook = expand_notebook(path)
         _write(path, notebook)
         if path.parent.name == "package_api":
@@ -1307,7 +1441,10 @@ def main() -> int:
         elif path.parent.name == "implicit_bridge":
             _write(ROOT / "docs/implicit-bridge-notebooks" / path.name, notebook)
             _write(ROOT / "colab/implicit_bridge" / path.name, notebook)
-    print("expanded 82 canonical notebooks and synchronized publication mirrors")
+    print(
+        f"expanded {len(paths)} canonical notebook(s) "
+        "and synchronized publication mirrors"
+    )
     return 0
 
 

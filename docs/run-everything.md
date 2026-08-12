@@ -173,7 +173,17 @@ The package API track:
 | [RAFT and DEQ-Flow](package-notebooks/13_raft_deq_flow.ipynb) | coupled hidden/flow state, exact implicit gradients, corrections, upsampling, and reuse |
 | [Point Architecture Catalog](package-notebooks/14_point_architecture_catalog.ipynb) | ten internal architectures plus composition inside one point and across linked points |
 | [Neural Operators, ODEs, and PDEs](package-notebooks/15_neural_operators_ode_pde.ipynb) | ODE trajectories, implicit PDE steps, reaction-diffusion, Burgers, variable-coefficient learning, Fourier fields, graph PDEs, and separate numerical/physical diagnostics |
-| [Full-Scale SILVA Families](package-notebooks/26_full_scale_silva.ipynb) | all 44 routes, dense/scalable equivalence checks, lazy shards, trained Fourier equilibrium, checkpoint resume, and extension contracts |
+| [Frontier Equilibrium Families](package-notebooks/16_frontier_equilibrium_families.ipynb) | Fourier, graph-physics, homotopy, distributional, linked, and trained compact cases |
+| [FNO Equilibrium Lab](package-notebooks/17_silva_fno_equilibrium_lab.ipynb) | periodic elliptic data, coefficient-to-field learning, errors, and resolution transfer |
+| [Graph Transport Lab](package-notebooks/18_silva_graph_transport_lab.ipynb) | graph convection-diffusion fields, training, residuals, and relabeling |
+| [Homotopy Equilibrium Lab](package-notebooks/19_silva_homotopy_equilibrium_lab.ipynb) | analytic paths, horizon controls, integration, and terminal roots |
+| [Distributional Equilibrium Lab](package-notebooks/20_silva_distributional_equilibrium_lab.ipynb) | variable measures, MMD, energy distance, and permutation behavior |
+| [Monotone Graph Equilibrium](package-notebooks/21_silva_monotone_graph_equilibrium.ipynb) | constrained graph channels, splitting, certificates, and training |
+| [Generative Equilibrium Transformer](package-notebooks/22_silva_generative_equilibrium_transformer.ipynb) | one-time injection, token equilibrium, teacher matching, and conditioning |
+| [Poisson Mirror Equilibrium](package-notebooks/23_silva_poisson_mirror_equilibrium.ipynb) | positive observations, Burg mirror updates, KL geometry, and learned regularization |
+| [Physics-Informed Equilibrium](package-notebooks/24_silva_physics_informed_equilibrium.ipynb) | implicit time derivatives, physics objectives, training, and stiff scaling |
+| [Implicit DAE and Residuals](package-notebooks/25_silva_implicit_dae_and_residuals.ipynb) | Runge-Kutta stages, Newton-Krylov roots, constraints, and residual objectives |
+| [Full-Scale SILVA Families](package-notebooks/26_full_scale_silva.ipynb) | all 64 routes, dense/scalable equivalence checks, lazy shards, trained Fourier equilibrium, checkpoint resume, and extension contracts |
 | [Reproducing SILVA and Source Methods](package-notebooks/27_reproducing_silva_and_source_methods.ipynb) | source-aware registry audit, constructor inspection, custom family construction, joint diffusion restoration, and structured run records |
 | [SILVA Consistency DEQ](package-notebooks/28_silva_consistency_deq.ipynb) | teacher trajectories, terminal anchoring, consistency loss, and one/few-step inference |
 | [SILVA Psi-GNN](package-notebooks/29_silva_psi_gnn.ipynb) | mixed boundaries, typed graph messages, Poisson residuals, and compact training |
@@ -189,6 +199,16 @@ The package API track:
 | [SILVA Efficient Infinite Graph](package-notebooks/39_silva_efficient_infinite_graph.ipynb) | spectral/iterative solves and source-indexed Cora masks |
 | [SILVA Multiscale Graph Implicit Network](package-notebooks/40_silva_multiscale_graph_implicit.ipynb) | graph-power equilibria and Cora scale allocation |
 | [SILVA Delta Equilibrium](package-notebooks/41_silva_delta_equilibrium.ipynb) | cached updates and real-video activity diagnostics |
+| [Family Reproduction Dossiers](package-notebooks/42_family_reproduction_dossiers.ipynb) | all family records, source obligations, scale plans, and claim boundaries |
+| [Cross-Family Vector Benchmark](package-notebooks/43_cross_family_vector_benchmark.ipynb) | controlled vector-family accuracy, residual, gradient, and runtime comparisons |
+| [Cross-Family Graph Benchmark](package-notebooks/44_cross_family_graph_benchmark.ipynb) | graph-family comparisons on aligned tensors, masks, and metrics |
+| [Cross-Family Field Benchmark](package-notebooks/45_cross_family_field_benchmark.ipynb) | field-family comparisons with matched grids, budgets, and diagnostics |
+| [Extension Builder Workshop](package-notebooks/46_extension_builder_workshop.ipynb) | custom transition, registry, dossier, tests, documentation, and scaling route |
+| [Failure Diagnostics Workshop](package-notebooks/47_failure_diagnostics_workshop.ipynb) | solver failures, residual histories, stability checks, and recovery decisions |
+| [Learned Equilibrium Solvers](package-notebooks/48_silva_learned_solvers.ipynb) | learned initialization, Anderson coefficients, distillation, field replacement, and source scaling |
+| [JFB and SHINE Backward Methods](package-notebooks/49_jfb_shine_backward_methods.ipynb) | exact adjoints, JFB, shared Broyden inverses, refinement, and gradient comparison |
+| [Quantum Deep Equilibrium Model](package-notebooks/50_silva_quantum_deq.ipynb) | measured circuits, encoding, direct/implicit training, images, Jacobians, and source datasets |
+| [Equilibrium Expansion Atlas](package-notebooks/51_equilibrium_expansion_atlas.ipynb) | solver, backward, monotone, diffusion, physics-informed, and circuit axes in one experiment map |
 
 The implicit bridge track:
 
@@ -388,10 +408,10 @@ python scripts/run_notebook_smoke.py --all --inplace --timeout 300
 python scripts/sync_notebook_outputs.py
 ```
 
-The all-notebook run executes 82 independent notebooks once each. Documentation
+The all-notebook run executes 109 independent notebooks once each. Documentation
 and portable copies receive the canonical execution counts and outputs without
 replacing their reader-facing citation and navigation cells. The committed
-set contains 946 executed code cells, 906 output blocks, and 216 embedded
+set contains 1,112 executed code cells, 1,060 output blocks, and 251 embedded
 300-dpi figures.
 
 To rebuild the additive worked-example and notebook learning layers before

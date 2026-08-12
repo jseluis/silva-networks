@@ -122,17 +122,71 @@ _EQUATIONS: dict[str, str] = {
     "silva_positive_concave_equilibrium": (
         "z_star=phi(W_positive z_star+s_positive(x)); W_positive>=0"
     ),
-    "silva_non_euclidean_equilibrium": (
-        "z_star=phi(A z_star+B x+b); mu_infinity,D(A)<1"
-    ),
-    "silva_efficient_infinite_graph": (
-        "Z_star=gamma S^T Z_star g(F)^T+X; g(F)=F^T F/||F^T F||_F"
-    ),
+    "silva_non_euclidean_equilibrium": ("z_star=phi(A z_star+B x+b); mu_infinity,D(A)<1"),
+    "silva_efficient_infinite_graph": ("Z_star=gamma S^T Z_star g(F)^T+X; g(F)=F^T F/||F^T F||_F"),
     "silva_multiscale_graph_implicit": (
         "Z_m_star=gamma S^m Z_m_star g(F_m)^T+X; Z=sum_m beta_m(Z_m_star)Z_m_star"
     ),
-    "silva_delta_equilibrium": (
-        "c_k=c_(k-1)+W mask(|z_k-z_(k-1)|>tau)(z_k-z_(k-1))"
+    "silva_delta_equilibrium": ("c_k=c_(k-1)+W mask(|z_k-z_(k-1)|>tau)(z_k-z_(k-1))"),
+    "silva_hyper_deq": (
+        "z_0=h_phi(x); alpha_k,beta_k=H_phi(r_(k-m+1:k),x); "
+        "z_(k+1)=beta_k sum_i alpha_(k,i) f(z_i,x)+(1-beta_k) sum_i alpha_(k,i) z_i"
+    ),
+    "silva_quantum_deq": ("z_star=Measure(U_theta(Encode(z_star+S(x)))); y_hat=Q(z_star)"),
+    "silva_bayesian_deq": (
+        "theta_s~q_phi(theta); z_s_star=T_theta_s(z_s_star,x); p(y|x)=S^{-1} sum_s p(y|z_s_star)"
+    ),
+    "silva_joint_inference_equilibrium": (
+        "(z_star,u_star)=(T_theta(z_star,u_star,y), "
+        "Projection_C(u_star-eta g_phi(u_star,z_star,y)))"
+    ),
+    "silva_implicit_spatiotemporal": ("u_(n+1)=u_n+dt[(1-theta)F(u_n,c_n)+theta F(u_(n+1),c_n)]"),
+    "silva_certified_equilibrium": (
+        "z_star=phi(W z_star+U x+b), ||W||_infinity<1; "
+        "[z_lower,z_upper]=IBP_fixed_point([x_lower,x_upper])"
+    ),
+    "silva_lipschitz_mdeq": (
+        "z_star=tanh(S_theta(x)+W_hat z_star), ||W_hat||_infinity<=rho<1; "
+        "z_star=concat(z_star[1],...,z_star[R])"
+    ),
+    "silva_subhomogeneous_equilibrium": (
+        "z_star=norm_p((tanh(W z_star)+f_theta(x)+a)^q), a>1, 0<q<=1"
+    ),
+    "silva_algorithmic_reasoner": (
+        "h_v_star=tanh(E(x_v)+rho mean_(u,v) M_theta(h_u_star,h_v_star))"
+    ),
+    "silva_hamiltonian_equilibrium": (
+        "H_star=sym(Phi_theta(features, pairwise_distances)+gamma tanh(H_star))"
+    ),
+    "silva_inverse_imaging_equilibrium": (
+        "x_star=D_theta(x_star-eta A^T(A x_star-y))"
+    ),
+    "silva_snapshot_compressive_equilibrium": (
+        "v_star=D_theta(v_star+eta Phi^T(Phi Phi^T)^-1(y-Phi v_star))"
+    ),
+    "silva_magnetic_particle_equilibrium": (
+        "(x_star,z_d_star,z_p_star,d_d_star,d_p_star)=T_ADMM_theta(.,y,A)"
+    ),
+    "silva_sparse_hyperspectral_equilibrium": (
+        "c_star=soft_threshold(c_star-eta D_a(D_s c_star-y)+lambda D_a P_theta(D_s c_star))"
+    ),
+    "silva_serialized_smoothing_equilibrium": (
+        "z_i_star=T_theta(z_i_star,x+sigma epsilon_i), z_i^(0)=stopgrad(z_(i-1)_star)"
+    ),
+    "silva_diffusion_restoration_equilibrium": (
+        "X_star=T_theta(X_star,y,mask,noise), X_star=(x_T_star,...,x_0_star)"
+    ),
+    "silva_recurrent_equilibrium_network": (
+        "w_t_star=phi(D11 w_t_star+C1 x_t+D12 u_t); x_(t+1)=A x_t+B1 w_t_star+B2 u_t"
+    ),
+    "silva_lipschitz_robust_equilibrium": (
+        "z_star=tanh(W_bar z_star+U_bar x+b), Lip(Q o z_star)<=L_Q L_U/(1-L_W)"
+    ),
+    "silva_image_matting_equilibrium": (
+        "alpha_star=Project_trimap(sigmoid(R_theta(alpha_star,E_theta(image,trimap))))"
+    ),
+    "silva_dynamic_economic_equilibrium": (
+        "c_t+k_(t+1)=resources(s_t); u'(c_t)=beta E[u'(c_(t+1)) R_(t+1)]"
     ),
 }
 
@@ -522,6 +576,268 @@ _SOURCE_DETAILS: dict[
             "task metric, active fraction, exact residual, latency, memory traffic, and source baseline",
         ),
     ),
+    "silva_hyper_deq": (
+        (
+            "learned condition-to-state initialization and learned Anderson coefficients/mixing",
+            "high-precision teacher equilibrium and weighted trajectory supervision",
+        ),
+        (
+            "replace every task module while retaining one learned-solver contract",
+            "inspect every coefficient, mixing value, state, and residual in the accelerated path",
+        ),
+        (
+            "source task model/checkpoint, teacher solver budget, training split, latency protocol, and task metric",
+        ),
+    ),
+    "silva_quantum_deq": (
+        (
+            "feature injection, repeated quantum-circuit measurement, and fixed-point solving",
+            "direct, warmup, and implicit training routes with Jacobian regularization",
+        ),
+        (
+            "replace the circuit backend while preserving measured state and solver contracts",
+            "inspect circuit, fixed-point, gradient, and task diagnostics independently",
+        ),
+        (
+            "source dataset split, wire count, encoding, circuit seed, solver budgets, schedule, and task metric",
+        ),
+    ),
+    "silva_bayesian_deq": (
+        (
+            "posterior-sampled transition parameters and one equilibrium per sample",
+            "sequential warm starts across nearby posterior samples",
+            "predictive mean, variance, and posterior regularization",
+        ),
+        (
+            "replace the posterior transition, sampler, root solver, or task readout",
+            "compare independent and sequential inference under an identical sample order",
+        ),
+        (
+            "source dataset, posterior parameterization, sample count, solver budget, optimizer, seeds, calibration and task metrics",
+        ),
+    ),
+    "silva_joint_inference_equilibrium": (
+        (
+            "one augmented fixed point jointly updates representation and optimized input",
+            "projection-compatible input update and independently replaceable representation branch",
+        ),
+        (
+            "supply inverse-problem, latent inversion, adversarial, or meta-learning updates",
+            "inspect state and optimized-input residuals separately",
+        ),
+        (
+            "source task, initialization, objective, projection, model checkpoint, solver, optimizer, seeds, and task metric",
+        ),
+    ),
+    "silva_implicit_spatiotemporal": (
+        (
+            "implicit theta-method steps with additive known and learned physical dynamics",
+            "replaceable boundary projection and decoded trajectory readout",
+        ),
+        (
+            "supply grid, spectral, finite-volume, graph, or custom differentiable dynamics",
+            "change time step, implicitness, horizon, closure, and checkpoint segmentation independently",
+        ),
+        (
+            "governing PDE, discretization, initial/boundary data, source split, horizon, solver tolerances, optimizer, seeds, trajectory metrics, runtime, and memory",
+        ),
+    ),
+    "silva_certified_equilibrium": (
+        (
+            "contractive affine equilibrium with a monotone activation",
+            "coupled lower/upper interval fixed point and signed-affine output bounds",
+            "exportable ReLU affine system for semialgebraic certificate programs",
+        ),
+        (
+            "replace bounded source, state operator, activation, readout, or certificate backend",
+            "report natural and certified accuracy as separate metrics",
+        ),
+        (
+            "source dataset, perturbation norm/radius, contraction parameterization, bound solver, training schedule, seeds, natural accuracy, certified accuracy, and certificate runtime",
+        ),
+    ),
+    "silva_lipschitz_mdeq": (
+        (
+            "simultaneous multiscale state packed into one fixed point",
+            "explicitly bounded recurrent cross-scale map and inspectable branch states",
+        ),
+        (
+            "replace injection, cross-scale operator, branch dimensions, readout, or solver",
+            "retain the measured contraction while introducing convolutional scale adapters",
+        ),
+        (
+            "source image task, scale graph, Lipschitz target, augmentation, optimizer, solver, seeds, accuracy/segmentation metric, runtime, and memory",
+        ),
+    ),
+    "silva_subhomogeneous_equilibrium": (
+        (
+            "translated positive transition, configurable subhomogeneity degree, and p-normalization",
+            "strictly positive normalized states without a contraction requirement",
+        ),
+        (
+            "replace the positive input map, state map, norm, power, readout, or solver",
+            "compare finite-p and infinity-normalized variants under identical data",
+        ),
+        (
+            "source task, transition variant, normalization order, translation, power, optimizer, solver, seeds, and task metric",
+        ),
+    ),
+    "silva_algorithmic_reasoner": (
+        (
+            "encode-process-decode graph reasoning with a solved processor state",
+            "shared message processor and graph-size-independent equilibrium depth",
+        ),
+        (
+            "replace encoders, message functions, hint decoders, output heads, or root solver",
+            "add individual CLRS algorithm specifications without changing the equilibrium interface",
+        ),
+        (
+            "CLRS task/version, graph generator, train/evaluation sizes, hint schedule, processor, solver, optimizer, seeds, and official metric",
+        ),
+    ),
+    "silva_hamiltonian_equilibrium": (
+        (
+            "self-consistent symmetric Hamiltonian updated from invariant pair geometry",
+            "replaceable molecular interaction backbone and explicit self-consistency gain",
+        ),
+        (
+            "insert equivariant orbital features, block-sparse heads, overlap matrices, or spectral losses",
+            "retain symmetry and coordinate-invariance tests as the backbone grows",
+        ),
+        (
+            "dataset revision, species/orbital basis, geometry units, split, equivariant backbone, loss, solver, seeds, Hamiltonian and spectral metrics",
+        ),
+    ),
+    "silva_inverse_imaging_equilibrium": (
+        (
+            "known forward/adjoint data consistency followed by a learned image prior",
+            "shape-preserving reconstruction fixed point with independent operator and prior modules",
+        ),
+        (
+            "replace sensing, adjoint, prior, step rule, projection, or solver",
+            "support matrix-free MRI, tomography, blur, super-resolution, and compressive operators",
+        ),
+        (
+            "dataset, degradation operator and parameters, split, normalization, prior checkpoint, solver, optimizer, seeds, PSNR/SSIM, runtime, and memory",
+        ),
+    ),
+    "silva_snapshot_compressive_equilibrium": (
+        (
+            "coded snapshot measurement and analytic mask-adjoint correction",
+            "volumetric learned prior over the reconstructed frame stack",
+        ),
+        (
+            "replace masks, data-consistency gain, 3D prior, temporal representation, or solver",
+            "run calibrated real masks or generated mask ensembles through the same transition contract",
+        ),
+        (
+            "video set, mask files/checksums, frame grouping, crop protocol, prior architecture, optimizer, solver, seeds, PSNR/SSIM, runtime, and memory",
+        ),
+    ),
+    "silva_magnetic_particle_equilibrium": (
+        (
+            "packed primal, split-variable, and dual state for a learned ADMM equilibrium",
+            "known system matrix with independently learned prior and data-consistency maps",
+        ),
+        (
+            "replace calibrated matrix multiplication with matrix-free operators",
+            "replace the regularizer, learned consistency, penalty schedule, splitting, or readout",
+        ),
+        (
+            "OpenMPIData revision, system-matrix calibration, frequency selection, normalization, split, ADMM settings, optimizer, seeds, image metric, runtime, and memory",
+        ),
+    ),
+    "silva_sparse_hyperspectral_equilibrium": (
+        (
+            "analysis/synthesis dictionaries, sparse shrinkage, and learned spectral-spatial prior",
+            "equilibrium solved in the latent sparse-code space",
+        ),
+        (
+            "replace dictionaries, threshold, shrinkage, cube prior, noise model, or solver",
+            "add low-rank, nonlocal, transformer, or wavelength-aware proximal maps",
+        ),
+        (
+            "dataset revision, wavelength bands, noise process, crop/split, dictionary widths, optimizer, solver, seeds, PSNR/SSIM/SAM, runtime, and memory",
+        ),
+    ),
+    "silva_serialized_smoothing_equilibrium": (
+        (
+            "Gaussian smoothing samples solved sequentially with equilibrium warm starts",
+            "class-count confidence lower bound and certified-radius calculation",
+        ),
+        (
+            "replace classifier, noise law, confidence interval, sample order, cache, or solver",
+            "measure certificate agreement and iteration savings against independent solves",
+        ),
+        (
+            "classifier checkpoint, dataset split, noise scale, sample counts, confidence rule, serialization order, seeds, certified accuracy, abstention, runtime, and memory",
+        ),
+    ),
+    "silva_diffusion_restoration_equilibrium": (
+        (
+            "joint state containing the complete reverse restoration trajectory",
+            "hard observation projection at every solved trajectory component",
+        ),
+        (
+            "replace denoiser, degradation model, schedule, trajectory coupling, partition, or solver",
+            "warm-start neighboring degradations and compare sequential versus joint inference",
+        ),
+        (
+            "dataset, degradation and mask protocol, diffusion checkpoint, schedule, solver, seeds, PSNR/SSIM/LPIPS, sampling time, and memory",
+        ),
+    ),
+    "silva_recurrent_equilibrium_network": (
+        (
+            "dynamic state recurrence with an algebraic equilibrium at each time index",
+            "bounded algebraic map and independently inspectable state/equilibrium/output trajectories",
+        ),
+        (
+            "replace dynamic matrices, algebraic map, input coupling, readout, or per-step solver",
+            "use structured state-space, control, identification, or physics-informed modules",
+        ),
+        (
+            "sequence dataset, sampling interval, state normalization, initialization, horizon, optimizer, solver, seeds, rollout metric, stability, runtime, and memory",
+        ),
+    ),
+    "silva_lipschitz_robust_equilibrium": (
+        (
+            "bounded recurrent, input, and readout maps with an explicit global constant",
+            "margin-derived input certificate and selectable structured parameterization",
+        ),
+        (
+            "select LBEN, orthogonal, sandwich, or coupled maps",
+            "replace bounded modules, activation, readout, attack, or certificate evaluator",
+        ),
+        (
+            "dataset, normalization, architecture, parameterization, target bound, threat model, optimizer, solver, seeds, clean/robust/certified accuracy, runtime, and memory",
+        ),
+    ),
+    "silva_image_matting_equilibrium": (
+        (
+            "image/trimap encoder, recurrent alpha refiner, and exact known-region projection",
+            "solved unknown-region alpha matte with independently replaceable modules",
+        ),
+        (
+            "replace encoder, refiner, trimap thresholds, composition branch, losses, or solver",
+            "add multiscale crops, foreground prediction, and full-resolution refinement",
+        ),
+        (
+            "matting dataset/version, foreground/background composition, trimap generation, crop split, losses, optimizer, solver, seeds, SAD/MSE/gradient/connectivity metrics",
+        ),
+    ),
+    "silva_dynamic_economic_equilibrium": (
+        (
+            "feasible policy shares satisfying the resource equation by construction",
+            "differentiable Euler-equation residuals for label-free simulated-state training",
+        ),
+        (
+            "replace utility, production, shocks, policy network, expectations, constraints, or equilibrium conditions",
+            "extend from stochastic growth to heterogeneous-agent and multi-country systems",
+        ),
+        (
+            "economic model equations/parameters, shock process, state domain, simulation and quadrature rules, optimizer, seeds, Euler/residual errors, policy comparison, runtime, and memory",
+        ),
+    ),
 }
 
 _DATASETS: dict[str, tuple[str, ...]] = {
@@ -635,6 +951,19 @@ _DATASETS: dict[str, tuple[str, ...]] = {
         "KITTI",
         "compact heterogeneous-rate equilibria",
     ),
+    "silva_hyper_deq": (
+        "WikiText-103",
+        "ImageNet",
+        "Cityscapes",
+        "compact contractive teacher trajectories",
+    ),
+    "silva_quantum_deq": (
+        "MNIST-4",
+        "MNIST",
+        "Fashion-MNIST",
+        "CIFAR-10",
+        "compact exact-statevector classification",
+    ),
 }
 
 _DATA_SOURCES: dict[str, tuple[str, ...]] = {
@@ -692,6 +1021,20 @@ _DATA_SOURCES: dict[str, tuple[str, ...]] = {
     "silva_delta_equilibrium": (
         "https://papers.nips.cc/paper_files/paper/2024/hash/69f5b860d6dc469ac6e52f03866b73c4-Abstract-Conference.html",
         "https://github.com/ZuowenWang0000/Delta-Deep-Equilibrium-Models",
+    ),
+    "silva_hyper_deq": (
+        "https://openreview.net/forum?id=B0oHOwT5ENL",
+        "https://github.com/locuslab/deq",
+        "https://www.salesforce.com/blog/the-wikitext-long-term-dependency-language-modeling-dataset/",
+        "https://www.image-net.org/",
+        "https://www.cityscapes-dataset.com/",
+    ),
+    "silva_quantum_deq": (
+        "https://arxiv.org/abs/2410.23940",
+        "https://github.com/martaskrt/qdeq",
+        "https://yann.lecun.com/exdb/mnist/",
+        "https://github.com/zalandoresearch/fashion-mnist",
+        "https://www.cs.toronto.edu/~kriz/cifar.html",
     ),
 }
 
@@ -753,6 +1096,15 @@ _DATA_ACCESS: dict[str, tuple[str, ...]] = {
         "FlyingChairs, Sintel, and KITTI retain their own download and evaluation terms.",
         "Store the base checkpoint separately from delta thresholds and report whether the evaluation route uses warm starts or cached states.",
     ),
+    "silva_hyper_deq": (
+        "WikiText-103 is publicly distributed under its stated terms; ImageNet and Cityscapes require their respective registrations and licenses.",
+        "Record the task checkpoint, teacher-solver revision, cached trajectory indices, preprocessing, split, and learned-controller checkpoint independently.",
+    ),
+    "silva_quantum_deq": (
+        "MNIST, Fashion-MNIST, and CIFAR-10 have established public acquisition routes under their stated terms.",
+        "MNIST-4 is a declared four-class subset rather than a separate archive; preserve the chosen classes, split indices, resizing, channel conversion, and normalization.",
+        "Record the circuit backend and version, encoding, wire ordering, fixed-circuit seed, gate pattern, measurement type, and shot count or exact-statevector setting.",
+    ),
 }
 
 _STORAGE_PLANS: dict[str, tuple[str, ...]] = {
@@ -812,6 +1164,16 @@ _STORAGE_PLANS: dict[str, tuple[str, ...]] = {
         "The cache stores one previous state and one recurrent output per wrapped operator in addition to the ordinary solver state.",
         "For image or flow evaluation, log activity summaries rather than full boolean masks unless a detailed profiling shard is required.",
     ),
+    "silva_hyper_deq": (
+        "Teacher-cache bytes = samples * retained states * state elements * bytes per element; projected residuals and task labels add separate arrays.",
+        "For 1,000,000 samples, eight retained 512-float32 states require about 15.3 GiB before conditions, labels, optimizer state, and checkpoints.",
+        "Shard teacher trajectories by task split and checkpoint hash so controller training can stream states without loading the full cache.",
+    ),
+    "silva_quantum_deq": (
+        "The public image datasets fit comfortably within a few gigabytes, but exact statevector work memory scales as batch size times 2^wires complex amplitudes.",
+        "Shot-based backends additionally scale with samples * equilibrium evaluations * measured observables * shots; record this separately from host-side tensors.",
+        "Store image split indices, filtered features, circuit parameters, solver traces, and checkpoints independently so preprocessing can be audited without duplicating raw data.",
+    ),
 }
 
 _COMPACT_DATA: dict[str, tuple[str, ...]] = {
@@ -856,6 +1218,13 @@ _COMPACT_DATA: dict[str, tuple[str, ...]] = {
     ),
     "silva_delta_equilibrium": (
         "make_delta_heterogeneous_dataset gives an exact affine equilibrium with coordinates converging at different rates.",
+    ),
+    "silva_hyper_deq": (
+        "The learned-solver lab generates seeded affine-tanh conditions, high-precision teacher roots, and complete learned Anderson trajectories without an external download.",
+    ),
+    "silva_quantum_deq": (
+        "The QDEQ lab uses seeded normalized feature directions, exact statevector measurements, and a compact binary classification target.",
+        "SILVAQuantumImageFilter verifies the source 28x28 image-to-circuit shape contracts before a licensed dataset is introduced.",
     ),
 }
 
@@ -929,6 +1298,16 @@ _SOURCE_SCALE_STEPS: dict[str, tuple[str, ...]] = {
         "Load a source-compatible checkpoint and reproduce the task data preprocessing and ordinary full-map evaluation first.",
         "Wrap supported recurrent linear or convolutional operators, begin at zero threshold, and verify prediction/state equivalence and exact residual.",
         "Sweep thresholds and report task degradation, active fraction, wall time, memory traffic, solver evaluations, and hardware details.",
+    ),
+    "silva_hyper_deq": (
+        "Choose one source task, reproduce its ordinary equilibrium transition and checkpoint, and verify the unaccelerated task metric first.",
+        "Generate high-precision roots and solver trajectories with fixed tolerances, then train the initializer and learned Anderson controller against that immutable teacher cache.",
+        "Compare equal-budget classical and learned solvers on residual, task metric, operator evaluations, latency, memory, and failure rate before testing transfer to new inputs or transitions.",
+    ),
+    "silva_quantum_deq": (
+        "Acquire one declared image benchmark, preserve its official split, and reproduce the source image filter, class subset, encoding, wire count, and circuit seed.",
+        "Match the fixed and trainable gate sequences, measurement/interpolation rule, direct warmup, implicit-solver budget, backward rule, and Jacobian regularization schedule.",
+        "Report task accuracy, residual, iterations, circuit evaluations, gradient variance, wall time, memory, and shots or exact-statevector setting against direct and classical baselines.",
     ),
 }
 
@@ -1079,6 +1458,48 @@ _METRICS: dict[str, tuple[str, ...]] = {
         "exact full-map residual",
         "latency and memory traffic",
     ),
+    "silva_hyper_deq": (
+        "task metric",
+        "teacher-state error",
+        "fixed-point residual by learned step",
+        "operator evaluations",
+        "latency, memory, and failure rate",
+    ),
+    "silva_quantum_deq": (
+        "classification accuracy",
+        "fixed-point residual and iterations",
+        "circuit evaluations",
+        "Jacobian penalty and gradient variance",
+        "wall time, memory, and shot count",
+    ),
+    "silva_bayesian_deq": (
+        "task metric",
+        "negative log likelihood",
+        "expected calibration error",
+        "predictive entropy",
+        "posterior solver evaluations, runtime, and memory",
+    ),
+    "silva_joint_inference_equilibrium": (
+        "task metric",
+        "representation residual",
+        "optimized-input residual",
+        "objective value",
+        "runtime and memory",
+    ),
+    "silva_implicit_spatiotemporal": (
+        "relative trajectory error",
+        "conservation or physics residual",
+        "long-horizon stability",
+        "solver evaluations per time step",
+        "runtime and memory",
+    ),
+    "silva_certified_equilibrium": (
+        "natural accuracy",
+        "certified accuracy by radius",
+        "certificate margin",
+        "bound residual and iterations",
+        "certificate runtime and memory",
+    ),
 }
 
 _NOTEBOOKS: dict[str, tuple[str, ...]] = {
@@ -1112,9 +1533,7 @@ _NOTEBOOKS: dict[str, tuple[str, ...]] = {
         "notebooks/package_api/33_silva_physics_guided_diffusion_pde.ipynb",
     ),
     "silva_therino": ("notebooks/package_api/34_silva_therino_mechanics.ipynb",),
-    "silva_fixed_point_diffusion": (
-        "notebooks/package_api/35_silva_fixed_point_diffusion.ipynb",
-    ),
+    "silva_fixed_point_diffusion": ("notebooks/package_api/35_silva_fixed_point_diffusion.ipynb",),
     "silva_monotone_operator_equilibrium": (
         "notebooks/package_api/36_silva_monotone_operator_equilibrium.ipynb",
     ),
@@ -1130,8 +1549,70 @@ _NOTEBOOKS: dict[str, tuple[str, ...]] = {
     "silva_multiscale_graph_implicit": (
         "notebooks/package_api/40_silva_multiscale_graph_implicit.ipynb",
     ),
-    "silva_delta_equilibrium": (
-        "notebooks/package_api/41_silva_delta_equilibrium.ipynb",
+    "silva_delta_equilibrium": ("notebooks/package_api/41_silva_delta_equilibrium.ipynb",),
+    "silva_hyper_deq": (
+        "notebooks/package_api/48_silva_learned_solvers.ipynb",
+        "notebooks/package_api/51_equilibrium_expansion_atlas.ipynb",
+    ),
+    "silva_quantum_deq": (
+        "notebooks/package_api/50_silva_quantum_deq.ipynb",
+        "notebooks/package_api/51_equilibrium_expansion_atlas.ipynb",
+    ),
+    "silva_bayesian_deq": (
+        "notebooks/package_api/55_silva_bayesian_deq.ipynb",
+        "notebooks/package_api/52_silva_evidence_ladders.ipynb",
+    ),
+    "silva_joint_inference_equilibrium": (
+        "notebooks/package_api/56_silva_joint_inference.ipynb",
+        "notebooks/package_api/53_transition_equivalence_lab.ipynb",
+    ),
+    "silva_implicit_spatiotemporal": (
+        "notebooks/package_api/57_silva_implicit_spatiotemporal.ipynb",
+        "notebooks/package_api/59_full_experiment_pipeline.ipynb",
+    ),
+    "silva_certified_equilibrium": (
+        "notebooks/package_api/58_silva_certified_equilibrium.ipynb",
+        "notebooks/package_api/54_statistical_benchmarking.ipynb",
+    ),
+    "silva_lipschitz_mdeq": ("notebooks/package_api/61_silva_lipschitz_mdeq.ipynb",),
+    "silva_subhomogeneous_equilibrium": (
+        "notebooks/package_api/62_silva_subhomogeneous_equilibrium.ipynb",
+    ),
+    "silva_algorithmic_reasoner": (
+        "notebooks/package_api/63_silva_algorithmic_reasoner.ipynb",
+    ),
+    "silva_hamiltonian_equilibrium": (
+        "notebooks/package_api/64_silva_hamiltonian_equilibrium.ipynb",
+    ),
+    "silva_inverse_imaging_equilibrium": (
+        "notebooks/package_api/65_silva_inverse_imaging_equilibrium.ipynb",
+    ),
+    "silva_snapshot_compressive_equilibrium": (
+        "notebooks/package_api/66_silva_snapshot_compressive_equilibrium.ipynb",
+    ),
+    "silva_magnetic_particle_equilibrium": (
+        "notebooks/package_api/67_silva_magnetic_particle_equilibrium.ipynb",
+    ),
+    "silva_sparse_hyperspectral_equilibrium": (
+        "notebooks/package_api/68_silva_sparse_hyperspectral_equilibrium.ipynb",
+    ),
+    "silva_serialized_smoothing_equilibrium": (
+        "notebooks/package_api/69_silva_serialized_smoothing_equilibrium.ipynb",
+    ),
+    "silva_diffusion_restoration_equilibrium": (
+        "notebooks/package_api/70_silva_diffusion_restoration_equilibrium.ipynb",
+    ),
+    "silva_recurrent_equilibrium_network": (
+        "notebooks/package_api/71_silva_recurrent_equilibrium_network.ipynb",
+    ),
+    "silva_lipschitz_robust_equilibrium": (
+        "notebooks/package_api/72_silva_lipschitz_robust_equilibrium.ipynb",
+    ),
+    "silva_image_matting_equilibrium": (
+        "notebooks/package_api/73_silva_image_matting_equilibrium.ipynb",
+    ),
+    "silva_dynamic_economic_equilibrium": (
+        "notebooks/package_api/74_silva_dynamic_economic_equilibrium.ipynb",
     ),
 }
 
@@ -1174,6 +1655,26 @@ _TESTS: dict[str, tuple[str, ...]] = {
     "silva_efficient_infinite_graph": ("tests/test_structured_equilibria.py",),
     "silva_multiscale_graph_implicit": ("tests/test_structured_equilibria.py",),
     "silva_delta_equilibrium": ("tests/test_structured_equilibria.py",),
+    "silva_hyper_deq": ("tests/test_solver_learning.py",),
+    "silva_quantum_deq": ("tests/test_quantum_equilibria.py",),
+    "silva_bayesian_deq": ("tests/test_advanced_expansions.py",),
+    "silva_joint_inference_equilibrium": ("tests/test_advanced_expansions.py",),
+    "silva_implicit_spatiotemporal": ("tests/test_advanced_expansions.py",),
+    "silva_certified_equilibrium": ("tests/test_advanced_expansions.py",),
+    "silva_lipschitz_mdeq": ("tests/test_source_equilibria.py",),
+    "silva_subhomogeneous_equilibrium": ("tests/test_source_equilibria.py",),
+    "silva_algorithmic_reasoner": ("tests/test_source_equilibria.py",),
+    "silva_hamiltonian_equilibrium": ("tests/test_source_equilibria.py",),
+    "silva_inverse_imaging_equilibrium": ("tests/test_source_equilibria.py",),
+    "silva_snapshot_compressive_equilibrium": ("tests/test_source_equilibria.py",),
+    "silva_magnetic_particle_equilibrium": ("tests/test_source_equilibria.py",),
+    "silva_sparse_hyperspectral_equilibrium": ("tests/test_source_equilibria.py",),
+    "silva_serialized_smoothing_equilibrium": ("tests/test_source_equilibria.py",),
+    "silva_diffusion_restoration_equilibrium": ("tests/test_source_equilibria.py",),
+    "silva_recurrent_equilibrium_network": ("tests/test_source_equilibria.py",),
+    "silva_lipschitz_robust_equilibrium": ("tests/test_source_equilibria.py",),
+    "silva_image_matting_equilibrium": ("tests/test_source_equilibria.py",),
+    "silva_dynamic_economic_equilibrium": ("tests/test_source_equilibria.py",),
 }
 
 

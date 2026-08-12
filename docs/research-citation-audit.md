@@ -155,7 +155,11 @@ repository, then cite the relevant building blocks only as background:
 | implicit DAE stage layer | solves one- or multistage Runge-Kutta DAE equations as a differentiable SILVA root layer |
 | adversarial equation-residual objective | exposes separate generator/discriminator losses and records that the cited DEQGAN abbreviation means Differential Equation |
 | advanced equilibrium teaching datasets | provides deterministic targets with directly evaluated graph, teacher-map, intensity, ODE, or DAE equations |
-| all-family scale contract | maps all 44 canonical SILVA families to data, literature, benchmark, numerical controls, runtime tiers, and extension points |
+| all-family scale contract | maps all 64 canonical SILVA families to data, literature, benchmark, numerical controls, runtime tiers, and extension points |
+| `SILVAHyperDEQ`, `SILVAHyperAndersonController`, `silva_hyper_deq_loss` | learned initialization, residual compression, Anderson coefficients, mixing, and teacher-trajectory supervision | Neural Deep Equilibrium Solvers [[87]](paper/references.md#ref-87){ .silva-cite } |
+| `SolverConfig(backward_mode="jfb")` | one final differentiable transition approximates the implicit inverse by identity | Jacobian-Free Backpropagation [[88]](paper/references.md#ref-88){ .silva-cite } |
+| `BroydenInverseEstimate`, `SolverConfig(backward_mode="shine")` | retains and optionally refines the forward Broyden inverse estimate for the adjoint | SHINE [[89]](paper/references.md#ref-89){ .silva-cite } |
+| `SILVAQuantumDEQ`, `SILVAStatevectorQuantumCircuit` | encoded circuit transition, Pauli-Z measurement, direct/warmup/implicit routes, and Jacobian regularization | Quantum Deep Equilibrium Models [[90]](paper/references.md#ref-90){ .silva-cite } |
 | package tensor-shard format | stores aligned tensor samples in lazy independently loadable shards with an atomic JSON manifest |
 
 ## Example Citation Checklist

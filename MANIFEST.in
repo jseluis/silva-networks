@@ -19,6 +19,8 @@ recursive-include experiments/public/configs *.json
 recursive-include experiments/reproduction *.py
 recursive-include experiments/reproduction/configs *.json
 recursive-include experiments/reproduction/outputs *.json
+recursive-include experiments/reproduction/protocols *.json
+recursive-include scripts *.py *.sh
 include scripts/smoke_test.sh
 include scripts/documentation_audit.py
 include scripts/notebook_navigation.py

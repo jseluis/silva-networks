@@ -645,6 +645,27 @@ per-timestep residuals.
 `silva_reproduction_spec(family)` returns these requirements programmatically.
 `silva_family_guide(family)` returns the scale controls and extension points.
 
+## Cross-Family Solver and Gradient Choices
+
+The family determines what the equilibrium state means. The forward solver and
+backward rule remain independent experimental variables when their assumptions
+match that state.
+
+| Family | Forward acceleration that can be studied | Backward choices | Required control experiment |
+| --- | --- | --- | --- |
+| C-DEQ | source consistency refiner, one/few-step policy, optional classical correction | exact implicit, JFB, or refiner differentiation | compare terminal error, residual, task metric, and latency against the same teacher path [[59]](../paper/references.md#ref-59){ .silva-cite } |
+| IFNO and TherINO | classical Anderson/Broyden or a learned Anderson controller | exact implicit, JFB, SHINE | hold Fourier modes, grid, data, and transition weights fixed |
+| fixed-point diffusion | warm starts, state reuse, learned allocation, or learned solver updates | exact implicit, JFB, SHINE, phantom | report quality and denoiser evaluations at every timestep |
+| physics-guided diffusion PDE | schedule and guidance controls rather than one global root | differentiate through reverse steps or declared truncated path | preserve denoiser, PDE energy, smoothing, and boundary projection |
+| SNARF | Broyden root and canonical-state warm starts | task-specific unrolling or implicit root gradients | compare correspondence success and mesh metrics under identical queries |
+| Mesh Inference | local message schedule, damping, and stopping policy | explicit message differentiation or an implicit global formulation | compare centralized identity, message count, and topology conditions |
+
+HyperDEQ [[87]](../paper/references.md#ref-87){ .silva-cite } learns the forward
+solver; JFB [[88]](../paper/references.md#ref-88){ .silva-cite } and SHINE
+[[89]](../paper/references.md#ref-89){ .silva-cite } change the backward path.
+The [Equilibrium Expansion Atlas](equilibrium-expansion-atlas.md) derives these
+axes and lists combinations that remain mathematically well defined.
+
 ## Where to Go Next
 
 | Question | Page |

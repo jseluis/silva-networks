@@ -201,7 +201,7 @@ def build_notebook() -> dict[str, object]:
             """
             guides = all_silva_family_guides()
             assert audit_silva_family_guides() == ()
-            assert len(guides) == 44
+            assert len(guides) == 64
 
             for index, guide in enumerate(guides, start=1):
                 refs = ", ".join(f"[{number}]" for number in guide.paper_refs)

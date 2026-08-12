@@ -139,6 +139,7 @@ equilibrium optical-flow framing.
 Direct source links are collected in
 [DEQ Engines and Optical Flow](../paper/references.md#deq-engines-and-optical-flow).
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -187,15 +188,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **flow shape, endpoint error, iterations, residual, and gradients**. The
 invariants that must remain true are **flow shape, coordinate convention, image resolution, and warping domain**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/optical_flow_silva.py"
-```
 
 ### Run the Complete Example
 

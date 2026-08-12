@@ -19,7 +19,7 @@ import torch
 
 Tensor = torch.Tensor
 SolverName = Literal["picard", "anderson", "broyden"]
-BackwardMode = Literal["unrolled", "implicit", "phantom"]
+BackwardMode = Literal["unrolled", "implicit", "phantom", "neumann", "jfb", "shine"]
 BackwardSolverName = Literal["gmres", "picard", "anderson", "broyden"]
 StopMode = Literal["absolute", "relative"]
 
@@ -48,7 +48,11 @@ class SolverConfig:
         backward_mode: `unrolled` differentiates through finite solver steps.
             `implicit` uses a detached forward solve and an implicit adjoint;
             `phantom` differentiates through a short damped trajectory started
-            from the detached numerical equilibrium.
+            from the detached numerical equilibrium; `neumann` applies a
+            truncated Neumann series to the equilibrium adjoint; `jfb` differentiates
+            through one final transition while treating the equilibrium as a
+            constant; and `shine` reuses the limited-memory Broyden inverse in
+            the adjoint calculation.
         backward_solver: Matrix-free linear solver for implicit adjoints.
         backward_max_iter: Maximum number of backward linear-solver iterations.
         backward_tol: Residual tolerance for the backward linear solve.
@@ -59,6 +63,10 @@ class SolverConfig:
             `backward_mode="phantom"`. One step gives the common one-step
             gradient approximation.
         phantom_tau: Damping used by phantom-gradient refinement steps.
+        neumann_terms: Number of terms retained in the truncated Neumann
+            approximation of the implicit adjoint.
+        shine_refine_steps: Number of quasi-Newton refinement steps applied to
+            the forward Broyden inverse estimate in `backward_mode="shine"`.
         indexing: One-based solver iteration numbers whose states should be
             retained in `SolverResult.states` for trajectory supervision.
         return_best: Return the state with the lowest observed residual instead
@@ -85,6 +93,8 @@ class SolverConfig:
     backward_relative_eps: float = 1e-8
     phantom_steps: int = 1
     phantom_tau: float = 1.0
+    neumann_terms: int = 5
+    shine_refine_steps: int = 0
     indexing: tuple[int, ...] = ()
     return_best: bool = False
 
@@ -109,7 +119,14 @@ class SolverConfig:
             raise ValueError("relative_eps must be positive")
         if self.anderson_batch_dims < 0:
             raise ValueError("anderson_batch_dims must be nonnegative")
-        if self.backward_mode not in {"unrolled", "implicit", "phantom"}:
+        if self.backward_mode not in {
+            "unrolled",
+            "implicit",
+            "phantom",
+            "neumann",
+            "jfb",
+            "shine",
+        }:
             raise ValueError(f"Unknown backward_mode: {self.backward_mode}")
         if self.backward_solver not in {"gmres", "picard", "anderson", "broyden"}:
             raise ValueError(f"Unknown backward_solver: {self.backward_solver}")
@@ -125,10 +142,70 @@ class SolverConfig:
             raise ValueError("phantom_steps must be positive")
         if self.phantom_tau <= 0:
             raise ValueError("phantom_tau must be positive")
+        if self.neumann_terms < 1:
+            raise ValueError("neumann_terms must be positive")
+        if self.shine_refine_steps < 0:
+            raise ValueError("shine_refine_steps must be nonnegative")
         if any(index < 1 or index > self.max_iter for index in self.indexing):
             raise ValueError("indexing entries must be between 1 and max_iter")
         if len(set(self.indexing)) != len(self.indexing):
             raise ValueError("indexing entries must be unique")
+
+
+@dataclass(frozen=True)
+class BroydenInverseEstimate:
+    r"""Limited-memory approximation of the forward residual inverse.
+
+    Broyden solves ``g(z)=f(z)-z=0`` and stores an approximation
+
+    $$
+    B_k \approx J_g(z_k)^{-1}=-\left(I-J_f(z_k)\right)^{-1}.
+    $$
+
+    The factors are detached numerical quantities. They can therefore be
+    inspected, serialized, or reused as an adjoint preconditioner without
+    retaining the forward autograd graph.
+    """
+
+    shape: torch.Size
+    left_factors: tuple[Tensor, ...] = ()
+    right_factors: tuple[Tensor, ...] = ()
+
+    @property
+    def rank(self) -> int:
+        """Number of retained rank-one inverse updates."""
+
+        return len(self.left_factors)
+
+    def _validate_vector(self, vector: Tensor) -> Tensor:
+        if vector.shape != self.shape:
+            raise ValueError(
+                f"inverse estimate expects shape {tuple(self.shape)}, got {tuple(vector.shape)}"
+            )
+        return vector.reshape(-1)
+
+    def apply_residual_inverse(self, vector: Tensor) -> Tensor:
+        """Apply the estimated inverse of ``J_f-I`` to ``vector``."""
+
+        flat = self._validate_vector(vector)
+        value = -flat
+        for left, right in zip(self.left_factors, self.right_factors, strict=True):
+            value = value + left.to(flat) * torch.dot(right.to(flat), flat)
+        return value.reshape(self.shape)
+
+    def apply_residual_inverse_transpose(self, vector: Tensor) -> Tensor:
+        """Apply the transpose of the estimated inverse of ``J_f-I``."""
+
+        flat = self._validate_vector(vector)
+        value = -flat
+        for left, right in zip(self.left_factors, self.right_factors, strict=True):
+            value = value + right.to(flat) * torch.dot(left.to(flat), flat)
+        return value.reshape(self.shape)
+
+    def apply_fixed_point_adjoint_inverse(self, vector: Tensor) -> Tensor:
+        r"""Approximate ``(I-J_f^T)^{-1} vector`` from the forward solve."""
+
+        return -self.apply_residual_inverse_transpose(vector)
 
 
 @dataclass
@@ -143,6 +220,8 @@ class SolverResult:
         solver: Solver name.
         info: Optional extra scalar or string diagnostics.
         states: Requested intermediate states, in `SolverConfig.indexing` order.
+        inverse_estimate: Limited-memory inverse retained by Broyden, when
+            available.
     """
 
     z: Tensor
@@ -152,6 +231,7 @@ class SolverResult:
     solver: str
     info: dict[str, float | int | str] = field(default_factory=dict)
     states: list[Tensor] = field(default_factory=list)
+    inverse_estimate: BroydenInverseEstimate | None = None
 
     @property
     def residual(self) -> float:
@@ -523,6 +603,11 @@ def broyden(
             "inverse_rank": len(left_factors),
         },
         _ordered_states(states_by_iteration, cfg),
+        BroydenInverseEstimate(
+            shape=torch.Size(shape),
+            left_factors=tuple(factor.detach().clone() for factor in left_factors),
+            right_factors=tuple(factor.detach().clone() for factor in right_factors),
+        ),
     )
 
 
@@ -598,7 +683,13 @@ def solve_equilibrium(
     `params` and differentiable non-state inputs through `tensors` when using
     the implicit mode. `backward_mode="phantom"` instead performs a detached
     solve followed by `phantom_steps` differentiable refinements with damping
-    `phantom_tau`; one step is the one-step-gradient special case.
+    `phantom_tau`; one step is the one-step-gradient special case. In
+    `backward_mode="neumann"`, the forward root is detached and the adjoint
+    inverse is approximated by a finite Neumann series. In `backward_mode="jfb"`,
+    the converged state is treated as a constant and one
+    final transition supplies the parameter gradient. In
+    `backward_mode="shine"`, a Broyden forward solve shares its inverse estimate
+    with the adjoint and may refine it for `shine_refine_steps` iterations.
 
     ``backward_map`` optionally separates the numerical forward approximation
     from the equilibrium map used for implicit or phantom differentiation. It
@@ -630,7 +721,50 @@ def solve_equilibrium(
         result.info.setdefault("phantom_tau", cfg.phantom_tau)
         return result
 
+    if cfg.backward_mode == "jfb":
+        z = result.z.detach()
+        result.z = sensitivity_map(z)
+        _validate_transition_output(result.z, z)
+        result.info.setdefault("backward_mode", "jfb")
+        result.info.setdefault("backward_solver", "identity")
+        return result
+
     backward_tensors = _unique_trainable_tensors(params, tensors)
+    if cfg.backward_mode == "neumann":
+        neumann_context = _NeumannBackwardContext(
+            f=sensitivity_map,
+            alpha=cfg.alpha,
+            terms=cfg.neumann_terms,
+            info=result.info,
+        )
+        result.z = _NeumannEquilibriumFunction.apply(
+            result.z.detach(), *backward_tensors, neumann_context
+        )
+        result.info.setdefault("backward_mode", "neumann")
+        result.info.setdefault("backward_solver", "truncated_neumann")
+        result.info.setdefault("neumann_terms", cfg.neumann_terms)
+        return result
+
+    if cfg.backward_mode == "shine":
+        if cfg.solver != "broyden" or result.inverse_estimate is None:
+            raise ValueError('backward_mode="shine" requires solver="broyden"')
+        shine_context = _SHINEBackwardContext(
+            f=sensitivity_map,
+            inverse_estimate=result.inverse_estimate,
+            refine_steps=cfg.shine_refine_steps,
+            tol=cfg.backward_tol,
+            stop_mode=cfg.backward_stop_mode,
+            relative_eps=cfg.backward_relative_eps,
+            info=result.info,
+        )
+        result.z = _SHINEEquilibriumFunction.apply(
+            result.z.detach(), *backward_tensors, shine_context
+        )
+        result.info.setdefault("backward_mode", "shine")
+        result.info.setdefault("backward_solver", "shared_broyden_inverse")
+        result.info.setdefault("shine_inverse_rank", result.inverse_estimate.rank)
+        return result
+
     context = _ImplicitBackwardContext(
         f=sensitivity_map,
         alpha=cfg.alpha,
@@ -854,6 +988,134 @@ class _ImplicitEquilibriumFunction(torch.autograd.Function):
         return (None, *tensor_grads, None)
 
 
+@dataclass(frozen=True)
+class _NeumannBackwardContext:
+    f: Callable[[Tensor], Tensor]
+    alpha: float
+    terms: int
+    info: dict[str, float | int | str]
+
+
+class _NeumannEquilibriumFunction(torch.autograd.Function):
+    """Attach a finite Neumann-series adjoint to a detached equilibrium."""
+
+    @staticmethod
+    def forward(ctx, z_star: Tensor, *args):
+        *tracked_tensors, context = args
+        ctx.context = context
+        ctx.save_for_backward(z_star, *tracked_tensors)
+        return z_star.detach()
+
+    @staticmethod
+    def backward(ctx, grad_output: Tensor):
+        z_star, *tracked_tensors = ctx.saved_tensors
+        context: _NeumannBackwardContext = ctx.context
+
+        with torch.enable_grad():
+            z_req = z_star.detach().requires_grad_(True)
+            y = context.f(z_req)
+            _validate_transition_output(y, z_req)
+
+            def damped_jtv(vector: Tensor) -> Tensor:
+                jtv = torch.zeros_like(vector)
+                if y.requires_grad:
+                    (maybe_jtv,) = torch.autograd.grad(
+                        y,
+                        z_req,
+                        vector,
+                        retain_graph=True,
+                        create_graph=False,
+                        allow_unused=True,
+                    )
+                    if maybe_jtv is not None:
+                        jtv = maybe_jtv
+                return (1.0 - context.alpha) * vector + context.alpha * jtv
+
+            term = grad_output
+            adjoint = term
+            for _ in range(1, context.terms):
+                term = damped_jtv(term)
+                adjoint = adjoint + term
+            next_term = damped_jtv(term)
+            residual = torch.linalg.vector_norm(next_term.reshape(-1))
+            context.info["backward_iterations"] = context.terms
+            context.info["backward_converged"] = 0
+            context.info["backward_residual"] = float(residual.detach().cpu())
+
+            differentiable_tensors = tuple(
+                tensor for tensor in tracked_tensors if tensor.requires_grad
+            )
+            if differentiable_tensors and y.requires_grad:
+                tensor_grads = torch.autograd.grad(
+                    y,
+                    differentiable_tensors,
+                    grad_outputs=context.alpha * adjoint,
+                    retain_graph=False,
+                    allow_unused=True,
+                )
+            else:
+                tensor_grads = tuple(None for _ in tracked_tensors)
+
+        return (None, *tensor_grads, None)
+
+
+@dataclass(frozen=True)
+class _SHINEBackwardContext:
+    f: Callable[[Tensor], Tensor]
+    inverse_estimate: BroydenInverseEstimate
+    refine_steps: int
+    tol: float
+    stop_mode: StopMode
+    relative_eps: float
+    info: dict[str, float | int | str]
+
+
+class _SHINEEquilibriumFunction(torch.autograd.Function):
+    @staticmethod
+    def forward(ctx, z_star: Tensor, *args):
+        *tracked_tensors, context = args
+        ctx.context = context
+        ctx.save_for_backward(z_star, *tracked_tensors)
+        return z_star.detach()
+
+    @staticmethod
+    def backward(ctx, grad_output: Tensor):
+        z_star, *tracked_tensors = ctx.saved_tensors
+        context: _SHINEBackwardContext = ctx.context
+        linear_result = shine_adjoint_solve(
+            context.f,
+            z_star,
+            grad_output,
+            context.inverse_estimate,
+            refine_steps=context.refine_steps,
+            tol=context.tol,
+            stop_mode=context.stop_mode,
+            relative_eps=context.relative_eps,
+        )
+        context.info["backward_iterations"] = linear_result.iterations
+        context.info["backward_converged"] = int(linear_result.converged)
+        context.info["backward_residual"] = linear_result.residual
+
+        with torch.enable_grad():
+            z_req = z_star.detach().requires_grad_(True)
+            y = context.f(z_req)
+            _validate_transition_output(y, z_req)
+            differentiable_tensors = tuple(
+                tensor for tensor in tracked_tensors if tensor.requires_grad
+            )
+            if differentiable_tensors and y.requires_grad:
+                tensor_grads = torch.autograd.grad(
+                    y,
+                    differentiable_tensors,
+                    grad_outputs=linear_result.x,
+                    retain_graph=False,
+                    allow_unused=True,
+                )
+            else:
+                tensor_grads = tuple(None for _ in tracked_tensors)
+        return (None, *tensor_grads, None)
+
+
 def _unique_trainable_tensors(*groups: Iterable[Tensor]) -> tuple[Tensor, ...]:
     tensors: list[Tensor] = []
     seen: set[int] = set()
@@ -950,4 +1212,121 @@ def implicit_adjoint_solve(
         iterations=result.iterations,
         converged=result.converged,
         solver=solver,
+    )
+
+
+def shine_adjoint_solve(
+    f: Callable[[Tensor], Tensor],
+    z_star: Tensor,
+    grad_output: Tensor,
+    inverse_estimate: BroydenInverseEstimate,
+    *,
+    refine_steps: int = 0,
+    tol: float = 1e-6,
+    stop_mode: StopMode = "absolute",
+    relative_eps: float = 1e-8,
+) -> LinearSolveResult:
+    r"""Reuse a forward Broyden inverse to approximate the DEQ adjoint.
+
+    The forward estimate approximates ``(J_f-I)^{-1}``, so its negative
+    transpose approximates the inverse of the adjoint operator
+    ``A=I-J_f^T``. Optional good-Broyden updates refine that shared estimate on
+    the linear residual ``A u-g`` while retaining only `refine_steps` rank-one
+    corrections.
+    """
+
+    if refine_steps < 0:
+        raise ValueError("refine_steps must be nonnegative")
+    if tol <= 0:
+        raise ValueError("tol must be positive")
+    if stop_mode not in {"absolute", "relative"}:
+        raise ValueError(f"Unknown stop_mode: {stop_mode}")
+    if relative_eps <= 0:
+        raise ValueError("relative_eps must be positive")
+    if z_star.shape != grad_output.shape:
+        raise ValueError("z_star and grad_output must have the same shape")
+    if inverse_estimate.shape != z_star.shape:
+        raise ValueError("inverse_estimate and z_star must have the same shape")
+
+    z_req = z_star.detach().requires_grad_(True)
+    with torch.enable_grad():
+        y = f(z_req)
+    _validate_transition_output(y, z_req)
+
+    def matvec(vector: Tensor) -> Tensor:
+        jtv = torch.zeros_like(vector)
+        if y.requires_grad:
+            (maybe_jtv,) = torch.autograd.grad(
+                y,
+                z_req,
+                vector,
+                retain_graph=True,
+                create_graph=False,
+                allow_unused=True,
+            )
+            if maybe_jtv is not None:
+                jtv = maybe_jtv
+        return vector - jtv
+
+    shape = grad_output.shape
+    right_hand_side = grad_output.reshape(-1)
+    base_inverse = inverse_estimate.apply_fixed_point_adjoint_inverse
+    correction_left: list[Tensor] = []
+    correction_right: list[Tensor] = []
+
+    def apply_inverse(vector: Tensor) -> Tensor:
+        flat = vector.reshape(-1)
+        value = base_inverse(vector).reshape(-1)
+        for left, right in zip(correction_left, correction_right, strict=True):
+            value = value + left * torch.dot(right, flat)
+        return value.reshape(shape)
+
+    def apply_inverse_transpose(vector: Tensor) -> Tensor:
+        flat = vector.reshape(-1)
+        value = -inverse_estimate.apply_residual_inverse(vector).reshape(-1)
+        for left, right in zip(correction_left, correction_right, strict=True):
+            value = value + right * torch.dot(left, flat)
+        return value.reshape(shape)
+
+    solution = apply_inverse(grad_output)
+    residual = matvec(solution) - grad_output
+    denominator = (
+        torch.linalg.norm(right_hand_side) + relative_eps
+        if stop_mode == "relative"
+        else right_hand_side.new_tensor(1.0)
+    )
+
+    def residual_value(value: Tensor) -> float:
+        return float((torch.linalg.norm(value.reshape(-1)) / denominator).detach().cpu())
+
+    residuals = [residual_value(residual)]
+    converged = residuals[-1] < tol
+    performed = 0
+    for _ in range(refine_steps):
+        if converged:
+            break
+        step = -apply_inverse(residual)
+        next_solution = solution + step
+        next_residual = matvec(next_solution) - grad_output
+        delta_residual = next_residual - residual
+        inverse_delta = apply_inverse(delta_residual)
+        denominator_update = torch.dot(step.reshape(-1), inverse_delta.reshape(-1))
+        if (
+            torch.isfinite(denominator_update)
+            and torch.abs(denominator_update) > torch.finfo(step.dtype).eps
+        ):
+            transpose_step = apply_inverse_transpose(step)
+            correction_left.append(((step - inverse_delta) / denominator_update).reshape(-1))
+            correction_right.append(transpose_step.reshape(-1))
+        solution, residual = next_solution, next_residual
+        performed += 1
+        residuals.append(residual_value(residual))
+        converged = residuals[-1] < tol
+
+    return LinearSolveResult(
+        x=solution,
+        residuals=residuals,
+        iterations=performed,
+        converged=converged,
+        solver="shine",
     )

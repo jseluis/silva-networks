@@ -27,7 +27,13 @@ This path goes from first principles to a usable PyTorch model.
     dataset protocols.
 13. Open the [Family Reproduction Dossiers](families/index.md) to inspect the
     governing equation, replaceable modules, compact evidence, source data,
-    acceptance checks, and editable scale plan for each of the 44 families.
+    acceptance checks, and editable scale plan for each of the 50 families.
+14. Use [Learned Solvers and Backward Approximations](learn/solver-learning-and-gradients.md)
+    to separate learned forward acceleration from exact implicit, JFB, and
+    shared-inverse gradient paths.
+15. Use [Quantum Equilibria](learn/quantum-equilibria.md) to construct a
+    measured circuit transition, replace its backend, and move from compact
+    statevectors to a source-scale experiment.
 
 The main equation is
 
@@ -56,7 +62,10 @@ $$
 | Cortex hierarchy | [Cortex Hierarchies](learn/cortex-hierarchy.md) | build linked SILVA points with independently configured MLP, convolutional, U-Net, attention, or graph internals |
 | Internal architecture selection | [Point Architecture Catalog](learn/point-architecture-catalog.md) | choose among ten vector, token, and spatial fields and compose them inside or across points |
 | Scientific models | [Neural Operators, ODEs, PDEs, and SILVA](learn/neural-operators-ode-pde.md) | derive explicit flow, implicit time stepping, PDE residuals, FNO fields, and graph discretizations |
-| Scale and reproduce | [Full-Scale SILVA](learn/full-scale-silva.md) | move all 44 families from equation checks to benchmark-ready execution |
+| Learned forward and backward paths | [Learned Solvers and Backward Approximations](learn/solver-learning-and-gradients.md) | train HyperDEQ controls and compare exact implicit, JFB, and SHINE gradients |
+| Quantum equilibrium models | [Quantum Equilibria](learn/quantum-equilibria.md) | derive encodings, gates, measurements, fixed points, gradients, and circuit replacement |
+| Cross-family mechanism map | [Equilibrium Expansion Atlas](learn/equilibrium-expansion-atlas.md) | distinguish transition, solver, gradient, objective, and evaluation axes |
+| Scale and reproduce | [Full-Scale SILVA](learn/full-scale-silva.md) | move all 64 families from equation checks to benchmark-ready execution |
 | Source-data reproduction | [Real-Dataset Reproduction](learn/real-dataset-reproduction.md) | verify source receipts and move from compact real subsets to official full splits |
 | Family experiment design | [Family Reproduction Dossiers](families/index.md) | follow six explicit stages from tensor contracts to a complete cited protocol or declared extension |
 | New family construction | [Advanced Extension Handbook](learn/advanced-extension-handbook.md) | validate primitive modules, public composition equivalence, gradients, serialization, data, and scale registration |
@@ -70,6 +79,8 @@ $$
 | --- | --- |
 | Install package and extras | [Installation](installation.md) |
 | Pick a solver | [Solvers API](api/solvers.md) |
+| Train a learned solver | [Learned Solver API](api/solver_learning.md) |
+| Build a quantum equilibrium | [Quantum Equilibria API](api/quantum_equilibria.md) |
 | Pick a layer | [Layers API](api/layers.md) |
 | Build cortex hierarchies | [Architectures API](api/architectures.md) |
 | Choose an internal point architecture | [Point Architectures API](api/point_architectures.md) |

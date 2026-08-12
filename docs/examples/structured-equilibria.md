@@ -46,6 +46,7 @@ notebook 41 compares source-aligned full-map training with delta-cached
 evaluation before exercising delta-forward implicit differentiation as a
 separately labeled SILVA extension.
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -94,15 +95,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **certificates, positivity, one-sided bounds, scale weights, and cache activity**. The
 invariants that must remain true are **node relabeling equivariance, graph boundaries, and state shape**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/structured_equilibria.py"
-```
 
 ### Run the Complete Example
 

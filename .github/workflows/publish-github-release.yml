@@ -6,11 +6,11 @@ on:
       tag:
         description: Existing tag to publish
         required: true
-        default: v1.2.1
+        default: v1.2.2
       title:
         description: Release title
         required: false
-        default: SILVA Networks v1.2.1
+        default: SILVA Networks v1.2.2
 
 permissions:
   contents: write

@@ -162,6 +162,7 @@ must remain stable:
 | homotopy | terminal residual is smaller than initial velocity norm |
 | distributional | state has the selected latent particle count; discrepancy is finite |
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -210,15 +211,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **task, equation, invariance, and fixed-point residuals for four operator classes**. The
 invariants that must remain true are **time-step shape, initial condition, and integration consistency**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/frontier_equilibria.py"
-```
 
 ### Run the Complete Example
 

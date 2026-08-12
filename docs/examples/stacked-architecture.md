@@ -84,6 +84,7 @@ See [Stacking, Solvers, and Devices](../learn/stacking-and-devices.md) for the
 full contract and [Solvers and Linear Algebra](../paper/references.md#solvers-and-linear-algebra)
 for the numerical-method sources.
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -132,15 +133,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **logit shape, pointwise solvers, loss, and gradient flow across the stack**. The
 invariants that must remain true are **channel/spatial shape at every scale and deterministic fusion**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/stacked_architecture.py"
-```
 
 ### Run the Complete Example
 

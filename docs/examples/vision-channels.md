@@ -38,6 +38,7 @@ for spatial operator derivations and
 [Point Architecture Sources](../paper/references.md#point-architecture-sources)
 for convolutional and U-Net references.
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -86,15 +87,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **image-state shape, iteration count, residual, loss, and gradients**. The
 invariants that must remain true are **channel/spatial shape at every scale and deterministic fusion**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/vision_channels.py"
-```
 
 ### Run the Complete Example
 

@@ -1,7 +1,7 @@
 {
   "title": "SILVA Networks",
   "upload_type": "software",
-  "publication_date": "2026-08-08",
+  "publication_date": "2026-08-11",
   "creators": [
     {
       "name": "Silva, Jose Luis"
@@ -10,7 +10,7 @@
   "description": "SILVA Networks is a PyTorch package for structured implicit layers, fixed-point solvers, configurable stimulus/local/global operators, Jacobian diagnostics, heterogeneous cortex hierarchies, scientific and physics-informed equilibrium families, scalable training and data utilities, examples, and executable notebooks.",
   "access_right": "open",
   "license": "mit",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "language": "eng",
   "keywords": [
     "SILVA networks",

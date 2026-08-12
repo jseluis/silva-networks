@@ -30,7 +30,7 @@ The fixed-point residual is a numerical diagnostic. A reproduction record must
 also include the domain metric, data protocol, configuration, seed, and source
 relationship documented by `SILVAReproductionSpec`.
 
-Each of the 44 records is explicit. Inspect `preserved_mechanisms` before
+Each of the 64 records is explicit. Inspect `preserved_mechanisms` before
 changing a family, choose replacements from `silva_extensions`, and satisfy
 `benchmark_requirements` before describing a run as equivalent to a cited
 benchmark.

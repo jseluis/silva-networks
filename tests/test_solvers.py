@@ -8,6 +8,7 @@ from silva_networks import (
     fixed_point,
     gmres,
     implicit_adjoint_solve,
+    shine_adjoint_solve,
     solve_equilibrium,
 )
 
@@ -58,6 +59,8 @@ def test_broyden_dispatch_runs() -> None:
     )
     assert result.z.shape == (2,)
     assert result.residuals[-1] < 1e-5
+    assert result.inverse_estimate is not None
+    assert result.inverse_estimate.rank == result.info["inverse_rank"]
 
 
 def test_broyden_uses_bounded_low_rank_inverse(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -215,3 +218,118 @@ def test_solver_indexing_phantom_gradient_and_validation() -> None:
             torch.zeros(2, 2),
             SolverConfig(solver="broyden", anderson_batch_dims=1),
         )
+
+
+def test_jfb_matches_one_transition_gradient() -> None:
+    bias = torch.nn.Parameter(torch.tensor([0.4], dtype=torch.float64))
+    weight = torch.nn.Parameter(torch.tensor([0.2], dtype=torch.float64))
+    result = solve_equilibrium(
+        lambda z: bias + weight * z,
+        torch.zeros(1, dtype=torch.float64),
+        SolverConfig(max_iter=80, tol=1e-12, backward_mode="jfb"),
+        params=(bias, weight),
+    )
+    equilibrium = result.z.detach()
+    result.z.sum().backward()
+
+    assert result.info["backward_mode"] == "jfb"
+    assert torch.allclose(bias.grad, torch.ones_like(bias), atol=1e-10)
+    assert torch.allclose(weight.grad, equilibrium, atol=1e-10)
+
+
+def test_shine_reuses_and_refines_broyden_inverse() -> None:
+    matrix = torch.tensor([[0.15, 0.04], [-0.02, 0.1]], dtype=torch.float64)
+    source = torch.tensor([0.4, -0.25], dtype=torch.float64)
+    forward = fixed_point(
+        lambda z: source + matrix @ z,
+        torch.zeros(2, dtype=torch.float64),
+        SolverConfig(solver="broyden", max_iter=12, tol=1e-12, history=6),
+    )
+    assert forward.inverse_estimate is not None
+    grad = torch.tensor([1.0, -0.5], dtype=torch.float64)
+    raw = shine_adjoint_solve(
+        lambda z: source + matrix @ z,
+        forward.z,
+        grad,
+        forward.inverse_estimate,
+    )
+    refined = shine_adjoint_solve(
+        lambda z: source + matrix @ z,
+        forward.z,
+        grad,
+        forward.inverse_estimate,
+        refine_steps=3,
+        tol=1e-12,
+    )
+    exact = torch.linalg.solve(torch.eye(2, dtype=torch.float64) - matrix.T, grad)
+
+    assert refined.residual <= raw.residual + 1e-12
+    assert torch.allclose(refined.x, exact, atol=1e-8)
+
+
+def test_shine_backward_matches_linear_reference() -> None:
+    bias = torch.nn.Parameter(torch.tensor([0.4], dtype=torch.float64))
+    weight = torch.nn.Parameter(torch.tensor([0.2], dtype=torch.float64))
+    result = solve_equilibrium(
+        lambda z: bias + weight * z,
+        torch.zeros(1, dtype=torch.float64),
+        SolverConfig(
+            solver="broyden",
+            max_iter=20,
+            tol=1e-12,
+            backward_mode="shine",
+            backward_tol=1e-12,
+            shine_refine_steps=2,
+        ),
+        params=(bias, weight),
+    )
+    loss = 0.5 * result.z.square().sum()
+    loss.backward()
+
+    z_star = bias.detach() / (1.0 - weight.detach())
+    expected_bias_grad = z_star / (1.0 - weight.detach())
+    expected_weight_grad = z_star.square() / (1.0 - weight.detach())
+    assert result.info["backward_mode"] == "shine"
+    assert result.info["shine_inverse_rank"] >= 1
+    assert torch.allclose(bias.grad, expected_bias_grad, atol=1e-8)
+    assert torch.allclose(weight.grad, expected_weight_grad, atol=1e-8)
+
+
+def test_shine_requires_broyden_forward_solver() -> None:
+    with pytest.raises(ValueError, match='requires solver="broyden"'):
+        solve_equilibrium(
+            lambda z: 0.2 * z,
+            torch.zeros(1),
+            SolverConfig(backward_mode="shine"),
+        )
+
+
+def test_truncated_neumann_gradient_matches_the_finite_series() -> None:
+    weight = torch.nn.Parameter(torch.tensor([0.2], dtype=torch.float64))
+    bias = torch.nn.Parameter(torch.tensor([0.4], dtype=torch.float64))
+    terms = 5
+    result = solve_equilibrium(
+        lambda state: bias + weight * state,
+        torch.zeros(1, dtype=torch.float64),
+        SolverConfig(
+            solver="picard",
+            max_iter=80,
+            tol=1e-12,
+            backward_mode="neumann",
+            neumann_terms=terms,
+        ),
+        params=(weight, bias),
+    )
+    (0.5 * result.z.square().sum()).backward()
+
+    equilibrium = 0.4 / (1.0 - 0.2)
+    adjoint = equilibrium * sum(0.2**index for index in range(terms))
+    assert torch.allclose(bias.grad, torch.tensor([adjoint], dtype=torch.float64), atol=1e-10)
+    assert torch.allclose(
+        weight.grad,
+        torch.tensor([adjoint * equilibrium], dtype=torch.float64),
+        atol=1e-10,
+    )
+    assert result.info["backward_mode"] == "neumann"
+    assert result.info["backward_solver"] == "truncated_neumann"
+    assert result.info["neumann_terms"] == terms

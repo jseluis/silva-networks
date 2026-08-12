@@ -147,6 +147,47 @@ PACKAGE_CITATIONS = {
     "45_cross_family_field_benchmark.ipynb": (1, 31, 43, 61),
     "46_extension_builder_workshop.ipynb": (1, 4, 10, 13),
     "47_failure_diagnostics_workshop.ipynb": (1, 4, 10, 11, 12, 13, 14),
+    "48_silva_learned_solvers.ipynb": (1, 4, 59, 65, 67, 87),
+    "49_jfb_shine_backward_methods.ipynb": (1, 4, 10, 11, 13, 87, 88, 89),
+    "50_silva_quantum_deq.ipynb": (1, 4, 81, 90, 91, 92),
+    "51_equilibrium_expansion_atlas.ipynb": (
+        1,
+        4,
+        38,
+        48,
+        51,
+        59,
+        64,
+        74,
+        75,
+        87,
+        88,
+        89,
+        90,
+    ),
+    "52_silva_evidence_ladders.ipynb": (1, 4, 93),
+    "53_transition_equivalence_lab.ipynb": (1, 4),
+    "54_statistical_benchmarking.ipynb": (1, 4, 10, 11, 12),
+    "55_silva_bayesian_deq.ipynb": (1, 4, 81, 91, 94),
+    "56_silva_joint_inference.ipynb": (1, 4, 95),
+    "57_silva_implicit_spatiotemporal.ipynb": (1, 7, 31, 32, 93, 96),
+    "58_silva_certified_equilibrium.ipynb": (1, 4, 75, 91, 97, 98),
+    "59_full_experiment_pipeline.ipynb": (1, 4, 93),
+    "60_neumann_backward_comparison.ipynb": (1, 4, 39, 88, 89),
+    "61_silva_lipschitz_mdeq.ipynb": (1, 4, 99),
+    "62_silva_subhomogeneous_equilibrium.ipynb": (1, 4, 100),
+    "63_silva_algorithmic_reasoner.ipynb": (1, 4, 101),
+    "64_silva_hamiltonian_equilibrium.ipynb": (1, 4, 102),
+    "65_silva_inverse_imaging_equilibrium.ipynb": (1, 4, 103),
+    "66_silva_snapshot_compressive_equilibrium.ipynb": (1, 4, 104),
+    "67_silva_magnetic_particle_equilibrium.ipynb": (1, 4, 105),
+    "68_silva_sparse_hyperspectral_equilibrium.ipynb": (1, 4, 106),
+    "69_silva_serialized_smoothing_equilibrium.ipynb": (1, 4, 107),
+    "70_silva_diffusion_restoration_equilibrium.ipynb": (1, 4, 108),
+    "71_silva_recurrent_equilibrium_network.ipynb": (1, 4, 109),
+    "72_silva_lipschitz_robust_equilibrium.ipynb": (1, 4, 110),
+    "73_silva_image_matting_equilibrium.ipynb": (1, 4, 111),
+    "74_silva_dynamic_economic_equilibrium.ipynb": (1, 4, 112),
 }
 
 BRIDGE_CITATIONS = {
@@ -267,10 +308,22 @@ def update_notebook(path: Path, numbers: tuple[int, ...], *, write: bool = True)
     return True
 
 
-def synchronize(*, write: bool = True) -> list[Path]:
+def synchronize(
+    *,
+    write: bool = True,
+    names: tuple[str, ...] | None = None,
+) -> list[Path]:
     changed: list[Path] = []
+    selected = set(names) if names is not None else None
+    known = set(PACKAGE_CITATIONS) | set(BRIDGE_CITATIONS)
+    if selected is not None:
+        unknown = sorted(selected - known)
+        if unknown:
+            raise KeyError(f"unknown notebook citation names: {', '.join(unknown)}")
     for citations, *directories in GROUPS:
         for name, numbers in citations.items():
+            if selected is not None and name not in selected:
+                continue
             for directory in directories:
                 path = directory / name
                 if not path.exists():
@@ -283,9 +336,18 @@ def synchronize(*, write: bool = True) -> list[Path]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="report pending updates")
+    parser.add_argument(
+        "--name",
+        action="append",
+        default=None,
+        help="update one notebook filename; repeat to select multiple notebooks",
+    )
     args = parser.parse_args()
 
-    changed = synchronize(write=not args.check)
+    changed = synchronize(
+        write=not args.check,
+        names=tuple(args.name) if args.name is not None else None,
+    )
     for path in changed:
         print(path.relative_to(ROOT))
     if args.check and changed:

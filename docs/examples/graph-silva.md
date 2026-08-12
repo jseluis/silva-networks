@@ -41,6 +41,7 @@ the same damping used by the solver. Graph, attention, and message-passing
 sources are listed in
 [Graphs, Attention, and Messages](../paper/references.md#graphs-attention-and-messages).
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -89,15 +90,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **node-state shape, task loss, equilibrium residual, and gradients**. The
 invariants that must remain true are **node relabeling equivariance, graph boundaries, and state shape**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/graph_silva.py"
-```
 
 ### Run the Complete Example
 

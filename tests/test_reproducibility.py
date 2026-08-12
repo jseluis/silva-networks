@@ -78,6 +78,17 @@ def test_emerging_source_scale_plans_name_data_access_storage_and_steps() -> Non
         assert len(spec.storage_plan) >= 2
 
 
+def test_solver_learning_and_quantum_plans_name_source_scale_obligations() -> None:
+    for family in ("silva_hyper_deq", "silva_quantum_deq"):
+        spec = silva_reproduction_spec(family)
+        assert all(source.startswith("https://") for source in spec.data_sources)
+        assert len(spec.datasets) >= 4
+        assert len(spec.data_access) >= 2
+        assert len(spec.storage_plan) >= 3
+        assert len(spec.source_scale_steps) >= 3
+        assert len(spec.metrics) >= 5
+
+
 def test_aliases_expose_real_constructor_and_signature() -> None:
     constructor = silva_family_constructor("pideq")
     signature = silva_family_signature("pideq")

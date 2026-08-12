@@ -350,7 +350,7 @@ def _write_family_material() -> None:
         f"""
         # Family Reproduction Dossiers
 
-        These 44 dossiers expose the complete path from a governing equation to source-scale
+        These {len(dossiers)} dossiers expose the complete path from a governing equation to source-scale
         experimentation. Each page records what the implementation preserves, what SILVA makes
         replaceable, which compact checks have run, and what remains before a publication-scale
         reproduction can be claimed.
@@ -829,7 +829,7 @@ def _write_notebooks() -> None:
                 directory / name,
                 notebook,
                 replace_changed=True,
-                preserve_unmatched=False,
+                preserve_unmatched=True,
             )
 
 
@@ -1179,7 +1179,7 @@ def main() -> None:
     _write_family_material()
     _write_guides()
     _write_notebooks()
-    print("generated 44 family dossiers and scale plans")
+    print(f"generated {len(all_silva_experiment_dossiers())} family dossiers and scale plans")
     print("generated 4 research-depth guides")
     print("generated 6 research-depth notebooks in canonical, docs, and portable locations")
 

@@ -15,7 +15,13 @@ inputs, outputs, and source links.
 | Module | Main contents |
 | --- | --- |
 | [Public API](public-api.md) | top-level `silva_networks` import contract and exported names |
-| [Solvers](solvers.md) | `SolverConfig`, `SolverResult`, `fixed_point`, `solve_equilibrium`, `picard`, `anderson`, `broyden`, `gmres`, implicit adjoints |
+| [Solvers](solvers.md) | `SolverConfig`, `SolverResult`, `fixed_point`, `solve_equilibrium`, `picard`, `anderson`, `broyden`, `gmres`, implicit, JFB, phantom, and SHINE adjoints |
+| [Learned Equilibrium Solvers](solver_learning.md) | learned initialization, residual compression, Anderson control, teacher trajectories, and training losses |
+| [Quantum Equilibria](quantum_equilibria.md) | exact compact statevector circuit, external circuit adapter, image filter, QDEQ execution modes, and Jacobian diagnostics |
+| [Bayesian, Joint, Dynamic, and Certified](advanced_expansions.md) | posterior equilibrium samples, joint input/state roots, implicit trajectories, and interval certificates |
+| [Evidence](evidence.md) | transition equivalence, repeated metrics, evidence records, fingerprints, and lifecycle hooks |
+| [Experiment Protocols](experiment_protocols.md) | three execution tiers, data routes, resource plans, acceptance checks, and JSON export for all 64 families |
+| [Source-Aligned Equilibria](source_equilibria.md) | fourteen independently implemented multiscale, algorithmic, physical, inverse, robust, and equation-residual families with replaceable internals |
 | [Jacobians](jacobians.md) | `full_jacobian`, `vjp`, `jvp`, spectral radius, stability reports |
 | [Diagnostics](diagnostics.md) | residual curves, damped updates, Lyapunov-style energy traces |
 | [Layers](layers.md) | `SILVALayer`, `SILVAGraphLayer`, `silva_generalized_layer`, `silva_deq_reduction_layer`, global/local/self operators |
@@ -35,7 +41,7 @@ inputs, outputs, and source links.
 | [DEQ Engine](deq-engine.md) | general single-state and multi-state SILVA DEQ engine, variational dropout, state packing |
 | [Extensibility](extensibility.md) | generic conditioned equilibrium, transition reports, contract validation, and custom-family construction |
 | [Reproducibility](reproducibility.md) | source relationships, equations, datasets, metrics, evidence paths, constructor signatures, and scale-aware builders |
-| [Research Depth](research_depth.md) | six-stage dossiers, configurable components, experiment acceptance checks, artifacts, and result records for all 44 families |
+| [Research Depth](research_depth.md) | six-stage dossiers, configurable components, experiment acceptance checks, artifacts, and result records for all 64 families |
 | [Compact Benchmarks](compact_benchmarks.md) | deterministic same-task vector, graph, and field comparison suites with optimization and solver diagnostics |
 | [Optical Flow](flow.md) | RAFT-style correlation, warping, DEQ-flow fixed point, synthetic flow data |
 | [Generalized Cases](cases.md) | sequence DEQ, multiscale vision DEQ, IGNN, implicit representations, and diffusion equilibria |
@@ -74,6 +80,15 @@ inputs, outputs, and source links.
 | Multiscale vision DEQ | `SILVAMultiscaleDEQ`, `SILVAMultiscaleClassifier`, `SILVAMultiscaleSegmenter` |
 | Implicit graph and coordinate fields | `SILVAImplicitGraphNetwork`, `SILVAImplicitNeuralRepresentation`, `SILVACoordinateInjection` |
 | Diffusion trajectory equilibrium | `SILVADiffusionEquilibrium` with a user denoiser and schedule |
+| Learned equilibrium solver | `SILVAHyperDEQ`, `SILVAHyperInitializer`, `SILVAResidualCompressor`, `SILVAHyperAndersonController`, `silva_hyper_deq_loss` |
+| Approximate implicit backward paths | `SolverConfig(backward_mode="jfb")`, `BroydenInverseEstimate`, `SolverConfig(backward_mode="shine")`, `shine_adjoint_solve` |
+| Quantum-circuit equilibrium | `SILVAQuantumDEQ`, `SILVAStatevectorQuantumCircuit`, `SILVAQuantumCircuitAdapter`, `SILVAQuantumImageFilter` |
+| Bayesian equilibrium | `SILVABayesianDEQ`, posterior transition protocol, sample states, predictive variance, and KL term |
+| Joint input/state inference | `SILVAJointInferenceEquilibrium`, replaceable representation transition and projected input update |
+| Implicit spatiotemporal dynamics | `SILVAImplicitSpatiotemporalEquilibrium`, known and learned dynamics, projector, and per-step solver records |
+| Certified equilibrium | `SILVACertifiedEquilibrium`, interval bounds, class certificates, and semialgebraic export |
+| Evidence and equivalence | `compare_silva_transitions`, `run_silva_evidence`, metric summaries, and staged lifecycle hooks |
+| Three-tier experiment protocol | `silva_family_experiment_protocol`, protocol audit, resource routes, and JSON export |
 | Sequence DEQ | `SILVASequenceDEQ`, relative attention, adaptive embedding/projected softmax, custom module hooks |
 | Multiscale DEQ | `SILVAMultiscaleDEQ`, learned fusion, weight norm, material classification and segmentation heads |
 | Coupled RAFT/DEQ-Flow | `SILVARAFTDEQ`, residual encoders, `SILVACorrelationPyramid`, `SILVARAFTUpdateBlock`, correction loss and cached state |
@@ -107,6 +122,9 @@ inputs, outputs, and source links.
 | recent equilibrium families | SILVA plus FNO-DEQ, physics-guided graph DEQ, HomoODE, or DDEQ according to the selected mechanism |
 | advanced equilibrium families | SILVA plus MIGNN, GET, DEQ-MD, or PIDEQ according to the selected mechanism |
 | DAE and residual objectives | DAE-PINN or differential-equation GAN lineage; the latter is not a deep-equilibrium family |
+| learned solver | SILVA plus Neural Deep Equilibrium Solvers; cite the task architecture and dataset separately |
+| approximate backward path | SILVA plus JFB or SHINE according to the selected `backward_mode` |
+| quantum equilibrium | SILVA plus QDEQ, the circuit/backend method, and the image dataset |
 
 ## Common Imports
 

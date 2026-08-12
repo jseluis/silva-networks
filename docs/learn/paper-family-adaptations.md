@@ -232,6 +232,23 @@ preprocessing, random seeds, hardware/distribution choices, optimizer schedule,
 training duration, evaluation scripts, and any pretrained denoiser or encoder
 identified by the source paper.
 
+## Additional Solver and Substrate Adaptations
+
+The transition families above can now be paired with a learned forward solver,
+JFB, or SHINE without changing their internal architecture. HyperDEQ provides a
+replaceable initializer, residual and condition compressors, and learned
+Anderson controller [[87]](../paper/references.md#ref-87){ .silva-cite }. JFB
+uses one final differentiable transition [[88]](../paper/references.md#ref-88){
+.silva-cite }, while SHINE reuses the inverse approximation from forward
+Broyden [[89]](../paper/references.md#ref-89){ .silva-cite }.
+
+QDEQ changes the repeated transition itself: encoded classical features enter a
+parameterized circuit, measurements return a real state, and the same SILVA
+solver contract establishes the equilibrium [[90]](../paper/references.md#ref-90){
+.silva-cite }. The circuit, source adapter, readout, solver, and backward mode
+remain independently replaceable. Complete derivations and executable compact
+experiments are in notebooks 48 through 51.
+
 ## Where to Go Next
 
 | Question | Page |

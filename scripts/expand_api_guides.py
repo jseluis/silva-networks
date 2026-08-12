@@ -57,9 +57,56 @@ solver anderson
 max iterations 12
 runtime auto none
 loader 4 0"""
+ADVANCED_EXPANSION_OUTPUT = """bayesian variance 0.000405691476771608
+joint residual 8.033163112486363e-08
+trajectory (3, 5, 24)
+certified examples 4"""
+EVIDENCE_PROTOCOL_OUTPUT = """mean error 0.045
+smoke analytic ODE/PDE trajectory CPU or 1 accelerator
+workstation PDEBench subset 1 accelerator
+full PDEBench source task 1-8 accelerators"""
 
 
 GUIDES = {
+    "advanced_expansions.md": Guide(
+        "Bayesian, joint-inference, spatiotemporal, and certified equilibria",
+        r"z^\star=T_\theta(z^\star;c),\qquad \widehat y=R_\psi(z^\star)",
+        "a posterior sample, coupled representation/input pair, physical field, or interval state",
+        "the source, observations, dynamics, boundaries, perturbation box, and solver configuration",
+        "posterior variance, root residual, physical residual, trajectory error, or certificate margin",
+        "transition, input update, known/learned dynamics, projector, readout, or certificate backend",
+        "posterior samples, state width, time steps, spatial resolution, solver budget, and certificate radius",
+        "[[94]](../paper/references.md#ref-94) through [[98]](../paper/references.md#ref-98)",
+        "advanced_expansions.py",
+        ADVANCED_EXPANSION_OUTPUT,
+        "The four rows establish distinct contracts: nonzero sampled uncertainty, a converged coupled root, a complete implicit trajectory, and positive certified margins. None of these quantities should be collapsed into a single score.",
+    ),
+    "evidence.md": Guide(
+        "equivalence checks and repeated experiment evidence",
+        r"\mathcal E=(m,r,K,g,t,M,\mathcal F_{\rm config},\mathcal F_{\rm data})",
+        "the transition outputs, roots, gradients, per-seed measurements, and lifecycle records",
+        "identical inputs, seeds, configuration, data receipt, and declared evidence level",
+        "transition/root/gradient error, confidence interval, failures, runtime, and peak memory",
+        "metric function, interval procedure, equivalence tolerances, lifecycle hooks, or artifact writer",
+        "seed count, bootstrap samples, state size, data subset, repetitions, and resource budget",
+        "the SILVA contract [[1]](../paper/references.md#ref-1), DEQ gradients [[4]](../paper/references.md#ref-4), and the selected benchmark source",
+        "evidence_and_protocols.py",
+        EVIDENCE_PROTOCOL_OUTPUT,
+        "The measured mean is backed by all retained seed records. The tier rows are planning contracts; they become evidence only after their commands run and their measured artifacts are archived.",
+    ),
+    "experiment_protocols.md": Guide(
+        "three-tier experiment protocols for every canonical family",
+        r"P_f=\{P_{f,\mathrm{smoke}},P_{f,\mathrm{workstation}},P_{f,\mathrm{full}}\}",
+        "the selected family construction together with its tier-specific data and runtime contract",
+        "source relation, data route, preprocessing, seeds, metrics, resources, and acceptance checks",
+        "validated protocol fields followed by measured task, solver, runtime, memory, and failure records",
+        "data adapter, task lifecycle hook, model options, runtime placement, or acceptance rule",
+        "sample cap, epochs, seeds, resolution, batch policy, accelerators, storage, and wall time",
+        "the SILVA contract [[1]](../paper/references.md#ref-1) and PDEBench route [[93]](../paper/references.md#ref-93)",
+        "evidence_and_protocols.py",
+        EVIDENCE_PROTOCOL_OUTPUT,
+        "The same family exposes compact, subset, and complete-source routes. Resource ranges describe intended capacity and must be replaced by observed measurements in a completed result record.",
+    ),
     "advanced_data.md": Guide(
         "advanced-family data contracts",
         r"\mathcal D=\{(x_i,y_i,c_i)\}_{i=1}^N,\qquad y_i=\mathcal G(x_i;c_i)",

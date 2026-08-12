@@ -177,13 +177,15 @@ forward residual, backward residual, runtime, and memory separately.
 | `silva_efficient_infinite_graph` | Spectral infinite-depth graph model [[78]](../paper/references.md#ref-78) | Synthetic long-range and citation graphs; accuracy, robustness, time, memory |
 | `silva_multiscale_graph_implicit` | Graph-power implicit modules and scale attention [[79]](../paper/references.md#ref-79) | Node/graph classification; task metric, per-scale residuals, fusion statistics |
 | `silva_delta_equilibrium` | Thresholded cached equilibrium updates [[80]](../paper/references.md#ref-80) | Implicit image representation and optical flow; PSNR/EPE, FLOPs, time, activity, exact residual |
+| `silva_hyper_deq` | Learned equilibrium solver [[87]](../paper/references.md#ref-87) | WikiText-103, ImageNet, or Cityscapes; teacher error, residual, evaluations, latency, memory |
+| `silva_quantum_deq` | Quantum deep equilibrium model [[90]](../paper/references.md#ref-90) | MNIST-4, MNIST, Fashion-MNIST, or CIFAR-10; accuracy, residual, circuit evaluations, gradient variance |
 
 ## Audit Every Source Contract
 
 The complete one-by-one contract is executable rather than duplicated as a
 second static registry. This loop prints the governing equation, retained
 mechanism, SILVA extensions, benchmark requirements, sources, notebooks, tests,
-and constructor for all 44 families:
+and constructor for all 64 families:
 
 ```python
 from silva_networks import all_silva_reproduction_specs
@@ -330,6 +332,24 @@ their horizontal and vertical components when images are resized. The
 family-by-family code, storage estimates, access rules, and claim boundaries.
 The complete bibliography and external article routes remain collected in
 [References](../paper/references.md).
+
+## New Solver and Circuit Reproduction Routes
+
+The same run record now covers learned solver, backward approximation, and
+circuit equilibrium studies:
+
+| Route | Preserve from the source | Scale first | Report in addition to task quality |
+| --- | --- | --- | --- |
+| HyperDEQ [[87]](../paper/references.md#ref-87){ .silva-cite } | trained base transition, teacher tolerance, trajectory sampling, controller loss | cached teacher count, state width, learned steps | teacher distance, residual path, latency, memory |
+| JFB [[88]](../paper/references.md#ref-88){ .silva-cite } | forward root and optimizer | state width and batch size | gradient agreement, forward residual, runtime |
+| SHINE [[89]](../paper/references.md#ref-89){ .silva-cite } | Broyden forward solve and retained inverse factors | inverse history and refinement steps | inverse rank, backward residual, gradient agreement |
+| QDEQ [[90]](../paper/references.md#ref-90){ .silva-cite } | encoding, fixed circuit seed, trainable gate grammar, schedule | four wires before ten, then shot/device budget | measurements, residual, Jacobian estimate, circuit evaluations |
+
+The compact data routes use generated teacher roots and source-indexed image
+datasets. A source-scale claim additionally requires the exact article split,
+preprocessing, architecture depth, solver limits, training schedule, hardware,
+and evaluation protocol. Notebooks 48 through 51 expose both levels without
+presenting their compact metrics as article reproduction.
 
 <!-- silva-extension-path:start -->
 --8<-- "includes/extension/learn.md"

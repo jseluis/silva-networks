@@ -47,18 +47,12 @@ RAW_LATEX_RE = re.compile(
 MISSING_LATEX_SLASH_RE = re.compile(
     r"(?<!\\)\b(?:frac|mathbb|mathcal|mathbf|mathrm|operatorname|sqrt)\{"
 )
-PLAIN_NUMBERED_CITATION_RE = re.compile(
-    r"(?<![\w=\[])\[([1-9][0-9]?)\](?!\]|\s*\()"
-)
+PLAIN_NUMBERED_CITATION_RE = re.compile(r"(?<![\w=\[])\[([1-9][0-9]?)\](?!\]|\s*\()")
 NEXT_STEP_CELL_TAG = "silva-next-steps"
 SITE_PREFIX = "https://jseluis.github.io/silva-networks/"
 REFERENCE_ID_RE = re.compile(r'<li id="ref-(\d+)">(.*?)</li>')
-NUMBERED_CITATION_RE = re.compile(
-    r"\[(?:\[(\d+)\]|(\d+))\]\(([^)]*#ref-(\d+))\)"
-)
-UNBRACKETED_NUMBERED_CITATION_RE = re.compile(
-    r"(?<!\[)\[([1-9][0-9]?)\]\([^)]*#ref-\1\)"
-)
+NUMBERED_CITATION_RE = re.compile(r"\[(?:\[(\d+)\]|(\d+))\]\(([^)]*#ref-(\d+))\)")
+UNBRACKETED_NUMBERED_CITATION_RE = re.compile(r"(?<!\[)\[([1-9][0-9]{0,2})\]\([^)]*#ref-\1\)")
 NUMBERED_CITATION_START = "<!-- silva-numbered-citations:start -->"
 NUMBERED_CITATION_END = "<!-- silva-numbered-citations:end -->"
 EXTENSION_PATH_START = "<!-- silva-extension-path:start -->"
@@ -67,13 +61,16 @@ API_STUDY_END = "<!-- silva-api-study:end -->"
 LEARNING_STUDY_START = "<!-- silva-learning-study:start -->"
 LEARNING_STUDY_END = "<!-- silva-learning-study:end -->"
 EXPANDED_API_GUIDES = {
+    "advanced_expansions.md",
     "advanced_data.md",
     "advanced_equilibria.md",
     "coverage.md",
     "devices.md",
+    "evidence.md",
     "emerging_data.md",
     "emerging_equilibria.md",
     "extensibility.md",
+    "experiment_protocols.md",
     "frontier_data.md",
     "physics_informed.md",
     "reproducibility.md",
@@ -135,10 +132,10 @@ def _check_research_depth_material(
     family_pages = sorted((docs / "families").glob("*.md"))
     dossier_pages = [path for path in family_pages if path.name != "index.md"]
     config_paths = sorted((root / "experiments/reproduction/configs").glob("*.json"))
-    if len(dossier_pages) != 44:
-        errors.append(f"expected 44 family dossier pages, found {len(dossier_pages)}")
-    if len(config_paths) != 44:
-        errors.append(f"expected 44 family scale plans, found {len(config_paths)}")
+    if len(dossier_pages) != 64:
+        errors.append(f"expected 64 family dossier pages, found {len(dossier_pages)}")
+    if len(config_paths) != 64:
+        errors.append(f"expected 64 family scale plans, found {len(config_paths)}")
 
     required_sections = (
         "## Identity and Sources",
@@ -194,12 +191,8 @@ def _check_research_depth_material(
         if len(results) != 12:
             errors.append(f"expected 12 compact family results, found {len(results)}")
         for result in results:
-            if result.get("final_loss", float("inf")) >= result.get(
-                "initial_loss", float("-inf")
-            ):
-                errors.append(
-                    f"compact comparison did not reduce loss: {result.get('family')}"
-                )
+            if result.get("final_loss", float("inf")) >= result.get("initial_loss", float("-inf")):
+                errors.append(f"compact comparison did not reduce loss: {result.get('family')}")
             if result.get("evidence_status") != "compact-verified":
                 errors.append(
                     f"compact comparison has an invalid evidence label: {result.get('family')}"
@@ -229,9 +222,7 @@ def _check_research_depth_material(
 def _check_current_inventory(root: Path, docs: Path, errors: list[str]) -> None:
     """Keep reader-facing counts and homepage routes synchronized with the tree."""
 
-    family_tree = ast.parse(
-        (root / "src/silva_networks/families.py").read_text(encoding="utf-8")
-    )
+    family_tree = ast.parse((root / "src/silva_networks/families.py").read_text(encoding="utf-8"))
     family_count: int | None = None
     for node in family_tree.body:
         if not isinstance(node, ast.AnnAssign):
@@ -244,9 +235,7 @@ def _check_current_inventory(root: Path, docs: Path, errors: list[str]) -> None:
         return
 
     markdown_count = sum(
-        1
-        for path in docs.rglob("*.md")
-        if "includes" not in path.relative_to(docs).parts
+        1 for path in docs.rglob("*.md") if "includes" not in path.relative_to(docs).parts
     )
     rendered_notebook_count = sum(1 for _ in docs.rglob("*.ipynb"))
     canonical_notebook_count = (
@@ -337,8 +326,7 @@ def _check_navigation(root: Path, docs: Path, errors: list[str]) -> None:
     documents = {
         path.relative_to(docs).as_posix()
         for path in docs.rglob("*")
-        if path.suffix in {".md", ".ipynb"}
-        and "includes" not in path.relative_to(docs).parts
+        if path.suffix in {".md", ".ipynb"} and "includes" not in path.relative_to(docs).parts
     }
     for target in sorted(documents - targets):
         errors.append(f"documentation file is not in navigation: docs/{target}")
@@ -364,9 +352,7 @@ def _check_extension_paths(docs: Path, errors: list[str]) -> None:
 def _check_ui_configuration(root: Path, errors: list[str]) -> None:
     config = (root / "mkdocs.yml").read_text(encoding="utf-8")
     stylesheet = (root / "docs/stylesheets/extra.css").read_text(encoding="utf-8")
-    notebook_figures = (root / "docs/javascripts/notebook-figures.js").read_text(
-        encoding="utf-8"
-    )
+    notebook_figures = (root / "docs/javascripts/notebook-figures.js").read_text(encoding="utf-8")
     required_config = (
         "line_length: 88",
         "separate_signature: true",
@@ -395,9 +381,7 @@ def _check_ui_configuration(root: Path, errors: list[str]) -> None:
     )
     for marker in required_figure_markers:
         if marker not in notebook_figures:
-            errors.append(
-                f"notebook figure accessibility enhancement is missing: {marker}"
-            )
+            errors.append(f"notebook figure accessibility enhancement is missing: {marker}")
 
 
 def _check_next_steps(docs: Path, errors: list[str]) -> None:
@@ -435,9 +419,7 @@ def _check_next_steps(docs: Path, errors: list[str]) -> None:
             errors.append(f"{label} next steps do not connect multiple documentation families")
 
 
-def _next_step_rows(
-    text: str, label: str, errors: list[str]
-) -> list[tuple[str, str]]:
+def _next_step_rows(text: str, label: str, errors: list[str]) -> list[tuple[str, str]]:
     visible = FENCED_CODE_RE.sub("", text)
     if visible.count("## Where to Go Next") != 1:
         errors.append(f"{label} must contain one Where to Go Next section")
@@ -460,8 +442,8 @@ def _next_step_rows(
         if len(cells) == 2:
             rows.append((cells[0], cells[1]))
 
-    if not 3 <= len(rows) <= 4:
-        errors.append(f"{label} needs three or four next-step rows")
+    if not 3 <= len(rows) <= 5:
+        errors.append(f"{label} needs three to five next-step rows")
     for question, page_cell in rows:
         if not question.endswith("?"):
             errors.append(f"{label} next-step prompt is not a question: {question}")
@@ -508,9 +490,7 @@ def _check_learning_pages(docs: Path, errors: list[str]) -> None:
                 "### What This Result Establishes",
             ):
                 if marker not in text:
-                    errors.append(
-                        f"{path.relative_to(ROOT)} is missing learning study: {marker}"
-                    )
+                    errors.append(f"{path.relative_to(ROOT)} is missing learning study: {marker}")
             if len(text.split()) < 600:
                 errors.append(f"{path.relative_to(ROOT)} learning study is too short")
 
@@ -564,10 +544,7 @@ def _check_notebooks(root: Path, docs: Path, errors: list[str]) -> None:
         ),
     )
     for directories in groups:
-        name_sets = [
-            {path.name for path in directory.glob("*.ipynb")}
-            for directory in directories
-        ]
+        name_sets = [{path.name for path in directory.glob("*.ipynb")} for directory in directories]
         source_names = name_sets[0]
         if any(names != source_names for names in name_sets[1:]):
             labels = ", ".join(str(directory.relative_to(root)) for directory in directories)
@@ -604,9 +581,7 @@ def _check_notebooks(root: Path, docs: Path, errors: list[str]) -> None:
                 errors.append(f"{path.relative_to(root)} needs one final tagged next-step cell")
                 continue
             label = path.relative_to(root).as_posix()
-            rows = _next_step_rows(
-                "".join(navigation_cells[0].get("source", [])), label, errors
-            )
+            rows = _next_step_rows("".join(navigation_cells[0].get("source", [])), label, errors)
             destinations = []
             families = set()
             for _, page_cell in rows:
@@ -626,7 +601,9 @@ def _check_notebooks(root: Path, docs: Path, errors: list[str]) -> None:
                     docs / f"{route}.ipynb",
                 )
                 if not any(candidate.exists() for candidate in candidates):
-                    errors.append(f"{label} notebook next-step target does not exist: {destination}")
+                    errors.append(
+                        f"{label} notebook next-step target does not exist: {destination}"
+                    )
             if len(destinations) != len(set(destinations)):
                 errors.append(f"{label} repeats a notebook next-step destination")
             if len(families) < 2:
@@ -639,10 +616,8 @@ def _check_numbered_citations(root: Path, docs: Path, errors: list[str]) -> None
     entries = REFERENCE_ID_RE.findall(references)
     numbers = [int(number) for number, _ in entries]
     expected_numbers = list(range(1, max(numbers, default=0) + 1))
-    if numbers != expected_numbers or max(numbers, default=0) < 50:
-        errors.append(
-            "numbered reference registry must contain sequential entries 1 through 50"
-        )
+    if numbers != expected_numbers or max(numbers, default=0) < 112:
+        errors.append("numbered reference registry must contain sequential entries 1 through 112")
     for number, entry in entries:
         if 'target="_blank"' not in entry or 'rel="noopener"' not in entry:
             errors.append(f"numbered reference {number} does not open its external source safely")
@@ -659,9 +634,7 @@ def _check_numbered_citations(root: Path, docs: Path, errors: list[str]) -> None
                     f"{path.relative_to(root)} citation [{displayed}] points to ref-{target}"
                 )
             if target not in valid_numbers:
-                errors.append(
-                    f"{path.relative_to(root)} citation points to missing ref-{target}"
-                )
+                errors.append(f"{path.relative_to(root)} citation points to missing ref-{target}")
 
     citation_units: list[tuple[str, str]] = [
         (path.relative_to(root).as_posix(), path.read_text(encoding="utf-8"))
@@ -681,15 +654,12 @@ def _check_numbered_citations(root: Path, docs: Path, errors: list[str]) -> None
         prose = _reader_prose_without_code_or_math(source)
         for match in UNBRACKETED_NUMBERED_CITATION_RE.finditer(prose):
             errors.append(
-                f"{label} citation {match.group(1)} must display its number as "
-                f"[{match.group(1)}]"
+                f"{label} citation {match.group(1)} must display its number as [{match.group(1)}]"
             )
         for match in PLAIN_NUMBERED_CITATION_RE.finditer(prose):
             number = int(match.group(1))
             if number in valid_numbers:
-                errors.append(
-                    f"{label} contains unresolved reader-facing citation [{number}]"
-                )
+                errors.append(f"{label} contains unresolved reader-facing citation [{number}]")
 
     notebook_roots = (
         root / "notebooks/package_api",
@@ -727,7 +697,9 @@ def _check_download_surface(root: Path, errors: list[str]) -> None:
     override = (root / "docs/overrides/main.html").read_text(encoding="utf-8")
     for marker in ("Download page source", "_sources/"):
         if marker in override:
-            errors.append(f"ordinary documentation pages expose an unnecessary source link: {marker}")
+            errors.append(
+                f"ordinary documentation pages expose an unnecessary source link: {marker}"
+            )
 
 
 def _check_reader_wording(docs: Path, errors: list[str]) -> None:
@@ -742,7 +714,9 @@ def _check_reader_wording(docs: Path, errors: list[str]) -> None:
         text = path.read_text(encoding="utf-8").lower()
         for phrase in READER_WORDING:
             if phrase in text:
-                errors.append(f"{path.relative_to(ROOT)} contains reader-facing process wording: {phrase}")
+                errors.append(
+                    f"{path.relative_to(ROOT)} contains reader-facing process wording: {phrase}"
+                )
 
 
 def main(argv: list[str] | None = None) -> int:

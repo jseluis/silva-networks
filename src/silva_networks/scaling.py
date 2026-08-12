@@ -579,7 +579,12 @@ _FAMILY_GUIDES: dict[str, SILVAFamilyGuide] = {
             (75,),
             ("https://github.com/locuslab/monotone_op_net",),
             ("MNIST", "CIFAR-10", "SVHN"),
-            ("state width", "operator factor rank", "splitting iterations", "implicit backward budget"),
+            (
+                "state width",
+                "operator factor rank",
+                "splitting iterations",
+                "implicit backward budget",
+            ),
             (
                 "replace the monotone operator, source, proximal map, splitting, or readout",
                 "compose structured convolutions while retaining the monotonicity certificate",
@@ -650,6 +655,305 @@ _FAMILY_GUIDES: dict[str, SILVAFamilyGuide] = {
                 "train with the full transition and enable thresholded cached evaluation independently",
             ),
         ),
+        _guide(
+            "silva_hyper_deq",
+            "learned initializer and learned Anderson equilibrium solver",
+            "condition plus replaceable transition -> accelerated equilibrium and task readout",
+            (87,),
+            ("https://github.com/locuslab/deq",),
+            ("WikiText-103", "ImageNet", "Cityscapes"),
+            (
+                "teacher trajectory cache",
+                "learned solver steps",
+                "residual history",
+                "compressor and controller width",
+            ),
+            (
+                "replace the transition, initializer, residual compressor, controller, or readout",
+                "train the solver around a frozen task model or jointly with the SILVA transition",
+            ),
+        ),
+        _guide(
+            "silva_quantum_deq",
+            "measured quantum-circuit equilibrium",
+            "image or vector input -> injected measured state -> task output",
+            (90,),
+            ("https://github.com/martaskrt/qdeq",),
+            ("MNIST-4", "MNIST", "Fashion-MNIST", "CIFAR-10"),
+            (
+                "wire count",
+                "circuit depth",
+                "root-solver budget",
+                "Jacobian penalty frequency",
+            ),
+            (
+                "replace the input adapter, circuit, measurement map, readout, or solver",
+                "switch between finite tied steps, warmup, and implicit differentiation",
+            ),
+        ),
+        _guide(
+            "silva_bayesian_deq",
+            "Bayesian equilibrium with sequential posterior inference",
+            "B,D input -> S posterior equilibria -> predictive mean and variance",
+            (94,),
+            ("https://openreview.net/forum?id=hT9FJBePUR",),
+            ("MNIST", "CIFAR-10", "ImageNet"),
+            (
+                "posterior samples",
+                "state width",
+                "sequential warm-start order",
+                "solver tolerance",
+            ),
+            (
+                "replace the posterior transition, sampler, readout, or uncertainty objective",
+                "switch between independent and sequential posterior equilibrium solves",
+            ),
+        ),
+        _guide(
+            "silva_joint_inference_equilibrium",
+            "joint representation inference and input optimization",
+            "observations -> coupled representation and optimized input -> task output",
+            (95,),
+            ("https://github.com/locuslab/JIIO-DEQ",),
+            ("image denoising", "inpainting", "latent inversion", "adversarial training"),
+            (
+                "representation width",
+                "optimized-input dimension",
+                "projection",
+                "joint solver budget",
+            ),
+            (
+                "replace either coupled transition branch, the projection, or readout",
+                "insert inverse-problem, latent-code, adversarial, or meta-learning objectives",
+            ),
+        ),
+        _guide(
+            "silva_implicit_spatiotemporal",
+            "implicit physics-integrated long-horizon dynamics",
+            "initial field plus time context -> implicit state trajectory and decoded output",
+            (96,),
+            ("https://arxiv.org/abs/2504.02260",),
+            (
+                "advection-diffusion",
+                "Burgers dynamics",
+                "chemical vapor infiltration",
+                "reaction-diffusion",
+            ),
+            (
+                "spatial resolution",
+                "time-step size",
+                "implicitness parameter",
+                "horizon",
+                "checkpoint segments",
+            ),
+            (
+                "replace known dynamics, learned closure, boundary projector, or decoder",
+                "use finite differences, finite volumes, spectral operators, or graph meshes",
+            ),
+        ),
+        _guide(
+            "silva_certified_equilibrium",
+            "contractive equilibrium with interval and semialgebraic certificate routes",
+            "bounded B,D input -> bounded equilibrium and certified task output",
+            (97, 98),
+            (
+                "https://openreview.net/forum?id=y1PXylgrXZ",
+                "https://github.com/locuslab/monotone_op_net",
+            ),
+            ("MNIST", "CIFAR-10", "SVHN", "robustness certification"),
+            (
+                "state width",
+                "contraction margin",
+                "input radius",
+                "bound-solver budget",
+            ),
+            (
+                "replace the monotone activation, bounded affine operator, or readout",
+                "export the affine ReLU system for external semialgebraic certificate programs",
+            ),
+        ),
+        _guide(
+            "silva_lipschitz_mdeq",
+            "Lipschitz-controlled simultaneous multiscale equilibrium",
+            "B,D input -> concatenated multiscale equilibrium -> task output",
+            (99,),
+            ("https://github.com/iiduka-researches/Lipschitz_mdeq",),
+            ("CIFAR-10", "ImageNet", "Cityscapes"),
+            ("scale widths", "cross-scale contraction", "solver budget", "image resolution"),
+            (
+                "replace the injection, cross-scale map, or readout while retaining a measured bound",
+                "split the packed state into arbitrary resolution-specific branches",
+            ),
+        ),
+        _guide(
+            "silva_subhomogeneous_equilibrium",
+            "normalized positive subhomogeneous equilibrium",
+            "B,D positive or signed input -> positive normalized equilibrium -> task output",
+            (100,),
+            ("https://arxiv.org/abs/2403.00720",),
+            ("MNIST", "CIFAR-10", "classification under large recurrent maps"),
+            ("state width", "normalization order", "translation", "subhomogeneity power"),
+            (
+                "replace the positive input map, state map, normalization, or readout",
+                "evaluate finite-p and infinity-normalized transition variants",
+            ),
+        ),
+        _guide(
+            "silva_algorithmic_reasoner",
+            "equilibrium graph processor for algorithmic reasoning",
+            "N,D node features plus edge_index -> solved node states and algorithm outputs",
+            (101,),
+            ("https://github.com/HekpoMaH/DEAR", "https://github.com/google-deepmind/clrs"),
+            ("CLRS-30", "sorting", "shortest paths", "minimum spanning trees"),
+            ("graph size", "processor width", "message rounds", "solver tolerance"),
+            (
+                "replace node encoders, message processor, hint heads, or algorithm readouts",
+                "compose task-specific decoders and teacher-forced hint supervision",
+            ),
+        ),
+        _guide(
+            "silva_hamiltonian_equilibrium",
+            "self-consistent pairwise Hamiltonian equilibrium",
+            "B,N,F atom features and B,N,3 coordinates -> symmetric B,N,N Hamiltonian",
+            (102,),
+            ("https://github.com/Zun-Wang/DEQHNet",),
+            ("MD17", "QH9", "molecular Hamiltonian prediction"),
+            ("atoms", "orbital blocks", "radial basis width", "self-consistency tolerance"),
+            (
+                "replace the radial interaction with an equivariant orbital backbone",
+                "add block-sparse orbital heads, overlap matrices, and spectral observables",
+            ),
+        ),
+        _guide(
+            "silva_inverse_imaging_equilibrium",
+            "known-operator inverse-imaging equilibrium",
+            "measurement y, forward A, adjoint A^T -> reconstructed image",
+            (103,),
+            ("https://arxiv.org/abs/2102.07944",),
+            ("compressive sensing", "MRI", "deblurring", "super-resolution"),
+            ("image resolution", "measurement ratio", "prior width", "solver iterations"),
+            (
+                "replace the forward/adjoint pair, prior, data-consistency step, or solver",
+                "use convolutional, Fourier, tomographic, or learned sensing operators",
+            ),
+        ),
+        _guide(
+            "silva_snapshot_compressive_equilibrium",
+            "snapshot-compressive video reconstruction equilibrium",
+            "coded snapshot and frame masks -> reconstructed video volume",
+            (104,),
+            ("https://github.com/IndigoPurple/DEQSCI",),
+            ("Kobe", "Traffic", "Runner", "Drop", "DAVIS"),
+            ("frame count", "spatial resolution", "mask ensemble", "volumetric prior width"),
+            (
+                "replace the coded sensing masks, analytic correction, 3D prior, or solver",
+                "train mask-specific or mask-agnostic reconstruction transitions",
+            ),
+        ),
+        _guide(
+            "silva_magnetic_particle_equilibrium",
+            "learned ADMM equilibrium for magnetic-particle imaging",
+            "B,M measurements and M,N system matrix -> B,N particle image",
+            (105,),
+            ("https://github.com/icon-lab/DEQ-MPI",),
+            ("OpenMPIData", "system-matrix reconstruction", "simulated MPI phantoms"),
+            ("measurement bins", "image voxels", "ADMM penalty", "solver budget"),
+            (
+                "replace the regularizer, learned consistency map, system matrix, or splitting policy",
+                "insert calibrated sparse, dense, or matrix-free MPI operators",
+            ),
+        ),
+        _guide(
+            "silva_sparse_hyperspectral_equilibrium",
+            "sparse-representation hyperspectral equilibrium",
+            "B,C,H,W noisy hyperspectral cube -> sparse code and reconstructed cube",
+            (106,),
+            ("https://arxiv.org/abs/2203.15901",),
+            ("ICVL", "CAVE", "hyperspectral denoising"),
+            ("spectral bands", "code channels", "threshold", "spatial crop size"),
+            (
+                "replace analysis/synthesis dictionaries, shrinkage, cube prior, or noise model",
+                "use spectral-spatial convolution, low-rank, or learned proximal maps",
+            ),
+        ),
+        _guide(
+            "silva_serialized_smoothing_equilibrium",
+            "serialized randomized smoothing for equilibrium classifiers",
+            "B,D inputs plus Gaussian samples -> class counts and certified radii",
+            (107,),
+            ("https://github.com/WeizhiGao/Serialized-Randomized-Smoothing",),
+            ("CIFAR-10", "ImageNet", "certified robustness"),
+            ("noise samples", "noise scale", "confidence level", "warm-start policy"),
+            (
+                "replace the equilibrium classifier, noise law, confidence interval, or serialization order",
+                "cache solved states across samples and report iteration savings with certificates",
+            ),
+        ),
+        _guide(
+            "silva_diffusion_restoration_equilibrium",
+            "joint fixed-point diffusion restoration",
+            "degraded image, observation mask, and initial noise -> solved reverse trajectory",
+            (108,),
+            ("https://github.com/caojiezhang/DeqIR",),
+            ("ImageNet", "CelebA-HQ", "inpainting", "deblurring", "super-resolution"),
+            ("trajectory length", "image resolution", "denoiser width", "solver history"),
+            (
+                "replace the denoiser, degradation projector, schedule, or joint trajectory map",
+                "couple all reverse states or partition them into independently solved blocks",
+            ),
+        ),
+        _guide(
+            "silva_recurrent_equilibrium_network",
+            "dynamic recurrent model with per-step algebraic equilibria",
+            "B,T,D sequence and optional initial state -> state, algebraic, and output trajectories",
+            (109,),
+            ("https://arxiv.org/abs/2104.05942",),
+            ("system identification", "nonlinear dynamics", "sequence prediction"),
+            ("sequence length", "dynamic state width", "algebraic width", "per-step tolerance"),
+            (
+                "replace the algebraic map, state update, readout, or initialization",
+                "use structured linear dynamics and custom monotone equilibrium nonlinearities",
+            ),
+        ),
+        _guide(
+            "silva_lipschitz_robust_equilibrium",
+            "globally Lipschitz-bounded robust equilibrium",
+            "B,D input -> equilibrium logits, margins, and certified input radii",
+            (110,),
+            ("https://github.com/AaronHavens/ExploitingLipschitzDEQ",),
+            ("MNIST", "CIFAR-10", "SVHN", "adversarial and certified robustness"),
+            ("state width", "global bound", "parameterization", "attack/certificate radius"),
+            (
+                "select LBEN, orthogonal, sandwich, or coupled parameterizations",
+                "replace bounded input/readout maps while preserving auditable global constants",
+            ),
+        ),
+        _guide(
+            "silva_image_matting_equilibrium",
+            "trimap-constrained image-matting equilibrium",
+            "B,3,H,W image and B,1,H,W trimap -> alpha matte",
+            (111,),
+            ("https://github.com/CurioPocket/DEQ-Matt",),
+            ("Adobe Composition-1k", "Distinctions-646", "alphamatting.com"),
+            ("crop resolution", "encoder width", "unknown-region fraction", "solver tolerance"),
+            (
+                "replace the image encoder, recurrent refiner, trimap policy, or composition loss",
+                "add foreground estimation and multiscale high-resolution refinement",
+            ),
+        ),
+        _guide(
+            "silva_dynamic_economic_equilibrium",
+            "neural equilibrium-function approximation for stochastic dynamic economies",
+            "B,D economic states and shocks -> feasible policies and equation residuals",
+            (112,),
+            ("https://github.com/sischei/DeepEquilibriumNets",),
+            ("stochastic growth", "heterogeneous-agent economies", "global solution methods"),
+            ("state dimension", "simulation horizon", "shock paths", "residual quadrature"),
+            (
+                "replace utility, production, transition laws, policy network, or equilibrium conditions",
+                "add multiple agents, occasionally binding constraints, and expectation estimators",
+            ),
+        ),
     )
 }
 
@@ -691,6 +995,23 @@ _SOLVER_CONFIG_FAMILIES = {
     "silva_efficient_infinite_graph",
     "silva_multiscale_graph_implicit",
     "silva_delta_equilibrium",
+    "silva_bayesian_deq",
+    "silva_joint_inference_equilibrium",
+    "silva_implicit_spatiotemporal",
+    "silva_certified_equilibrium",
+    "silva_lipschitz_mdeq",
+    "silva_subhomogeneous_equilibrium",
+    "silva_algorithmic_reasoner",
+    "silva_hamiltonian_equilibrium",
+    "silva_inverse_imaging_equilibrium",
+    "silva_snapshot_compressive_equilibrium",
+    "silva_magnetic_particle_equilibrium",
+    "silva_sparse_hyperspectral_equilibrium",
+    "silva_serialized_smoothing_equilibrium",
+    "silva_diffusion_restoration_equilibrium",
+    "silva_recurrent_equilibrium_network",
+    "silva_lipschitz_robust_equilibrium",
+    "silva_image_matting_equilibrium",
 }
 _COUPLED_GRAPH_FAMILIES = {
     "silva_layer",
@@ -703,6 +1024,7 @@ _COUPLED_GRAPH_FAMILIES = {
     "silva_mesh_inference",
     "silva_efficient_infinite_graph",
     "silva_multiscale_graph_implicit",
+    "silva_algorithmic_reasoner",
 }
 
 
@@ -805,6 +1127,11 @@ def silva_scaling_defaults(family: str, *, tier: ScaleTier = "full") -> dict[str
         defaults.update(linear_solver="gmres", linear_max_iter=80)
     elif key == "silva_consistency_deq":
         defaults["teacher_config"] = full_scale_solver_config(batch_dims=1, tier=tier)
+    elif key == "silva_hyper_deq":
+        defaults["teacher_config"] = replace(
+            full_scale_solver_config(batch_dims=0, tier=tier),
+            solver="broyden",
+        )
     return defaults
 
 

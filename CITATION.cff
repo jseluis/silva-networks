@@ -4,8 +4,8 @@ title: "SILVA Networks"
 authors:
   - family-names: "Silva"
     given-names: "Jose Luis"
-version: "1.2.1"
-date-released: "2026-08-08"
+version: "1.2.2"
+date-released: "2026-08-11"
 license: "MIT"
 doi: "10.5281/zenodo.21770098"
 url: "https://jsluis.com"
@@ -16,8 +16,8 @@ preferred-citation:
   authors:
     - family-names: "Silva"
       given-names: "Jose Luis"
-  version: "1.2.1"
-  date-released: "2026-08-08"
+  version: "1.2.2"
+  date-released: "2026-08-11"
   doi: "10.5281/zenodo.21770098"
   url: "https://github.com/jseluis/silva-networks"
 references:

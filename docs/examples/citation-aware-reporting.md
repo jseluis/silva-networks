@@ -89,6 +89,7 @@ The exact article, software, solver, graph, attention, and dataset links are in
 [Paper and References](../paper/references.md). Report tensor layouts with the
 table above when the state is not an ordinary `(batch, features)` matrix.
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -137,15 +138,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **a complete machine-readable source and verification record**. The
 invariants that must remain true are **shape, device, dtype, finiteness, and differentiability**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/reproduction_registry.py"
-```
 
 ### Run the Complete Example
 

@@ -110,6 +110,7 @@ For source methods, cite EIGNN
 [[79]](../paper/references.md#ref-79), and Planetoid
 [[82]](../paper/references.md#ref-82).
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -158,15 +159,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **losses, certificates, residuals, scale allocation, and cache activity on source data**. The
 invariants that must remain true are **node relabeling equivariance, graph boundaries, and state shape**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/source_data_families.py"
-```
 
 ### Run the Complete Example
 

@@ -51,6 +51,7 @@ standardized features, valid edge bounds, and the residual of every SILVA
 equilibrium layer. Dataset sources and reporting rules are listed in
 [Paper and References](../paper/references.md#citation-rules-for-reports).
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -99,15 +100,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **dataset identity, tensor shape, and measured classification accuracy**. The
 invariants that must remain true are **shape, device, dtype, finiteness, and differentiability**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/datasets_quickstart.py"
-```
 
 ### Run the Complete Example
 

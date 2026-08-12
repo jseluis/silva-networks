@@ -233,6 +233,7 @@ Primary sources for every internal architecture are listed in
 and graph, attention, set, and dynamic-neighborhood sources are listed in
 [Graphs, Attention, and Messages](../paper/references.md#graphs-attention-and-messages).
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -281,15 +282,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **branch activations, solver history, state shape, loss, and gradients**. The
 invariants that must remain true are **channel/spatial shape at every scale and deterministic fusion**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/full_cortex_operators.py"
-```
 
 ### Run the Complete Example
 

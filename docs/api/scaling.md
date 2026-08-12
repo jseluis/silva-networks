@@ -89,7 +89,7 @@ evidence for the executable mechanism and its stated invariants.
 
 | Question | Page |
 | --- | --- |
-| How are the scale equations and all 44 routes derived? | [Full-Scale SILVA](../learn/full-scale-silva.md) |
+| How are the scale equations and all 64 routes derived? | [Full-Scale SILVA](../learn/full-scale-silva.md) |
 | How is sharded and distributed data loaded? | [Scaling Data API](scaling_data.md) |
 | Can I execute the equivalence checks and training path? | [Full-Scale Family Notebook](../package-notebooks/26_full_scale_silva.ipynb) |
 | Which family key and constructor should I use? | [Families API](families.md) |

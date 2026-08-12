@@ -82,6 +82,7 @@ For each run, inspect the fixed-point or root residual before interpreting task
 quality. The generated data validate equations and gradients; they do not
 reproduce the large experiments from the cited papers.
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -130,15 +131,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **one result for each advanced equilibrium family, with family-specific residuals**. The
 invariants that must remain true are **node relabeling equivariance, graph boundaries, and state shape**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/advanced_equilibria.py"
-```
 
 ### Run the Complete Example
 

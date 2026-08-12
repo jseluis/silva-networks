@@ -6,6 +6,27 @@ paper, book sources, or production code outside the package.
 
 <div class="silva-doclog" markdown>
 <div class="silva-doclog__date" markdown>
+<strong>August 11, 2026</strong>
+<span>SILVA Networks 1.2.2 release preparation</span>
+</div>
+<div class="silva-doclog__body" markdown>
+## Version 1.2.2
+
+Prepared the expanded package release with the new solver-learning,
+source-equilibrium, quantum-equilibrium, evidence, and experiment-protocol
+material connected to the public API, tutorials, and release checks.
+
+| Area | Change |
+| --- | --- |
+| Public surface | Expanded the canonical family guide to 64 routes and added the new package modules, examples, experiment protocols, and API pages. |
+| Notebook curriculum | Added package labs 48-74 with repository, documentation, and Colab copies aligned to the package API. |
+| Release metadata | Advanced package, citation, archive, documentation, notebook footer, publishing, and source-tag metadata to 1.2.2. |
+| Validation path | Extended the release audit and notebook/docs checks for the 109-notebook public curriculum. |
+</div>
+</div>
+
+<div class="silva-doclog" markdown>
+<div class="silva-doclog__date" markdown>
 <strong>August 8, 2026</strong>
 <span>SILVA Networks 1.2.1 patch release</span>
 </div>

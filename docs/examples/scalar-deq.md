@@ -65,6 +65,7 @@ Continue with [Fixed Points](../learn/fixed-points.md) for vector states,
 damping, and convergence claims. The relevant method sources are collected in
 [Equilibrium and Implicit Layers](../paper/references.md#equilibrium-and-implicit-layers).
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 

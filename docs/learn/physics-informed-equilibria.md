@@ -470,6 +470,44 @@ the physics solve.
 | ODE equilibrium, implicit derivative, three-term loss | [Physics-Informed Equilibrium](../package-notebooks/24_silva_physics_informed_equilibrium.ipynb) |
 | DAE stages, rollout, and residual objective | [Implicit DAE and Residuals](../package-notebooks/25_silva_implicit_dae_and_residuals.ipynb) |
 
+## Backward Policy Is an Experimental Axis
+
+The PIDEQ transition and physics objective do not force one backward method.
+For a task loss with equilibrium adjoint source $g$, the exact route solves
+
+$$
+(I-J_zT_\theta^\top)u=g.
+$$
+
+JFB uses $u\approx g$ [[88]](../paper/references.md#ref-88){ .silva-cite }.
+SHINE initializes $u$ from the limited-memory inverse accumulated by a Broyden
+forward solve [[89]](../paper/references.md#ref-89){ .silva-cite }. These choices
+change the training gradient, while `derivative_mode` separately controls how
+the physical time derivative is evaluated.
+
+| Question | Exact implicit | JFB | SHINE |
+| --- | --- | --- | --- |
+| forward physical state | same declared equilibrium solve | same | Broyden root with reusable factors |
+| parameter gradient | matrix-free adjoint solve | one final transition | shared inverse with optional refinement |
+| physical derivative | dense or matrix-free IFT solve | unchanged | unchanged |
+| evidence to report | forward and backward residuals | forward residual and gradient comparison | forward residual, inverse rank, refinement, gradient comparison |
+
+```python
+from silva_networks import SolverConfig
+
+exact = SolverConfig(backward_mode="implicit", backward_solver="gmres")
+jfb = SolverConfig(backward_mode="jfb")
+shine = SolverConfig(
+    solver="broyden",
+    backward_mode="shine",
+    shine_refine_steps=2,
+)
+```
+
+Notebook 49 checks these gradients against an analytic equilibrium. Notebook 51
+then applies JFB to a compact PIDEQ and keeps the transition, dynamics callable,
+and physics terms visibly separate.
+
 ## Where to Go Next
 
 | Question | Page |

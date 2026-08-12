@@ -10,6 +10,12 @@ from .advanced_equilibria import (
     SILVAGenerativeEquilibriumTransformer,
     SILVAMonotoneGraphEquilibrium,
 )
+from .advanced_expansions import (
+    SILVABayesianDEQ,
+    SILVACertifiedEquilibrium,
+    SILVAImplicitSpatiotemporalEquilibrium,
+    SILVAJointInferenceEquilibrium,
+)
 from .architectures import SILVAGraphNetwork, silva_cortex_layer, silva_cortex_network
 from .cases import (
     SILVADiffusionEquilibrium,
@@ -51,10 +57,28 @@ from .physics_informed import (
     SILVAPoissonMirrorEquilibrium,
 )
 from .presets import SILVAGraphPresetNetwork, SILVAImageCortexClassifier
+from .quantum_equilibria import SILVAQuantumDEQ
 from .scientific import (
     SILVAFourierNeuralOperator,
     SILVAImplicitTimeStep,
     SILVAOperatorModel,
+)
+from .solver_learning import SILVAHyperDEQ
+from .source_equilibria import (
+    SILVAAlgorithmicReasoner,
+    SILVADiffusionRestorationEquilibrium,
+    SILVADynamicEconomicEquilibrium,
+    SILVAHamiltonianEquilibrium,
+    SILVAImageMattingEquilibrium,
+    SILVAInverseImagingEquilibrium,
+    SILVALipschitzMultiscaleEquilibrium,
+    SILVALipschitzRobustEquilibrium,
+    SILVAMagneticParticleEquilibrium,
+    SILVARecurrentEquilibriumNetwork,
+    SILVASerializedSmoothingEquilibrium,
+    SILVASnapshotCompressiveEquilibrium,
+    SILVASparseHyperspectralEquilibrium,
+    SILVASubhomogeneousEquilibrium,
 )
 from .structured_equilibria import (
     SILVADeltaEquilibrium,
@@ -110,6 +134,26 @@ SILVAFamily = Literal[
     "silva_efficient_infinite_graph",
     "silva_multiscale_graph_implicit",
     "silva_delta_equilibrium",
+    "silva_hyper_deq",
+    "silva_quantum_deq",
+    "silva_bayesian_deq",
+    "silva_joint_inference_equilibrium",
+    "silva_implicit_spatiotemporal",
+    "silva_certified_equilibrium",
+    "silva_lipschitz_mdeq",
+    "silva_subhomogeneous_equilibrium",
+    "silva_algorithmic_reasoner",
+    "silva_hamiltonian_equilibrium",
+    "silva_inverse_imaging_equilibrium",
+    "silva_snapshot_compressive_equilibrium",
+    "silva_magnetic_particle_equilibrium",
+    "silva_sparse_hyperspectral_equilibrium",
+    "silva_serialized_smoothing_equilibrium",
+    "silva_diffusion_restoration_equilibrium",
+    "silva_recurrent_equilibrium_network",
+    "silva_lipschitz_robust_equilibrium",
+    "silva_image_matting_equilibrium",
+    "silva_dynamic_economic_equilibrium",
 ]
 
 _FAMILY_DESCRIPTIONS: dict[str, str] = {
@@ -164,24 +208,14 @@ _FAMILY_DESCRIPTIONS: dict[str, str] = {
     "silva_consistency_deq": (
         "trajectory-distilled SILVA equilibrium with one- or few-step inference"
     ),
-    "silva_psi_gnn": (
-        "mixed-boundary Poisson graph equilibrium with typed message processors"
-    ),
-    "silva_ifno": (
-        "layer-independent Fourier residual operator for material-response fields"
-    ),
-    "silva_snarf": (
-        "multi-start forward-skinning equilibrium for articulated implicit shapes"
-    ),
-    "silva_mesh_inference": (
-        "typed directed M-matrix relaxation with centralized verification"
-    ),
+    "silva_psi_gnn": ("mixed-boundary Poisson graph equilibrium with typed message processors"),
+    "silva_ifno": ("layer-independent Fourier residual operator for material-response fields"),
+    "silva_snarf": ("multi-start forward-skinning equilibrium for articulated implicit shapes"),
+    "silva_mesh_inference": ("typed directed M-matrix relaxation with centralized verification"),
     "silva_physics_guided_diffusion_pde": (
         "reverse field diffusion with residual-energy guidance and hard boundaries"
     ),
-    "silva_therino": (
-        "thermodynamically encoded neural operator solved in physical strain space"
-    ),
+    "silva_therino": ("thermodynamically encoded neural operator solved in physical strain space"),
     "silva_fixed_point_diffusion": (
         "timestep-conditioned fixed-point denoiser with variable compute and solution reuse"
     ),
@@ -202,6 +236,66 @@ _FAMILY_DESCRIPTIONS: dict[str, str] = {
     ),
     "silva_delta_equilibrium": (
         "equilibrium inference with thresholded cached linear or convolutional updates"
+    ),
+    "silva_hyper_deq": (
+        "learned initializer and learned Anderson solver around a replaceable SILVA transition"
+    ),
+    "silva_quantum_deq": (
+        "measured quantum-circuit transition solved as a configurable SILVA equilibrium"
+    ),
+    "silva_bayesian_deq": (
+        "posterior-sampled SILVA equilibrium with sequential warm starts and uncertainty"
+    ),
+    "silva_joint_inference_equilibrium": (
+        "coupled representation and input-optimization equilibrium"
+    ),
+    "silva_implicit_spatiotemporal": (
+        "long-horizon implicit physical dynamics with known and learned branches"
+    ),
+    "silva_certified_equilibrium": (
+        "contractive SILVA equilibrium with sound interval output certificates"
+    ),
+    "silva_lipschitz_mdeq": (
+        "simultaneous multiscale equilibrium with explicit branchwise Lipschitz control"
+    ),
+    "silva_subhomogeneous_equilibrium": (
+        "positive normalized equilibrium built from a translated subhomogeneous transition"
+    ),
+    "silva_algorithmic_reasoner": (
+        "graph equilibrium processor for iterative algorithmic reasoning tasks"
+    ),
+    "silva_hamiltonian_equilibrium": (
+        "self-consistent pairwise Hamiltonian equilibrium with symmetric states"
+    ),
+    "silva_inverse_imaging_equilibrium": (
+        "inverse-imaging equilibrium coupling a known forward model and learned image prior"
+    ),
+    "silva_snapshot_compressive_equilibrium": (
+        "snapshot compressive reconstruction with analytic sensing and a volumetric prior"
+    ),
+    "silva_magnetic_particle_equilibrium": (
+        "ADMM-style magnetic-particle reconstruction with learned data consistency"
+    ),
+    "silva_sparse_hyperspectral_equilibrium": (
+        "sparse-code hyperspectral equilibrium with analysis, synthesis, and cube priors"
+    ),
+    "silva_serialized_smoothing_equilibrium": (
+        "warm-started serialized smoothing with empirical class certificates"
+    ),
+    "silva_diffusion_restoration_equilibrium": (
+        "joint diffusion-trajectory equilibrium with exact observed-pixel projection"
+    ),
+    "silva_recurrent_equilibrium_network": (
+        "state-space recurrence with an algebraic equilibrium solved at every time step"
+    ),
+    "silva_lipschitz_robust_equilibrium": (
+        "globally bounded equilibrium with selectable robust parameterizations"
+    ),
+    "silva_image_matting_equilibrium": (
+        "trimap-conditioned recurrent alpha-matte equilibrium with hard known regions"
+    ),
+    "silva_dynamic_economic_equilibrium": (
+        "resource-feasible policy equilibrium with differentiable Euler residuals"
     ),
 }
 
@@ -250,6 +344,26 @@ _FAMILY_CONSTRUCTORS: dict[str, Callable[..., Any]] = {
     "silva_efficient_infinite_graph": SILVAEfficientInfiniteGraphEquilibrium,
     "silva_multiscale_graph_implicit": SILVAMultiscaleGraphImplicitNetwork,
     "silva_delta_equilibrium": SILVADeltaEquilibrium,
+    "silva_hyper_deq": SILVAHyperDEQ,
+    "silva_quantum_deq": SILVAQuantumDEQ,
+    "silva_bayesian_deq": SILVABayesianDEQ,
+    "silva_joint_inference_equilibrium": SILVAJointInferenceEquilibrium,
+    "silva_implicit_spatiotemporal": SILVAImplicitSpatiotemporalEquilibrium,
+    "silva_certified_equilibrium": SILVACertifiedEquilibrium,
+    "silva_lipschitz_mdeq": SILVALipschitzMultiscaleEquilibrium,
+    "silva_subhomogeneous_equilibrium": SILVASubhomogeneousEquilibrium,
+    "silva_algorithmic_reasoner": SILVAAlgorithmicReasoner,
+    "silva_hamiltonian_equilibrium": SILVAHamiltonianEquilibrium,
+    "silva_inverse_imaging_equilibrium": SILVAInverseImagingEquilibrium,
+    "silva_snapshot_compressive_equilibrium": SILVASnapshotCompressiveEquilibrium,
+    "silva_magnetic_particle_equilibrium": SILVAMagneticParticleEquilibrium,
+    "silva_sparse_hyperspectral_equilibrium": SILVASparseHyperspectralEquilibrium,
+    "silva_serialized_smoothing_equilibrium": SILVASerializedSmoothingEquilibrium,
+    "silva_diffusion_restoration_equilibrium": SILVADiffusionRestorationEquilibrium,
+    "silva_recurrent_equilibrium_network": SILVARecurrentEquilibriumNetwork,
+    "silva_lipschitz_robust_equilibrium": SILVALipschitzRobustEquilibrium,
+    "silva_image_matting_equilibrium": SILVAImageMattingEquilibrium,
+    "silva_dynamic_economic_equilibrium": SILVADynamicEconomicEquilibrium,
 }
 
 _FAMILY_ALIASES: dict[str, str] = {
@@ -330,6 +444,41 @@ _FAMILY_ALIASES: dict[str, str] = {
     "multiscale_implicit_graph": "silva_multiscale_graph_implicit",
     "deltadeq": "silva_delta_equilibrium",
     "delta_deq": "silva_delta_equilibrium",
+    "hyperdeq": "silva_hyper_deq",
+    "learned_equilibrium_solver": "silva_hyper_deq",
+    "qdeq": "silva_quantum_deq",
+    "quantum_deq": "silva_quantum_deq",
+    "bayesian_deq": "silva_bayesian_deq",
+    "probabilistic_deq": "silva_bayesian_deq",
+    "jiio": "silva_joint_inference_equilibrium",
+    "joint_inference": "silva_joint_inference_equilibrium",
+    "joint_input_optimization": "silva_joint_inference_equilibrium",
+    "im_pindiff": "silva_implicit_spatiotemporal",
+    "implicit_spatiotemporal": "silva_implicit_spatiotemporal",
+    "ibp_mondeq": "silva_certified_equilibrium",
+    "certified_deq": "silva_certified_equilibrium",
+    "lipschitz_mdeq": "silva_lipschitz_mdeq",
+    "subdeq": "silva_subhomogeneous_equilibrium",
+    "subhomogeneous_deq": "silva_subhomogeneous_equilibrium",
+    "dear": "silva_algorithmic_reasoner",
+    "algorithmic_reasoning_deq": "silva_algorithmic_reasoner",
+    "deqh": "silva_hamiltonian_equilibrium",
+    "self_consistent_hamiltonian": "silva_hamiltonian_equilibrium",
+    "inverse_imaging_deq": "silva_inverse_imaging_equilibrium",
+    "deqsci": "silva_snapshot_compressive_equilibrium",
+    "snapshot_compressive_deq": "silva_snapshot_compressive_equilibrium",
+    "deq_mpi": "silva_magnetic_particle_equilibrium",
+    "magnetic_particle_deq": "silva_magnetic_particle_equilibrium",
+    "hyperspectral_deq": "silva_sparse_hyperspectral_equilibrium",
+    "sparse_representation_deq": "silva_sparse_hyperspectral_equilibrium",
+    "serialized_randomized_smoothing": "silva_serialized_smoothing_equilibrium",
+    "deqir": "silva_diffusion_restoration_equilibrium",
+    "diffusion_restoration_deq": "silva_diffusion_restoration_equilibrium",
+    "ren": "silva_recurrent_equilibrium_network",
+    "recurrent_equilibrium_network": "silva_recurrent_equilibrium_network",
+    "lipschitz_robust_deq": "silva_lipschitz_robust_equilibrium",
+    "deq_matt": "silva_image_matting_equilibrium",
+    "deep_equilibrium_economics": "silva_dynamic_economic_equilibrium",
 }
 
 

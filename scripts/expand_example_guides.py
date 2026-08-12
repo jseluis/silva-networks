@@ -25,6 +25,12 @@ class ExampleRoute:
 
 
 ROUTES: dict[str, ExampleRoute] = {
+    "advanced-expansions.md": ExampleRoute(
+        "advanced_expansions.py",
+        "bayesian_joint_spatiotemporal_certified",
+        "posterior variance, coupled-root residual, trajectory shape, and certified margins",
+        "the cited uncertainty, joint inference, spatiotemporal, or certification benchmark",
+    ),
     "advanced-equilibria.md": ExampleRoute(
         "advanced_equilibria.py",
         "monotone_graph_poisson_physics_informed",
@@ -73,6 +79,12 @@ ROUTES: dict[str, ExampleRoute] = {
         "family-specific exact-solution, boundary, reconstruction, or trajectory checks",
         "the cited dataset and complete architecture for the selected family",
     ),
+    "evidence-and-protocols.md": ExampleRoute(
+        "evidence_and_protocols.py",
+        "evidence_protocol_statistics",
+        "repeated-seed statistics, residuals, fingerprints, and three explicit scale tiers",
+        "a source-conforming multi-seed experiment with archived inputs, outputs, and resources",
+    ),
     "frontier-equilibria.md": ExampleRoute(
         "frontier_equilibria.py",
         "fno_pde_graph_homotopy_distributional",
@@ -97,6 +109,12 @@ ROUTES: dict[str, ExampleRoute] = {
         "node-state shape, task loss, equilibrium residual, and gradients",
         "the complete graph split with sparse operators and task metrics",
     ),
+    "learned-solvers.md": ExampleRoute(
+        "learned_solvers.py",
+        "learned_solver_hyperdeq_jfb_shine",
+        "teacher and learned-solver residuals plus exact, JFB, and SHINE gradients",
+        "the cited sequence, vision, or graph task with cached teacher trajectories",
+    ),
     "molecules.md": ExampleRoute(
         "molecules.py",
         "molecular_zinc_graph",
@@ -120,6 +138,12 @@ ROUTES: dict[str, ExampleRoute] = {
         "architecture_catalog_cortex_vision",
         "parameters, loss, residual trajectory, and gradient norm for every architecture",
         "the selected internal architecture at production width and resolution",
+    ),
+    "quantum-deq.md": ExampleRoute(
+        "quantum_deq.py",
+        "quantum_qdeq",
+        "circuit measurements, equilibrium residual, task output, and circuit gradients",
+        "MNIST-4, MNIST, Fashion-MNIST, or CIFAR-10 with the source circuit protocol",
     ),
     "raft-deq-flow.md": ExampleRoute(
         "raft_deq_flow.py",

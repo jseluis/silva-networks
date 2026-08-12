@@ -135,6 +135,7 @@ runtime, and resolution or mesh transfer.
 --8<-- "examples/scientific_operators.py"
 ```
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 

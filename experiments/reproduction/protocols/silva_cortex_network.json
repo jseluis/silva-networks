@@ -1,0 +1,200 @@
+{
+  "family": "silva_cortex_network",
+  "profile": "general",
+  "source_relation": "silva-native",
+  "references": [
+    1,
+    4
+  ],
+  "repositories": [
+    "https://github.com/jseluis/silva-networks"
+  ],
+  "data_sources": [
+    "https://github.com/jseluis/silva-networks"
+  ],
+  "preprocessing": [
+    "record dataset version, split, normalization, shape convention, and seed",
+    "preserve masks, graph indices, boundaries, or physical units required by the domain"
+  ],
+  "required_artifacts": [
+    "machine-readable model and solver configuration",
+    "dataset receipt with source revision, split, license, and checksum",
+    "preprocessing and normalization record",
+    "seeded training and evaluation log",
+    "checkpoint and optimizer-resume state for trained experiments",
+    "task metrics and equilibrium diagnostics in a machine-readable result",
+    "runtime, peak-memory, device, precision, and dependency record",
+    "declared deviations from the cited protocol"
+  ],
+  "tiers": [
+    {
+      "tier": "smoke",
+      "evidence_target": "compact-verified",
+      "dataset": {
+        "name": "seeded tensor fixture",
+        "source_url": "generated://silva",
+        "split": "fixed seed",
+        "access": "generated locally",
+        "expected_storage": "less than 10 MB"
+      },
+      "sample_limit": 64,
+      "epochs": 2,
+      "seeds": [
+        0
+      ],
+      "model_options": {},
+      "runtime_options": {
+        "tier": "smoke",
+        "device": "auto",
+        "per_device_batch_size": 4,
+        "gradient_accumulation_steps": 1,
+        "mixed_precision": "none",
+        "workers": 0,
+        "pin_memory": false,
+        "persistent_workers": false,
+        "distributed": false,
+        "compile_model": false,
+        "channels_last": false,
+        "checkpoint_path": null,
+        "seed": 0
+      },
+      "resources": {
+        "accelerator_count": "CPU or 1 accelerator",
+        "accelerator_memory": "0-4 GB",
+        "host_memory": "4-16 GB",
+        "storage": "less than 2 GB",
+        "wall_time": "seconds to 10 minutes",
+        "note": "Measured by the stored compact notebook."
+      },
+      "metrics": [
+        "task metric",
+        "fixed-point residual",
+        "gradient agreement",
+        "runtime",
+        "memory"
+      ],
+      "acceptance_checks": [
+        "record task metric",
+        "record fixed-point residual",
+        "record gradient agreement",
+        "record runtime",
+        "checkpoint reload reproduces the recorded prediction",
+        "result record contains data and configuration fingerprints"
+      ],
+      "command": "python experiments/reproduction/run_family_protocol.py --family silva_cortex_network --tier smoke --work-dir runs/silva_cortex_network/smoke"
+    },
+    {
+      "tier": "workstation",
+      "evidence_target": "subset-verified",
+      "dataset": {
+        "name": "UCI task subset",
+        "source_url": "https://archive.ics.uci.edu/",
+        "split": "recorded train/validation/test",
+        "access": "public source terms",
+        "expected_storage": "less than 1 GB"
+      },
+      "sample_limit": 4096,
+      "epochs": 20,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "model_options": {},
+      "runtime_options": {
+        "tier": "workstation",
+        "device": "auto",
+        "per_device_batch_size": 8,
+        "gradient_accumulation_steps": 1,
+        "mixed_precision": "none",
+        "workers": 4,
+        "pin_memory": true,
+        "persistent_workers": true,
+        "distributed": false,
+        "compile_model": false,
+        "channels_last": false,
+        "checkpoint_path": null,
+        "seed": 0
+      },
+      "resources": {
+        "accelerator_count": "1 accelerator",
+        "accelerator_memory": "8-24 GB",
+        "host_memory": "16-64 GB",
+        "storage": "5-100 GB",
+        "wall_time": "minutes to 24 hours",
+        "note": "Validate data, resume, metrics, and memory before scaling."
+      },
+      "metrics": [
+        "task metric",
+        "fixed-point residual",
+        "gradient agreement",
+        "runtime",
+        "memory"
+      ],
+      "acceptance_checks": [
+        "dataset receipt and checksum are stored",
+        "resume and evaluation paths reproduce the same subset metric",
+        "memory and runtime are measured rather than estimated"
+      ],
+      "command": "python experiments/reproduction/run_family_protocol.py --family silva_cortex_network --tier workstation --work-dir runs/silva_cortex_network/workstation"
+    },
+    {
+      "tier": "full",
+      "evidence_target": "source-scale-reproduced",
+      "dataset": {
+        "name": "declared application dataset",
+        "source_url": "https://github.com/jseluis/silva-networks",
+        "split": "task protocol",
+        "access": "dataset-specific terms",
+        "expected_storage": "task dependent"
+      },
+      "sample_limit": null,
+      "epochs": 100,
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "model_options": {},
+      "runtime_options": {
+        "tier": "full",
+        "device": "auto",
+        "per_device_batch_size": 8,
+        "gradient_accumulation_steps": 4,
+        "mixed_precision": "bfloat16",
+        "workers": 8,
+        "pin_memory": true,
+        "persistent_workers": true,
+        "distributed": true,
+        "compile_model": false,
+        "channels_last": false,
+        "checkpoint_path": null,
+        "seed": 0
+      },
+      "resources": {
+        "accelerator_count": "1-8 accelerators",
+        "accelerator_memory": "16-80 GB each",
+        "host_memory": "64-512 GB",
+        "storage": "20 GB to 1 TB",
+        "wall_time": "hours to multiple days",
+        "note": "Planning range only; record observed resources in the evidence report."
+      },
+      "metrics": [
+        "task metric",
+        "fixed-point residual",
+        "gradient agreement",
+        "runtime",
+        "memory"
+      ],
+      "acceptance_checks": [
+        "all required artifacts are archived",
+        "reported metrics use the cited evaluation protocol",
+        "every architectural or training deviation is listed",
+        "claims match the achieved evidence status"
+      ],
+      "command": "python experiments/reproduction/run_family_protocol.py --family silva_cortex_network --tier full --work-dir runs/silva_cortex_network/full"
+    }
+  ]
+}

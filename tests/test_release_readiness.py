@@ -170,3 +170,12 @@ def test_api_reference_covers_every_source_module() -> None:
         assert page.exists(), f"missing API page for silva_networks.{module}"
         assert f"silva_networks.{module}" in page.read_text(encoding="utf-8")
         assert f"api/{page_name}.md" in nav
+
+
+def test_source_distribution_declares_protocols_and_maintenance_scripts() -> None:
+    manifest = (ROOT / "MANIFEST.in").read_text(encoding="utf-8")
+    protocols = sorted((ROOT / "experiments/reproduction/protocols").glob("*.json"))
+
+    assert len(protocols) == 64
+    assert "recursive-include experiments/reproduction/protocols *.json" in manifest
+    assert "recursive-include scripts *.py *.sh" in manifest

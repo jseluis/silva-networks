@@ -1,5 +1,10 @@
 # Examples
 
+## Experiment Evidence and New Equilibria
+
+- [Bayesian, Joint, Dynamic, and Certified Examples](advanced-expansions.md)
+- [Evidence and Protocol Example](evidence-and-protocols.md)
+
 The examples are compact CPU-first validations of the public package API. They are not
 benchmark scripts; they are compact checks that show how to assemble a SILVA
 equilibrium, train it, inspect residuals, and move the same pattern to a larger
@@ -75,6 +80,8 @@ $$
 The same pattern supports user datasets after preprocessing into the package
 tensor contract.
 
+
+
 <!-- silva-worked-example:start -->
 ## Executable Evidence Map
 
@@ -84,6 +91,7 @@ and full-scale transfer record.
 
 | Worked page | Executable program | Compact evidence |
 | --- | --- | --- |
+| [Advanced Expansions](advanced-expansions.md) | `examples/advanced_expansions.py` | Posterior variance, coupled-root residual, trajectory shape, and certified margins |
 | [Advanced Equilibria](advanced-equilibria.md) | `examples/advanced_equilibria.py` | One result for each advanced equilibrium family, with family-specific residuals |
 | [Citation Aware Reporting](citation-aware-reporting.md) | `examples/reproduction_registry.py` | A complete machine-readable source and verification record |
 | [Constrained Optimization](constrained-optimization.md) | `examples/constrained_optimization.py` | Simplex feasibility, energy, solver residual, and parameter gradients |
@@ -92,14 +100,17 @@ and full-scale transfer record.
 | [Datasets Quickstart](datasets-quickstart.md) | `examples/datasets_quickstart.py` | Dataset identity, tensor shape, and measured classification accuracy |
 | [Deq Engine Bridge](deq-engine-bridge.md) | `examples/deq_engine_bridge.py` | State shape, iterations, residual ratio, and gradient availability |
 | [Emerging Equilibria](emerging-equilibria.md) | `examples/emerging_equilibria.py` | Family-specific exact-solution, boundary, reconstruction, or trajectory checks |
+| [Evidence And Protocols](evidence-and-protocols.md) | `examples/evidence_and_protocols.py` | Repeated-seed statistics, residuals, fingerprints, and three explicit scale tiers |
 | [Frontier Equilibria](frontier-equilibria.md) | `examples/frontier_equilibria.py` | Task, equation, invariance, and fixed-point residuals for four operator classes |
 | [Full Cortex Operators](full-cortex-operators.md) | `examples/full_cortex_operators.py` | Branch activations, solver history, state shape, loss, and gradients |
 | [Full Scale Training](full-scale-training.md) | `examples/add_layers_on_top.py` | A measured training loss from the complete optimization path |
 | [Graph Silva](graph-silva.md) | `examples/graph_silva.py` | Node-state shape, task loss, equilibrium residual, and gradients |
+| [Learned Solvers](learned-solvers.md) | `examples/learned_solvers.py` | Teacher and learned-solver residuals plus exact, jfb, and shine gradients |
 | [Molecules](molecules.md) | `examples/molecules.py` | Atom and molecule tensor shapes, residual, prediction loss, and gradients |
 | [Optical Flow Silva](optical-flow-silva.md) | `examples/optical_flow_silva.py` | Flow shape, endpoint error, iterations, residual, and gradients |
 | [Paper Family Cases](paper-family-cases.md) | `examples/paper_family_cases.py` | Shape and residual checks across sequence, vision, graph, and diffusion cases |
 | [Point Architecture Catalog](point-architecture-catalog.md) | `examples/point_architecture_catalog.py` | Parameters, loss, residual trajectory, and gradient norm for every architecture |
+| [Quantum Deq](quantum-deq.md) | `examples/quantum_deq.py` | Circuit measurements, equilibrium residual, task output, and circuit gradients |
 | [Raft Deq Flow](raft-deq-flow.md) | `examples/raft_deq_flow.py` | Flow shape, correction trajectory, solver residual, loss, and gradients |
 | [Reproduction Registry](reproduction-registry.md) | `examples/reproduction_registry.py` | Verification levels, preserved mechanisms, scale tiers, and source obligations |
 | [Scalar Deq](scalar-deq.md) | `examples/scalar_deq.py` | Closed-form agreement, final residual, iteration count, and implicit gradient |

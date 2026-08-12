@@ -4,7 +4,7 @@ The package ships with rendered notebook pages in the documentation and the
 same `.ipynb` files in the repository. The rendered pages are part of the docs
 navigation. The source notebooks can be opened locally in Jupyter.
 
-The repository contains **82 canonical notebooks**: 47 package/family labs, 9
+The repository contains **109 canonical notebooks**: 74 package/family labs, 9
 implicit-layer bridge labs, and 26 derivation-heavy book/research notebooks.
 Publication and hosted-runtime copies mirror the canonical files and are not
 counted as additional notebooks.
@@ -58,7 +58,7 @@ derivatives, and DAE roots.
 | [SILVA Poisson Mirror Equilibrium](package-notebooks/23_silva_poisson_mirror_equilibrium.ipynb) | `notebooks/package_api/23_silva_poisson_mirror_equilibrium.ipynb` | derives Poisson KL and Burg geometry, checks the adjoint pair, positivity, and reconstruction fidelity |
 | [SILVA Physics-Informed Equilibrium](package-notebooks/24_silva_physics_informed_equilibrium.ipynb) | `notebooks/package_api/24_silva_physics_informed_equilibrium.ipynb` | derives the implicit time derivative and trains boundary, ODE, and Jacobian terms |
 | [SILVA Implicit DAE and Residuals](package-notebooks/25_silva_implicit_dae_and_residuals.ipynb) | `notebooks/package_api/25_silva_implicit_dae_and_residuals.ipynb` | derives one- and two-stage DAE roots, rolls out a trajectory, and distinguishes the residual objective |
-| [Full-Scale SILVA Families](package-notebooks/26_full_scale_silva.ipynb) | `notebooks/package_api/26_full_scale_silva.ipynb` | audits all 44 routes, verifies dense/scalable numerical equivalence, shards PDE data, trains with accumulation, resumes, and derives extension patterns |
+| [Full-Scale SILVA Families](package-notebooks/26_full_scale_silva.ipynb) | `notebooks/package_api/26_full_scale_silva.ipynb` | audits all 64 routes, verifies dense/scalable numerical equivalence, shards PDE data, trains with accumulation, resumes, and derives extension patterns |
 | [Reproducing SILVA and Source Methods](package-notebooks/27_reproducing_silva_and_source_methods.ipynb) | `notebooks/package_api/27_reproducing_silva_and_source_methods.ipynb` | audits source-aware records, inspects real constructors, builds a custom transition, adapts joint diffusion restoration, and emits a structured run record |
 | [SILVA Consistency DEQ](package-notebooks/28_silva_consistency_deq.ipynb) | `notebooks/package_api/28_silva_consistency_deq.ipynb` | derives trajectory distillation, trains a terminally anchored refiner, and compares teacher, one-step, and two-step errors |
 | [SILVA Psi-GNN](package-notebooks/29_silva_psi_gnn.ipynb) | `notebooks/package_api/29_silva_psi_gnn.ipynb` | builds a mixed-boundary Poisson graph, trains the equilibrium processor, and separates solution, algebraic, boundary, and solver residuals |
@@ -83,12 +83,49 @@ diagnose new SILVA constructions without hiding their replaceable components.
 
 | Rendered page | Source notebook | Main result |
 | --- | --- | --- |
-| [Family Reproduction Dossiers](package-notebooks/42_family_reproduction_dossiers.ipynb) | `notebooks/package_api/42_family_reproduction_dossiers.ipynb` | audits all 44 six-stage dossiers, data routes, scale defaults, required artifacts, and evidence boundaries |
+| [Family Reproduction Dossiers](package-notebooks/42_family_reproduction_dossiers.ipynb) | `notebooks/package_api/42_family_reproduction_dossiers.ipynb` | audits all 64 six-stage dossiers, data routes, scale defaults, required artifacts, and evidence boundaries |
 | [Cross-Family Vector Benchmark](package-notebooks/43_cross_family_vector_benchmark.ipynb) | `notebooks/package_api/43_cross_family_vector_benchmark.ipynb` | trains five compatible vector equilibria on one deterministic regression task and compares optimization and solver diagnostics |
 | [Cross-Family Graph Benchmark](package-notebooks/44_cross_family_graph_benchmark.ipynb) | `notebooks/package_api/44_cross_family_graph_benchmark.ipynb` | trains four graph equilibria on the same chain-graph task and records loss, residual, gradients, parameters, and iterations |
 | [Cross-Family Field Benchmark](package-notebooks/45_cross_family_field_benchmark.ipynb) | `notebooks/package_api/45_cross_family_field_benchmark.ipynb` | trains three Fourier-family equilibria on one periodic field task and separates task error from numerical diagnostics |
 | [Extension Builder Workshop](package-notebooks/46_extension_builder_workshop.ipynb) | `notebooks/package_api/46_extension_builder_workshop.ipynb` | derives a custom branch, proves primitive-to-public transition equivalence, solves it, trains it, and records the route to a reusable family |
 | [Failure Diagnostics Workshop](package-notebooks/47_failure_diagnostics_workshop.ipynb) | `notebooks/package_api/47_failure_diagnostics_workshop.ipynb` | contrasts stable, near-critical, oscillatory, and damped fixed points through complete residual curves and recovery checks |
+| [SILVA Learned Equilibrium Solvers](package-notebooks/48_silva_learned_solvers.ipynb) | `notebooks/package_api/48_silva_learned_solvers.ipynb` | derives learned Anderson control, trains against a high-precision teacher, replaces a vector transition with a field module, and records source-scale obligations |
+| [JFB and SHINE Backward Methods](package-notebooks/49_jfb_shine_backward_methods.ipynb) | `notebooks/package_api/49_jfb_shine_backward_methods.ipynb` | derives exact implicit, Jacobian-free, and shared-inverse gradients and compares all three with an analytic reference |
+| [SILVA Quantum DEQ](package-notebooks/50_silva_quantum_deq.ipynb) | `notebooks/package_api/50_silva_quantum_deq.ipynb` | derives the circuit transition, measures exact statevectors, runs direct and implicit modes, trains a compact classifier, and verifies source image shapes |
+| [Equilibrium Expansion Atlas](package-notebooks/51_equilibrium_expansion_atlas.ipynb) | `notebooks/package_api/51_equilibrium_expansion_atlas.ipynb` | separates forward acceleration, backward approximation, operator guarantees, diffusion placement, physics loss, and circuit transition choices |
+| [SILVA Evidence Ladders](package-notebooks/52_silva_evidence_ladders.ipynb) | `notebooks/package_api/52_silva_evidence_ladders.ipynb` | builds repeated-run evidence records with fingerprints, uncertainty intervals, failure capture, and resource measurements |
+| [Transition Equivalence Lab](package-notebooks/53_transition_equivalence_lab.ipynb) | `notebooks/package_api/53_transition_equivalence_lab.ipynb` | verifies transition, root, input-gradient, and parameter-gradient agreement between primitive and packaged constructions |
+| [Statistical Benchmarking](package-notebooks/54_statistical_benchmarking.ipynb) | `notebooks/package_api/54_statistical_benchmarking.ipynb` | derives repeated-seed summaries, bootstrap intervals, paired comparisons, and acceptance rules |
+| [SILVA Bayesian DEQ](package-notebooks/55_silva_bayesian_deq.ipynb) | `notebooks/package_api/55_silva_bayesian_deq.ipynb` | derives stochastic affine equilibrium sampling, posterior summaries, uncertainty decomposition, and scale controls |
+| [SILVA Joint Inference](package-notebooks/56_silva_joint_inference.ipynb) | `notebooks/package_api/56_silva_joint_inference.ipynb` | solves a coupled representation-input equilibrium and checks both state blocks, gradients, and replaceable updates |
+| [SILVA Implicit Spatiotemporal](package-notebooks/57_silva_implicit_spatiotemporal.ipynb) | `notebooks/package_api/57_silva_implicit_spatiotemporal.ipynb` | derives periodic diffusion dynamics inside an implicit time-space equilibrium and measures physical and solver residuals |
+| [SILVA Certified Equilibrium](package-notebooks/58_silva_certified_equilibrium.ipynb) | `notebooks/package_api/58_silva_certified_equilibrium.ipynb` | propagates interval bounds, checks contraction certificates, and records semialgebraic verification obligations |
+| [Full Experiment Pipeline](package-notebooks/59_full_experiment_pipeline.ipynb) | `notebooks/package_api/59_full_experiment_pipeline.ipynb` | materializes a tiered protocol, runs a lifecycle hook, and writes auditable input, result, and environment records |
+| [Neumann Backward Comparison](package-notebooks/60_neumann_backward_comparison.ipynb) | `notebooks/package_api/60_neumann_backward_comparison.ipynb` | derives truncated Neumann adjoints and compares their gradient error and cost with exact implicit differentiation |
+
+## Source-Aligned Equilibrium Track
+
+These labs derive fourteen additional published mechanisms as independently
+configurable SILVA families. Every notebook executes a compact contract check,
+retains a 300-dpi result figure, identifies replaceable internals, and prints
+the exact compact, workstation, and source-scale data routes.
+
+| Rendered page | Source notebook | Main result |
+| --- | --- | --- |
+| [SILVA Lipschitz MDEQ](package-notebooks/61_silva_lipschitz_mdeq.ipynb) | `notebooks/package_api/61_silva_lipschitz_mdeq.ipynb` | derives the joint cross-scale contraction, splits the solved state, and measures the global bound and residual |
+| [SILVA Subhomogeneous Equilibrium](package-notebooks/62_silva_subhomogeneous_equilibrium.ipynb) | `notebooks/package_api/62_silva_subhomogeneous_equilibrium.ipynb` | derives positive projective normalization and checks positivity, unit norm, gradients, and convergence |
+| [SILVA Algorithmic Reasoner](package-notebooks/63_silva_algorithmic_reasoner.ipynb) | `notebooks/package_api/63_silva_algorithmic_reasoner.ipynb` | derives the tied graph processor, solves a coupled node state, and maps the compact case to CLRS tasks |
+| [SILVA Hamiltonian Equilibrium](package-notebooks/64_silva_hamiltonian_equilibrium.ipynb) | `notebooks/package_api/64_silva_hamiltonian_equilibrium.ipynb` | derives self-consistency and verifies symmetry, rotation invariance, spectra, residuals, and gradients |
+| [SILVA Inverse Imaging](package-notebooks/65_silva_inverse_imaging_equilibrium.ipynb) | `notebooks/package_api/65_silva_inverse_imaging_equilibrium.ipynb` | separates sensing, adjoint, prior, and solver while measuring data consistency on a masked field |
+| [SILVA Snapshot Compressive Imaging](package-notebooks/66_silva_snapshot_compressive_equilibrium.ipynb) | `notebooks/package_api/66_silva_snapshot_compressive_equilibrium.ipynb` | derives coded snapshot projection and reconstructs a compact video state with exact remeasurement checks |
+| [SILVA Magnetic Particle Equilibrium](package-notebooks/67_silva_magnetic_particle_equilibrium.ipynb) | `notebooks/package_api/67_silva_magnetic_particle_equilibrium.ipynb` | exposes the packed primal, split, and dual state of an ADMM-style MPI reconstruction |
+| [SILVA Sparse Hyperspectral Equilibrium](package-notebooks/68_silva_sparse_hyperspectral_equilibrium.ipynb) | `notebooks/package_api/68_silva_sparse_hyperspectral_equilibrium.ipynb` | derives sparse proximal code updates and visualizes source, noisy, and equilibrium spectral bands |
+| [SILVA Serialized Smoothing](package-notebooks/69_silva_serialized_smoothing_equilibrium.ipynb) | `notebooks/package_api/69_silva_serialized_smoothing_equilibrium.ipynb` | warm-starts noisy solves and reports sample counts, solver work, class predictions, and certified radii |
+| [SILVA Diffusion Restoration](package-notebooks/70_silva_diffusion_restoration_equilibrium.ipynb) | `notebooks/package_api/70_silva_diffusion_restoration_equilibrium.ipynb` | solves a joint restoration trajectory and verifies hard observed-pixel projection at every state |
+| [SILVA Recurrent Equilibrium Network](package-notebooks/71_silva_recurrent_equilibrium_network.ipynb) | `notebooks/package_api/71_silva_recurrent_equilibrium_network.ipynb` | combines explicit temporal dynamics with one algebraic equilibrium per time step and plots both states |
+| [SILVA Lipschitz Robust Equilibrium](package-notebooks/72_silva_lipschitz_robust_equilibrium.ipynb) | `notebooks/package_api/72_silva_lipschitz_robust_equilibrium.ipynb` | compares four bounded parameterizations and exposes global sensitivity, margins, and radii |
+| [SILVA Image Matting Equilibrium](package-notebooks/73_silva_image_matting_equilibrium.ipynb) | `notebooks/package_api/73_silva_image_matting_equilibrium.ipynb` | derives trimap projection and verifies exact known-region constraints on the solved alpha matte |
+| [SILVA Dynamic Economic Equilibrium](package-notebooks/74_silva_dynamic_economic_equilibrium.ipynb) | `notebooks/package_api/74_silva_dynamic_economic_equilibrium.ipynb` | derives feasible policy shares and trains a compact policy from resource and Euler residuals |
 
 ## Implicit Layers Bridge Track
 
@@ -163,8 +200,8 @@ graph, spatial, trajectory, measure, or constrained state. The result is not
 only a plotted residual: each notebook stores a numerical table, checks the
 analytic gradient, renders a 300-dpi two-panel diagnostic, identifies the
 structural invariants, and states which solver, data, and scale axes to vary
-next. Across the 82 canonical notebooks, all 946 code cells are executed; the
-committed results contain 906 output blocks and 216 figures.
+next. Across the 109 canonical notebooks, all 1,192 code cells are executed; the
+committed results contain 1,140 output blocks and 271 figures.
 
 ## Local Jupyter
 
@@ -174,7 +211,7 @@ For a quick release validation, run:
 python scripts/run_notebook_smoke.py --timeout 180
 ```
 
-Execute all 82 canonical notebooks, including the unreleased book track:
+Execute all 109 canonical notebooks, including the unreleased book track:
 
 ```bash
 python scripts/run_notebook_smoke.py --all --inplace --timeout 300

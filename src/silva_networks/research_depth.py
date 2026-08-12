@@ -138,6 +138,12 @@ _DOMAIN_FAMILIES: dict[str, tuple[str, ...]] = {
         "implicit_graph",
         "implicit_neural_representation",
         "diffusion_equilibrium",
+        "silva_hyper_deq",
+        "silva_bayesian_deq",
+        "silva_lipschitz_mdeq",
+        "silva_subhomogeneous_equilibrium",
+        "silva_recurrent_equilibrium_network",
+        "silva_lipschitz_robust_equilibrium",
     ),
     "scientific operators": (
         "scientific_operator",
@@ -146,6 +152,8 @@ _DOMAIN_FAMILIES: dict[str, tuple[str, ...]] = {
         "silva_fno_deq",
         "silva_ifno",
         "silva_therino",
+        "silva_hamiltonian_equilibrium",
+        "silva_dynamic_economic_equilibrium",
     ),
     "vision and generation": (
         "silva_deq_flow",
@@ -153,6 +161,13 @@ _DOMAIN_FAMILIES: dict[str, tuple[str, ...]] = {
         "silva_generative_equilibrium_transformer",
         "silva_fixed_point_diffusion",
         "silva_consistency_deq",
+        "silva_quantum_deq",
+        "silva_inverse_imaging_equilibrium",
+        "silva_snapshot_compressive_equilibrium",
+        "silva_sparse_hyperspectral_equilibrium",
+        "silva_serialized_smoothing_equilibrium",
+        "silva_diffusion_restoration_equilibrium",
+        "silva_image_matting_equilibrium",
     ),
     "graphs and distributed systems": (
         "silva_physics_graph_deq",
@@ -161,12 +176,15 @@ _DOMAIN_FAMILIES: dict[str, tuple[str, ...]] = {
         "silva_mesh_inference",
         "silva_efficient_infinite_graph",
         "silva_multiscale_graph_implicit",
+        "silva_algorithmic_reasoner",
     ),
     "physics and differential systems": (
         "silva_homotopy_equilibrium",
         "silva_physics_informed_equilibrium",
         "silva_implicit_dae_step",
         "silva_physics_guided_diffusion_pde",
+        "silva_implicit_spatiotemporal",
+        "silva_magnetic_particle_equilibrium",
     ),
     "geometry and distributions": (
         "silva_distributional_deq",
@@ -180,6 +198,8 @@ _DOMAIN_FAMILIES: dict[str, tuple[str, ...]] = {
         "silva_positive_concave_equilibrium",
         "silva_non_euclidean_equilibrium",
         "silva_delta_equilibrium",
+        "silva_joint_inference_equilibrium",
+        "silva_certified_equilibrium",
     ),
 }
 

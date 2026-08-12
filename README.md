@@ -80,6 +80,13 @@ readouts at each point.
 | How do compatible families compare on one shared task? | [Cross-Family Comparisons](docs/experiments/cross-family-comparisons.md) | [Vector, Graph, and Field Labs](docs/notebooks.md#research-depth-and-comparison-track) |
 | How do I build and validate a new SILVA abstraction? | [Advanced Extension Handbook](docs/learn/advanced-extension-handbook.md) | [Extension Builder Workshop](notebooks/package_api/46_extension_builder_workshop.ipynb) |
 | How do I diagnose slow, oscillatory, or failed solves? | [Failure Diagnostics](docs/learn/failure-diagnostics-and-recovery.md) | [Diagnostics Workshop](notebooks/package_api/47_failure_diagnostics_workshop.ipynb) |
+| How do I train a learned equilibrium solver? | [Learned Solvers and Backward Approximations](docs/learn/solver-learning-and-gradients.md) | [Learned Solver Lab](notebooks/package_api/48_silva_learned_solvers.ipynb) |
+| How do exact implicit, JFB, and SHINE gradients differ? | [Backward Derivations](docs/learn/solver-learning-and-gradients.md#three-backward-rules) | [JFB and SHINE Lab](notebooks/package_api/49_jfb_shine_backward_methods.ipynb) |
+| How do I build a quantum-circuit equilibrium? | [Quantum Equilibria](docs/learn/quantum-equilibria.md) | [QDEQ Lab](notebooks/package_api/50_silva_quantum_deq.ipynb) |
+| Where are the newer mechanisms compared by architecture axis? | [Equilibrium Expansion Atlas](docs/learn/equilibrium-expansion-atlas.md) | [Expansion Atlas Lab](notebooks/package_api/51_equilibrium_expansion_atlas.ipynb) |
+| How do Bayesian, joint-inference, spatiotemporal, and certified equilibria fit SILVA? | [Advanced Equilibrium Expansions](docs/learn/advanced-equilibrium-expansions.md) | [Focused Labs 55-58](docs/notebooks.md#research-depth-and-comparison-track) |
+| How do multiscale, subhomogeneous, algorithmic, Hamiltonian, inverse-imaging, robustness, and economic families fit SILVA? | [Source-Aligned Equilibrium Families](docs/learn/source-equilibrium-families.md) | [Focused Labs 61-74](docs/notebooks.md#source-aligned-equilibrium-track) |
+| How do I turn a compact run into repeatable statistical evidence? | [Evidence and Source-Scale Experiments](docs/learn/evidence-and-source-scale.md) | [Evidence Labs 52-54 and 59](docs/notebooks.md#research-depth-and-comparison-track) |
 | How do I scale a construction beyond the compact examples? | [Full-Scale SILVA](docs/learn/full-scale-silva.md) | [Full-Scale Execution Lab](notebooks/package_api/26_full_scale_silva.ipynb) |
 | Where can I find every notebook and download route? | [Notebook Library](docs/notebooks.md) | [Run Everything](docs/run-everything.md) |
 
@@ -88,8 +95,8 @@ measured compact output, the equations needed to interpret that output, and a
 route from the compact check to a source-scale experiment. Every canonical
 notebook adds an analytic fixed-point reference study, a convergence and
 gradient table, a 300-dpi diagnostic figure, and a solver/data/scale extension
-record. The current 82-notebook set contains 946 executed code cells, 906 stored
-output blocks, and 216 embedded figures; no notebook is represented by prose
+record. The current 109-notebook set contains 1,192 executed code cells, 1,140 stored
+output blocks, and 271 embedded figures; no notebook is represented by prose
 and an unexecuted snippet alone.
 
 The code is released under the MIT License. If you use this package, cite the
@@ -150,7 +157,7 @@ for a small CIFAR10 check and run the full TorchVision suite only when the
 image archives can be cached locally.
 
 Inspect the data, literature, benchmark, scale controls, and extension route
-for any of the 44 canonical SILVA families:
+for any of the 64 canonical SILVA families:
 
 ```bash
 silva-scale --list
@@ -514,6 +521,42 @@ published benchmark is reported as reproduced only after the corresponding
 source dataset, split, preprocessing, architecture, optimization schedule,
 solver budget, and evaluation protocol have all been run and recorded.
 
+### Learned Solvers, Backward Methods, and Quantum Equilibria
+
+SILVA also exposes two additional model families and two backward approximations:
+
+- `SILVAHyperDEQ` learns an initializer and Anderson coefficients from
+  high-precision teacher trajectories while keeping the task transition and
+  readout replaceable, following Neural Deep Equilibrium Solvers
+  [[87]](docs/paper/references.md#ref-87);
+- `backward_mode="jfb"` applies the one-step Jacobian-free parameter gradient
+  [[88]](docs/paper/references.md#ref-88);
+- `backward_mode="shine"` retains a forward Broyden inverse estimate and reuses
+  it in the adjoint solve [[89]](docs/paper/references.md#ref-89);
+- `SILVAQuantumDEQ` places an encoded, measured quantum circuit inside the
+  equilibrium transition and supports direct, warmup, and implicit execution,
+  following QDEQ [[90]](docs/paper/references.md#ref-90).
+
+```python
+from silva_networks import SILVAHyperDEQ, SILVAQuantumDEQ, SolverConfig
+
+learned_solver = SILVAHyperDEQ(state_shape=32, condition_dim=16)
+quantum_model = SILVAQuantumDEQ(
+    input_dim=16,
+    output_dim=4,
+    n_qubits=4,
+    config=SolverConfig(solver="broyden", backward_mode="shine"),
+)
+```
+
+The [equilibrium expansion atlas](docs/learn/equilibrium-expansion-atlas.md)
+keeps solver learning, forward acceleration, backward approximation, transition
+constraints, diffusion placement, physics losses, and circuit transitions on
+separate axes. Notebooks `48` through `51` derive, execute, plot, and scale
+these routes; the [learned-solver](docs/api/solver_learning.md) and
+[quantum-equilibrium](docs/api/quantum_equilibria.md) API pages list every
+replaceable component.
+
 ### Full-Scale SILVA Execution
 
 Every canonical family has an executable scale guide. `build_scaled_silva`
@@ -705,18 +748,22 @@ are in `docs/learn/extending-silva.md`.
   Fourier equilibrium, graph-physics, homotopy, distributional, optical-flow,
   constrained optimization, dataset, device, family-dossier, and compact
   comparison modules.
+- `src/silva_networks/source_equilibria.py`: fourteen source-aligned families
+  for Lipschitz multiscale, subhomogeneous, algorithmic, Hamiltonian, inverse
+  imaging, compressive video, magnetic-particle, hyperspectral, smoothing,
+  restoration, recurrent, robust, matting, and economic equilibrium studies.
 - `docs/`: Material for MkDocs documentation site, including the case atlas,
   derivation-first math pages, API maps, examples, and references.
 - Companion book and solutions manual: planned long-form learning assets.
 - `notebooks/`: 26 solved mathematical and book/research notebooks.
-- `notebooks/package_api/`: 47 package-first tutorials that import
+- `notebooks/package_api/`: 74 package-first tutorials that import
   `silva_networks` directly.
 - `notebooks/implicit_bridge/`: 9 adapted implicit-layer, DEQ, MDEQ, ODE, and
   differentiable-optimization notebooks using the package API.
 - `colab/`: Colab-ready notebook exports for the package and bridge tracks.
 - `examples/`: small runnable examples for CPU, CUDA, or MPS PyTorch devices.
 - `experiments/public/`: configurable public package checks and learning cases.
-- `experiments/reproduction/`: editable full-scale plans for all 44 families
+- `experiments/reproduction/`: editable full-scale plans for all 64 families
   plus deterministic vector, graph, and field comparison records.
 - `tests/`: package, docs, notebook, and example checks.
 - `tests_extended/`: optional extended validation checks, run explicitly.
@@ -926,7 +973,7 @@ and external tutorials are cited and linked as references.
 Use the repository citation metadata in `CITATION.cff`, or cite:
 
 ```text
-Dr. Jose Luis Silva. SILVA Networks. Version 1.2.1. MIT License.
+Dr. Jose Luis Silva. SILVA Networks. Version 1.2.2. MIT License.
 https://github.com/jseluis/silva-networks
 https://doi.org/10.5281/zenodo.21770098
 ```
@@ -950,7 +997,7 @@ When the work uses or discusses the SILVA methodology, cite the paper as well:
   title   = {SILVA Networks},
   author  = {Silva, Jose Luis},
   year    = {2026},
-  version = {1.2.1},
+  version = {1.2.2},
   license = {MIT},
   doi     = {10.5281/zenodo.21770098},
   url     = {https://github.com/jseluis/silva-networks}
@@ -972,7 +1019,7 @@ mkdocs build --strict
 ```
 
 The complete release-candidate validation executes the core and extended tests
-without skips, all 82 canonical notebooks, the documentation audit, the
+without skips, all 109 canonical notebooks, the documentation audit, the
 content-preservation audit, the strict site build, and both distribution
 artifacts:
 

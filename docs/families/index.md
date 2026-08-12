@@ -1,6 +1,6 @@
 # Family Reproduction Dossiers
 
-These 44 dossiers expose the complete path from a governing equation to source-scale
+These 64 dossiers expose the complete path from a governing equation to source-scale
 experimentation. Each page records what the implementation preserves, what SILVA makes
 replaceable, which compact checks have run, and what remains before a publication-scale
 reproduction can be claimed.
@@ -10,13 +10,13 @@ reproduction can be claimed.
 | Domain | Families |
 | --- | ---: |
 | SILVA composition | 6 |
-| core equilibrium | 8 |
+| core equilibrium | 14 |
 | geometry and distributions | 2 |
-| graphs and distributed systems | 6 |
-| optimization and certified equilibria | 7 |
-| physics and differential systems | 4 |
-| scientific operators | 6 |
-| vision and generation | 5 |
+| graphs and distributed systems | 7 |
+| optimization and certified equilibria | 9 |
+| physics and differential systems | 6 |
+| scientific operators | 8 |
+| vision and generation | 12 |
 
 ## Evidence Vocabulary
 
@@ -76,6 +76,26 @@ reproduction can be claimed.
 | [`silva_efficient_infinite_graph`](silva_efficient_infinite_graph.md) | graphs and distributed systems | `compact-verified` | `planned` |
 | [`silva_multiscale_graph_implicit`](silva_multiscale_graph_implicit.md) | graphs and distributed systems | `compact-verified` | `planned` |
 | [`silva_delta_equilibrium`](silva_delta_equilibrium.md) | optimization and certified equilibria | `compact-verified` | `planned` |
+| [`silva_hyper_deq`](silva_hyper_deq.md) | core equilibrium | `compact-verified` | `planned` |
+| [`silva_quantum_deq`](silva_quantum_deq.md) | vision and generation | `compact-verified` | `planned` |
+| [`silva_bayesian_deq`](silva_bayesian_deq.md) | core equilibrium | `compact-verified` | `planned` |
+| [`silva_joint_inference_equilibrium`](silva_joint_inference_equilibrium.md) | optimization and certified equilibria | `compact-verified` | `planned` |
+| [`silva_implicit_spatiotemporal`](silva_implicit_spatiotemporal.md) | physics and differential systems | `compact-verified` | `planned` |
+| [`silva_certified_equilibrium`](silva_certified_equilibrium.md) | optimization and certified equilibria | `compact-verified` | `planned` |
+| [`silva_lipschitz_mdeq`](silva_lipschitz_mdeq.md) | core equilibrium | `compact-verified` | `planned` |
+| [`silva_subhomogeneous_equilibrium`](silva_subhomogeneous_equilibrium.md) | core equilibrium | `compact-verified` | `planned` |
+| [`silva_algorithmic_reasoner`](silva_algorithmic_reasoner.md) | graphs and distributed systems | `compact-verified` | `planned` |
+| [`silva_hamiltonian_equilibrium`](silva_hamiltonian_equilibrium.md) | scientific operators | `compact-verified` | `planned` |
+| [`silva_inverse_imaging_equilibrium`](silva_inverse_imaging_equilibrium.md) | vision and generation | `compact-verified` | `planned` |
+| [`silva_snapshot_compressive_equilibrium`](silva_snapshot_compressive_equilibrium.md) | vision and generation | `compact-verified` | `planned` |
+| [`silva_magnetic_particle_equilibrium`](silva_magnetic_particle_equilibrium.md) | physics and differential systems | `compact-verified` | `planned` |
+| [`silva_sparse_hyperspectral_equilibrium`](silva_sparse_hyperspectral_equilibrium.md) | vision and generation | `compact-verified` | `planned` |
+| [`silva_serialized_smoothing_equilibrium`](silva_serialized_smoothing_equilibrium.md) | vision and generation | `compact-verified` | `planned` |
+| [`silva_diffusion_restoration_equilibrium`](silva_diffusion_restoration_equilibrium.md) | vision and generation | `compact-verified` | `planned` |
+| [`silva_recurrent_equilibrium_network`](silva_recurrent_equilibrium_network.md) | core equilibrium | `compact-verified` | `planned` |
+| [`silva_lipschitz_robust_equilibrium`](silva_lipschitz_robust_equilibrium.md) | core equilibrium | `compact-verified` | `planned` |
+| [`silva_image_matting_equilibrium`](silva_image_matting_equilibrium.md) | vision and generation | `compact-verified` | `planned` |
+| [`silva_dynamic_economic_equilibrium`](silva_dynamic_economic_equilibrium.md) | scientific operators | `compact-verified` | `planned` |
 
 ## How to Use a Dossier
 

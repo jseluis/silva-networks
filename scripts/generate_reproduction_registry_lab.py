@@ -80,7 +80,7 @@ from silva_networks import (
 torch.manual_seed(27)
 assert audit_silva_reproduction_specs() == ()
 specs = all_silva_reproduction_specs()
-assert len(specs) == 44
+assert len(specs) == 64
 [(spec.family, spec.source_relation, spec.verification_level) for spec in specs]""",
             "registry-audit",
         ),
@@ -145,7 +145,7 @@ field error, physical residual, FID, endpoint error, or reconstruction quality."
             "inspect-families",
         ),
         _markdown(
-            r"""## Audit All 44 Source-Conformance Records
+            r"""## Audit All 64 Source-Conformance Records
 
 Every family has a distinct governing equation and three additional records:
 what is retained from the source mechanism, what SILVA allows the user to

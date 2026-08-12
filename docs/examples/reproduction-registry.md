@@ -77,6 +77,7 @@ python examples/reproduction_registry.py
 --8<-- "includes/extension/examples.md"
 <!-- silva-extension-path:end -->
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -125,15 +126,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **verification levels, preserved mechanisms, scale tiers, and source obligations**. The
 invariants that must remain true are **shape, device, dtype, finiteness, and differentiability**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/reproduction_registry.py"
-```
 
 ### Run the Complete Example
 

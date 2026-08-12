@@ -1,0 +1,280 @@
+{
+  "family": "silva_implicit_spatiotemporal",
+  "profile": "dynamics",
+  "source_relation": "paper-adaptation",
+  "references": [
+    96
+  ],
+  "repositories": [
+    "https://arxiv.org/abs/2504.02260"
+  ],
+  "data_sources": [
+    "https://arxiv.org/abs/2504.02260"
+  ],
+  "preprocessing": [
+    "record dataset version, split, normalization, shape convention, and seed",
+    "preserve masks, graph indices, boundaries, or physical units required by the domain"
+  ],
+  "required_artifacts": [
+    "machine-readable model and solver configuration",
+    "dataset receipt with source revision, split, license, and checksum",
+    "preprocessing and normalization record",
+    "seeded training and evaluation log",
+    "checkpoint and optimizer-resume state for trained experiments",
+    "task metrics and equilibrium diagnostics in a machine-readable result",
+    "runtime, peak-memory, device, precision, and dependency record",
+    "declared deviations from the cited protocol"
+  ],
+  "tiers": [
+    {
+      "tier": "smoke",
+      "evidence_target": "compact-verified",
+      "dataset": {
+        "name": "analytic ODE/PDE trajectory",
+        "source_url": "generated://silva",
+        "split": "seeded initial conditions",
+        "access": "generated locally",
+        "expected_storage": "less than 100 MB"
+      },
+      "sample_limit": 64,
+      "epochs": 2,
+      "seeds": [
+        0
+      ],
+      "model_options": {
+        "config": {
+          "solver": "anderson",
+          "max_iter": 12,
+          "tol": 1e-05,
+          "alpha": 1.0,
+          "history": 3,
+          "ridge": 0.0001,
+          "beta": 1.0,
+          "stop_mode": "relative",
+          "relative_eps": 1e-08,
+          "anderson_batch_dims": 1,
+          "track_residuals": true,
+          "reengage": true,
+          "backward_mode": "implicit",
+          "backward_solver": "gmres",
+          "backward_max_iter": 20,
+          "backward_tol": 1e-05,
+          "backward_stop_mode": "relative",
+          "backward_relative_eps": 1e-08,
+          "phantom_steps": 1,
+          "phantom_tau": 1.0,
+          "neumann_terms": 5,
+          "shine_refine_steps": 0,
+          "indexing": [],
+          "return_best": true
+        }
+      },
+      "runtime_options": {
+        "tier": "smoke",
+        "device": "auto",
+        "per_device_batch_size": 4,
+        "gradient_accumulation_steps": 1,
+        "mixed_precision": "none",
+        "workers": 0,
+        "pin_memory": false,
+        "persistent_workers": false,
+        "distributed": false,
+        "compile_model": false,
+        "channels_last": false,
+        "checkpoint_path": null,
+        "seed": 0
+      },
+      "resources": {
+        "accelerator_count": "CPU or 1 accelerator",
+        "accelerator_memory": "0-4 GB",
+        "host_memory": "4-16 GB",
+        "storage": "less than 2 GB",
+        "wall_time": "seconds to 10 minutes",
+        "note": "Measured by the stored compact notebook."
+      },
+      "metrics": [
+        "relative trajectory error",
+        "conservation or physics residual",
+        "long-horizon stability",
+        "solver evaluations per time step",
+        "runtime and memory"
+      ],
+      "acceptance_checks": [
+        "record relative trajectory error",
+        "record conservation or physics residual",
+        "record long-horizon stability",
+        "record solver evaluations per time step",
+        "checkpoint reload reproduces the recorded prediction",
+        "result record contains data and configuration fingerprints"
+      ],
+      "command": "python experiments/reproduction/run_family_protocol.py --family silva_implicit_spatiotemporal --tier smoke --work-dir runs/silva_implicit_spatiotemporal/smoke"
+    },
+    {
+      "tier": "workstation",
+      "evidence_target": "subset-verified",
+      "dataset": {
+        "name": "PDEBench subset",
+        "source_url": "https://github.com/pdebench/PDEBench",
+        "split": "recorded equation and trajectory subset",
+        "access": "dataset-specific terms",
+        "expected_storage": "5-100 GB"
+      },
+      "sample_limit": 4096,
+      "epochs": 20,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "model_options": {
+        "config": {
+          "solver": "anderson",
+          "max_iter": 35,
+          "tol": 1e-05,
+          "alpha": 1.0,
+          "history": 5,
+          "ridge": 0.0001,
+          "beta": 1.0,
+          "stop_mode": "relative",
+          "relative_eps": 1e-08,
+          "anderson_batch_dims": 1,
+          "track_residuals": true,
+          "reengage": true,
+          "backward_mode": "implicit",
+          "backward_solver": "gmres",
+          "backward_max_iter": 50,
+          "backward_tol": 1e-05,
+          "backward_stop_mode": "relative",
+          "backward_relative_eps": 1e-08,
+          "phantom_steps": 1,
+          "phantom_tau": 1.0,
+          "neumann_terms": 5,
+          "shine_refine_steps": 0,
+          "indexing": [],
+          "return_best": true
+        }
+      },
+      "runtime_options": {
+        "tier": "workstation",
+        "device": "auto",
+        "per_device_batch_size": 8,
+        "gradient_accumulation_steps": 1,
+        "mixed_precision": "none",
+        "workers": 4,
+        "pin_memory": true,
+        "persistent_workers": true,
+        "distributed": false,
+        "compile_model": false,
+        "channels_last": false,
+        "checkpoint_path": null,
+        "seed": 0
+      },
+      "resources": {
+        "accelerator_count": "1 accelerator",
+        "accelerator_memory": "8-24 GB",
+        "host_memory": "16-64 GB",
+        "storage": "5-100 GB",
+        "wall_time": "minutes to 24 hours",
+        "note": "Validate data, resume, metrics, and memory before scaling."
+      },
+      "metrics": [
+        "relative trajectory error",
+        "conservation or physics residual",
+        "long-horizon stability",
+        "solver evaluations per time step",
+        "runtime and memory"
+      ],
+      "acceptance_checks": [
+        "dataset receipt and checksum are stored",
+        "resume and evaluation paths reproduce the same subset metric",
+        "memory and runtime are measured rather than estimated"
+      ],
+      "command": "python experiments/reproduction/run_family_protocol.py --family silva_implicit_spatiotemporal --tier workstation --work-dir runs/silva_implicit_spatiotemporal/workstation"
+    },
+    {
+      "tier": "full",
+      "evidence_target": "source-scale-reproduced",
+      "dataset": {
+        "name": "PDEBench source task",
+        "source_url": "https://github.com/pdebench/PDEBench",
+        "split": "official train/validation/test and rollout horizon",
+        "access": "dataset-specific terms",
+        "expected_storage": "100 GB to multiple TB"
+      },
+      "sample_limit": null,
+      "epochs": 100,
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "model_options": {
+        "config": {
+          "solver": "anderson",
+          "max_iter": 60,
+          "tol": 1e-05,
+          "alpha": 1.0,
+          "history": 6,
+          "ridge": 0.0001,
+          "beta": 1.0,
+          "stop_mode": "relative",
+          "relative_eps": 1e-08,
+          "anderson_batch_dims": 1,
+          "track_residuals": true,
+          "reengage": true,
+          "backward_mode": "implicit",
+          "backward_solver": "gmres",
+          "backward_max_iter": 80,
+          "backward_tol": 1e-05,
+          "backward_stop_mode": "relative",
+          "backward_relative_eps": 1e-08,
+          "phantom_steps": 1,
+          "phantom_tau": 1.0,
+          "neumann_terms": 5,
+          "shine_refine_steps": 0,
+          "indexing": [],
+          "return_best": true
+        }
+      },
+      "runtime_options": {
+        "tier": "full",
+        "device": "auto",
+        "per_device_batch_size": 8,
+        "gradient_accumulation_steps": 4,
+        "mixed_precision": "bfloat16",
+        "workers": 8,
+        "pin_memory": true,
+        "persistent_workers": true,
+        "distributed": true,
+        "compile_model": false,
+        "channels_last": false,
+        "checkpoint_path": null,
+        "seed": 0
+      },
+      "resources": {
+        "accelerator_count": "1-8 accelerators",
+        "accelerator_memory": "16-80 GB each",
+        "host_memory": "64-512 GB",
+        "storage": "100 GB to multiple TB",
+        "wall_time": "hours to multiple days",
+        "note": "Planning range only; record observed resources in the evidence report."
+      },
+      "metrics": [
+        "relative trajectory error",
+        "conservation or physics residual",
+        "long-horizon stability",
+        "solver evaluations per time step",
+        "runtime and memory"
+      ],
+      "acceptance_checks": [
+        "all required artifacts are archived",
+        "reported metrics use the cited evaluation protocol",
+        "every architectural or training deviation is listed",
+        "claims match the achieved evidence status"
+      ],
+      "command": "python experiments/reproduction/run_family_protocol.py --family silva_implicit_spatiotemporal --tier full --work-dir runs/silva_implicit_spatiotemporal/full"
+    }
+  ]
+}

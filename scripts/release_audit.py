@@ -354,7 +354,9 @@ def _check_test_skip_markers(root: Path, errors: list[str]) -> None:
             text = path.read_text(encoding="utf-8")
             for marker in TEST_SKIP_MARKERS:
                 if marker in text:
-                    errors.append(f"{path.relative_to(root)} contains disallowed test skip marker: {marker}")
+                    errors.append(
+                        f"{path.relative_to(root)} contains disallowed test skip marker: {marker}"
+                    )
 
 
 def _check_notebook_curriculum(root: Path, errors: list[str]) -> None:
@@ -363,14 +365,12 @@ def _check_notebook_curriculum(root: Path, errors: list[str]) -> None:
         *sorted((root / "notebooks/implicit_bridge").glob("*.ipynb")),
         *sorted((root / "notebooks").glob("*.ipynb")),
     ]
-    if len(canonical) != 82:
-        errors.append(f"expected 82 canonical notebooks; found {len(canonical)}")
+    if len(canonical) != 109:
+        errors.append(f"expected 109 canonical notebooks; found {len(canonical)}")
         return
     for path in canonical:
         notebook = json.loads(path.read_text(encoding="utf-8"))
-        source = "\n".join(
-            "".join(cell.get("source", [])) for cell in notebook.get("cells", [])
-        )
+        source = "\n".join("".join(cell.get("source", [])) for cell in notebook.get("cells", []))
         for stale in (
             "Upstream references to compare with:",
             "references/papers/recent_deq",
@@ -382,24 +382,19 @@ def _check_notebook_curriculum(root: Path, errors: list[str]) -> None:
         cells = [
             cell
             for cell in notebook.get("cells", [])
-            if "silva-extension-curriculum"
-            in cell.get("metadata", {}).get("tags", [])
+            if "silva-extension-curriculum" in cell.get("metadata", {}).get("tags", [])
         ]
         if len(cells) != 8:
             errors.append(
                 f"{path.relative_to(root)} has {len(cells)} extension curriculum cells; expected 8"
             )
-        curriculum_source = "\n".join(
-            "".join(cell.get("source", [])) for cell in cells
-        )
+        curriculum_source = "\n".join("".join(cell.get("source", [])) for cell in cells)
         for marker in (
             "Worked Convergence and Sensitivity Study",
             "Reading and Extending the Result",
         ):
             if marker not in curriculum_source:
-                errors.append(
-                    f"{path.relative_to(root)} is missing notebook curriculum: {marker}"
-                )
+                errors.append(f"{path.relative_to(root)} is missing notebook curriculum: {marker}")
 
 
 def _check_arxiv_and_bibtex(root: Path, errors: list[str]) -> None:
@@ -583,7 +578,7 @@ def _contains_blocked_origin_token(text: str) -> bool:
 def _tracked_paths(root: Path) -> list[Path]:
     if (root / ".git").exists():
         result = subprocess.run(
-            ["git", "ls-files", "-z"],
+            ["git", "ls-files", "-co", "--exclude-standard", "-z"],
             cwd=root,
             capture_output=True,
             check=False,

@@ -247,7 +247,7 @@ Distributed execution divides data among processes; it does not change the
 equilibrium equation. Solver residuals, task metrics, physical residuals, and
 structural invariance checks should still be reported separately.
 
-## All 44 Family Routes
+## All 64 Family Routes
 
 The table is generated conceptually from `all_silva_family_guides()`. Every row
 has a tested canonical factory, a data contract, literature lineage, benchmark
@@ -256,8 +256,9 @@ route, scale controls, and an extension point.
 ### All 30 Family Routes
 
 The original 30-family route catalog is retained in the table below and
-expanded with 14 additional structured and emerging families, for 44 canonical
-routes in total.
+expanded with 14 structured and emerging families, two learned-solver and
+quantum families, and four Bayesian, joint-inference, spatiotemporal, and
+certified and source-aligned families, for 64 canonical routes in total.
 
 | SILVA family | Research route | Main scale controls | Source |
 | --- | --- | --- | --- |
@@ -322,6 +323,25 @@ and reproduction interfaces.
 | `silva_efficient_infinite_graph` | long-range node classification with reusable graph spectrum | nodes, edges, width, gamma, dense spectral or sparse iterative solve | EIGNN [[78]](../paper/references.md#ref-78){ .silva-cite } |
 | `silva_multiscale_graph_implicit` | node or graph classification across graph powers | graph-conditioned source, scale set, per-scale widths and solvers, attention, pooling | MGNNI [[79]](../paper/references.md#ref-79){ .silva-cite } |
 | `silva_delta_equilibrium` | accelerated INR or optical-flow equilibrium | eligible operators, training/inference thresholds, KM damping, reuse, stopping, sparse-kernel support | DeltaDEQ [[80]](../paper/references.md#ref-80){ .silva-cite } |
+
+### Two Solver-Learning and Quantum Routes
+
+These routes add a learned numerical policy and a measured circuit transition
+without changing the scale, checkpoint, and reproduction interfaces used by
+the preceding families.
+
+| SILVA family | Research route | Main scale controls | Source |
+| --- | --- | --- | --- |
+| `silva_hyper_deq` | learned fixed-point solver for a declared task transition | condition/state widths, teacher tolerance, retained trajectory, history, learned steps, compressor/controller widths | HyperDEQ [[87]](../paper/references.md#ref-87){ .silva-cite } |
+| `silva_quantum_deq` | image or feature classification through a measured circuit equilibrium | wires, encoding, circuit depth, backend, shots/statevector memory, direct warmup, forward/backward budgets | QDEQ [[90]](../paper/references.md#ref-90){ .silva-cite } |
+
+For learned solver runs, freeze and hash the teacher transition before caching
+states; otherwise target drift changes the optimization problem. For circuit
+runs, record exact-statevector versus shot execution, wire ordering, gate seed,
+backend version, circuit evaluations, and gradient variance. The backward mode
+may then be selected independently: exact implicit, JFB
+[[88]](../paper/references.md#ref-88){ .silva-cite }, SHINE
+[[89]](../paper/references.md#ref-89){ .silva-cite }, phantom, or finite unrolling.
 
 For the monotone and non-Euclidean families, a source-scale convolutional run
 must provide an operator that preserves the paper's certificate and structured
@@ -389,6 +409,21 @@ complete checklist and storage plan.
 
 For dataset receipts, source splits, and complete-data loaders, continue with
 [Real-Dataset Reproduction](real-dataset-reproduction.md).
+
+## Learned Solver, Backward, and Circuit Scale Axes
+
+| Family or policy | Compact preflight | Full-scale controls | Evidence that must survive scaling |
+| --- | --- | --- | --- |
+| HyperDEQ | small cached teacher set and short learned trajectory | teacher corpus, transition width, compressor, history, learned steps, joint fine-tuning | teacher error, root residual, latency, memory |
+| JFB | analytic gradient comparison | base family, data, optimizer, width, forward tolerance | task metric, forward residual, gradient comparison |
+| SHINE | two-dimensional inverse check | Broyden history, retained rank, refinement, backward tolerance | task metric, forward/backward residuals, runtime |
+| C-DEQ | compact teacher path and terminal anchor | teacher architecture, trajectory sampling, refiner depth, inference steps | terminal error, residual, task metric, latency |
+| PIDEQ | known ODE with exact solution | governing equation, collocation, boundary data, latent width, derivative mode | data, boundary, physics, and Jacobian terms |
+| QDEQ | four-wire exact statevector task | wire count, backend, depth, shots, solver calls, warmup, Jacobian weight | accuracy, measurements, residual, circuit evaluations, runtime |
+
+The implementation remains the same while scale controls change. Use the
+family dossier for the declared source route, then compare each enlargement
+against the last passing compact or intermediate checkpoint.
 
 ## Where to Go Next
 

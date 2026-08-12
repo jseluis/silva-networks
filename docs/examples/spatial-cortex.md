@@ -76,6 +76,7 @@ the classification loss alone cannot show whether either fixed point was
 solved. U-Net, residual, and other internal architecture sources are listed in
 [Point Architecture Sources](../paper/references.md#point-architecture-sources).
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -124,15 +125,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **spatial and vector state shapes, per-point solvers, loss, and gradients**. The
 invariants that must remain true are **channel/spatial shape at every scale and deterministic fusion**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/spatial_cortex.py"
-```
 
 ### Run the Complete Example
 

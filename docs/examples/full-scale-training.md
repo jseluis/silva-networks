@@ -108,6 +108,7 @@ boundary, local convolution, global context, or conservation-projection
 branches. The solver and training code remain unchanged as long as the internal
 mapping preserves the state shape.
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -156,15 +157,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **a measured training loss from the complete optimization path**. The
 invariants that must remain true are **shape, device, dtype, finiteness, and differentiability**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/add_layers_on_top.py"
-```
 
 ### Run the Complete Example
 

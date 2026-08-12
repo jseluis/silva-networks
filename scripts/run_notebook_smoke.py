@@ -42,6 +42,33 @@ DEFAULT_NOTEBOOKS = (
     "docs/package-notebooks/39_silva_efficient_infinite_graph.ipynb",
     "docs/package-notebooks/40_silva_multiscale_graph_implicit.ipynb",
     "docs/package-notebooks/41_silva_delta_equilibrium.ipynb",
+    "docs/package-notebooks/48_silva_learned_solvers.ipynb",
+    "docs/package-notebooks/49_jfb_shine_backward_methods.ipynb",
+    "docs/package-notebooks/50_silva_quantum_deq.ipynb",
+    "docs/package-notebooks/51_equilibrium_expansion_atlas.ipynb",
+    "docs/package-notebooks/52_silva_evidence_ladders.ipynb",
+    "docs/package-notebooks/53_transition_equivalence_lab.ipynb",
+    "docs/package-notebooks/54_statistical_benchmarking.ipynb",
+    "docs/package-notebooks/55_silva_bayesian_deq.ipynb",
+    "docs/package-notebooks/56_silva_joint_inference.ipynb",
+    "docs/package-notebooks/57_silva_implicit_spatiotemporal.ipynb",
+    "docs/package-notebooks/58_silva_certified_equilibrium.ipynb",
+    "docs/package-notebooks/59_full_experiment_pipeline.ipynb",
+    "docs/package-notebooks/60_neumann_backward_comparison.ipynb",
+    "docs/package-notebooks/61_silva_lipschitz_mdeq.ipynb",
+    "docs/package-notebooks/62_silva_subhomogeneous_equilibrium.ipynb",
+    "docs/package-notebooks/63_silva_algorithmic_reasoner.ipynb",
+    "docs/package-notebooks/64_silva_hamiltonian_equilibrium.ipynb",
+    "docs/package-notebooks/65_silva_inverse_imaging_equilibrium.ipynb",
+    "docs/package-notebooks/66_silva_snapshot_compressive_equilibrium.ipynb",
+    "docs/package-notebooks/67_silva_magnetic_particle_equilibrium.ipynb",
+    "docs/package-notebooks/68_silva_sparse_hyperspectral_equilibrium.ipynb",
+    "docs/package-notebooks/69_silva_serialized_smoothing_equilibrium.ipynb",
+    "docs/package-notebooks/70_silva_diffusion_restoration_equilibrium.ipynb",
+    "docs/package-notebooks/71_silva_recurrent_equilibrium_network.ipynb",
+    "docs/package-notebooks/72_silva_lipschitz_robust_equilibrium.ipynb",
+    "docs/package-notebooks/73_silva_image_matting_equilibrium.ipynb",
+    "docs/package-notebooks/74_silva_dynamic_economic_equilibrium.ipynb",
     "docs/implicit-bridge-notebooks/09_method_adaptation_atlas.ipynb",
 )
 
@@ -54,8 +81,8 @@ def all_canonical_notebooks() -> tuple[str, ...]:
         *sorted((ROOT / "notebooks/implicit_bridge").glob("*.ipynb")),
         *sorted((ROOT / "notebooks").glob("*.ipynb")),
     ]
-    if len(paths) != 82:
-        raise RuntimeError(f"expected 82 canonical notebooks, found {len(paths)}")
+    if len(paths) != 109:
+        raise RuntimeError(f"expected 109 canonical notebooks, found {len(paths)}")
     return tuple(path.relative_to(ROOT).as_posix() for path in paths)
 
 
@@ -132,7 +159,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--all",
         action="store_true",
-        help="execute all 82 canonical package, bridge, and book notebooks",
+        help="execute all 109 canonical package, bridge, and book notebooks",
     )
     parser.add_argument(
         "--list-all",

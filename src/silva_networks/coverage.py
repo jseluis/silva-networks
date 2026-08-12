@@ -286,6 +286,131 @@ _IMPLEMENTATION_CASES: tuple[SILVAImplementationCase, ...] = (
         ),
     ),
     SILVAImplementationCase(
+        key="learned_equilibrium_solvers",
+        public_objects=(
+            "SILVAHyperDEQ",
+            "SILVAHyperDEQTransition",
+            "SILVAHyperInitializer",
+            "SILVAResidualCompressor",
+            "SILVAHyperAndersonController",
+            "silva_hyper_deq_loss",
+        ),
+        tutorial="docs/learn/solver-learning-and-gradients.md",
+        notebooks=("docs/package-notebooks/48_silva_learned_solvers.ipynb",),
+        smoke_tests=("tests/test_solver_learning.py",),
+        examples=("examples/learned_solvers.py",),
+        scope=(
+            "Learned initialization and Anderson control trained against a high-precision "
+            "teacher while preserving replaceable task transitions and readouts."
+        ),
+    ),
+    SILVAImplementationCase(
+        key="implicit_backward_approximations",
+        public_objects=(
+            "BroydenInverseEstimate",
+            "shine_adjoint_solve",
+            "solve_equilibrium",
+        ),
+        tutorial="docs/learn/solver-learning-and-gradients.md",
+        notebooks=("docs/package-notebooks/49_jfb_shine_backward_methods.ipynb",),
+        smoke_tests=("tests/test_solvers.py",),
+        examples=("examples/learned_solvers.py",),
+        scope=(
+            "Exact implicit, Jacobian-free, and forward-inverse-sharing backward paths "
+            "with measured gradient and adjoint residual comparisons."
+        ),
+    ),
+    SILVAImplementationCase(
+        key="quantum_equilibria",
+        public_objects=(
+            "SILVAQuantumDEQ",
+            "SILVAStatevectorQuantumCircuit",
+            "SILVAQuantumCircuitAdapter",
+            "SILVAQuantumImageFilter",
+        ),
+        tutorial="docs/learn/quantum-equilibria.md",
+        notebooks=(
+            "docs/package-notebooks/50_silva_quantum_deq.ipynb",
+            "docs/package-notebooks/51_equilibrium_expansion_atlas.ipynb",
+        ),
+        smoke_tests=("tests/test_quantum_equilibria.py",),
+        examples=("examples/quantum_deq.py",),
+        scope=(
+            "Exact compact statevector and replaceable circuit-backend transitions with "
+            "direct, warmup, implicit, Jacobian-regularized, and image-input routes."
+        ),
+    ),
+    SILVAImplementationCase(
+        key="advanced_equilibrium_expansions",
+        public_objects=(
+            "SILVABayesianDEQ",
+            "SILVABayesianAffineTransition",
+            "SILVAJointInferenceEquilibrium",
+            "SILVAJointRepresentationTransition",
+            "SILVAJointInputUpdate",
+            "SILVAImplicitSpatiotemporalEquilibrium",
+            "SILVAPeriodicDiffusion1D",
+            "SILVACertifiedEquilibrium",
+        ),
+        tutorial="docs/learn/advanced-equilibrium-expansions.md",
+        notebooks=(
+            "docs/package-notebooks/55_silva_bayesian_deq.ipynb",
+            "docs/package-notebooks/56_silva_joint_inference.ipynb",
+            "docs/package-notebooks/57_silva_implicit_spatiotemporal.ipynb",
+            "docs/package-notebooks/58_silva_certified_equilibrium.ipynb",
+        ),
+        smoke_tests=("tests/test_advanced_expansions.py",),
+        examples=("examples/advanced_expansions.py",),
+        scope=(
+            "Bayesian transition sampling, coupled representation-input inference, "
+            "implicit spatiotemporal dynamics, and interval/certificate routes with "
+            "replaceable public components and compact equation checks."
+        ),
+    ),
+    SILVAImplementationCase(
+        key="experiment_evidence",
+        public_objects=(
+            "compare_silva_transitions",
+            "run_silva_evidence",
+            "run_silva_experiment_pipeline",
+            "silva_fingerprint",
+            "summarize_silva_metric",
+        ),
+        tutorial="docs/learn/evidence-and-source-scale.md",
+        notebooks=(
+            "docs/package-notebooks/52_silva_evidence_ladders.ipynb",
+            "docs/package-notebooks/53_transition_equivalence_lab.ipynb",
+            "docs/package-notebooks/54_statistical_benchmarking.ipynb",
+            "docs/package-notebooks/59_full_experiment_pipeline.ipynb",
+        ),
+        smoke_tests=("tests/test_evidence.py",),
+        examples=("examples/evidence_and_protocols.py",),
+        scope=(
+            "Deterministic fingerprints, transition and gradient equivalence, repeated-run "
+            "statistics, failure capture, resource records, and staged experiment hooks."
+        ),
+    ),
+    SILVAImplementationCase(
+        key="family_experiment_protocols",
+        public_objects=(
+            "SILVAFamilyExperimentProtocol",
+            "SILVAExecutionTier",
+            "SILVADatasetRoute",
+            "SILVAResourceEstimate",
+            "all_silva_family_experiment_protocols",
+            "audit_silva_family_experiment_protocols",
+            "silva_family_experiment_protocol",
+        ),
+        tutorial="docs/learn/evidence-and-source-scale.md",
+        notebooks=("docs/package-notebooks/59_full_experiment_pipeline.ipynb",),
+        smoke_tests=("tests/test_experiment_protocols.py",),
+        examples=("examples/evidence_and_protocols.py",),
+        scope=(
+            "Smoke, workstation, and full experiment contracts for all canonical families, "
+            "including data routes, resources, commands, metrics, and acceptance checks."
+        ),
+    ),
+    SILVAImplementationCase(
         key="datasets",
         public_objects=("load_tabular_dataset", "tabular_to_silva_graph", "images_to_silva_vectors"),
         tutorial="docs/learn/datasets-and-preprocessing.md",
@@ -404,6 +529,50 @@ _IMPLEMENTATION_CASES: tuple[SILVAImplementationCase, ...] = (
         scope=(
             "Source-aware equations, data protocols, metrics, evidence paths, "
             "constructor signatures, and full-scale builders for every canonical family."
+        ),
+    ),
+    SILVAImplementationCase(
+        key="source_equilibria",
+        public_objects=(
+            "SILVALipschitzMultiscaleEquilibrium",
+            "SILVASubhomogeneousEquilibrium",
+            "SILVAAlgorithmicReasoner",
+            "SILVAHamiltonianEquilibrium",
+            "SILVAInverseImagingEquilibrium",
+            "SILVASnapshotCompressiveEquilibrium",
+            "SILVAMagneticParticleEquilibrium",
+            "SILVASparseHyperspectralEquilibrium",
+            "SILVASerializedSmoothingEquilibrium",
+            "SILVADiffusionRestorationEquilibrium",
+            "SILVARecurrentEquilibriumNetwork",
+            "SILVALipschitzRobustEquilibrium",
+            "SILVAImageMattingEquilibrium",
+            "SILVADynamicEconomicEquilibrium",
+        ),
+        tutorial="docs/learn/source-equilibrium-families.md",
+        notebooks=tuple(
+            f"docs/package-notebooks/{index:02d}_{name}.ipynb"
+            for index, name in (
+                (61, "silva_lipschitz_mdeq"),
+                (62, "silva_subhomogeneous_equilibrium"),
+                (63, "silva_algorithmic_reasoner"),
+                (64, "silva_hamiltonian_equilibrium"),
+                (65, "silva_inverse_imaging_equilibrium"),
+                (66, "silva_snapshot_compressive_equilibrium"),
+                (67, "silva_magnetic_particle_equilibrium"),
+                (68, "silva_sparse_hyperspectral_equilibrium"),
+                (69, "silva_serialized_smoothing_equilibrium"),
+                (70, "silva_diffusion_restoration_equilibrium"),
+                (71, "silva_recurrent_equilibrium_network"),
+                (72, "silva_lipschitz_robust_equilibrium"),
+                (73, "silva_image_matting_equilibrium"),
+                (74, "silva_dynamic_economic_equilibrium"),
+            )
+        ),
+        smoke_tests=("tests/test_source_equilibria.py",),
+        scope=(
+            "Fourteen source-aligned multiscale, graph, physical, inverse, robust, "
+            "matting, and economic families with replaceable internals and tiered protocols."
         ),
     ),
     SILVAImplementationCase(

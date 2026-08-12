@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.2.2 - 2026-08-11
+
+- Added solver-learning, backward-approximation, quantum-equilibrium,
+  evidence/protocol, and source-aligned equilibrium APIs.
+- Expanded the canonical SILVA family surface to 64 routes and the notebook
+  curriculum to 109 notebooks, including package labs 48-74 with Colab and
+  documentation mirrors.
+- Added source-scale experiment protocols, new examples, family pages, API
+  guides, tests, and release audits for the expanded surface.
+- Synchronized package, citation, archive, README, notebook, documentation,
+  source-tag, and publishing metadata for the 1.2.2 release.
+
 ## 1.2.1 - 2026-08-08
 
 - Fixed the README equilibrium display so GitHub, PyPI, and other package

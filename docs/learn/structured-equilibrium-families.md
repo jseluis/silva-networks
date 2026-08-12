@@ -697,6 +697,29 @@ storage, receipts, loaders, and complete experiment checklists.
 The complete-data budgeting route remains available in
 [Full-Scale SILVA](full-scale-silva.md).
 
+## Backward Policies Without Losing Structure
+
+Monotonicity, positivity, geometric feasibility, graph normalization, and delta
+activity are properties of the forward construction. A backward approximation
+must not be described as proving those properties, but it can be evaluated
+without replacing them.
+
+| Forward family | Structure retained in every solve | Additional backward study |
+| --- | --- | --- |
+| monDEQ | monotone parameterization and declared splitting map | compare exact adjoint, JFB, and SHINE while preserving margin and step size |
+| pcDEQ | nonnegative parameters and positive-concave activation | compare gradients without relaxing positivity projection |
+| NEMON | weighted-infinity certificate and averaged update | report sensitivity bound beside gradient approximation error |
+| EIGNN | normalized Gram operator and denominator margin | compare dense exact gradients with iterative implicit/JFB routes on the same graph |
+| MGNNI | independent graph-power equilibria and fusion | report per-scale forward and backward residuals |
+| DeltaDEQ | full-map fixed point and exact residual | distinguish delta-forward savings from the selected training gradient |
+
+JFB replaces the inverse adjoint factor by identity
+[[88]](../paper/references.md#ref-88){ .silva-cite }. SHINE shares the Broyden
+inverse estimate and can refine it [[89]](../paper/references.md#ref-89){
+.silva-cite }. The packaged modes are selected through `SolverConfig`; notebook
+49 provides an analytic comparison before these modes are attached to a larger
+structured operator.
+
 ## Where to Go Next
 
 | Question | Page |

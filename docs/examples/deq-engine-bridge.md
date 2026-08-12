@@ -88,6 +88,7 @@ the general DEQ-engine interface lineage.
 Direct links and BibTeX keys are collected in
 [Equilibrium and Implicit Layers](../paper/references.md#equilibrium-and-implicit-layers).
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -136,15 +137,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **state shape, iterations, residual ratio, and gradient availability**. The
 invariants that must remain true are **state shape and a decreasing or bounded residual**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/deq_engine_bridge.py"
-```
 
 ### Run the Complete Example
 

@@ -18,7 +18,7 @@ PROTECTED_MARKDOWN_RE = re.compile(
     re.DOTALL,
 )
 PLAIN_NUMBERED_CITATION_RE = re.compile(
-    r"(?<![\w=\[])\[([1-9][0-9]?)\](?!\]|\s*\()"
+    r"(?<![\w=\[])\[([1-9][0-9]{0,2})\](?!\]|\s*\()"
 )
 SINGLE_LABEL_CITATION_LINK_RE = re.compile(
     r"(?<!\[)\[([1-9][0-9]?)\]\("

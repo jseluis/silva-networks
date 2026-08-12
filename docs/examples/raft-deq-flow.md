@@ -69,6 +69,7 @@ the architecture path without claiming a converged optical-flow estimate.
 The complete derivation is in [DEQ Engine, RAFT, and Optical Flow](../learn/deq-engine-and-flow.md).
 Method sources are listed under [DEQ Engines and Optical Flow](../paper/references.md#deq-engines-and-optical-flow).
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 

@@ -129,7 +129,7 @@ To enable the archive:
 1. Open Zenodo and sign in with GitHub.
 2. Open the GitHub integration page.
 3. Enable archiving for `jseluis/silva-networks`.
-4. Push the validated version tag, currently `v1.2.1`; the release workflow
+4. Push the validated version tag, currently `v1.2.2`; the release workflow
    creates the corresponding GitHub Release.
 
 Use the concept DOI for the living software citation:
@@ -147,7 +147,7 @@ Concept DOI: 10.5281/zenodo.21770098
 Record: https://zenodo.org/records/21770099
 ```
 
-Publishing the `v1.2.1` GitHub release creates a new version record under the
+Publishing the `v1.2.2` GitHub release creates a new version record under the
 same concept DOI. Record its minted version DOI in the release readiness page
 after the integration finishes.
 

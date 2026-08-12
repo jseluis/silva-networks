@@ -69,6 +69,7 @@ validation pattern is in [Custom Layers](../learn/custom-layers.md), with
 operator sources under
 [Graphs, Attention, and Messages](../paper/references.md#graphs-attention-and-messages).
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -117,15 +118,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **the custom state shape, final residual, and differentiable loss path**. The
 invariants that must remain true are **state shape and a decreasing or bounded residual**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/custom_layers.py"
-```
 
 ### Run the Complete Example
 

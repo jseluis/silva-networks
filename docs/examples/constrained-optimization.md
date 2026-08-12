@@ -109,6 +109,7 @@ differentiable quadratic-program layers and
 [[40]](../paper/references.md#ref-40){ .silva-cite } when using the optional
 general disciplined convex-program bridge.
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -157,15 +158,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **simplex feasibility, energy, solver residual, and parameter gradients**. The
 invariants that must remain true are **feasibility, domain projection, state shape, and optimality conditions**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/constrained_optimization.py"
-```
 
 ### Run the Complete Example
 

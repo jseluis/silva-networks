@@ -1,0 +1,196 @@
+{
+  "family": "silva_physics_guided_diffusion_pde",
+  "profile": "physics",
+  "source_relation": "paper-adaptation",
+  "references": [
+    64
+  ],
+  "repositories": [
+    "https://arxiv.org/abs/2604.01242"
+  ],
+  "data_sources": [
+    "https://arxiv.org/abs/2604.01242"
+  ],
+  "preprocessing": [
+    "record dataset version, split, normalization, shape convention, and seed",
+    "preserve masks, graph indices, boundaries, or physical units required by the domain"
+  ],
+  "required_artifacts": [
+    "machine-readable model and solver configuration",
+    "dataset receipt with source revision, split, license, and checksum",
+    "preprocessing and normalization record",
+    "seeded training and evaluation log",
+    "checkpoint and optimizer-resume state for trained experiments",
+    "task metrics and equilibrium diagnostics in a machine-readable result",
+    "runtime, peak-memory, device, precision, and dependency record",
+    "declared deviations from the cited protocol"
+  ],
+  "tiers": [
+    {
+      "tier": "smoke",
+      "evidence_target": "compact-verified",
+      "dataset": {
+        "name": "analytic oscillator or mesh",
+        "source_url": "generated://silva",
+        "split": "seeded coordinates and boundary data",
+        "access": "generated locally",
+        "expected_storage": "less than 100 MB"
+      },
+      "sample_limit": 64,
+      "epochs": 2,
+      "seeds": [
+        0
+      ],
+      "model_options": {},
+      "runtime_options": {
+        "tier": "smoke",
+        "device": "auto",
+        "per_device_batch_size": 4,
+        "gradient_accumulation_steps": 1,
+        "mixed_precision": "none",
+        "workers": 0,
+        "pin_memory": false,
+        "persistent_workers": false,
+        "distributed": false,
+        "compile_model": false,
+        "channels_last": false,
+        "checkpoint_path": null,
+        "seed": 0
+      },
+      "resources": {
+        "accelerator_count": "CPU or 1 accelerator",
+        "accelerator_memory": "0-4 GB",
+        "host_memory": "4-16 GB",
+        "storage": "less than 2 GB",
+        "wall_time": "seconds to 10 minutes",
+        "note": "Measured by the stored compact notebook."
+      },
+      "metrics": [
+        "relative solution error",
+        "PDE residual energy",
+        "boundary error",
+        "reverse-step convergence"
+      ],
+      "acceptance_checks": [
+        "record relative solution error",
+        "record PDE residual energy",
+        "record boundary error",
+        "record reverse-step convergence",
+        "checkpoint reload reproduces the recorded prediction",
+        "result record contains data and configuration fingerprints"
+      ],
+      "command": "python experiments/reproduction/run_family_protocol.py --family silva_physics_guided_diffusion_pde --tier smoke --work-dir runs/silva_physics_guided_diffusion_pde/smoke"
+    },
+    {
+      "tier": "workstation",
+      "evidence_target": "subset-verified",
+      "dataset": {
+        "name": "recorded physical subset",
+        "source_url": "https://github.com/pdebench/PDEBench",
+        "split": "fixed coefficients, mesh, and boundary split",
+        "access": "dataset-specific terms",
+        "expected_storage": "5-100 GB"
+      },
+      "sample_limit": 4096,
+      "epochs": 20,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "model_options": {},
+      "runtime_options": {
+        "tier": "workstation",
+        "device": "auto",
+        "per_device_batch_size": 8,
+        "gradient_accumulation_steps": 1,
+        "mixed_precision": "none",
+        "workers": 4,
+        "pin_memory": true,
+        "persistent_workers": true,
+        "distributed": false,
+        "compile_model": false,
+        "channels_last": false,
+        "checkpoint_path": null,
+        "seed": 0
+      },
+      "resources": {
+        "accelerator_count": "1 accelerator",
+        "accelerator_memory": "8-24 GB",
+        "host_memory": "16-64 GB",
+        "storage": "5-100 GB",
+        "wall_time": "minutes to 24 hours",
+        "note": "Validate data, resume, metrics, and memory before scaling."
+      },
+      "metrics": [
+        "relative solution error",
+        "PDE residual energy",
+        "boundary error",
+        "reverse-step convergence"
+      ],
+      "acceptance_checks": [
+        "dataset receipt and checksum are stored",
+        "resume and evaluation paths reproduce the same subset metric",
+        "memory and runtime are measured rather than estimated"
+      ],
+      "command": "python experiments/reproduction/run_family_protocol.py --family silva_physics_guided_diffusion_pde --tier workstation --work-dir runs/silva_physics_guided_diffusion_pde/workstation"
+    },
+    {
+      "tier": "full",
+      "evidence_target": "source-scale-reproduced",
+      "dataset": {
+        "name": "source physical benchmark",
+        "source_url": "https://github.com/pdebench/PDEBench",
+        "split": "paper equation, discretization, split, and metric",
+        "access": "dataset-specific terms",
+        "expected_storage": "100 GB to multiple TB"
+      },
+      "sample_limit": null,
+      "epochs": 100,
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "model_options": {},
+      "runtime_options": {
+        "tier": "full",
+        "device": "auto",
+        "per_device_batch_size": 8,
+        "gradient_accumulation_steps": 4,
+        "mixed_precision": "bfloat16",
+        "workers": 8,
+        "pin_memory": true,
+        "persistent_workers": true,
+        "distributed": true,
+        "compile_model": false,
+        "channels_last": false,
+        "checkpoint_path": null,
+        "seed": 0
+      },
+      "resources": {
+        "accelerator_count": "1-8 accelerators",
+        "accelerator_memory": "16-80 GB each",
+        "host_memory": "64-512 GB",
+        "storage": "100 GB to multiple TB",
+        "wall_time": "hours to multiple days",
+        "note": "Planning range only; record observed resources in the evidence report."
+      },
+      "metrics": [
+        "relative solution error",
+        "PDE residual energy",
+        "boundary error",
+        "reverse-step convergence"
+      ],
+      "acceptance_checks": [
+        "all required artifacts are archived",
+        "reported metrics use the cited evaluation protocol",
+        "every architectural or training deviation is listed",
+        "claims match the achieved evidence status"
+      ],
+      "command": "python experiments/reproduction/run_family_protocol.py --family silva_physics_guided_diffusion_pde --tier full --work-dir runs/silva_physics_guided_diffusion_pde/full"
+    }
+  ]
+}

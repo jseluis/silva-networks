@@ -14,7 +14,7 @@ from silva_networks import (
 
 def test_every_family_has_a_six_stage_experiment_dossier() -> None:
     dossiers = all_silva_experiment_dossiers()
-    assert len(dossiers) == len(available_silva_families()) == 44
+    assert len(dossiers) == len(available_silva_families()) == 64
     assert audit_silva_experiment_dossiers() == ()
     assert {dossier.family for dossier in dossiers} == set(available_silva_families())
 
@@ -34,6 +34,12 @@ def test_every_family_has_a_six_stage_experiment_dossier() -> None:
 def test_dossier_aliases_resolve_to_the_canonical_family() -> None:
     assert silva_experiment_dossier("fno_deq").family == "silva_fno_deq"
     assert silva_experiment_dossier("deltadeq").family == "silva_delta_equilibrium"
+    assert silva_experiment_dossier("hyperdeq").family == "silva_hyper_deq"
+    assert silva_experiment_dossier("qdeq").family == "silva_quantum_deq"
+    assert silva_experiment_dossier("bayesian_deq").family == "silva_bayesian_deq"
+    assert silva_experiment_dossier("jiio").family == "silva_joint_inference_equilibrium"
+    assert silva_experiment_dossier("im_pindiff").family == "silva_implicit_spatiotemporal"
+    assert silva_experiment_dossier("ibp_mondeq").family == "silva_certified_equilibrium"
 
 
 def test_result_record_rejects_incomplete_or_overclaimed_records() -> None:

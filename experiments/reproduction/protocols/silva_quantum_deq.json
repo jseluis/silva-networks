@@ -1,0 +1,203 @@
+{
+  "family": "silva_quantum_deq",
+  "profile": "vision",
+  "source_relation": "paper-adaptation",
+  "references": [
+    90
+  ],
+  "repositories": [
+    "https://github.com/martaskrt/qdeq"
+  ],
+  "data_sources": [
+    "https://arxiv.org/abs/2410.23940",
+    "https://github.com/martaskrt/qdeq",
+    "https://yann.lecun.com/exdb/mnist/",
+    "https://github.com/zalandoresearch/fashion-mnist",
+    "https://www.cs.toronto.edu/~kriz/cifar.html"
+  ],
+  "preprocessing": [
+    "record dataset version, split, normalization, shape convention, and seed",
+    "preserve masks, graph indices, boundaries, or physical units required by the domain"
+  ],
+  "required_artifacts": [
+    "machine-readable model and solver configuration",
+    "dataset receipt with source revision, split, license, and checksum",
+    "preprocessing and normalization record",
+    "seeded training and evaluation log",
+    "checkpoint and optimizer-resume state for trained experiments",
+    "task metrics and equilibrium diagnostics in a machine-readable result",
+    "runtime, peak-memory, device, precision, and dependency record",
+    "declared deviations from the cited protocol"
+  ],
+  "tiers": [
+    {
+      "tier": "smoke",
+      "evidence_target": "compact-verified",
+      "dataset": {
+        "name": "bundled CIFAR-10 sample",
+        "source_url": "https://www.cs.toronto.edu/~kriz/cifar.html",
+        "split": "seeded sample",
+        "access": "public research dataset",
+        "expected_storage": "less than 10 MB"
+      },
+      "sample_limit": 64,
+      "epochs": 2,
+      "seeds": [
+        0
+      ],
+      "model_options": {},
+      "runtime_options": {
+        "tier": "smoke",
+        "device": "auto",
+        "per_device_batch_size": 4,
+        "gradient_accumulation_steps": 1,
+        "mixed_precision": "none",
+        "workers": 0,
+        "pin_memory": false,
+        "persistent_workers": false,
+        "distributed": false,
+        "compile_model": false,
+        "channels_last": false,
+        "checkpoint_path": null,
+        "seed": 0
+      },
+      "resources": {
+        "accelerator_count": "CPU or 1 accelerator",
+        "accelerator_memory": "0-4 GB",
+        "host_memory": "4-16 GB",
+        "storage": "less than 2 GB",
+        "wall_time": "seconds to 10 minutes",
+        "note": "Measured by the stored compact notebook."
+      },
+      "metrics": [
+        "classification accuracy",
+        "fixed-point residual and iterations",
+        "circuit evaluations",
+        "Jacobian penalty and gradient variance",
+        "wall time, memory, and shot count"
+      ],
+      "acceptance_checks": [
+        "record classification accuracy",
+        "record fixed-point residual and iterations",
+        "record circuit evaluations",
+        "record Jacobian penalty and gradient variance",
+        "checkpoint reload reproduces the recorded prediction",
+        "result record contains data and configuration fingerprints"
+      ],
+      "command": "python experiments/reproduction/run_family_protocol.py --family silva_quantum_deq --tier smoke --work-dir runs/silva_quantum_deq/smoke"
+    },
+    {
+      "tier": "workstation",
+      "evidence_target": "subset-verified",
+      "dataset": {
+        "name": "CIFAR-10",
+        "source_url": "https://www.cs.toronto.edu/~kriz/cifar.html",
+        "split": "official train/test split",
+        "access": "public research dataset",
+        "expected_storage": "about 170 MB"
+      },
+      "sample_limit": 4096,
+      "epochs": 20,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "model_options": {},
+      "runtime_options": {
+        "tier": "workstation",
+        "device": "auto",
+        "per_device_batch_size": 8,
+        "gradient_accumulation_steps": 1,
+        "mixed_precision": "none",
+        "workers": 4,
+        "pin_memory": true,
+        "persistent_workers": true,
+        "distributed": false,
+        "compile_model": false,
+        "channels_last": false,
+        "checkpoint_path": null,
+        "seed": 0
+      },
+      "resources": {
+        "accelerator_count": "1 accelerator",
+        "accelerator_memory": "8-24 GB",
+        "host_memory": "16-64 GB",
+        "storage": "5-100 GB",
+        "wall_time": "minutes to 24 hours",
+        "note": "Validate data, resume, metrics, and memory before scaling."
+      },
+      "metrics": [
+        "classification accuracy",
+        "fixed-point residual and iterations",
+        "circuit evaluations",
+        "Jacobian penalty and gradient variance",
+        "wall time, memory, and shot count"
+      ],
+      "acceptance_checks": [
+        "dataset receipt and checksum are stored",
+        "resume and evaluation paths reproduce the same subset metric",
+        "memory and runtime are measured rather than estimated"
+      ],
+      "command": "python experiments/reproduction/run_family_protocol.py --family silva_quantum_deq --tier workstation --work-dir runs/silva_quantum_deq/workstation"
+    },
+    {
+      "tier": "full",
+      "evidence_target": "source-scale-reproduced",
+      "dataset": {
+        "name": "ImageNet or Cityscapes",
+        "source_url": "https://www.image-net.org/",
+        "split": "source training/validation protocol",
+        "access": "registration and dataset terms apply",
+        "expected_storage": "about 160 GB to 1 TB with caches"
+      },
+      "sample_limit": null,
+      "epochs": 100,
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "model_options": {},
+      "runtime_options": {
+        "tier": "full",
+        "device": "auto",
+        "per_device_batch_size": 8,
+        "gradient_accumulation_steps": 4,
+        "mixed_precision": "bfloat16",
+        "workers": 8,
+        "pin_memory": true,
+        "persistent_workers": true,
+        "distributed": true,
+        "compile_model": false,
+        "channels_last": false,
+        "checkpoint_path": null,
+        "seed": 0
+      },
+      "resources": {
+        "accelerator_count": "1-8 accelerators",
+        "accelerator_memory": "16-80 GB each",
+        "host_memory": "64-512 GB",
+        "storage": "20 GB to 1 TB",
+        "wall_time": "hours to multiple days",
+        "note": "Planning range only; record observed resources in the evidence report."
+      },
+      "metrics": [
+        "classification accuracy",
+        "fixed-point residual and iterations",
+        "circuit evaluations",
+        "Jacobian penalty and gradient variance",
+        "wall time, memory, and shot count"
+      ],
+      "acceptance_checks": [
+        "all required artifacts are archived",
+        "reported metrics use the cited evaluation protocol",
+        "every architectural or training deviation is listed",
+        "claims match the achieved evidence status"
+      ],
+      "command": "python experiments/reproduction/run_family_protocol.py --family silva_quantum_deq --tier full --work-dir runs/silva_quantum_deq/full"
+    }
+  ]
+}

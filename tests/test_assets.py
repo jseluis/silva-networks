@@ -233,7 +233,7 @@ def test_all_canonical_notebooks_include_extension_and_reproduction_depth() -> N
         *sorted((ROOT / "notebooks/implicit_bridge").glob("*.ipynb")),
         *sorted((ROOT / "notebooks").glob("*.ipynb")),
     ]
-    assert len(canonical) == 82
+    assert len(canonical) == 109
     for path in canonical:
         notebook = json.loads(path.read_text(encoding="utf-8"))
         curriculum = [
@@ -293,7 +293,7 @@ def test_worked_example_pages_include_derivation_code_results_and_scale_route() 
             assert source.count("```") >= 8, path
             assert len(source.split()) >= 700, path
 
-    assert len(expanded) == 26
+    assert len(expanded) == 30
 
 
 def test_notebook_mirror_sets_are_complete() -> None:
@@ -340,9 +340,7 @@ def test_notebook_mirrors_retain_canonical_execution_results() -> None:
                 if cell["cell_type"] == "code"
             ]
             for mirror_dir in mirror_dirs:
-                mirror = json.loads(
-                    (mirror_dir / canonical_path.name).read_text(encoding="utf-8")
-                )
+                mirror = json.loads((mirror_dir / canonical_path.name).read_text(encoding="utf-8"))
                 actual = [
                     (cell.get("execution_count"), cell.get("outputs", []))
                     for cell in mirror["cells"]
@@ -351,7 +349,7 @@ def test_notebook_mirrors_retain_canonical_execution_results() -> None:
                 assert actual == expected, mirror_dir / canonical_path.name
                 compared += 1
 
-    assert compared == 112
+    assert compared == 166
 
 
 def test_expanded_notebooks_are_synchronized_and_substantive() -> None:
@@ -557,6 +555,42 @@ def test_expanded_notebooks_are_synchronized_and_substantive() -> None:
                 "Distinguish the Joint DeqIR Route",
             ),
         ),
+        "48_silva_learned_solvers.ipynb": (
+            18,
+            (
+                "Derive the Learned Anderson Update",
+                "Train the Solver Around a Fixed Transition",
+                "Replace the Vector Transition With a Field Architecture",
+                "Source-Scale Reproduction Route",
+            ),
+        ),
+        "49_jfb_shine_backward_methods.ipynb": (
+            16,
+            (
+                "Exact Implicit Differentiation",
+                "Jacobian-Free Backpropagation",
+                "Inverse Estimate Sharing",
+                "Compare All Three Gradients",
+            ),
+        ),
+        "50_silva_quantum_deq.ipynb": (
+            19,
+            (
+                "Derive the Circuit Transition",
+                "Direct Warmup and Implicit Solving",
+                "Tiny Classification Study",
+                "Source Image Contract",
+            ),
+        ),
+        "51_equilibrium_expansion_atlas.ipynb": (
+            19,
+            (
+                "The Complete Experiment Tuple",
+                "Monotone Splitting Is a Transition Guarantee",
+                "Diffusion Has Four Different Equilibrium Placements",
+                "Acceleration and Backward Rules Can Cross Families",
+            ),
+        ),
     }
 
     for name, (minimum_cells, markers) in requirements.items():
@@ -587,17 +621,47 @@ def test_emerging_labs_retain_executed_outputs_and_publication_plots() -> None:
         "35_silva_fixed_point_diffusion.ipynb": 2,
     }
     for name, minimum_pngs in expected_pngs.items():
-        notebook = json.loads(
-            (ROOT / "docs/package-notebooks" / name).read_text(encoding="utf-8")
-        )
-        outputs = [
-            output
-            for cell in notebook["cells"]
-            for output in cell.get("outputs", [])
-        ]
+        notebook = json.loads((ROOT / "docs/package-notebooks" / name).read_text(encoding="utf-8"))
+        outputs = [output for cell in notebook["cells"] for output in cell.get("outputs", [])]
         pngs = [output for output in outputs if "image/png" in output.get("data", {})]
         assert outputs, name
         assert len(pngs) >= minimum_pngs, name
+
+
+def test_source_equilibrium_labs_are_substantive_executed_and_synchronized() -> None:
+    expected = {
+        "61_silva_lipschitz_mdeq.ipynb": "Lipschitz Multiscale",
+        "62_silva_subhomogeneous_equilibrium.ipynb": "Subhomogeneous",
+        "63_silva_algorithmic_reasoner.ipynb": "Algorithmic Equilibrium Reasoner",
+        "64_silva_hamiltonian_equilibrium.ipynb": "Hamiltonian Equilibrium",
+        "65_silva_inverse_imaging_equilibrium.ipynb": "Inverse Imaging",
+        "66_silva_snapshot_compressive_equilibrium.ipynb": "Snapshot Compressive",
+        "67_silva_magnetic_particle_equilibrium.ipynb": "Magnetic Particle",
+        "68_silva_sparse_hyperspectral_equilibrium.ipynb": "Sparse Hyperspectral",
+        "69_silva_serialized_smoothing_equilibrium.ipynb": "Serialized Smoothing",
+        "70_silva_diffusion_restoration_equilibrium.ipynb": "Diffusion Restoration",
+        "71_silva_recurrent_equilibrium_network.ipynb": "Recurrent Equilibrium Network",
+        "72_silva_lipschitz_robust_equilibrium.ipynb": "Lipschitz Robust",
+        "73_silva_image_matting_equilibrium.ipynb": "Image Matting",
+        "74_silva_dynamic_economic_equilibrium.ipynb": "Dynamic Economic",
+    }
+    for name, marker in expected.items():
+        notebooks = [
+            json.loads((ROOT / folder / name).read_text(encoding="utf-8"))
+            for folder in ("notebooks/package_api", "docs/package-notebooks", "colab")
+        ]
+        signatures = [
+            [(cell["cell_type"], "".join(cell.get("source", []))) for cell in notebook["cells"]]
+            for notebook in notebooks
+        ]
+        assert signatures[0] == signatures[1] == signatures[2]
+        assert len(signatures[0]) >= 14
+        assert marker in "\n".join(source for _, source in signatures[0])
+        for notebook in notebooks:
+            outputs = [output for cell in notebook["cells"] for output in cell.get("outputs", [])]
+            pngs = [output for output in outputs if "image/png" in output.get("data", {})]
+            assert outputs, name
+            assert pngs, name
 
 
 def test_structured_labs_retain_real_source_outputs_and_publication_plots() -> None:
@@ -639,11 +703,7 @@ def test_structured_labs_retain_real_source_outputs_and_publication_plots() -> N
         assert signatures[0] == signatures[1] == signatures[2]
         assert marker in "\n".join(source for _, source in signatures[0])
         for notebook in notebooks:
-            outputs = [
-                output
-                for cell in notebook["cells"]
-                for output in cell.get("outputs", [])
-            ]
+            outputs = [output for cell in notebook["cells"] for output in cell.get("outputs", [])]
             pngs = [output for output in outputs if "image/png" in output.get("data", {})]
             assert outputs, name
             assert len(pngs) >= minimum_pngs, name

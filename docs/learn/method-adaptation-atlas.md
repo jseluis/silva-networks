@@ -659,6 +659,21 @@ Then add method-specific citations:
 | Jacobian penalty | Jacobian-regularized DEQ and Hutchinson trace estimation |
 | quadratic or constrained optimization bridge | OptNet and differentiable convex optimization layers, with package route and scope noted |
 | optical-flow module | RAFT, DEQ-Flow, and the dataset/benchmark used |
+| learned equilibrium solver | SILVA package and HyperDEQ, plus the base transition source |
+| JFB backward approximation | SILVA package, JFB, and the equilibrium family used |
+| shared Broyden inverse | SILVA package, SHINE, and Broyden |
+| monotone operator splitting | SILVA package and the monotone operator equilibrium source |
+| consistency acceleration | SILVA package, C-DEQ, and the teacher transition source |
+| measured circuit equilibrium | SILVA package, QDEQ, circuit backend, and task dataset |
+| physics-informed equilibrium | SILVA package, PIDEQ, governing equation, and numerical reference |
+| diffusion equilibrium | SILVA package and the specific joint, generative, per-timestep, or guided diffusion source |
+
+These additions live on separate adaptation axes. HyperDEQ changes how a root
+is approached; JFB and SHINE change the parameter-gradient approximation;
+monotone splitting constrains the transition; C-DEQ distills a trajectory;
+PIDEQ adds a physical objective at the implicit state; QDEQ changes the
+transition substrate. The [Equilibrium Expansion Atlas](equilibrium-expansion-atlas.md)
+derives the distinctions and gives compatible combinations.
 
 ## Run the Adaptation Notebook
 

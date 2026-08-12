@@ -20,6 +20,12 @@ Recent SILVA families also connect to Fourier equilibria
 equilibria [[44]](../paper/references.md#ref-44){ .silva-cite }, homotopy
 continuation [[46]](../paper/references.md#ref-46){ .silva-cite }, and
 distributional equilibria [[45]](../paper/references.md#ref-45){ .silva-cite }.
+The registry also exposes a learned equilibrium solver
+[[87]](../paper/references.md#ref-87){ .silva-cite } and a quantum-circuit
+equilibrium [[90]](../paper/references.md#ref-90){ .silva-cite }. JFB
+[[88]](../paper/references.md#ref-88){ .silva-cite } and SHINE
+[[89]](../paper/references.md#ref-89){ .silva-cite } remain solver-level
+backward choices that can be paired with compatible families.
 
 The factory normalizes hyphenated names and compatibility aliases before
 dispatching to the package-native constructors. It does not choose dataset
@@ -71,6 +77,22 @@ represented by variable-size particles.
 | `silva_poisson_mirror_equilibrium` | positive Poisson mirror-descent equilibrium |
 | `silva_physics_informed_equilibrium` | physics-informed ODE solution equilibrium |
 | `silva_implicit_dae_step` | implicit Runge-Kutta DAE root layer |
+| `silva_consistency_deq` | trajectory-consistency refiner for few-step equilibrium inference |
+| `silva_psi_gnn` | mixed-boundary Poisson graph equilibrium |
+| `silva_ifno` | tied implicit Fourier material-response operator |
+| `silva_snarf` | differentiable multi-start forward-skinning roots |
+| `silva_mesh_inference` | typed distributed mesh relaxation |
+| `silva_physics_guided_diffusion_pde` | reverse diffusion with PDE-energy guidance and boundary projection |
+| `silva_therino` | thermodynamically informed physical-state equilibrium |
+| `silva_fixed_point_diffusion` | timestep-conditioned fixed-point denoiser |
+| `silva_monotone_operator_equilibrium` | strongly monotone equilibrium with selectable operator splitting |
+| `silva_positive_concave_equilibrium` | positive-concave dense or convolutional equilibrium |
+| `silva_non_euclidean_equilibrium` | weighted-infinity well-posed equilibrium |
+| `silva_efficient_infinite_graph` | spectral or iterative infinite-depth graph equilibrium |
+| `silva_multiscale_graph_implicit` | graph-power equilibria with nodewise scale attention |
+| `silva_delta_equilibrium` | thresholded cached equilibrium updates |
+| `silva_hyper_deq` | learned initializer and Anderson controller for a replaceable transition |
+| `silva_quantum_deq` | measured quantum-circuit equilibrium with direct and implicit routes |
 
 ## Minimal Use
 

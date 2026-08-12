@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 
@@ -740,6 +741,164 @@ NOTEBOOK_NEXT_STEPS: dict[str, tuple[tuple[str, str, str], ...]] = {
             *_page("Solver Derivation Lab", "learn/solver-derivation-lab"),
         ),
     ),
+    "package_api/48_silva_learned_solvers.ipynb": (
+        (
+            "How are learned Anderson updates and losses derived?",
+            *_page(
+                "Learned Solvers and Backward Approximations",
+                "learn/solver-learning-and-gradients",
+            ),
+        ),
+        (
+            "Where is the complete executable script?",
+            *_page("Learned Solver Example", "examples/learned-solvers"),
+        ),
+        (
+            "Which learned-solver objects are public?",
+            *_page("Learned Solver API", "api/solver_learning"),
+        ),
+    ),
+    "package_api/49_jfb_shine_backward_methods.ipynb": (
+        (
+            "How are exact, JFB, and SHINE gradients derived?",
+            *_page(
+                "Learned Solvers and Backward Approximations",
+                "learn/solver-learning-and-gradients",
+            ),
+        ),
+        (
+            "Which backward configuration fields are public?",
+            *_page("Solvers API", "api/solvers"),
+        ),
+        (
+            "How do these choices combine with other families?",
+            *_page("Equilibrium Expansion Atlas", "learn/equilibrium-expansion-atlas"),
+        ),
+    ),
+    "package_api/50_silva_quantum_deq.ipynb": (
+        (
+            "How is the circuit equilibrium derived?",
+            *_page("Quantum Equilibria", "learn/quantum-equilibria"),
+        ),
+        (
+            "Where is the complete executable script?",
+            *_page("Quantum DEQ Example", "examples/quantum-deq"),
+        ),
+        (
+            "Which circuit and equilibrium objects are public?",
+            *_page("Quantum Equilibria API", "api/quantum_equilibria"),
+        ),
+    ),
+    "package_api/51_equilibrium_expansion_atlas.ipynb": (
+        (
+            "How are the solver, backward, physics, and substrate axes separated?",
+            *_page("Equilibrium Expansion Atlas", "learn/equilibrium-expansion-atlas"),
+        ),
+        (
+            "How does each family scale to its source experiment?",
+            *_page("Family Reproduction Dossiers", "families"),
+        ),
+        (
+            "Where are the complete primary citations?",
+            *_page("Paper and References", "paper/references"),
+        ),
+    ),
+    "package_api/52_silva_evidence_ladders.ipynb": (
+        (
+            "How are evidence levels and claim boundaries defined?",
+            *_page("Evidence and Source-Scale Experiments", "learn/evidence-and-source-scale"),
+        ),
+        (
+            "Where is the complete evidence script?",
+            *_page("Evidence and Protocol Example", "examples/evidence-and-protocols"),
+        ),
+        ("Which evidence records are public?", *_page("Evidence API", "api/evidence")),
+    ),
+    "package_api/53_transition_equivalence_lab.ipynb": (
+        (
+            "How should primitive and SILVA transitions be compared?",
+            *_page("Evidence and Source-Scale Experiments", "learn/evidence-and-source-scale"),
+        ),
+        (
+            "How can a new transition become a family?",
+            *_page("Extending SILVA", "learn/extending-silva"),
+        ),
+        ("Which comparison functions are public?", *_page("Evidence API", "api/evidence")),
+    ),
+    "package_api/54_statistical_benchmarking.ipynb": (
+        (
+            "How are repeated measurements promoted to evidence?",
+            *_page("Evidence and Source-Scale Experiments", "learn/evidence-and-source-scale"),
+        ),
+        (
+            "Where are measured result records described?",
+            *_page("Experiment Result Records", "experiments/result-records"),
+        ),
+        ("Which summary functions are public?", *_page("Evidence API", "api/evidence")),
+    ),
+    "package_api/55_silva_bayesian_deq.ipynb": (
+        (
+            "How is the Bayesian equilibrium derived?",
+            *_page("Advanced Equilibrium Expansions", "learn/advanced-equilibrium-expansions"),
+        ),
+        (
+            "Where is the four-family executable example?",
+            *_page("Advanced Expansion Example", "examples/advanced-expansions"),
+        ),
+        ("Which Bayesian objects are public?", *_page("Advanced Expansion API", "api/advanced_expansions")),
+    ),
+    "package_api/56_silva_joint_inference.ipynb": (
+        (
+            "How is the coupled representation-input root derived?",
+            *_page("Advanced Equilibrium Expansions", "learn/advanced-equilibrium-expansions"),
+        ),
+        (
+            "How are custom equilibrium modules validated?",
+            *_page("Advanced Extension Handbook", "learn/advanced-extension-handbook"),
+        ),
+        ("Which joint-inference objects are public?", *_page("Advanced Expansion API", "api/advanced_expansions")),
+    ),
+    "package_api/57_silva_implicit_spatiotemporal.ipynb": (
+        (
+            "How is the implicit spatiotemporal step derived?",
+            *_page("Advanced Equilibrium Expansions", "learn/advanced-equilibrium-expansions"),
+        ),
+        (
+            "How do ODE, PDE, and operator routes connect?",
+            *_page("Neural Operators, ODEs, and PDEs", "learn/neural-operators-ode-pde"),
+        ),
+        ("Which dynamic objects are public?", *_page("Advanced Expansion API", "api/advanced_expansions")),
+    ),
+    "package_api/58_silva_certified_equilibrium.ipynb": (
+        (
+            "How are interval and margin certificates derived?",
+            *_page("Advanced Equilibrium Expansions", "learn/advanced-equilibrium-expansions"),
+        ),
+        (
+            "Where are structured operator guarantees compared?",
+            *_page("Structured Equilibrium Families", "learn/structured-equilibrium-families"),
+        ),
+        ("Which certificate objects are public?", *_page("Advanced Expansion API", "api/advanced_expansions")),
+    ),
+    "package_api/59_full_experiment_pipeline.ipynb": (
+        (
+            "How are full experiment stages and evidence defined?",
+            *_page("Evidence and Source-Scale Experiments", "learn/evidence-and-source-scale"),
+        ),
+        ("How do I run the complete repository?", *_page("Run Everything", "run-everything")),
+        ("Which protocol objects are public?", *_page("Experiment Protocol API", "api/experiment_protocols")),
+    ),
+    "package_api/60_neumann_backward_comparison.ipynb": (
+        (
+            "How do implicit backward approximations differ?",
+            *_page("Learned Solvers and Backward Approximations", "learn/solver-learning-and-gradients"),
+        ),
+        (
+            "How are Jacobian products diagnosed?",
+            *_page("Jacobians and Stability", "learn/jacobians"),
+        ),
+        ("Which backward controls are public?", *_page("Solvers API", "api/solvers")),
+    ),
     "implicit_bridge/01_introduction_fixed_points.ipynb": (
         (
             "What does a fixed point mean operationally?",
@@ -859,6 +1018,38 @@ NOTEBOOK_NEXT_STEPS: dict[str, tuple[tuple[str, str, str], ...]] = {
     ),
 }
 
+_SOURCE_FAMILY_NOTEBOOKS = (
+    "61_silva_lipschitz_mdeq.ipynb",
+    "62_silva_subhomogeneous_equilibrium.ipynb",
+    "63_silva_algorithmic_reasoner.ipynb",
+    "64_silva_hamiltonian_equilibrium.ipynb",
+    "65_silva_inverse_imaging_equilibrium.ipynb",
+    "66_silva_snapshot_compressive_equilibrium.ipynb",
+    "67_silva_magnetic_particle_equilibrium.ipynb",
+    "68_silva_sparse_hyperspectral_equilibrium.ipynb",
+    "69_silva_serialized_smoothing_equilibrium.ipynb",
+    "70_silva_diffusion_restoration_equilibrium.ipynb",
+    "71_silva_recurrent_equilibrium_network.ipynb",
+    "72_silva_lipschitz_robust_equilibrium.ipynb",
+    "73_silva_image_matting_equilibrium.ipynb",
+    "74_silva_dynamic_economic_equilibrium.ipynb",
+)
+for _name in _SOURCE_FAMILY_NOTEBOOKS:
+    NOTEBOOK_NEXT_STEPS[f"package_api/{_name}"] = (
+        (
+            "How are all source-aligned mechanisms derived?",
+            *_page("Source-Aligned Equilibrium Families", "learn/source-equilibrium-families"),
+        ),
+        (
+            "Which source-aligned classes and results are public?",
+            *_page("Source-Aligned Equilibria API", "api/source_equilibria"),
+        ),
+        (
+            "Where are the complete data and scale routes?",
+            *_page("Family Reproduction Dossiers", "families"),
+        ),
+    )
+
 
 def navigation_cell(key: str) -> dict[str, object]:
     """Return the tagged final Markdown cell for one notebook."""
@@ -916,10 +1107,18 @@ def notebook_targets(key: str, root: Path = ROOT) -> tuple[Path, Path, Path]:
     raise ValueError(f"unknown notebook group: {group}")
 
 
-def synchronize_notebook_navigation(root: Path = ROOT) -> int:
+def synchronize_notebook_navigation(
+    root: Path = ROOT,
+    *,
+    keys: tuple[str, ...] | None = None,
+) -> int:
     """Update each notebook copy without replacing its outputs or metadata."""
 
-    for key in NOTEBOOK_NEXT_STEPS:
+    selected = tuple(NOTEBOOK_NEXT_STEPS) if keys is None else keys
+    unknown = sorted(set(selected) - NOTEBOOK_NEXT_STEPS.keys())
+    if unknown:
+        raise KeyError(f"unknown notebook navigation keys: {', '.join(unknown)}")
+    for key in selected:
         for target in notebook_targets(key, root):
             original = target.read_text(encoding="utf-8")
             second_line = original.splitlines()[1]
@@ -934,11 +1133,21 @@ def synchronize_notebook_navigation(root: Path = ROOT) -> int:
                 + "\n"
             )
             target.write_text(payload, encoding="utf-8")
-    return len(NOTEBOOK_NEXT_STEPS)
+    return len(selected)
 
 
 def main() -> None:
-    count = synchronize_notebook_navigation()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--key",
+        action="append",
+        default=None,
+        help="update one notebook key; repeat to select multiple notebooks",
+    )
+    args = parser.parse_args()
+    count = synchronize_notebook_navigation(
+        keys=tuple(args.key) if args.key is not None else None
+    )
     print(f"synchronized next steps for {count} notebook families")
 
 

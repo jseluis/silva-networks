@@ -154,6 +154,13 @@ sequence, image, and coupled states without allocating a dense Jacobian-sized
 matrix. The approximation restarts from the initial inverse when that rank is
 full, then incorporates the newest secant pair.
 
+The returned `SolverResult.inverse_estimate` is a
+`BroydenInverseEstimate`. Its `rank`, `left_factors`, and `right_factors` expose
+the retained numerical state, while `apply_residual_inverse`,
+`apply_residual_inverse_transpose`, and
+`apply_fixed_point_adjoint_inverse` apply it without materializing a dense
+matrix. This is the shared object used by SHINE.
+
 ## GMRES for Adjoint Systems
 
 The SILVA study's implicit-gradient diagnostic uses the matrix-free GMRES
@@ -231,11 +238,55 @@ masking strategy when exact reproducibility matters.
 `phantom_steps` damped transitions with `phantom_tau`. This includes the common
 one-step approximation and longer phantom-gradient trajectories.
 
+`backward_mode="jfb"` implements Jacobian-Free Backpropagation
+[[88]](../paper/references.md#ref-88){ .silva-cite }. It treats the converged
+state as a constant and differentiates through exactly one final transition:
+
+$$
+(I-J_f^\top)^{-1}\approx I.
+$$
+
+```python
+config = SolverConfig(
+    solver="anderson",
+    max_iter=40,
+    tol=1e-6,
+    backward_mode="jfb",
+)
+```
+
+`backward_mode="shine"` implements inverse-estimate sharing
+[[89]](../paper/references.md#ref-89){ .silva-cite }. It requires a Broyden
+forward solve. If (B\approx(J_f-I)^{-1}), the initial adjoint estimate is
+
+$$
+u_0=-B^\top g\approx(I-J_f^\top)^{-1}g.
+$$
+
+`shine_refine_steps` applies additional good-Broyden updates to the exact
+adjoint residual. Zero steps uses the raw shared estimate.
+
+```python
+config = SolverConfig(
+    solver="broyden",
+    history=10,
+    backward_mode="shine",
+    shine_refine_steps=2,
+    backward_tol=1e-6,
+)
+```
+
+The public helper `shine_adjoint_solve` accepts an equilibrium, output gradient,
+and `BroydenInverseEstimate` for direct numerical comparisons.
+
 The implicit adjoint may use `gmres`, `picard`, `anderson`, or `broyden` through
 `backward_solver`. `backward_stop_mode` and `backward_relative_eps` select its
 criterion independently of the forward solve. `indexing` retains selected
 one-based forward iterations for trajectory supervision, and `return_best=True`
 returns the lowest-residual observed state when convergence is nonmonotone.
+
+For a derivation and controlled comparison of all backward paths, see
+[Learned Solvers and Backward Approximations](../learn/solver-learning-and-gradients.md).
 
 ## Output Contract
 

@@ -54,6 +54,7 @@ diffusion [[64]](../paper/references.md#ref-64){ .silva-cite }, TherINO
 Models [[74]](../paper/references.md#ref-74){ .silva-cite }. Each numbered
 link opens the complete citation and primary external source.
 
+
 <!-- silva-worked-example:start -->
 ## Complete Worked Study
 
@@ -102,15 +103,6 @@ This is why the example checks gradients in addition to forward convergence.
 The reader-facing evidence for this route is **family-specific exact-solution, boundary, reconstruction, or trajectory checks**. The
 invariants that must remain true are **state shape and a decreasing or bounded residual**.
 
-
-### Complete Program
-
-The complete executable source is included here so the example can be studied
-without reconstructing omitted setup, solver, loss, or gradient steps.
-
-```python
---8<-- "examples/emerging_equilibria.py"
-```
 
 ### Run the Complete Example
 
